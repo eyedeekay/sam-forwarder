@@ -10,8 +10,7 @@ test:
 	killall ephsite
 
 deps:
-	go get -u github.com/eyedeekay/ephemeral-eepSite-SAM
-	go get -u github.com/eyedeekay/i2pasta/convert
+	go get -u github.com/eyedeekay/sam-forwarder
 	go get -u github.com/kpetku/sam3
 
 build: clean
