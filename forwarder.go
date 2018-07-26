@@ -7,7 +7,6 @@ import (
 )
 
 import (
-	"github.com/eyedeekay/i2pasta/convert"
 	"github.com/kpetku/sam3"
 )
 
@@ -65,11 +64,7 @@ func Serve() error {
 		return err
 	}
 	log.Println("Starting Listener.")
-	I := i2pconv.I2pconv{}
-	b, e := I.I2p64to32(string(samKeys.Addr()))
-	if e != nil {
-		return e
-	}
+	b := string(samKeys.Addr().Base32()))
 	log.Println("SAM Listener created,", b+".b32.i2p")
 
 	for {
