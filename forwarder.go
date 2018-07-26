@@ -1,4 +1,4 @@
-package samlistener
+package samforwarder
 
 import (
 	"io"
@@ -52,7 +52,8 @@ func Serve() error {
 		return err
 	}
 	log.Println("Destination keys generated, tunnel name:", TunName, ".")
-	if publishStream, err = samConn.NewStreamSession(TunName, samKeys, []string{"inbound.length=3", "outbound.length=3",
+	if publishStream, err = samConn.NewStreamSession(TunName, samKeys,
+        []string{"inbound.length=3", "outbound.length=3",
 		"inbound.lengthVariance=1", "outbound.lengthVariance=1",
 		"inbound.backupQuantity=3", "outbound.backupQuantity=3",
 		"inbound.quantity=8", "outbound.quantity=8"}); err != nil {
@@ -64,7 +65,7 @@ func Serve() error {
 		return err
 	}
 	log.Println("Starting Listener.")
-	b := string(samKeys.Addr().Base32()))
+	b := string(samKeys.Addr().Base32())
 	log.Println("SAM Listener created,", b+".b32.i2p")
 
 	for {
