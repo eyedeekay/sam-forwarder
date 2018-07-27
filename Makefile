@@ -4,11 +4,6 @@ GOPATH = $(PWD)/.go
 echo:
 	@echo "$(GOPATH)"
 
-test:
-	./bin/ephsite -addr=127.0.0.1:8081 &
-	sleep 120
-	killall ephsite
-
 deps:
 	go get -u github.com/eyedeekay/sam-forwarder
 	go get -u github.com/kpetku/sam3
