@@ -8,6 +8,14 @@ import (
 //Option is a SAMForwarder Option
 type Option func(*SAMForwarder) error
 
+//SetFilePath sets the host of the SAMForwarder's SAM bridge
+func SetFilePath(s string) func(*SAMForwarder) error {
+	return func(c *SAMForwarder) error {
+		c.FilePath = s
+		return nil
+	}
+}
+
 //SetHost sets the host of the SAMForwarder's SAM bridge
 func SetHost(s string) func(*SAMForwarder) error {
 	return func(c *SAMForwarder) error {
@@ -59,5 +67,209 @@ func SetName(s string) func(*SAMForwarder) error {
 	return func(c *SAMForwarder) error {
 		c.TunName = s
 		return nil
+	}
+}
+
+//SetInLength sets the number of hops inbound
+func SetInLength(u int) func(*SAMForwarder) error {
+	return func(c *SAMForwarder) error {
+		if u < 7 && u >= 0 {
+			c.inLength = strconv.Itoa(u)
+			return nil
+		}
+		return fmt.Errorf("Invalid inbound tunnel length")
+	}
+}
+
+//SetOutLength sets the number of hops outbound
+func SetOutLength(u int) func(*SAMForwarder) error {
+	return func(c *SAMForwarder) error {
+		if u < 7 && u >= 0 {
+			c.outLength = strconv.Itoa(u)
+			return nil
+		}
+		return fmt.Errorf("Invalid outbound tunnel length")
+	}
+}
+
+//SetInVariance sets the variance of a number of hops inbound
+func SetInVariance(i int) func(*SAMForwarder) error {
+	return func(c *SAMForwarder) error {
+		if i < 7 && i > -7 {
+			c.inVariance = strconv.Itoa(i)
+			return nil
+		}
+		return fmt.Errorf("Invalid inbound tunnel length")
+	}
+}
+
+//SetOutVariance sets the variance of a number of hops outbound
+func SetOutVariance(i int) func(*SAMForwarder) error {
+	return func(c *SAMForwarder) error {
+		if i < 7 && i > -7 {
+			c.outVariance = strconv.Itoa(i)
+			return nil
+		}
+		return fmt.Errorf("Invalid outbound tunnel variance")
+	}
+}
+
+//SetInQuantity sets the inbound tunnel quantity
+func SetInQuantity(u int) func(*SAMForwarder) error {
+	return func(c *SAMForwarder) error {
+		if u <= 16 && u > 0 {
+			c.inQuantity = strconv.Itoa(u)
+			return nil
+		}
+		return fmt.Errorf("Invalid inbound tunnel quantity")
+	}
+}
+
+//SetOutQuantity sets the outbound tunnel quantity
+func SetOutQuantity(u int) func(*SAMForwarder) error {
+	return func(c *SAMForwarder) error {
+		if u <= 16 && u > 0 {
+			c.outQuantity = strconv.Itoa(u)
+			return nil
+		}
+		return fmt.Errorf("Invalid outbound tunnel quantity")
+	}
+}
+
+//SetInBackups sets the inbound tunnel backups
+func SetInBackups(u int) func(*SAMForwarder) error {
+	return func(c *SAMForwarder) error {
+		if u < 6 && u >= 0 {
+			c.inBackupQuantity = strconv.Itoa(u)
+			return nil
+		}
+		return fmt.Errorf("Invalid inbound tunnel backup quantity")
+	}
+}
+
+//SetOutBackups sets the inbound tunnel backups
+func SetOutBackups(u int) func(*SAMForwarder) error {
+	return func(c *SAMForwarder) error {
+		if u < 6 && u >= 0 {
+			c.outBackupQuantity = strconv.Itoa(u)
+			return nil
+		}
+		return fmt.Errorf("Invalid outbound tunnel backup quantity")
+	}
+}
+
+//SetEncrypt tells the router to use an encrypted leaseset
+func SetEncrypt(b bool) func(*SAMForwarder) error {
+	return func(c *SAMForwarder) error {
+		if b {
+			c.encryptLeaseSet = "true"
+			return nil
+		} else {
+			c.encryptLeaseSet = "false"
+			return nil
+		}
+	}
+}
+
+//SetAllowZeroIn tells the tunnel to accept zero-hop peers
+func SetAllowZeroIn(b bool) func(*SAMForwarder) error {
+	return func(c *SAMForwarder) error {
+		if b {
+			c.inAllowZeroHop = "true"
+			return nil
+		} else {
+			c.inAllowZeroHop = "false"
+			return nil
+		}
+	}
+}
+
+//SetAllowZeroOut tells the tunnel to accept zero-hop peers
+func SetAllowZeroOut(b bool) func(*SAMForwarder) error {
+	return func(c *SAMForwarder) error {
+		if b {
+			c.outAllowZeroHop = "true"
+			return nil
+		} else {
+			c.outAllowZeroHop = "false"
+			return nil
+		}
+	}
+}
+
+//SetCompress tells clients to use compression
+func SetCompress(b bool) func(*SAMForwarder) error {
+	return func(c *SAMForwarder) error {
+		if b {
+			c.encryptLeaseSet = "true"
+			return nil
+		} else {
+			c.encryptLeaseSet = "false"
+			return nil
+		}
+	}
+}
+
+//SetReduceIdle tells the connection to reduce it's tunnels during extended idle time.
+func SetReduceIdle(b bool) func(*SAMForwarder) error {
+	return func(c *SAMForwarder) error {
+		if b {
+			c.reduceIdle = "true"
+			return nil
+		}
+		c.reduceIdle = "false"
+		return nil
+	}
+}
+
+//SetReduceIdleTime sets the time to wait before reducing tunnels to idle levels
+func SetReduceIdleTime(u int) func(*SAMForwarder) error {
+	return func(c *SAMForwarder) error {
+		if u < 6 && u >= 0 {
+			c.reduceIdleTime = strconv.Itoa(u* 60)
+			return nil
+		}
+		return fmt.Errorf("Invalid reduce idle timeout(Measured in minutes)")
+	}
+}
+
+//SetReduceIdleQuantity sets minimum number of tunnels to reduce to during idle time
+func SetReduceIdleQuantity(u int) func(*SAMForwarder) error {
+	return func(c *SAMForwarder) error {
+		if u > 5 {
+			c.reduceIdleQuantity = strconv.Itoa(u)
+			return nil
+		}
+		return fmt.Errorf("Invalid reduce tunnel quantity")
+	}
+}
+
+//SetAccessListType tells the system to treat the accessList as a whitelist
+func SetAccessListType(s string) func(*SAMForwarder) error {
+	return func(c *SAMForwarder) error {
+		if s == "whitelist" {
+			c.accessListType = "whitelist"
+			return nil
+		} else if s == "blacklist" {
+			c.accessListType = "blacklist"
+			return nil
+		} else if s == "none" {
+			c.accessListType = ""
+			return nil
+		}
+		return fmt.Errorf("Invalid Access list type(whitelist, blacklist, none)")
+	}
+}
+
+//SetAccessList tells the system to treat the accessList as a whitelist
+func SetAccessList(s []string) func(*SAMForwarder) error {
+	return func(c *SAMForwarder) error {
+        if len(s) > 0 {
+            for _, a := range s {
+                c.accessList = append(c.accessList, a)
+            }
+            return nil
+        }
+        return nil
 	}
 }

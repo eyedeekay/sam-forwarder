@@ -11,11 +11,11 @@ and it will be in the folder ./bin/
 
 ## usage
 
-        ./bin/ephsite -addr=host:port
+        ./bin/ephsite -host=host -port=port
 
 So, to serve an eepSite version of a local service on port 8080 -
 
-        ./bin/ephsite -addr=127.0.0.1:8080
+        ./bin/ephsite -host=127.0.0.1 -port=8080
 
 ## Quick-And-Dirty i2p-enabled golang web applications
 
@@ -31,39 +31,38 @@ listening on all addresses, it will be visible from the local network.
 Here's a simple example with a simple static file server:
 
 ```Diff
-package main										package main
+package main																		package main
 
-import (										import (
-	"flag"											"flag"
-	"log"											"log"
-	"net/http"										"net/http"
-)											)
+import (																			import (
+	"flag"																				"flag"
+	"log"																				"log"
+	"net/http"																			"net/http"
+)																				    )
 
-										      >	import "github.com/eyedeekay/sam-forwarder"
-										      >
-func main() {										func main() {
-	port := flag.String("p", "8101", "port to serve on")			      |		port := flag.String("p", "8100", "port to serve on")
-	directory := flag.String("d", ".", "the directory of static file to host")		directory := flag.String("d", ".", "the directory of static file to host")
-	flag.Parse()										flag.Parse()
+																			      >	import "github.com/eyedeekay/sam-forwarder"
+																			      >
+func main() {																			func main() {
+	port := flag.String("p", "8100", "port to serve on")														port := flag.String("p", "8100", "port to serve on")
+	directory := flag.String("d", ".", "the directory of static file to host")											directory := flag.String("d", ".", "the directory of static file to host")
+	flag.Parse()																			flag.Parse()
+																			      >
+																			      >		forwarder, err := samforwarder.NewSAMForwarderFromOptions(
+																			      >			samforwarder.SetHost("127.0.0.1"),
+																			      >			samforwarder.SetPort(*port),
+																			      >			samforwarder.SetSAMHost("127.0.0.1"),
+																			      >			samforwarder.SetSAMPort("7656"),
+																			      >			samforwarder.SetName("staticfiles"),
+																			      >		)
+																			      >		if err != nil {
+																			      >			log.Fatal(err.Error())
+																			      >		}
+																			      >		go forwarder.Serve()
 
-										      >		forwarder, err := samforwarder.NewSAMForwarderFromOptions(
-										      >			samforwarder.SetHost("127.0.0.1"),
-										      >			samforwarder.SetPort(*port),
-										      >			samforwarder.SetSAMHost("127.0.0.1"),
-										      >			samforwarder.SetSAMPort("7656"),
-										      >			samforwarder.SetName("staticfiles"),
-										      >		)
-										      >		if err != nil {
-										      >			log.Fatal(err.Error())
-										      >		}
-										      >		go forwarder.Serve()
-										      >
-	http.Handle("/", http.FileServer(http.Dir(*directory)))					http.Handle("/", http.FileServer(http.Dir(*directory)))
+	http.Handle("/", http.FileServer(http.Dir(*directory)))														http.Handle("/", http.FileServer(http.Dir(*directory)))
 
-	log.Printf("Serving %s on HTTP port: %s\n", *directory, *port)		      |		log.Printf("Serving %s on HTTP port: %s\n", *directory, *port, "and on",
-	log.Fatal(http.ListenAndServe(":"+*port, nil))				      |			forwarder.Base32()+".b32.i2p")
-										      >		log.Fatal(http.ListenAndServe("127.0.0.1:"+*port, nil))
-}											}
+	log.Printf("Serving %s on HTTP port: %s\n", *directory, *port)													log.Printf("Serving %s on HTTP port: %s\n", *directory, *port)
+	log.Fatal(http.ListenAndServe("127.0.0.1:"+*port, nil))														log.Fatal(http.ListenAndServe("127.0.0.1:"+*port, nil))
+}																				    }
 
 ```
 
