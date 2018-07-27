@@ -15,12 +15,16 @@ func main() {
     TunName := *flag.String("name", "forwarder", "Tunnel name")
 	flag.Parse()
 	log.Println("Redirecting", TargetHost+":"+TargetPort, "to i2p")
-    forwarder := samforwarder.NewSAMForwarderFromOptions(
+    forwarder, err := samforwarder.NewSAMForwarderFromOptions(
         samforwarder.SetHost(TargetHost),
         samforwarder.SetPort(TargetPort),
         samforwarder.SetSAMHost(SamHost),
         samforwarder.SetSAMPort(SamPort),
         samforwarder.SetName(TunName),
     )
-	forwarder.Serve()
+    if err == nil {
+        forwarder.Serve()
+    }else{
+        log.Println(err.Error())
+    }
 }
