@@ -19,41 +19,41 @@ Usage of ./bin/ephsite:
   -encryptlease
     	Use an encrypted leaseset(true or false) (default true)
   -gzip
-    	(true or false)
+    	Uze gzip(true or false)
   -host string
     	Target host(Host of service to forward to i2p) (default "127.0.0.1")
   -inback int
-    	(0 to 5) (default 4)
+    	Set inbound tunnel backup quantity(0 to 5) (default 4)
   -incount int
-    	(0 to 15) (default 8)
+    	Set inbound tunnel quantity(0 to 15) (default 8)
   -inlen int
-    	(0 to 7) (default 3)
+    	Set inbound tunnel length(0 to 7) (default 3)
   -invar int
-    	(-7 to 7)
+    	Set inbound tunnel length variance(-7 to 7)
   -name string
     	Tunnel name, this must be unique but can be anything. (default "forwarder")
   -outback int
-    	(0 to 5) (default 4)
+    	Set outbound tunnel backup quantity(0 to 5) (default 4)
   -outcount int
-    	(0 to 15) (default 8)
+    	Set outbound tunnel quantity(0 to 15) (default 8)
   -outlen int
-    	(0 to 7) (default 3)
+    	Set outbound tunnel length(0 to 7) (default 3)
   -outvar int
-    	(-7 to 7)
+    	Set outbound tunnel length variance(-7 to 7)
   -port string
     	Target port(Port of service to forward to i2p) (default "8081")
   -reduce
-    	(true or false)
+    	Reduce tunnel quantity when idle(true or false)
   -reducecount int
-    	(0 to 5) (default 3)
+    	Reduce idle tunnel quantity to X (0 to 5) (default 3)
   -reducetime int
-    	(minutes) (default 3)
+    	Reduce tunnel quantity after X (minutes) (default 3)
   -samhost string
     	SAM host (default "127.0.0.1")
   -samport string
     	SAM port (default "7656")
   -zeroin
-    	(true or false)
+    	Allow zero-hop, non-anonymous tunnels in(true or false)
   -zeroout
-    	(true or false)
+    	Allow zero-hop, non-anonymous tunnels out(true or false)
 ```

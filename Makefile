@@ -20,7 +20,7 @@ noopts: clean
 	mkdir -p bin
 	cd main && go build -o ../bin/ephsite
 
-gendoc:
+gendoc: build
 	@echo "ephsite - Easy forwarding of local services to i2p" > USAGE.md
 	@echo "==================================================" >> USAGE.md
 	@echo "" >> USAGE.md
