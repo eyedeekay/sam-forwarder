@@ -19,6 +19,36 @@ So, to serve an eepSite version of a local service on port 8080 -
 
 For more information, [look here](USAGE.md)
 
+## ini-like configuration
+
+I make it parse INI-like configuration files, optionally, which allows it to
+generate tunnels from snippets of i2pd tunnel configuration files. That's kinda
+useful. It appears to be more-or-less compatible with i2pd's tunnels.conf
+format, but it only supports the following options:
+
+        [EXAMPLE-CONFIG]
+        host = 127.0.0.1
+        port = 22
+        inbound.length = 6
+		outbound.length = 6
+		inbound.lengthVariance = 6
+		outbound.lengthVariance = 6
+		inbound.backupQuantity = 5
+		outbound.backupQuantity = 5
+		inbound.quantity = 15
+		outbound.quantity = 15
+		inbound.allowZeroHop = true
+		outbound.allowZeroHop = true
+		i2cp.encryptLeaseSet = true
+		gzip = true
+		i2cp.reduceOnIdle = true
+		i2cp.reduceIdleTime = 3000000
+		i2cp.reduceQuantity = 4
+        i2cp.enableWhiteList = false
+        i2cp.enableBlackList = true
+        i2cp.accessList = BASE64KEYSSEPARATEDBY,COMMAS
+        keys = ssh.dat
+
 ## Quick-And-Dirty i2p-enabled golang web applications
 
 Normal web applications can easily add the ability to serve itself over i2p by
