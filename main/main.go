@@ -83,7 +83,7 @@ func main() {
 	flag.Parse()
 	log.Println("Redirecting", TargetHost+":"+TargetPort, "to i2p")
 	forwarder, err := samforwarder.NewSAMForwarderFromOptions(
-        samforwarder.SetFilePath(""),
+        samforwarder.SetFilePath(TargetDir),
 		samforwarder.SetHost(TargetHost),
 		samforwarder.SetPort(TargetPort),
 		samforwarder.SetSAMHost(SamHost),
