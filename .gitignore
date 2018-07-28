@@ -1,3 +1,4 @@
 log
 bin/*
 .go
+*.i2pkeys
