@@ -3,11 +3,7 @@ GOPATH = $(PWD)/.go
 
 echo:
 	@echo "$(GOPATH)"
-
-test:
-	./bin/ephsite -addr=127.0.0.1:8081 &
-	sleep 120
-	killall ephsite
+	find . -name "*.go" -exec gofmt -w {} \;
 
 deps:
 	go get -u github.com/eyedeekay/sam-forwarder
@@ -20,9 +16,18 @@ build: clean
 clean:
 	rm -f bin/ephsite
 
-run:
-	./bin/ephsite -addr="127.0.0.1:8081"
-
 noopts: clean
 	mkdir -p bin
 	cd main && go build -o ../bin/ephsite
+
+gendoc: deps build
+	@echo "ephsite - Easy forwarding of local services to i2p" > USAGE.md
+	@echo "==================================================" >> USAGE.md
+	@echo "" >> USAGE.md
+	@echo "ephsite is" >> USAGE.md
+	@echo "" >> USAGE.md
+	@echo "usage:" >> USAGE.md
+	@echo "------" >> USAGE.md
+	@echo "" >> USAGE.md
+	./bin/ephsite -h | sed 's|  |       |g' 2>&1 | tee -a USAGE.md
+	@echo "" >> USAGE.md

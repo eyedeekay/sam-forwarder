@@ -226,7 +226,7 @@ func SetReduceIdle(b bool) func(*SAMForwarder) error {
 func SetReduceIdleTime(u int) func(*SAMForwarder) error {
 	return func(c *SAMForwarder) error {
 		if u < 6 && u >= 0 {
-			c.reduceIdleTime = strconv.Itoa(u* 60)
+			c.reduceIdleTime = strconv.Itoa(u * 60)
 			return nil
 		}
 		return fmt.Errorf("Invalid reduce idle timeout(Measured in minutes)")
@@ -264,12 +264,12 @@ func SetAccessListType(s string) func(*SAMForwarder) error {
 //SetAccessList tells the system to treat the accessList as a whitelist
 func SetAccessList(s []string) func(*SAMForwarder) error {
 	return func(c *SAMForwarder) error {
-        if len(s) > 0 {
-            for _, a := range s {
-                c.accessList = append(c.accessList, a)
-            }
-            return nil
-        }
-        return nil
+		if len(s) > 0 {
+			for _, a := range s {
+				c.accessList = append(c.accessList, a)
+			}
+			return nil
+		}
+		return nil
 	}
 }

@@ -30,7 +30,7 @@ type SAMForwarder struct {
 	FilePath string
 	save     bool
 
-	// i2cp options
+	// I2CP options
 	encryptLeaseSet    string
 	inAllowZeroHop     string
 	outAllowZeroHop    string
@@ -46,6 +46,8 @@ type SAMForwarder struct {
 	reduceIdle         string
 	reduceIdleTime     string
 	reduceIdleQuantity string
+
+    //Streaming Library options
 	accessListType     string
 	accessList         []string
 }
@@ -57,9 +59,9 @@ func (f *SAMForwarder) accesslisttype() string {
 		return "i2cp.enableAccessList=true"
 	} else if f.accessListType == "blacklist" {
 		return "i2cp.enableBlackList=true"
-	}else if f.accessListType == "none" {
-        return ""
-    }
+	} else if f.accessListType == "none" {
+		return ""
+	}
 	return ""
 }
 
