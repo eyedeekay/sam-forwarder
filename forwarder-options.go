@@ -229,8 +229,8 @@ func SetReduceIdle(b bool) func(*SAMForwarder) error {
 //SetReduceIdleTime sets the time to wait before reducing tunnels to idle levels
 func SetReduceIdleTime(u int) func(*SAMForwarder) error {
 	return func(c *SAMForwarder) error {
-		if u < 6 && u >= 0 {
-			c.reduceIdleTime = strconv.Itoa(u * 60)
+		if u > 6 {
+			c.reduceIdleTime = strconv.Itoa((u * 60) * 1000)
 			return nil
 		}
 		return fmt.Errorf("Invalid reduce idle timeout(Measured in minutes)")
