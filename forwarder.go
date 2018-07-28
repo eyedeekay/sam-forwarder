@@ -47,9 +47,9 @@ type SAMForwarder struct {
 	reduceIdleTime     string
 	reduceIdleQuantity string
 
-    //Streaming Library options
-	accessListType     string
-	accessList         []string
+	//Streaming Library options
+	accessListType string
+	accessList     []string
 }
 
 var err error

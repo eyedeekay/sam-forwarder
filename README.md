@@ -17,6 +17,8 @@ So, to serve an eepSite version of a local service on port 8080 -
 
         ./bin/ephsite -host=127.0.0.1 -port=8080
 
+For more information, [look here](USAGE.md)
+
 ## Quick-And-Dirty i2p-enabled golang web applications
 
 Normal web applications can easily add the ability to serve itself over i2p by

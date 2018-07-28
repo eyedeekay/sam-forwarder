@@ -20,14 +20,17 @@ noopts: clean
 	mkdir -p bin
 	cd main && go build -o ../bin/ephsite
 
-gendoc: deps build
+gendoc:
 	@echo "ephsite - Easy forwarding of local services to i2p" > USAGE.md
 	@echo "==================================================" >> USAGE.md
 	@echo "" >> USAGE.md
-	@echo "ephsite is" >> USAGE.md
+	@echo "ephsite is a forwarding proxy designed to configure a tunnel for use" >> USAGE.md
+	@echo "with i2p. It can be used to easily forward a local service to the" >> USAGE.md
+	@echo "i2p network using i2p's SAM API instead of the tunnel interface." >> USAGE.md
 	@echo "" >> USAGE.md
 	@echo "usage:" >> USAGE.md
 	@echo "------" >> USAGE.md
 	@echo "" >> USAGE.md
-	./bin/ephsite -h | sed 's|  |       |g' 2>&1 | tee -a USAGE.md
-	@echo "" >> USAGE.md
+	@echo '```' >> USAGE.md
+	./bin/ephsite -h  2>> USAGE.md; true
+	@echo '```' >> USAGE.md

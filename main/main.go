@@ -49,36 +49,37 @@ func main() {
 	encryptLeaseSet := *flag.Bool("encryptlease", true,
 		"Use an encrypted leaseset(true or false)")
 	inAllowZeroHop := *flag.Bool("zeroin", false,
-		"(true or false)")
+		"Allow zero-hop, non-anonymous tunnels in(true or false)")
 	outAllowZeroHop := *flag.Bool("zeroout", false,
-		"(true or false)")
+		"Allow zero-hop, non-anonymous tunnels out(true or false)")
 	inLength := *flag.Int("inlen", 3,
-		"(0 to 7)")
+		"Set inbound tunnel length(0 to 7)")
 	outLength := *flag.Int("outlen", 3,
-		"(0 to 7)")
+		"Set outbound tunnel length(0 to 7)")
 	inQuantity := *flag.Int("incount", 8,
-		"(0 to 15)")
+		"Set inbound tunnel quantity(0 to 15)")
 	outQuantity := *flag.Int("outcount", 8,
-		"(0 to 15)")
+		"Set outbound tunnel quantity(0 to 15)")
 	inVariance := *flag.Int("invar", 0,
-		"(-7 to 7)")
+		"Set inbound tunnel length variance(-7 to 7)")
 	outVariance := *flag.Int("outvar", 0,
-		"(-7 to 7)")
+		"Set outbound tunnel length variance(-7 to 7)")
 	inBackupQuantity := *flag.Int("inback", 4,
-		"(0 to 5)")
+		"Set inbound tunnel backup quantity(0 to 5)")
 	outBackupQuantity := *flag.Int("outback", 4,
-		"(0 to 5)")
+		"Set outbound tunnel backup quantity(0 to 5)")
 	useCompression := *flag.Bool("gzip", false,
-		"(true or false)")
+		"Uze gzip(true or false)")
 	reduceIdle := *flag.Bool("reduce", false,
-		"(true or false)")
+		"Reduce tunnel quantity when idle(true or false)")
 	reduceIdleTime := *flag.Int("reducetime", 3,
-		"(minutes)")
+		"Reduce tunnel quantity after X (minutes)")
 	reduceIdleQuantity := *flag.Int("reducecount", 3,
-		"(0 to 5)")
+		"Reduce idle tunnel quantity to X (0 to 5)")
 	accessListType := *flag.String("access", "none",
 		"Type of access list to use, can be \"whitelist\" \"blacklist\" or \"none\".")
-	flag.Var(&accessList, "accesslist", "Specify an access list member(can be used multiple times)")
+	flag.Var(&accessList, "accesslist",
+		"Specify an access list member(can be used multiple times)")
 
 	flag.Parse()
 	log.Println("Redirecting", TargetHost+":"+TargetPort, "to i2p")
