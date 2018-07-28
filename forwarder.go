@@ -206,7 +206,7 @@ func NewSAMForwarderFromOptions(opts ...func(*SAMForwarder) error) (*SAMForwarde
 				return nil, err
 			}
 		}
-		s.file, err = os.Open(filepath.Join(s.FilePath, s.TunName))
+		s.file, err = os.Open(filepath.Join(s.FilePath, s.TunName + ".i2pkeys"))
 		if err != nil {
 			return nil, err
 		}
