@@ -52,6 +52,8 @@ Usage of ./bin/ephsite:
     	SAM host (default "127.0.0.1")
   -samport string
     	SAM port (default "7656")
+  -save
+    	Use saved file and persist tunnel(If false, tunnel will not persist after program is stopped. (default true)
   -zeroin
     	Allow zero-hop, non-anonymous tunnels in(true or false)
   -zeroout
