@@ -9,7 +9,7 @@ import (
 import "github.com/eyedeekay/sam-forwarder"
 import "github.com/zieckey/goini"
 
-func configParse(path string) (*ini.INI, error) {
+func configParse(path string) (*goini.INI, error) {
 	ini := goini.New()
 	if err := ini.ParseFile(path); err != nil {
 		return nil, err
@@ -156,10 +156,14 @@ func main() {
 			reduceIdleQuantity = v
 		}
 		if v, ok := config.GetBool("i2cp.enableBlackList"); ok {
-			accessListType = "blacklist"
+            if v {
+                accessListType = "blacklist"
+            }
 		}
 		if v, ok := config.GetBool("i2cp.enableAccessList"); ok {
-			accessListType = "whitelist"
+            if v {
+                accessListType = "whitelist"
+            }
 		}
 		if v, ok := config.Get("i2cp.accessList"); ok {
             csv := strings.Split(v, ",")

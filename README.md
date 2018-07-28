@@ -9,6 +9,8 @@ Just:
 
 and it will be in the folder ./bin/
 
+[![Build Status](https://travis-ci.org/eyedeekay/sam-forwarder.svg?branch=master)](https://travis-ci.org/eyedeekay/sam-forwarder)
+
 ## usage
 
         ./bin/ephsite -host=host -port=port
@@ -21,7 +23,7 @@ For more information, [look here](USAGE.md)
 
 ## ini-like configuration
 
-I make it parse INI-like configuration files, optionally, which allows it to
+I made it parse INI-like configuration files, optionally, which allows it to
 generate tunnels from snippets of i2pd tunnel configuration files. That's kinda
 useful. It appears to be more-or-less compatible with i2pd's tunnels.conf
 format, but it only supports the following options:
