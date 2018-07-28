@@ -164,10 +164,9 @@ func SetEncrypt(b bool) func(*SAMForwarder) error {
 		if b {
 			c.encryptLeaseSet = "true"
 			return nil
-		} else {
-			c.encryptLeaseSet = "false"
-			return nil
 		}
+		c.encryptLeaseSet = "false"
+		return nil
 	}
 }
 
@@ -177,10 +176,9 @@ func SetAllowZeroIn(b bool) func(*SAMForwarder) error {
 		if b {
 			c.inAllowZeroHop = "true"
 			return nil
-		} else {
-			c.inAllowZeroHop = "false"
-			return nil
 		}
+		c.inAllowZeroHop = "false"
+		return nil
 	}
 }
 
@@ -190,10 +188,9 @@ func SetAllowZeroOut(b bool) func(*SAMForwarder) error {
 		if b {
 			c.outAllowZeroHop = "true"
 			return nil
-		} else {
-			c.outAllowZeroHop = "false"
-			return nil
 		}
+		c.outAllowZeroHop = "false"
+		return nil
 	}
 }
 
@@ -203,10 +200,9 @@ func SetCompress(b bool) func(*SAMForwarder) error {
 		if b {
 			c.encryptLeaseSet = "true"
 			return nil
-		} else {
-			c.encryptLeaseSet = "false"
-			return nil
 		}
+		c.encryptLeaseSet = "false"
+		return nil
 	}
 }
 

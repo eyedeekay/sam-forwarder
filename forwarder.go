@@ -72,9 +72,8 @@ func (f *SAMForwarder) accesslist() string {
 			r += s + ","
 		}
 		return "i2cp.accessList=" + strings.TrimSuffix(r, ",")
-	} else {
-		return ""
 	}
+	return ""
 }
 
 func (f *SAMForwarder) target() string {
@@ -110,14 +109,6 @@ func (f *SAMForwarder) Base32() string {
 
 //Serve starts the SAM connection and and forwards the local host:port to i2p
 func (f *SAMForwarder) Serve() error {
-	if f.samConn, err = sam3.NewSAM(f.sam()); err != nil {
-		return err
-	}
-	log.Println("SAM Bridge connection established.")
-	if f.samKeys, err = f.samConn.NewKeys(); err != nil {
-		return err
-	}
-	log.Println("Destination keys generated, tunnel name:", f.TunName, ".")
 	if f.publishStream, err = f.samConn.NewStreamSession(f.TunName, f.samKeys,
 		[]string{
 			"inbound.length=" + f.inLength,
@@ -192,5 +183,13 @@ func NewSAMForwarderFromOptions(opts ...func(*SAMForwarder) error) (*SAMForwarde
 			return nil, err
 		}
 	}
+    if s.samConn, err = sam3.NewSAM(s.sam()); err != nil {
+		return nil, err
+	}
+	log.Println("SAM Bridge connection established.")
+	if s.samKeys, err = s.samConn.NewKeys(); err != nil {
+		return nil, err
+	}
+	log.Println("Destination keys generated, tunnel name:", s.TunName, ".")
 	return &s, nil
 }
