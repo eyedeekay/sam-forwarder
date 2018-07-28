@@ -92,3 +92,11 @@ func TestOptionEncryptLease(t *testing.T) {
 	}
     log.Println(client.Base32())
 }
+
+func TestOptionSaveFile(t *testing.T) {
+	client, err := NewSAMForwarderFromOptions(SetSaveFile(true))
+	if err != nil {
+		t.Fatalf("NewDefaultClient() Error: %q\n", err)
+	}
+    log.Println(client.Base32())
+}

@@ -1,8 +1,10 @@
 package samforwarder
 
 import (
+    "path/filepath"
 	"io"
 	"log"
+    "os"
 	"net"
 	"strings"
 )
@@ -28,6 +30,7 @@ type SAMForwarder struct {
 	publishConnection net.Conn
 
 	FilePath string
+    file     io.ReadWriter
 	save     bool
 
 	// I2CP options
@@ -161,6 +164,7 @@ func NewSAMForwarderFromOptions(opts ...func(*SAMForwarder) error) (*SAMForwarde
 	s.SamHost = "127.0.0.1"
 	s.SamPort = "7656"
 	s.FilePath = ""
+    s.save = false
 	s.TargetHost = "127.0.0.1"
 	s.TargetPort = "8081"
 	s.TunName = "samForwarder"
@@ -191,5 +195,25 @@ func NewSAMForwarderFromOptions(opts ...func(*SAMForwarder) error) (*SAMForwarde
 		return nil, err
 	}
 	log.Println("Destination keys generated, tunnel name:", s.TunName, ".")
+    if s.save {
+        if _, err := os.Stat(filepath.Join(s.FilePath, s.TunName + ".i2pkeys")); os.IsNotExist(err) {
+            s.file, err = os.Create(filepath.Join(s.FilePath, s.TunName + ".i2pkeys"))
+            if err != nil {
+                return nil, err
+            }
+            err = sam3.StoreKeysIncompat(s.samKeys, s.file)
+            if err != nil {
+                return nil, err
+            }
+        }
+        s.file, err = os.Open(filepath.Join(s.FilePath, s.TunName + ".i2pkeys"))
+        if err != nil {
+            return nil, err
+        }
+        s.samKeys, err = sam3.LoadKeysIncompat(s.file)
+        if err != nil {
+            return nil, err
+        }
+    }
 	return &s, nil
 }

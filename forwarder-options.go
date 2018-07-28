@@ -16,6 +16,14 @@ func SetFilePath(s string) func(*SAMForwarder) error {
 	}
 }
 
+//SetSaveFile tells the router to use an encrypted leaseset
+func SetSaveFile(b bool) func(*SAMForwarder) error {
+	return func(c *SAMForwarder) error {
+		c.save = b
+		return nil
+	}
+}
+
 //SetHost sets the host of the SAMForwarder's SAM bridge
 func SetHost(s string) func(*SAMForwarder) error {
 	return func(c *SAMForwarder) error {

@@ -36,6 +36,8 @@ func main() {
 	//
 	TargetDir := *flag.String("dir", "",
 		"Directory to save tunnel configuration file in.")
+    saveFile := *flag.Bool("save", true,
+		"Use saved file and persist tunnel(If false, tunnel will not persist after program is stopped.")
 	TargetHost := *flag.String("host", "127.0.0.1",
 		"Target host(Host of service to forward to i2p)")
 	TargetPort := *flag.String("port", "8081",
@@ -85,6 +87,7 @@ func main() {
 	log.Println("Redirecting", TargetHost+":"+TargetPort, "to i2p")
 	forwarder, err := samforwarder.NewSAMForwarderFromOptions(
 		samforwarder.SetFilePath(TargetDir),
+        samforwarder.SetSaveFile(saveFile),
 		samforwarder.SetHost(TargetHost),
 		samforwarder.SetPort(TargetPort),
 		samforwarder.SetSAMHost(SamHost),
