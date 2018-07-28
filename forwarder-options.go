@@ -240,7 +240,7 @@ func SetReduceIdleTime(u int) func(*SAMForwarder) error {
 //SetReduceIdleQuantity sets minimum number of tunnels to reduce to during idle time
 func SetReduceIdleQuantity(u int) func(*SAMForwarder) error {
 	return func(c *SAMForwarder) error {
-		if u > 5 {
+		if u < 5 {
 			c.reduceIdleQuantity = strconv.Itoa(u)
 			return nil
 		}
