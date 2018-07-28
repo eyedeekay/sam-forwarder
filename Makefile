@@ -9,6 +9,7 @@ test:
 	go test
 
 deps:
+	go get -u github.com/zieckey/goini
 	go get -u github.com/eyedeekay/sam-forwarder
 	go get -u github.com/kpetku/sam3
 

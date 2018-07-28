@@ -7,6 +7,15 @@ import (
 )
 
 import "github.com/eyedeekay/sam-forwarder"
+import "github.com/zieckey/goini"
+
+func configParse(path string) (*ini.INI, error) {
+	ini := goini.New()
+	if err := ini.ParseFile(path); err != nil {
+		return nil, err
+	}
+	return ini, nil
+}
 
 type flagOpts []string
 
@@ -36,8 +45,10 @@ func main() {
 	//
 	TargetDir := *flag.String("dir", "",
 		"Directory to save tunnel configuration file in.")
-    saveFile := *flag.Bool("save", true,
+	saveFile := *flag.Bool("save", true,
 		"Use saved file and persist tunnel(If false, tunnel will not persist after program is stopped.")
+	iniFile := *flag.String("ini", "none",
+		"Use an ini file for configuration(config file options override passed arguments for now.)")
 	TargetHost := *flag.String("host", "127.0.0.1",
 		"Target host(Host of service to forward to i2p)")
 	TargetPort := *flag.String("port", "8081",
@@ -82,12 +93,87 @@ func main() {
 		"Type of access list to use, can be \"whitelist\" \"blacklist\" or \"none\".")
 	flag.Var(&accessList, "accesslist",
 		"Specify an access list member(can be used multiple times)")
+	if iniFile != "none" {
+		config, err := configParse(iniFile)
+		if err != nil {
+			log.Fatal(err)
+		}
+		if v, ok := config.GetBool("keys"); ok {
+			saveFile = v
+		}
+		if v, ok := config.Get("host"); ok {
+			TargetHost = v
+		}
+		if v, ok := config.Get("port"); ok {
+			TargetPort = v
+		}
+		if v, ok := config.Get("keys"); ok {
+			TunName = v
+		}
+		if v, ok := config.GetBool("i2cp.encryptLeaseSet"); ok {
+			encryptLeaseSet = v
+		}
+		if v, ok := config.GetBool("inbound.allowZeroHop"); ok {
+			inAllowZeroHop = v
+		}
+		if v, ok := config.GetBool("outbound.allowZeroHop"); ok {
+			outAllowZeroHop = v
+		}
+		if v, ok := config.GetInt("inbound.length"); ok {
+			inLength = v
+		}
+		if v, ok := config.GetInt("outbound.length"); ok {
+			outLength = v
+		}
+		if v, ok := config.GetInt("inbound.quantity"); ok {
+			inQuantity = v
+		}
+		if v, ok := config.GetInt("outbound.quantity"); ok {
+			outQuantity = v
+		}
+		if v, ok := config.GetInt("inbound.variance"); ok {
+			inVariance = v
+		}
+		if v, ok := config.GetInt("outbound.variance"); ok {
+			outVariance = v
+		}
+		if v, ok := config.GetInt("inbound.backupQuantity"); ok {
+			inBackupQuantity = v
+		}
+		if v, ok := config.GetInt("outbound.backupQuantity"); ok {
+			outBackupQuantity = v
+		}
+		if v, ok := config.GetBool("gzip"); ok {
+			useCompression = v
+		}
+		if v, ok := config.GetBool("i2cp.reduceOnIdle"); ok {
+			reduceIdle = v
+		}
+		if v, ok := config.GetInt("i2cp.reduceIdleTime"); ok {
+			reduceIdleTime = v
+		}
+		if v, ok := config.GetInt("i2cp.reduceQuantity"); ok {
+			reduceIdleQuantity = v
+		}
+		if v, ok := config.GetBool("i2cp.enableBlackList"); ok {
+			accessListType = "blacklist"
+		}
+		if v, ok := config.GetBool("i2cp.enableAccessList"); ok {
+			accessListType = "whitelist"
+		}
+		if v, ok := config.Get("i2cp.accessList"); ok {
+            csv := strings.Split(v, ",")
+            for _, z := range csv {
+                accessList = append(accessList, z)
+            }
+		}
+	}
 
 	flag.Parse()
 	log.Println("Redirecting", TargetHost+":"+TargetPort, "to i2p")
 	forwarder, err := samforwarder.NewSAMForwarderFromOptions(
 		samforwarder.SetFilePath(TargetDir),
-        samforwarder.SetSaveFile(saveFile),
+		samforwarder.SetSaveFile(saveFile),
 		samforwarder.SetHost(TargetHost),
 		samforwarder.SetPort(TargetPort),
 		samforwarder.SetSAMHost(SamHost),

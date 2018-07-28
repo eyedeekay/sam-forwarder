@@ -1,8 +1,8 @@
 package samforwarder
 
 import (
-    "log"
-    "testing"
+	"log"
+	"testing"
 )
 
 func TestOptionHost(t *testing.T) {
@@ -10,7 +10,7 @@ func TestOptionHost(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewDefaultClient() Error: %q\n", err)
 	}
-    log.Println(client.Base32())
+	log.Println(client.Base32())
 }
 
 func TestOptionPort(t *testing.T) {
@@ -18,7 +18,7 @@ func TestOptionPort(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewDefaultClient() Error: %q\n", err)
 	}
-    log.Println(client.Base32())
+	log.Println(client.Base32())
 }
 
 func TestOptionInLength(t *testing.T) {
@@ -26,7 +26,7 @@ func TestOptionInLength(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewDefaultClient() Error: %q\n", err)
 	}
-    log.Println(client.Base32())
+	log.Println(client.Base32())
 }
 
 func TestOptionOutLength(t *testing.T) {
@@ -34,7 +34,7 @@ func TestOptionOutLength(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewDefaultClient() Error: %q\n", err)
 	}
-    log.Println(client.Base32())
+	log.Println(client.Base32())
 }
 
 func TestOptionInVariance(t *testing.T) {
@@ -42,7 +42,7 @@ func TestOptionInVariance(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewDefaultClient() Error: %q\n", err)
 	}
-    log.Println(client.Base32())
+	log.Println(client.Base32())
 }
 
 func TestOptionOutVariance(t *testing.T) {
@@ -50,7 +50,7 @@ func TestOptionOutVariance(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewDefaultClient() Error: %q\n", err)
 	}
-    log.Println(client.Base32())
+	log.Println(client.Base32())
 }
 
 func TestOptionInQuantity(t *testing.T) {
@@ -58,7 +58,7 @@ func TestOptionInQuantity(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewDefaultClient() Error: %q\n", err)
 	}
-    log.Println(client.Base32())
+	log.Println(client.Base32())
 }
 
 func TestOptionOutQuantity(t *testing.T) {
@@ -66,7 +66,7 @@ func TestOptionOutQuantity(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewDefaultClient() Error: %q\n", err)
 	}
-    log.Println(client.Base32())
+	log.Println(client.Base32())
 }
 
 func TestOptionInBackups(t *testing.T) {
@@ -74,7 +74,7 @@ func TestOptionInBackups(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewDefaultClient() Error: %q\n", err)
 	}
-    log.Println(client.Base32())
+	log.Println(client.Base32())
 }
 
 func TestOptionOutBackups(t *testing.T) {
@@ -82,7 +82,7 @@ func TestOptionOutBackups(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewDefaultClient() Error: %q\n", err)
 	}
-    log.Println(client.Base32())
+	log.Println(client.Base32())
 }
 
 func TestOptionEncryptLease(t *testing.T) {
@@ -90,7 +90,7 @@ func TestOptionEncryptLease(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewDefaultClient() Error: %q\n", err)
 	}
-    log.Println(client.Base32())
+	log.Println(client.Base32())
 }
 
 func TestOptionSaveFile(t *testing.T) {
@@ -98,5 +98,5 @@ func TestOptionSaveFile(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewDefaultClient() Error: %q\n", err)
 	}
-    log.Println(client.Base32())
+	log.Println(client.Base32())
 }
