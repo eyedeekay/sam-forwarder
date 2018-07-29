@@ -91,7 +91,7 @@ func main() {
 	if iniFile != "none" {
 		config, err := i2ptunconf.NewI2PTunConf(iniFile)
 		if err != nil {
-			log.Fatal(err)
+			log.Fatal(err.Error())
 		}
 		if v, ok := config.GetBool("keys"); ok {
 			saveFile = v
@@ -101,6 +101,12 @@ func main() {
 		}
 		if v, ok := config.Get("port"); ok {
 			TargetPort = v
+		}
+		if v, ok := config.Get("samhost"); ok {
+			SamHost = v
+		}
+		if v, ok := config.Get("samport"); ok {
+			SamPort = v
 		}
 		if v, ok := config.Get("keys"); ok {
 			TunName = v
@@ -145,7 +151,7 @@ func main() {
 			reduceIdle = v
 		}
 		if v, ok := config.GetInt("i2cp.reduceIdleTime"); ok {
-			reduceIdleTime = (v / 1000) / 60
+			reduceIdleTime = v
 		}
 		if v, ok := config.GetInt("i2cp.reduceQuantity"); ok {
 			reduceIdleQuantity = v

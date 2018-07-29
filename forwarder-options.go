@@ -271,6 +271,8 @@ func SetAccessListType(s string) func(*SAMForwarder) error {
 		} else if s == "none" {
 			c.accessListType = ""
 			return nil
+		} else if s == "" {
+			c.accessListType = ""
 		}
 		return fmt.Errorf("Invalid Access list type(whitelist, blacklist, none)")
 	}

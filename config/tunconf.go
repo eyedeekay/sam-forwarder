@@ -1,6 +1,7 @@
 package i2ptunconf
 
 import (
+	"github.com/eyedeekay/sam-forwarder"
 	"github.com/zieckey/goini"
 	"strings"
 )
@@ -10,6 +11,8 @@ type Conf struct {
 	saveFile           bool
 	TargetHost         string
 	TargetPort         string
+	SamHost            string
+	SamPort            string
 	TunName            string
 	encryptLeaseSet    bool
 	inAllowZeroHop     bool
@@ -54,87 +57,173 @@ func (c *Conf) GetInt(key string) (int, bool) {
 }
 
 func NewI2PTunConf(iniFile string) (*Conf, error) {
-	var c Conf
+	var config *goini.INI
 	var err error
+	var c Conf
+
 	if iniFile != "none" {
-		c.config, err = c.configParse(iniFile)
+		config, err = c.configParse(iniFile)
 		if err != nil {
 			return nil, err
 		}
-		if v, ok := c.config.GetBool("keys"); ok {
+		if v, ok := c.GetBool("keys"); ok {
 			c.saveFile = v
+		} else {
+			c.saveFile = false
 		}
-		if v, ok := c.config.Get("host"); ok {
+
+		if v, ok := config.Get("host"); ok {
 			c.TargetHost = v
+		} else {
+			c.TargetHost = "127.0.0.1"
 		}
-		if v, ok := c.config.Get("port"); ok {
+		if v, ok := config.Get("port"); ok {
 			c.TargetPort = v
+		} else {
+			c.TargetPort = "8081"
 		}
-		if v, ok := c.config.Get("keys"); ok {
+
+		if v, ok := config.Get("keys"); ok {
 			c.TunName = v
+		} else {
+			c.TunName = "fowarder"
 		}
-		if v, ok := c.config.GetBool("i2cp.encryptLeaseSet"); ok {
+		if v, ok := config.GetBool("i2cp.encryptLeaseSet"); ok {
 			c.encryptLeaseSet = v
+		} else {
+			c.encryptLeaseSet = false
 		}
-		if v, ok := c.config.GetBool("inbound.allowZeroHop"); ok {
+
+		if v, ok := config.GetBool("inbound.allowZeroHop"); ok {
 			c.inAllowZeroHop = v
+		} else {
+			c.inAllowZeroHop = false
 		}
-		if v, ok := c.config.GetBool("outbound.allowZeroHop"); ok {
+		if v, ok := config.GetBool("outbound.allowZeroHop"); ok {
 			c.outAllowZeroHop = v
+		} else {
+			c.outAllowZeroHop = false
 		}
-		if v, ok := c.config.GetInt("inbound.length"); ok {
+
+		if v, ok := config.GetInt("inbound.length"); ok {
 			c.inLength = v
+		} else {
+			c.inLength = 3
 		}
-		if v, ok := c.config.GetInt("outbound.length"); ok {
+		if v, ok := config.GetInt("outbound.length"); ok {
 			c.outLength = v
+		} else {
+			c.outLength = 3
 		}
-		if v, ok := c.config.GetInt("inbound.quantity"); ok {
+
+		if v, ok := config.GetInt("inbound.quantity"); ok {
 			c.inQuantity = v
+		} else {
+			c.inQuantity = 5
 		}
-		if v, ok := c.config.GetInt("outbound.quantity"); ok {
+		if v, ok := config.GetInt("outbound.quantity"); ok {
 			c.outQuantity = v
+		} else {
+			c.outQuantity = 5
 		}
-		if v, ok := c.config.GetInt("inbound.variance"); ok {
+
+		if v, ok := config.GetInt("inbound.variance"); ok {
 			c.inVariance = v
+		} else {
+			c.inVariance = 0
 		}
-		if v, ok := c.config.GetInt("outbound.variance"); ok {
+		if v, ok := config.GetInt("outbound.variance"); ok {
 			c.outVariance = v
+		} else {
+			c.outVariance = 0
 		}
-		if v, ok := c.config.GetInt("inbound.backupQuantity"); ok {
+
+		if v, ok := config.GetInt("inbound.backupQuantity"); ok {
 			c.inBackupQuantity = v
+		} else {
+			c.inBackupQuantity = 2
 		}
-		if v, ok := c.config.GetInt("outbound.backupQuantity"); ok {
+		if v, ok := config.GetInt("outbound.backupQuantity"); ok {
 			c.outBackupQuantity = v
+		} else {
+			c.outBackupQuantity = 2
 		}
-		if v, ok := c.config.GetBool("gzip"); ok {
+
+		if v, ok := config.GetBool("gzip"); ok {
 			c.useCompression = v
+		} else {
+			c.useCompression = true
 		}
-		if v, ok := c.config.GetBool("i2cp.reduceOnIdle"); ok {
+
+		if v, ok := config.GetBool("i2cp.reduceOnIdle"); ok {
 			c.reduceIdle = v
+		} else {
+			c.reduceIdle = false
 		}
-		if v, ok := c.config.GetInt("i2cp.reduceIdleTime"); ok {
-			c.reduceIdleTime = v
+		if v, ok := config.GetInt("i2cp.reduceIdleTime"); ok {
+			c.reduceIdleTime = (v / 1000) / 60
+		} else {
+			c.reduceIdleTime = (6 * 60) * 1000
 		}
-		if v, ok := c.config.GetInt("i2cp.reduceQuantity"); ok {
+		if v, ok := config.GetInt("i2cp.reduceQuantity"); ok {
 			c.reduceIdleQuantity = v
+		} else {
+			c.reduceIdleQuantity = 3
 		}
-		if v, ok := c.config.GetBool("i2cp.enableBlackList"); ok {
+
+		if v, ok := config.GetBool("i2cp.enableBlackList"); ok {
 			if v {
 				c.accessListType = "blacklist"
 			}
 		}
-		if v, ok := c.config.GetBool("i2cp.enableAccessList"); ok {
+		if v, ok := config.GetBool("i2cp.enableAccessList"); ok {
 			if v {
 				c.accessListType = "whitelist"
 			}
 		}
-		if v, ok := c.config.Get("i2cp.accessList"); ok {
+		if v, ok := config.Get("i2cp.accessList"); ok {
 			csv := strings.Split(v, ",")
 			for _, z := range csv {
 				c.accessList = append(c.accessList, z)
 			}
 		}
+
 		return &c, nil
+	}
+	return nil, nil
+}
+
+func NewSAMForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforwarder.SAMForwarder, error) {
+	if iniFile != "none" {
+		config, err := NewI2PTunConf(iniFile)
+		if err != nil {
+			return nil, err
+		}
+		return samforwarder.NewSAMForwarderFromOptions(
+			samforwarder.SetSaveFile(config.saveFile),
+			samforwarder.SetHost(config.TargetHost),
+			samforwarder.SetPort(config.TargetPort),
+			samforwarder.SetSAMHost(config.SamHost),
+			samforwarder.SetSAMPort(config.SamPort),
+			samforwarder.SetName(config.TunName),
+			samforwarder.SetInLength(config.inLength),
+			samforwarder.SetOutLength(config.outLength),
+			samforwarder.SetInVariance(config.inVariance),
+			samforwarder.SetOutVariance(config.outVariance),
+			samforwarder.SetInQuantity(config.inQuantity),
+			samforwarder.SetOutQuantity(config.outQuantity),
+			samforwarder.SetInBackups(config.inBackupQuantity),
+			samforwarder.SetOutBackups(config.outBackupQuantity),
+			samforwarder.SetEncrypt(config.encryptLeaseSet),
+			samforwarder.SetAllowZeroIn(config.inAllowZeroHop),
+			samforwarder.SetAllowZeroOut(config.outAllowZeroHop),
+			samforwarder.SetCompress(config.useCompression),
+			samforwarder.SetReduceIdle(config.reduceIdle),
+			samforwarder.SetReduceIdleTime(config.reduceIdleTime),
+			samforwarder.SetReduceIdleQuantity(config.reduceIdleQuantity),
+			samforwarder.SetAccessListType(config.accessListType),
+			samforwarder.SetAccessList(config.accessList),
+		)
 	}
 	return nil, nil
 }
