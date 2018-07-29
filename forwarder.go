@@ -194,7 +194,7 @@ func NewSAMForwarderFromOptions(opts ...func(*SAMForwarder) error) (*SAMForwarde
 	if s.samKeys, err = s.samConn.NewKeys(); err != nil {
 		return nil, err
 	}
-	log.Println("Destination keys generated, tunnel name:", s.TunName, ". base32 -", string(f.samKeys.Addr().Base32()))
+	log.Println("Destination keys generated, tunnel name:", s.TunName, ". base32 -", string(s.samKeys.Addr().Base32()))
 	if s.save {
 		if _, err := os.Stat(filepath.Join(s.FilePath, s.TunName+".i2pkeys")); os.IsNotExist(err) {
 			s.file, err = os.Create(filepath.Join(s.FilePath, s.TunName+".i2pkeys"))

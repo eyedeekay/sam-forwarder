@@ -7,6 +7,7 @@ import (
 )
 
 import "github.com/eyedeekay/sam-forwarder"
+//import "github.com/eyedeekay/sam-forwarder/config"
 import "github.com/zieckey/goini"
 
 func configParse(path string) (*goini.INI, error) {
