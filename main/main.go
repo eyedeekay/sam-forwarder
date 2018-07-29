@@ -93,7 +93,10 @@ func main() {
 		"Type of access list to use, can be \"whitelist\" \"blacklist\" or \"none\".")
 	flag.Var(&accessList, "accesslist",
 		"Specify an access list member(can be used multiple times)")
-	if iniFile != "none" {
+
+	flag.Parse()
+
+    if iniFile != "none" {
 		config, err := configParse(iniFile)
 		if err != nil {
 			log.Fatal(err)
@@ -173,7 +176,6 @@ func main() {
 		}
 	}
 
-	flag.Parse()
 	log.Println("Redirecting", TargetHost+":"+TargetPort, "to i2p")
 	forwarder, err := samforwarder.NewSAMForwarderFromOptions(
 		samforwarder.SetFilePath(TargetDir),
