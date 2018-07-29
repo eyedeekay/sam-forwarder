@@ -38,14 +38,17 @@ func (c *Conf) configParse(path string) (*goini.INI, error) {
 	return ini, nil
 }
 
+// Get passes directly through to goini.Get
 func (c *Conf) Get(key string) (string, bool) {
 	return c.config.Get(key)
 }
 
+// GetBool passes directly through to goini.GetBool
 func (c *Conf) GetBool(key string) (bool, bool) {
 	return c.config.GetBool(key)
 }
 
+// GetInt passes directly through to goini.GetInt
 func (c *Conf) GetInt(key string) (int, bool) {
 	return c.config.GetInt(key)
 }

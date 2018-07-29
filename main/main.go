@@ -7,16 +7,7 @@ import (
 )
 
 import "github.com/eyedeekay/sam-forwarder"
-//import "github.com/eyedeekay/sam-forwarder/config"
-import "github.com/zieckey/goini"
-
-func configParse(path string) (*goini.INI, error) {
-	ini := goini.New()
-	if err := ini.ParseFile(path); err != nil {
-		return nil, err
-	}
-	return ini, nil
-}
+import "github.com/eyedeekay/sam-forwarder/config"
 
 type flagOpts []string
 
@@ -98,8 +89,7 @@ func main() {
 	flag.Parse()
 
 	if iniFile != "none" {
-		config, err := configParse(iniFile)
-		//config, err := NewI2PTunConf(inifile)
+		config, err := i2ptunconf.NewI2PTunConf(iniFile)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -155,7 +145,7 @@ func main() {
 			reduceIdle = v
 		}
 		if v, ok := config.GetInt("i2cp.reduceIdleTime"); ok {
-			reduceIdleTime = v
+			reduceIdleTime = (v / 1000) / 60
 		}
 		if v, ok := config.GetInt("i2cp.reduceQuantity"); ok {
 			reduceIdleQuantity = v
