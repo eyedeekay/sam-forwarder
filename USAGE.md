@@ -26,6 +26,8 @@ Usage of ./bin/ephsite:
     	Set inbound tunnel backup quantity(0 to 5) (default 4)
   -incount int
     	Set inbound tunnel quantity(0 to 15) (default 8)
+  -ini string
+    	Use an ini file for configuration(config file options override passed arguments for now.) (default "none")
   -inlen int
     	Set inbound tunnel length(0 to 7) (default 3)
   -invar int
