@@ -96,8 +96,9 @@ func main() {
 
 	flag.Parse()
 
-    if iniFile != "none" {
+	if iniFile != "none" {
 		config, err := configParse(iniFile)
+		//config, err := NewI2PTunConf(inifile)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -159,20 +160,20 @@ func main() {
 			reduceIdleQuantity = v
 		}
 		if v, ok := config.GetBool("i2cp.enableBlackList"); ok {
-            if v {
-                accessListType = "blacklist"
-            }
+			if v {
+				accessListType = "blacklist"
+			}
 		}
 		if v, ok := config.GetBool("i2cp.enableAccessList"); ok {
-            if v {
-                accessListType = "whitelist"
-            }
+			if v {
+				accessListType = "whitelist"
+			}
 		}
 		if v, ok := config.Get("i2cp.accessList"); ok {
-            csv := strings.Split(v, ",")
-            for _, z := range csv {
-                accessList = append(accessList, z)
-            }
+			csv := strings.Split(v, ",")
+			for _, z := range csv {
+				accessList = append(accessList, z)
+			}
 		}
 	}
 
