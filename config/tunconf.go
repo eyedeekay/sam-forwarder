@@ -2,6 +2,7 @@ package i2ptunconf
 
 import (
 	"github.com/eyedeekay/sam-forwarder"
+    "github.com/eyedeekay/sam-forwarder/udp"
 	"github.com/zieckey/goini"
 	"log"
 	"strings"
@@ -257,6 +258,41 @@ func NewSAMForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforwarder.
 			samforwarder.SetReduceIdleQuantity(config.reduceIdleQuantity),
 			samforwarder.SetAccessListType(config.accessListType),
 			samforwarder.SetAccessList(config.accessList),
+		)
+	}
+	return nil, nil
+}
+
+func NewSAMSSUForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforwarderudp.SAMSSUForwarder, error) {
+	if iniFile != "none" {
+		config, err := NewI2PTunConf(iniFile)
+		if err != nil {
+			return nil, err
+		}
+		return samforwarderudp.NewSAMSSUForwarderFromOptions(
+			samforwarderudp.SetSaveFile(config.saveFile),
+			samforwarderudp.SetHost(config.TargetHost),
+			samforwarderudp.SetPort(config.TargetPort),
+			samforwarderudp.SetSAMHost(config.SamHost),
+			samforwarderudp.SetSAMPort(config.SamPort),
+			samforwarderudp.SetName(config.TunName),
+			samforwarderudp.SetInLength(config.inLength),
+			samforwarderudp.SetOutLength(config.outLength),
+			samforwarderudp.SetInVariance(config.inVariance),
+			samforwarderudp.SetOutVariance(config.outVariance),
+			samforwarderudp.SetInQuantity(config.inQuantity),
+			samforwarderudp.SetOutQuantity(config.outQuantity),
+			samforwarderudp.SetInBackups(config.inBackupQuantity),
+			samforwarderudp.SetOutBackups(config.outBackupQuantity),
+			samforwarderudp.SetEncrypt(config.encryptLeaseSet),
+			samforwarderudp.SetAllowZeroIn(config.inAllowZeroHop),
+			samforwarderudp.SetAllowZeroOut(config.outAllowZeroHop),
+			samforwarderudp.SetCompress(config.useCompression),
+			samforwarderudp.SetReduceIdle(config.reduceIdle),
+			samforwarderudp.SetReduceIdleTime(config.reduceIdleTime),
+			samforwarderudp.SetReduceIdleQuantity(config.reduceIdleQuantity),
+			samforwarderudp.SetAccessListType(config.accessListType),
+			samforwarderudp.SetAccessList(config.accessList),
 		)
 	}
 	return nil, nil

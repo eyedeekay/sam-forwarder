@@ -6,8 +6,11 @@ import (
 	"strings"
 )
 
-import "github.com/eyedeekay/sam-forwarder"
-import "github.com/eyedeekay/sam-forwarder/config"
+import (
+    "github.com/eyedeekay/sam-forwarder"
+    "github.com/eyedeekay/sam-forwarder/config"
+    "github.com/eyedeekay/sam-forwarder/udp"
+)
 
 type flagOpts []string
 
@@ -34,6 +37,7 @@ func (f *flagOpts) StringSlice() []string {
 
 func main() {
 	var accessList flagOpts
+	var err error
 	//
 	TargetDir := *flag.String("dir", "",
 		"Directory to save tunnel configuration file in.")
@@ -83,127 +87,87 @@ func main() {
 		"Reduce idle tunnel quantity to X (0 to 5)")
 	accessListType := *flag.String("access", "none",
 		"Type of access list to use, can be \"whitelist\" \"blacklist\" or \"none\".")
+	connType := *flag.String("type", "tcp",
+		"Type of connection to forward, can be \"tcp\" \"udp\" ")
 	flag.Var(&accessList, "accesslist",
 		"Specify an access list member(can be used multiple times)")
 
 	flag.Parse()
-
-	if iniFile != "none" {
-		config, err := i2ptunconf.NewI2PTunConf(iniFile)
-		if err != nil {
-			log.Fatal(err.Error())
+	if connType == "tcp" {
+		var forwarder *samforwarder.SAMForwarder
+		if iniFile != "none" {
+			forwarder, err = i2ptunconf.NewSAMForwarderFromConfig(iniFile, SamHost, SamPort)
+		} else {
+			log.Println("Redirecting", TargetHost+":"+TargetPort, "to i2p")
+			forwarder, err = samforwarder.NewSAMForwarderFromOptions(
+				samforwarder.SetFilePath(TargetDir),
+				samforwarder.SetSaveFile(saveFile),
+				samforwarder.SetHost(TargetHost),
+				samforwarder.SetPort(TargetPort),
+				samforwarder.SetSAMHost(SamHost),
+				samforwarder.SetSAMPort(SamPort),
+				samforwarder.SetName(TunName),
+				samforwarder.SetInLength(inLength),
+				samforwarder.SetOutLength(outLength),
+				samforwarder.SetInVariance(inVariance),
+				samforwarder.SetOutVariance(outVariance),
+				samforwarder.SetInQuantity(inQuantity),
+				samforwarder.SetOutQuantity(outQuantity),
+				samforwarder.SetInBackups(inBackupQuantity),
+				samforwarder.SetOutBackups(outBackupQuantity),
+				samforwarder.SetEncrypt(encryptLeaseSet),
+				samforwarder.SetAllowZeroIn(inAllowZeroHop),
+				samforwarder.SetAllowZeroOut(outAllowZeroHop),
+				samforwarder.SetCompress(useCompression),
+				samforwarder.SetReduceIdle(reduceIdle),
+				samforwarder.SetReduceIdleTime(reduceIdleTime),
+				samforwarder.SetReduceIdleQuantity(reduceIdleQuantity),
+				samforwarder.SetAccessListType(accessListType),
+				samforwarder.SetAccessList(accessList.StringSlice()),
+			)
 		}
-		if v, ok := config.GetBool("keys"); ok {
-			saveFile = v
+		if err == nil {
+			forwarder.Serve()
+		} else {
+			log.Println(err.Error())
 		}
-		if v, ok := config.Get("host"); ok {
-			TargetHost = v
+	} else if connType == "udp" {
+		var forwarder *samforwarderudp.SAMSSUForwarder
+		if iniFile != "none" {
+			forwarder, err = i2ptunconf.NewSAMSSUForwarderFromConfig(iniFile, SamHost, SamPort)
+		} else {
+			log.Println("Redirecting", TargetHost+":"+TargetPort, "to i2p")
+			forwarder, err = samforwarderudp.NewSAMSSUForwarderFromOptions(
+				samforwarderudp.SetFilePath(TargetDir),
+				samforwarderudp.SetSaveFile(saveFile),
+				samforwarderudp.SetHost(TargetHost),
+				samforwarderudp.SetPort(TargetPort),
+				samforwarderudp.SetSAMHost(SamHost),
+				samforwarderudp.SetSAMPort(SamPort),
+				samforwarderudp.SetName(TunName),
+				samforwarderudp.SetInLength(inLength),
+				samforwarderudp.SetOutLength(outLength),
+				samforwarderudp.SetInVariance(inVariance),
+				samforwarderudp.SetOutVariance(outVariance),
+				samforwarderudp.SetInQuantity(inQuantity),
+				samforwarderudp.SetOutQuantity(outQuantity),
+				samforwarderudp.SetInBackups(inBackupQuantity),
+				samforwarderudp.SetOutBackups(outBackupQuantity),
+				samforwarderudp.SetEncrypt(encryptLeaseSet),
+				samforwarderudp.SetAllowZeroIn(inAllowZeroHop),
+				samforwarderudp.SetAllowZeroOut(outAllowZeroHop),
+				samforwarderudp.SetCompress(useCompression),
+				samforwarderudp.SetReduceIdle(reduceIdle),
+				samforwarderudp.SetReduceIdleTime(reduceIdleTime),
+				samforwarderudp.SetReduceIdleQuantity(reduceIdleQuantity),
+				samforwarderudp.SetAccessListType(accessListType),
+				samforwarderudp.SetAccessList(accessList.StringSlice()),
+			)
 		}
-		if v, ok := config.Get("port"); ok {
-			TargetPort = v
+		if err == nil {
+			forwarder.Serve()
+		} else {
+			log.Println(err.Error())
 		}
-		if v, ok := config.Get("samhost"); ok {
-			SamHost = v
-		}
-		if v, ok := config.Get("samport"); ok {
-			SamPort = v
-		}
-		if v, ok := config.Get("keys"); ok {
-			TunName = v
-		}
-		if v, ok := config.GetBool("i2cp.encryptLeaseSet"); ok {
-			encryptLeaseSet = v
-		}
-		if v, ok := config.GetBool("inbound.allowZeroHop"); ok {
-			inAllowZeroHop = v
-		}
-		if v, ok := config.GetBool("outbound.allowZeroHop"); ok {
-			outAllowZeroHop = v
-		}
-		if v, ok := config.GetInt("inbound.length"); ok {
-			inLength = v
-		}
-		if v, ok := config.GetInt("outbound.length"); ok {
-			outLength = v
-		}
-		if v, ok := config.GetInt("inbound.quantity"); ok {
-			inQuantity = v
-		}
-		if v, ok := config.GetInt("outbound.quantity"); ok {
-			outQuantity = v
-		}
-		if v, ok := config.GetInt("inbound.variance"); ok {
-			inVariance = v
-		}
-		if v, ok := config.GetInt("outbound.variance"); ok {
-			outVariance = v
-		}
-		if v, ok := config.GetInt("inbound.backupQuantity"); ok {
-			inBackupQuantity = v
-		}
-		if v, ok := config.GetInt("outbound.backupQuantity"); ok {
-			outBackupQuantity = v
-		}
-		if v, ok := config.GetBool("gzip"); ok {
-			useCompression = v
-		}
-		if v, ok := config.GetBool("i2cp.reduceOnIdle"); ok {
-			reduceIdle = v
-		}
-		if v, ok := config.GetInt("i2cp.reduceIdleTime"); ok {
-			reduceIdleTime = v
-		}
-		if v, ok := config.GetInt("i2cp.reduceQuantity"); ok {
-			reduceIdleQuantity = v
-		}
-		if v, ok := config.GetBool("i2cp.enableBlackList"); ok {
-			if v {
-				accessListType = "blacklist"
-			}
-		}
-		if v, ok := config.GetBool("i2cp.enableAccessList"); ok {
-			if v {
-				accessListType = "whitelist"
-			}
-		}
-		if v, ok := config.Get("i2cp.accessList"); ok {
-			csv := strings.Split(v, ",")
-			for _, z := range csv {
-				accessList = append(accessList, z)
-			}
-		}
-	}
-
-	log.Println("Redirecting", TargetHost+":"+TargetPort, "to i2p")
-	forwarder, err := samforwarder.NewSAMForwarderFromOptions(
-		samforwarder.SetFilePath(TargetDir),
-		samforwarder.SetSaveFile(saveFile),
-		samforwarder.SetHost(TargetHost),
-		samforwarder.SetPort(TargetPort),
-		samforwarder.SetSAMHost(SamHost),
-		samforwarder.SetSAMPort(SamPort),
-		samforwarder.SetName(TunName),
-		samforwarder.SetInLength(inLength),
-		samforwarder.SetOutLength(outLength),
-		samforwarder.SetInVariance(inVariance),
-		samforwarder.SetOutVariance(outVariance),
-		samforwarder.SetInQuantity(inQuantity),
-		samforwarder.SetOutQuantity(outQuantity),
-		samforwarder.SetInBackups(inBackupQuantity),
-		samforwarder.SetOutBackups(outBackupQuantity),
-		samforwarder.SetEncrypt(encryptLeaseSet),
-		samforwarder.SetAllowZeroIn(inAllowZeroHop),
-		samforwarder.SetAllowZeroOut(outAllowZeroHop),
-		samforwarder.SetCompress(useCompression),
-		samforwarder.SetReduceIdle(reduceIdle),
-		samforwarder.SetReduceIdleTime(reduceIdleTime),
-		samforwarder.SetReduceIdleQuantity(reduceIdleQuantity),
-		samforwarder.SetAccessListType(accessListType),
-		samforwarder.SetAccessList(accessList.StringSlice()),
-	)
-	if err == nil {
-		forwarder.Serve()
-	} else {
-		log.Println(err.Error())
 	}
 }
