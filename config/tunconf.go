@@ -84,14 +84,14 @@ func NewI2PTunConf(iniFile string) (*Conf, error) {
 		}
 
 		if v, ok := config.Get("samhost"); ok {
-			c.TargetHost = strings.Replace(v, ":", "", -1)
+			c.SamHost = strings.Replace(v, ":", "", -1)
 		} else {
-			c.TargetHost = "127.0.0.1"
+			c.SamHost = "127.0.0.1"
 		}
 		if v, ok := config.Get("samport"); ok {
-			c.TargetPort = strings.Replace(v, ":", "", -1)
+			c.SamPort = strings.Replace(v, ":", "", -1)
 		} else {
-			c.TargetPort = "7656"
+			c.SamPort = "7656"
 		}
 
 		if v, ok := config.Get("keys"); ok {
