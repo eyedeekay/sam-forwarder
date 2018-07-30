@@ -79,7 +79,7 @@ func (f *SAMForwarder) accesslist() string {
 	return ""
 }
 
-func (f *SAMForwarder) target() string {
+func (f *SAMForwarder) Target() string {
 	return f.TargetHost + ":" + f.TargetPort
 }
 
