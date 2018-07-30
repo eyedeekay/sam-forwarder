@@ -3,6 +3,7 @@ package i2ptunconf
 import (
 	"github.com/eyedeekay/sam-forwarder"
 	"github.com/zieckey/goini"
+	"log"
 	"strings"
 )
 
@@ -33,12 +34,32 @@ type Conf struct {
 	accessList         []string
 }
 
-func (c *Conf) configParse(path string) (*goini.INI, error) {
-	ini := goini.New()
-	if err := ini.ParseFile(path); err != nil {
-		return nil, err
-	}
-	return ini, nil
+func (c *Conf) Print() {
+	log.Println(
+		c.saveFile,
+		c.TargetHost,
+		c.TargetPort,
+		c.SamHost,
+		c.SamPort,
+		c.TunName,
+		c.encryptLeaseSet,
+		c.inAllowZeroHop,
+		c.outAllowZeroHop,
+		c.inLength,
+		c.outLength,
+		c.inQuantity,
+		c.outQuantity,
+		c.inVariance,
+		c.outVariance,
+		c.inBackupQuantity,
+		c.outBackupQuantity,
+		c.useCompression,
+		c.reduceIdle,
+		c.reduceIdleTime,
+		c.reduceIdleQuantity,
+		c.accessListType,
+		c.accessList,
+	)
 }
 
 // Get passes directly through to goini.Get
@@ -57,137 +78,137 @@ func (c *Conf) GetInt(key string) (int, bool) {
 }
 
 func NewI2PTunConf(iniFile string) (*Conf, error) {
-	var config *goini.INI
 	var err error
 	var c Conf
-
+	c.config = goini.New()
 	if iniFile != "none" {
-		config, err = c.configParse(iniFile)
+		log.Println(iniFile)
+		err = c.config.ParseFile(iniFile)
 		if err != nil {
 			return nil, err
 		}
-		if v, ok := config.GetBool("keys"); ok {
+		if v, ok := c.config.GetBool("keys"); ok {
 			c.saveFile = v
 		} else {
 			c.saveFile = false
 		}
 
-		if v, ok := config.Get("host"); ok {
+		if v, ok := c.config.Get("host"); ok {
 			c.TargetHost = strings.Replace(v, ":", "", -1)
 		} else {
 			c.TargetHost = "127.0.0.1"
 		}
-		if v, ok := config.Get("port"); !ok {
+		if v, ok := c.config.Get("port"); ok {
 			c.TargetPort = strings.Replace(v, ":", "", -1)
 		} else {
 			c.TargetPort = "8081"
 		}
 
-		if v, ok := config.Get("samhost"); ok {
+		if v, ok := c.config.Get("samhost"); ok {
 			c.SamHost = strings.Replace(v, ":", "", -1)
 		} else {
 			c.SamHost = "127.0.0.1"
 		}
-		if v, ok := config.Get("samport"); ok {
+		if v, ok := c.config.Get("samport"); ok {
 			c.SamPort = strings.Replace(v, ":", "", -1)
 		} else {
 			c.SamPort = "7656"
 		}
 
-		if v, ok := config.Get("keys"); ok {
+		if v, ok := c.config.Get("keys"); ok {
 			c.TunName = v
 		} else {
 			c.TunName = "fowarder"
 		}
-		if v, ok := config.GetBool("i2cp.encryptLeaseSet"); ok {
+		if v, ok := c.config.GetBool("i2cp.encryptLeaseSet"); ok {
 			c.encryptLeaseSet = v
 		} else {
 			c.encryptLeaseSet = false
 		}
 
-		if v, ok := config.GetBool("inbound.allowZeroHop"); ok {
+		if v, ok := c.config.GetBool("inbound.allowZeroHop"); ok {
 			c.inAllowZeroHop = v
 		} else {
 			c.inAllowZeroHop = false
 		}
-		if v, ok := config.GetBool("outbound.allowZeroHop"); ok {
+		if v, ok := c.config.GetBool("outbound.allowZeroHop"); ok {
 			c.outAllowZeroHop = v
 		} else {
 			c.outAllowZeroHop = false
 		}
 
-		if v, ok := config.GetInt("inbound.length"); ok {
+		if v, ok := c.config.GetInt("inbound.length"); ok {
 			c.inLength = v
 		} else {
 			c.inLength = 3
 		}
-		if v, ok := config.GetInt("outbound.length"); ok {
+		if v, ok := c.config.GetInt("outbound.length"); ok {
 			c.outLength = v
 		} else {
 			c.outLength = 3
 		}
 
-		if v, ok := config.GetInt("inbound.quantity"); ok {
+		if v, ok := c.config.GetInt("inbound.quantity"); ok {
 			c.inQuantity = v
 		} else {
 			c.inQuantity = 5
 		}
-		if v, ok := config.GetInt("outbound.quantity"); ok {
+		if v, ok := c.config.GetInt("outbound.quantity"); ok {
 			c.outQuantity = v
 		} else {
 			c.outQuantity = 5
 		}
 
-		if v, ok := config.GetInt("inbound.variance"); ok {
+		if v, ok := c.config.GetInt("inbound.variance"); ok {
 			c.inVariance = v
 		} else {
 			c.inVariance = 0
 		}
-		if v, ok := config.GetInt("outbound.variance"); ok {
+		if v, ok := c.config.GetInt("outbound.variance"); ok {
 			c.outVariance = v
 		} else {
 			c.outVariance = 0
 		}
 
-		if v, ok := config.GetInt("inbound.backupQuantity"); ok {
+		if v, ok := c.config.GetInt("inbound.backupQuantity"); ok {
 			c.inBackupQuantity = v
 		} else {
 			c.inBackupQuantity = 2
 		}
-		if v, ok := config.GetInt("outbound.backupQuantity"); ok {
+		if v, ok := c.config.GetInt("outbound.backupQuantity"); ok {
 			c.outBackupQuantity = v
 		} else {
 			c.outBackupQuantity = 2
 		}
 
-		if v, ok := config.GetBool("gzip"); ok {
+		if v, ok := c.config.GetBool("gzip"); ok {
 			c.useCompression = v
 		} else {
 			c.useCompression = true
 		}
 
-		if v, ok := config.GetBool("i2cp.reduceOnIdle"); ok {
+		if v, ok := c.config.GetBool("i2cp.reduceOnIdle"); ok {
 			c.reduceIdle = v
 		} else {
 			c.reduceIdle = false
 		}
-		if v, ok := config.GetInt("i2cp.reduceIdleTime"); ok {
+		if v, ok := c.config.GetInt("i2cp.reduceIdleTime"); ok {
 			c.reduceIdleTime = (v / 1000) / 60
 		} else {
 			c.reduceIdleTime = (6 * 60) * 1000
 		}
-		if v, ok := config.GetInt("i2cp.reduceQuantity"); ok {
+		if v, ok := c.config.GetInt("i2cp.reduceQuantity"); ok {
 			c.reduceIdleQuantity = v
 		} else {
 			c.reduceIdleQuantity = 3
 		}
 
-		if v, ok := config.GetBool("i2cp.enableBlackList"); ok {
+		if v, ok := c.config.GetBool("i2cp.enableBlackList"); ok {
 			if v {
 				c.accessListType = "blacklist"
 			}
 		}
-		if v, ok := config.GetBool("i2cp.enableAccessList"); ok {
+		if v, ok := c.config.GetBool("i2cp.enableAccessList"); ok {
 			if v {
 				c.accessListType = "whitelist"
 			}
@@ -195,13 +216,13 @@ func NewI2PTunConf(iniFile string) (*Conf, error) {
 		if c.accessListType != "whitelist" && c.accessListType != "blacklist" {
 			c.accessListType = "none"
 		}
-		if v, ok := config.Get("i2cp.accessList"); ok {
+		if v, ok := c.config.Get("i2cp.accessList"); ok {
 			csv := strings.Split(v, ",")
 			for _, z := range csv {
 				c.accessList = append(c.accessList, z)
 			}
 		}
-
+		c.Print()
 		return &c, nil
 	}
 	return nil, nil
