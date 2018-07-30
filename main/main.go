@@ -81,7 +81,7 @@ func main() {
 		"Uze gzip(true or false)")
 	reduceIdle := *flag.Bool("reduce", false,
 		"Reduce tunnel quantity when idle(true or false)")
-	reduceIdleTime := *flag.Int("reducetime", 3,
+	reduceIdleTime := *flag.Int("reducetime", 10,
 		"Reduce tunnel quantity after X (minutes)")
 	reduceIdleQuantity := *flag.Int("reducecount", 3,
 		"Reduce idle tunnel quantity to X (0 to 5)")
