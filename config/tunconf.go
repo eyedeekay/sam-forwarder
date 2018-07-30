@@ -87,8 +87,8 @@ func NewI2PTunConf(iniFile string) (*Conf, error) {
 			return nil, err
 		}
 
-		if v, ok := c.config.GetBool("keys"); ok {
-			c.saveFile = v
+		if v, ok := c.config.Get("keys"); ok {
+			c.saveFile = true
 		} else {
 			c.saveFile = false
 		}
@@ -188,7 +188,7 @@ func NewI2PTunConf(iniFile string) (*Conf, error) {
 		}
 
 		if v, ok := c.config.GetBool("i2cp.reduceOnIdle"); ok {
-			c.reduceIdle = v
+			c.reduceIdle = true
 		} else {
 			c.reduceIdle = false
 		}
