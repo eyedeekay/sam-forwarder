@@ -1,4 +1,4 @@
-package samforwarder
+package samforwarderudp
 
 import (
 	"io"
@@ -13,9 +13,9 @@ import (
 	"github.com/kpetku/sam3"
 )
 
-//SAMForwarder is a structure which automatically configured the forwarding of
+//SAMSSUForwarder is a structure which automatically configured the forwarding of
 //a local service to i2p over the SAM API.
-type SAMForwarder struct {
+type SAMSSUForwarder struct {
 	SamHost string
 	SamPort string
 	TunName string
@@ -25,9 +25,8 @@ type SAMForwarder struct {
 
 	samConn           *sam3.SAM
 	samKeys           sam3.I2PKeys
-	publishStream     *sam3.StreamSession
-	publishListen     *sam3.StreamListener
-	publishConnection net.Conn
+	publishSession     *sam3.DatagramSession
+	publishConnection net.PacketConn
 
 	FilePath string
 	file     io.ReadWriter
@@ -57,7 +56,7 @@ type SAMForwarder struct {
 
 var err error
 
-func (f *SAMForwarder) accesslisttype() string {
+func (f *SAMSSUForwarder) accesslisttype() string {
 	if f.accessListType == "whitelist" {
 		return "i2cp.enableAccessList=true"
 	} else if f.accessListType == "blacklist" {
@@ -68,7 +67,7 @@ func (f *SAMForwarder) accesslisttype() string {
 	return ""
 }
 
-func (f *SAMForwarder) accesslist() string {
+func (f *SAMSSUForwarder) accesslist() string {
 	if f.accessListType != "" && len(f.accessList) > 0 {
 		r := ""
 		for _, s := range f.accessList {
@@ -79,16 +78,16 @@ func (f *SAMForwarder) accesslist() string {
 	return ""
 }
 
-func (f *SAMForwarder) Target() string {
+func (f *SAMSSUForwarder) Target() string {
 	return f.TargetHost + ":" + f.TargetPort
 }
 
-func (f *SAMForwarder) sam() string {
+func (f *SAMSSUForwarder) sam() string {
 	return f.SamHost + ":" + f.SamPort
 }
 
-func (f *SAMForwarder) forward(conn net.Conn) {
-	client, err := net.Dial("tcp", f.Target())
+func (f *SAMSSUForwarder) forward(conn net.PacketConn) {
+	client, err := net.Dial("udp", f.Target())
 	if err != nil {
 		log.Fatalf("Dial failed: %v", err)
 	}
@@ -96,23 +95,23 @@ func (f *SAMForwarder) forward(conn net.Conn) {
 	go func() {
 		defer client.Close()
 		defer conn.Close()
-		io.Copy(client, conn)
+		//io.Copy(client, conn)
 	}()
 	go func() {
 		defer client.Close()
 		defer conn.Close()
-		io.Copy(conn, client)
+		//io.Copy(conn, client)
 	}()
 }
 
 //Base32 returns the base32 address where the local service is being forwarded
-func (f *SAMForwarder) Base32() string {
+func (f *SAMSSUForwarder) Base32() string {
 	return f.samKeys.Addr().Base32()
 }
 
 //Serve starts the SAM connection and and forwards the local host:port to i2p
-func (f *SAMForwarder) Serve() error {
-	if f.publishStream, err = f.samConn.NewStreamSession(f.TunName, f.samKeys,
+func (f *SAMSSUForwarder) Serve() error {
+	if f.publishSession, err = f.samConn.NewDatagramSession(f.TunName, f.samKeys,
 		[]string{
 			"inbound.length=" + f.inLength,
 			"outbound.length=" + f.outLength,
@@ -131,43 +130,43 @@ func (f *SAMForwarder) Serve() error {
 			"i2cp.reduceQuantity=" + f.reduceIdleQuantity,
 			f.accesslisttype(),
 			f.accesslist(),
-		}); err != nil {
+		}, 0); err != nil {
 		log.Println("Stream Creation error:", err.Error())
 		return err
 	}
 	log.Println("SAM stream session established.")
-	if f.publishListen, err = f.publishStream.Listen(); err != nil {
+	/*if f.publishListen, err = f.publishSession.Listen(); err != nil {
 		return err
-	}
+	}*/
 	log.Println("Starting Listener.")
 	b := string(f.samKeys.Addr().Base32())
 	log.Println("SAM Listener created,", b+".b32.i2p")
 
 	for {
-		conn, err := f.publishListen.Accept()
+		//conn, err := f.publishListen.Accept()
 		if err != nil {
 			log.Fatalf("ERROR: failed to accept listener: %v", err)
 		}
-		log.Printf("Accepted connection %v\n", conn)
-		go f.forward(conn)
+		log.Printf("Accepted connection %v\n", f.publishSession)
+		go f.forward(f.publishSession)
 	}
 }
 
-//NewSAMForwarder makes a new SAM forwarder with default options, accepts host:port arguments
-func NewSAMForwarder(host, port string) (*SAMForwarder, error) {
-	return NewSAMForwarderFromOptions(SetHost(host), SetPort(port))
+//NewSAMSSUForwarder makes a new SAM forwarder with default options, accepts host:port arguments
+func NewSAMSSUForwarder(host, port string) (*SAMSSUForwarder, error) {
+	return NewSAMSSUForwarderFromOptions(SetHost(host), SetPort(port))
 }
 
-//NewSAMForwarderFromOptions makes a new SAM forwarder with default options, accepts host:port arguments
-func NewSAMForwarderFromOptions(opts ...func(*SAMForwarder) error) (*SAMForwarder, error) {
-	var s SAMForwarder
+//NewSAMSSUForwarderFromOptions makes a new SAM forwarder with default options, accepts host:port arguments
+func NewSAMSSUForwarderFromOptions(opts ...func(*SAMSSUForwarder) error) (*SAMSSUForwarder, error) {
+	var s SAMSSUForwarder
 	s.SamHost = "127.0.0.1"
 	s.SamPort = "7656"
 	s.FilePath = ""
 	s.save = false
 	s.TargetHost = "127.0.0.1"
 	s.TargetPort = "8081"
-	s.TunName = "samForwarder"
+	s.TunName = "samSSUForwarder"
 	s.inLength = "3"
 	s.outLength = "3"
 	s.inQuantity = "8"
