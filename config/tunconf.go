@@ -36,29 +36,29 @@ type Conf struct {
 
 func (c *Conf) Print() {
 	log.Println(
-		c.saveFile,
-		c.TargetHost,
-		c.TargetPort,
-		c.SamHost,
-		c.SamPort,
-		c.TunName,
-		c.encryptLeaseSet,
-		c.inAllowZeroHop,
-		c.outAllowZeroHop,
-		c.inLength,
-		c.outLength,
-		c.inQuantity,
-		c.outQuantity,
-		c.inVariance,
-		c.outVariance,
-		c.inBackupQuantity,
-		c.outBackupQuantity,
-		c.useCompression,
-		c.reduceIdle,
-		c.reduceIdleTime,
-		c.reduceIdleQuantity,
-		c.accessListType,
-		c.accessList,
+		"\n", c.saveFile,
+		"\n", c.TargetHost,
+		"\n", c.TargetPort,
+		"\n", c.SamHost,
+		"\n", c.SamPort,
+		"\n", c.TunName,
+		"\n", c.encryptLeaseSet,
+		"\n", c.inAllowZeroHop,
+		"\n", c.outAllowZeroHop,
+		"\n", c.inLength,
+		"\n", c.outLength,
+		"\n", c.inQuantity,
+		"\n", c.outQuantity,
+		"\n", c.inVariance,
+		"\n", c.outVariance,
+		"\n", c.inBackupQuantity,
+		"\n", c.outBackupQuantity,
+		"\n", c.useCompression,
+		"\n", c.reduceIdle,
+		"\n", c.reduceIdleTime,
+		"\n", c.reduceIdleQuantity,
+		"\n", c.accessListType,
+		"\n", c.accessList,
 	)
 }
 
@@ -222,7 +222,6 @@ func NewI2PTunConf(iniFile string) (*Conf, error) {
 				c.accessList = append(c.accessList, z)
 			}
 		}
-		c.Print()
 		return &c, nil
 	}
 	return nil, nil
