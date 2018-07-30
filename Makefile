@@ -7,6 +7,8 @@ echo:
 
 test:
 	go test
+	cd udp && go test
+
 
 deps:
 	go get -u github.com/zieckey/goini

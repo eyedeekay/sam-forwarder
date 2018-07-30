@@ -25,8 +25,9 @@ type SAMSSUForwarder struct {
 
 	samConn           *sam3.SAM
 	samKeys           sam3.I2PKeys
-	publishSession    *sam3.DatagramSession
-	publishConnection net.PacketConn
+	publishConnection    *sam3.DatagramSession
+	//publishConnection net.Conn
+    clientConnection net.Conn
 
 	FilePath string
 	file     io.ReadWriter
@@ -86,21 +87,23 @@ func (f *SAMSSUForwarder) sam() string {
 	return f.SamHost + ":" + f.SamPort
 }
 
-func (f *SAMSSUForwarder) forward(conn net.PacketConn) {
-	client, err := net.Dial("udp", f.Target())
+//func (f *SAMSSUForwarder) forward(conn net.Conn) {
+func (f *SAMSSUForwarder) forward() {
+    var err error
+	f.clientConnection, err = net.Dial("udp", f.Target())
 	if err != nil {
 		log.Fatalf("Dial failed: %v", err)
 	}
-	log.Printf("Connected to localhost %v\n", conn)
+	log.Printf("Connected to localhost %v\n", f.publishConnection)
 	go func() {
-		defer client.Close()
-		defer conn.Close()
-		//io.Copy(client, conn)
+		defer f.clientConnection.Close()
+		defer f.publishConnection.Close()
+		io.Copy(f.clientConnection, f.publishConnection)
 	}()
 	go func() {
-		defer client.Close()
-		defer conn.Close()
-		//io.Copy(conn, client)
+		defer f.clientConnection.Close()
+		defer f.publishConnection.Close()
+		io.Copy(f.publishConnection, f.clientConnection)
 	}()
 }
 
@@ -111,7 +114,7 @@ func (f *SAMSSUForwarder) Base32() string {
 
 //Serve starts the SAM connection and and forwards the local host:port to i2p
 func (f *SAMSSUForwarder) Serve() error {
-	if f.publishSession, err = f.samConn.NewDatagramSession(f.TunName, f.samKeys,
+	if f.publishConnection, err = f.samConn.NewDatagramSession(f.TunName, f.samKeys,
 		[]string{
 			"inbound.length=" + f.inLength,
 			"outbound.length=" + f.outLength,
@@ -135,20 +138,12 @@ func (f *SAMSSUForwarder) Serve() error {
 		return err
 	}
 	log.Println("SAM stream session established.")
-	/*if f.publishListen, err = f.publishSession.Listen(); err != nil {
-		return err
-	}*/
 	log.Println("Starting Listener.")
 	b := string(f.samKeys.Addr().Base32())
 	log.Println("SAM Listener created,", b+".b32.i2p")
-
 	for {
-		//conn, err := f.publishListen.Accept()
-		if err != nil {
-			log.Fatalf("ERROR: failed to accept listener: %v", err)
-		}
-		log.Printf("Accepted connection %v\n", f.publishSession)
-		go f.forward(f.publishSession)
+		log.Printf("Accepted connection %v\n", f.publishConnection)
+		go f.forward()
 	}
 }
 
