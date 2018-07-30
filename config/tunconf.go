@@ -66,21 +66,32 @@ func NewI2PTunConf(iniFile string) (*Conf, error) {
 		if err != nil {
 			return nil, err
 		}
-		if v, ok := c.GetBool("keys"); ok {
+		if v, ok := config.GetBool("keys"); ok {
 			c.saveFile = v
 		} else {
 			c.saveFile = false
 		}
 
 		if v, ok := config.Get("host"); ok {
-			c.TargetHost = v
+			c.TargetHost = strings.Replace(v, ":", "", -1)
 		} else {
 			c.TargetHost = "127.0.0.1"
 		}
 		if v, ok := config.Get("port"); ok {
-			c.TargetPort = v
+			c.TargetPort = strings.Replace(v, ":", "", -1)
 		} else {
 			c.TargetPort = "8081"
+		}
+
+		if v, ok := config.Get("samhost"); ok {
+			c.TargetHost = strings.Replace(v, ":", "", -1)
+		} else {
+			c.TargetHost = "127.0.0.1"
+		}
+		if v, ok := config.Get("samport"); ok {
+			c.TargetPort = strings.Replace(v, ":", "", -1)
+		} else {
+			c.TargetPort = "7656"
 		}
 
 		if v, ok := config.Get("keys"); ok {
