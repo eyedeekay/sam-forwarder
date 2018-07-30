@@ -77,7 +77,7 @@ func NewI2PTunConf(iniFile string) (*Conf, error) {
 		} else {
 			c.TargetHost = "127.0.0.1"
 		}
-		if v, ok := config.Get("port"); ok {
+		if v, ok := config.Get("port"); !ok {
 			c.TargetPort = strings.Replace(v, ":", "", -1)
 		} else {
 			c.TargetPort = "8081"
@@ -191,6 +191,9 @@ func NewI2PTunConf(iniFile string) (*Conf, error) {
 			if v {
 				c.accessListType = "whitelist"
 			}
+		}
+		if c.accessListType != "whitelist" && c.accessListType != "blacklist" {
+			c.accessListType = "none"
 		}
 		if v, ok := config.Get("i2cp.accessList"); ok {
 			csv := strings.Split(v, ",")
