@@ -82,11 +82,11 @@ func NewI2PTunConf(iniFile string) (*Conf, error) {
 	var c Conf
 	c.config = goini.New()
 	if iniFile != "none" {
-		log.Println(iniFile)
 		err = c.config.ParseFile(iniFile)
 		if err != nil {
 			return nil, err
 		}
+
 		if v, ok := c.config.GetBool("keys"); ok {
 			c.saveFile = v
 		} else {
