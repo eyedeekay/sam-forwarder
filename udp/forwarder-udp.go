@@ -25,7 +25,7 @@ type SAMSSUForwarder struct {
 
 	samConn           *sam3.SAM
 	samKeys           sam3.I2PKeys
-	publishSession     *sam3.DatagramSession
+	publishSession    *sam3.DatagramSession
 	publishConnection net.PacketConn
 
 	FilePath string
