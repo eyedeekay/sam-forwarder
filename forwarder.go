@@ -88,7 +88,7 @@ func (f *SAMForwarder) sam() string {
 }
 
 func (f *SAMForwarder) forward(conn net.Conn) {
-	client, err := net.Dial("tcp", f.target())
+	client, err := net.Dial("tcp", f.Target())
 	if err != nil {
 		log.Fatalf("Dial failed: %v", err)
 	}
