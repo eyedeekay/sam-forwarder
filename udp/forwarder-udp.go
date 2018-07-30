@@ -6,6 +6,7 @@ import (
 	"net"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 )
 
@@ -25,9 +26,8 @@ type SAMSSUForwarder struct {
 
 	samConn           *sam3.SAM
 	samKeys           sam3.I2PKeys
-	publishConnection    *sam3.DatagramSession
-	//publishConnection net.Conn
-    clientConnection net.Conn
+	publishConnection *sam3.DatagramSession
+	clientConnection  net.PacketConn
 
 	FilePath string
 	file     io.ReadWriter
@@ -89,8 +89,12 @@ func (f *SAMSSUForwarder) sam() string {
 
 //func (f *SAMSSUForwarder) forward(conn net.Conn) {
 func (f *SAMSSUForwarder) forward() {
-    var err error
-	f.clientConnection, err = net.Dial("udp", f.Target())
+	var err error
+	p, _ := strconv.Atoi(f.TargetPort)
+	f.clientConnection, err = net.DialUDP("udp", &net.UDPAddr{
+		Port: p,
+		IP:   net.ParseIP(f.TargetHost),
+	}, nil)
 	if err != nil {
 		log.Fatalf("Dial failed: %v", err)
 	}
@@ -98,12 +102,24 @@ func (f *SAMSSUForwarder) forward() {
 	go func() {
 		defer f.clientConnection.Close()
 		defer f.publishConnection.Close()
-		io.Copy(f.clientConnection, f.publishConnection)
+		buffer := make([]byte, 1024)
+		if size, addr, readerr := f.clientConnection.ReadFrom(buffer); readerr == nil {
+			if size2, writeerr := f.publishConnection.WriteTo(buffer, addr); writeerr == nil {
+				log.Printf("%s of %s bytes read", size, size2)
+				log.Printf("%s of %s bytes written", size2, size)
+			}
+		}
 	}()
 	go func() {
 		defer f.clientConnection.Close()
 		defer f.publishConnection.Close()
-		io.Copy(f.publishConnection, f.clientConnection)
+		buffer := make([]byte, 1024)
+		if size, addr, readerr := f.publishConnection.ReadFrom(buffer); readerr == nil {
+			if size2, writeerr := f.clientConnection.WriteTo(buffer, addr); writeerr == nil {
+				log.Printf("%s of %s bytes read", size, size2)
+				log.Printf("%s of %s bytes written", size2, size)
+			}
+		}
 	}()
 }
 
