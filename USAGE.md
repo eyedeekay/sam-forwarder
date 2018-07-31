@@ -49,13 +49,15 @@ Usage of ./bin/ephsite:
   -reducecount int
     	Reduce idle tunnel quantity to X (0 to 5) (default 3)
   -reducetime int
-    	Reduce tunnel quantity after X (minutes) (default 3)
+    	Reduce tunnel quantity after X (minutes) (default 10)
   -samhost string
     	SAM host (default "127.0.0.1")
   -samport string
     	SAM port (default "7656")
   -save
     	Use saved file and persist tunnel(If false, tunnel will not persist after program is stopped. (default true)
+  -udp
+    	UDP mode(true or false)
   -zeroin
     	Allow zero-hop, non-anonymous tunnels in(true or false)
   -zeroout

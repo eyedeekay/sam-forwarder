@@ -2,7 +2,7 @@ package i2ptunconf
 
 import (
 	"github.com/eyedeekay/sam-forwarder"
-    "github.com/eyedeekay/sam-forwarder/udp"
+	"github.com/eyedeekay/sam-forwarder/udp"
 	"github.com/zieckey/goini"
 	"log"
 	"strings"
