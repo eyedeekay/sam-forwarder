@@ -79,6 +79,7 @@ func (f *SAMSSUForwarder) accesslist() string {
 	return ""
 }
 
+// Target returns the host:port of the local service you want to forward to i2p
 func (f *SAMSSUForwarder) Target() string {
 	return f.TargetHost + ":" + f.TargetPort
 }

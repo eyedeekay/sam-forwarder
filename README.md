@@ -1,5 +1,6 @@
 # sam-forwarder
-Forward a local port to i2p over the SAM API.
+Forward a local port to i2p over the SAM API. This is a work-in-progress, but
+the basic functionality is there and it's already pretty useful.
 
 ## building
 
@@ -109,3 +110,19 @@ Current limitations:
 
 Datagrams are still a work-in-progress. They're enabled, but I don't know for
 sure how well they'll work yet. TCP is pretty good though.
+
+I've only enabled the use of a subset of the i2cp and tunnel configuration
+options, the ones I use the most and for no other real reason assume other
+people use the most. They're pretty easy to add, it's just boring. *If you*
+*want an i2cp or tunnel option that isn't available, bring it to my attention*
+*please.* I'm pretty responsive when people actually contact me, it'll probably
+be added within 24 hours.
+
+I should probably have some options that are available in other general network
+utilities like netcat and socat(ephsite may have it's name changed to samcat at
+that point). Configuring timeouts and the like. In order to do this, some of the
+existing flags should also be aliased to be more familiar and netcat-like.
+
+I want it to be able to use poorly formed ini files, in order to accomodate the
+use of INI-like labels. For now, my workaround is to comment out the labels
+until I deal with this.

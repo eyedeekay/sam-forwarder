@@ -1,9 +1,12 @@
 
 GOPATH = $(PWD)/.go
 
+appname = ephsite
+
 echo:
 	@echo "$(GOPATH)"
 	find . -name "*.go" -exec gofmt -w {} \;
+	find . -name "*.i2pkeys" -exec rm {} \;
 
 test:
 	go test
@@ -19,20 +22,20 @@ deps:
 
 build: clean
 	mkdir -p bin
-	cd main && go build -a -tags netgo -ldflags '-w -extldflags "-static"' -o ../bin/ephsite
+	cd main && go build -a -tags netgo -ldflags '-w -extldflags "-static"' -o ../bin/$(appname)
 
 clean:
-	rm -f bin/ephsite
+	rm -f bin/$(appname)
 
 noopts: clean
 	mkdir -p bin
-	cd main && go build -o ../bin/ephsite
+	cd main && go build -o ../bin/$(appname)
 
 gendoc: build
-	@echo "ephsite - Easy forwarding of local services to i2p" > USAGE.md
+	@echo "$(appname) - Easy forwarding of local services to i2p" > USAGE.md
 	@echo "==================================================" >> USAGE.md
 	@echo "" >> USAGE.md
-	@echo "ephsite is a forwarding proxy designed to configure a tunnel for use" >> USAGE.md
+	@echo "$(appname) is a forwarding proxy designed to configure a tunnel for use" >> USAGE.md
 	@echo "with i2p. It can be used to easily forward a local service to the" >> USAGE.md
 	@echo "i2p network using i2p's SAM API instead of the tunnel interface." >> USAGE.md
 	@echo "" >> USAGE.md
@@ -40,5 +43,5 @@ gendoc: build
 	@echo "------" >> USAGE.md
 	@echo "" >> USAGE.md
 	@echo '```' >> USAGE.md
-	./bin/ephsite -h  2>> USAGE.md; true
+	./bin/$(appname) -h  2>> USAGE.md; true
 	@echo '```' >> USAGE.md
