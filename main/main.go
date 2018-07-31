@@ -39,7 +39,7 @@ func main() {
 	var accessList flagOpts
 	var err error
 	//
-	saveFile := flag.Bool("save", true,
+	saveFile := flag.Bool("save", false,
 		"Use saved file and persist tunnel(If false, tunnel will not persist after program is stopped.")
 	encryptLeaseSet := flag.Bool("encryptlease", true,
 		"Use an encrypted leaseset(true or false)")

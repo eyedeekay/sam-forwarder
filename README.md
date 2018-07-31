@@ -103,3 +103,9 @@ func main() {																			func main() {
 ```
 
 [This tiny file server taken from here and used for this example](https://gist.github.com/paulmach/7271283)
+
+Current limitations:
+====================
+
+Datagrams are still a work-in-progress. They're enabled, but I don't know for
+sure how well they'll work yet. TCP is pretty good though.
