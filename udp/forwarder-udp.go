@@ -25,7 +25,7 @@ type SAMSSUForwarder struct {
 	TargetPort string
 
 	samConn           *sam3.SAM
-	samKeys           sam3.I2PKeys
+	SamKeys           sam3.I2PKeys
 	publishConnection *sam3.DatagramSession
 	clientConnection  net.PacketConn
 
@@ -126,12 +126,12 @@ func (f *SAMSSUForwarder) forward() {
 
 //Base32 returns the base32 address where the local service is being forwarded
 func (f *SAMSSUForwarder) Base32() string {
-	return f.samKeys.Addr().Base32()
+	return f.SamKeys.Addr().Base32()
 }
 
 //Serve starts the SAM connection and and forwards the local host:port to i2p
 func (f *SAMSSUForwarder) Serve() error {
-	if f.publishConnection, err = f.samConn.NewDatagramSession(f.TunName, f.samKeys,
+	if f.publishConnection, err = f.samConn.NewDatagramSession(f.TunName, f.SamKeys,
 		[]string{
 			"inbound.length=" + f.inLength,
 			"outbound.length=" + f.outLength,
@@ -156,7 +156,7 @@ func (f *SAMSSUForwarder) Serve() error {
 	}
 	log.Println("SAM stream session established.")
 	log.Println("Starting Listener.")
-	b := string(f.samKeys.Addr().Base32())
+	b := string(f.SamKeys.Addr().Base32())
 	log.Println("SAM Listener created,", b+".b32.i2p")
 	for {
 		log.Printf("Accepted connection %v\n", f.publishConnection)
@@ -203,7 +203,7 @@ func NewSAMSSUForwarderFromOptions(opts ...func(*SAMSSUForwarder) error) (*SAMSS
 		return nil, err
 	}
 	log.Println("SAM Bridge connection established.")
-	if s.samKeys, err = s.samConn.NewKeys(); err != nil {
+	if s.SamKeys, err = s.samConn.NewKeys(); err != nil {
 		return nil, err
 	}
 	log.Println("Destination keys generated, tunnel name:", s.TunName)
@@ -213,7 +213,7 @@ func NewSAMSSUForwarderFromOptions(opts ...func(*SAMSSUForwarder) error) (*SAMSS
 			if err != nil {
 				return nil, err
 			}
-			err = sam3.StoreKeysIncompat(s.samKeys, s.file)
+			err = sam3.StoreKeysIncompat(s.SamKeys, s.file)
 			if err != nil {
 				return nil, err
 			}
@@ -222,7 +222,7 @@ func NewSAMSSUForwarderFromOptions(opts ...func(*SAMSSUForwarder) error) (*SAMSS
 		if err != nil {
 			return nil, err
 		}
-		s.samKeys, err = sam3.LoadKeysIncompat(s.file)
+		s.SamKeys, err = sam3.LoadKeysIncompat(s.file)
 		if err != nil {
 			return nil, err
 		}
