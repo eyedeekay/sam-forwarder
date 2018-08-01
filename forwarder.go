@@ -179,6 +179,7 @@ func NewSAMForwarderFromOptions(opts ...func(*SAMForwarder) error) (*SAMForwarde
 	s.outBackupQuantity = "3"
 	s.inAllowZeroHop = "false"
 	s.outAllowZeroHop = "false"
+    s.encryptLeaseSet = "false"
 	s.useCompression = "true"
 	s.reduceIdle = "false"
 	s.reduceIdleTime = "15"

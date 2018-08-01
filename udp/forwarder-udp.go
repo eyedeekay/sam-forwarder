@@ -190,6 +190,7 @@ func NewSAMSSUForwarderFromOptions(opts ...func(*SAMSSUForwarder) error) (*SAMSS
 	s.inAllowZeroHop = "false"
 	s.outAllowZeroHop = "false"
 	s.useCompression = "true"
+    s.encryptLeaseSet = "false"
 	s.reduceIdle = "false"
 	s.reduceIdleTime = "15"
 	s.reduceIdleQuantity = "4"
