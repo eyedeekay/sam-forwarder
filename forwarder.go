@@ -24,7 +24,7 @@ type SAMForwarder struct {
 	TargetPort string
 
 	samConn           *sam3.SAM
-	samKeys           sam3.I2PKeys
+	SamKeys           sam3.I2PKeys
 	publishStream     *sam3.StreamSession
 	publishListen     *sam3.StreamListener
 	publishConnection net.Conn
