@@ -108,12 +108,12 @@ func (f *SAMForwarder) forward(conn net.Conn) {
 
 //Base32 returns the base32 address where the local service is being forwarded
 func (f *SAMForwarder) Base32() string {
-	return f.samKeys.Addr().Base32()
+	return f.SamKeys.Addr().Base32()
 }
 
 //Serve starts the SAM connection and and forwards the local host:port to i2p
 func (f *SAMForwarder) Serve() error {
-	if f.publishStream, err = f.samConn.NewStreamSession(f.TunName, f.samKeys,
+	if f.publishStream, err = f.samConn.NewStreamSession(f.TunName, f.SamKeys,
 		[]string{
 			"inbound.length=" + f.inLength,
 			"outbound.length=" + f.outLength,
@@ -141,7 +141,7 @@ func (f *SAMForwarder) Serve() error {
 		return err
 	}
 	log.Println("Starting Listener.")
-	b := string(f.samKeys.Addr().Base32())
+	b := string(f.SamKeys.Addr().Base32())
 	log.Println("SAM Listener created,", b+".b32.i2p")
 
 	for {
@@ -193,7 +193,7 @@ func NewSAMForwarderFromOptions(opts ...func(*SAMForwarder) error) (*SAMForwarde
 		return nil, err
 	}
 	log.Println("SAM Bridge connection established.")
-	if s.samKeys, err = s.samConn.NewKeys(); err != nil {
+	if s.SamKeys, err = s.samConn.NewKeys(); err != nil {
 		return nil, err
 	}
 	log.Println("Destination keys generated, tunnel name:", s.TunName)
@@ -203,7 +203,7 @@ func NewSAMForwarderFromOptions(opts ...func(*SAMForwarder) error) (*SAMForwarde
 			if err != nil {
 				return nil, err
 			}
-			err = sam3.StoreKeysIncompat(s.samKeys, s.file)
+			err = sam3.StoreKeysIncompat(s.SamKeys, s.file)
 			if err != nil {
 				return nil, err
 			}
@@ -212,7 +212,7 @@ func NewSAMForwarderFromOptions(opts ...func(*SAMForwarder) error) (*SAMForwarde
 		if err != nil {
 			return nil, err
 		}
-		s.samKeys, err = sam3.LoadKeysIncompat(s.file)
+		s.SamKeys, err = sam3.LoadKeysIncompat(s.file)
 		if err != nil {
 			return nil, err
 		}
