@@ -206,7 +206,7 @@ func SetAllowZeroOut(b bool) func(*SAMSSUForwarder) error {
 func SetCompress(b bool) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
 		if b {
-			c.useCompressio = "true"
+			c.useCompression = "true"
 			return nil
 		}
 		c.useCompression = "false"
