@@ -118,6 +118,9 @@ people use the most. They're pretty easy to add, it's just boring. *If you*
 *please.* I'm pretty responsive when people actually contact me, it'll probably
 be added within 24 hours.
 
+Encrypted leasesets are only half-implemented. The option seems to do nothing at
+the moment. Soon it will be configurable. Like that's what I'm doing tonight.
+
 I should probably have some options that are available in other general network
 utilities like netcat and socat(ephsite may have it's name changed to samcat at
 that point). Configuring timeouts and the like. In order to do this, some of the

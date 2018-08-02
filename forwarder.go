@@ -35,6 +35,7 @@ type SAMForwarder struct {
 
 	// I2CP options
 	encryptLeaseSet    string
+    LeaseSetKeys       *sam3.I2PKeys
 	inAllowZeroHop     string
 	outAllowZeroHop    string
 	inLength           string

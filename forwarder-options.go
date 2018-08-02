@@ -206,10 +206,10 @@ func SetAllowZeroOut(b bool) func(*SAMForwarder) error {
 func SetCompress(b bool) func(*SAMForwarder) error {
 	return func(c *SAMForwarder) error {
 		if b {
-			c.encryptLeaseSet = "true"
+			c.useCompression = "true"
 			return nil
 		}
-		c.encryptLeaseSet = "false"
+		c.useCompression = "false"
 		return nil
 	}
 }
