@@ -218,7 +218,7 @@ func NewI2PTunConf(iniFile string) (*Conf, error) {
 		if v, ok := c.config.GetBool("i2cp.closeOnIdle"); ok {
 			c.closeIdle = v
 		} else {
-			c.reduceIdle = false
+			c.closeIdle = false
 		}
 		if v, ok := c.config.GetInt("i2cp.closeIdleTime"); ok {
 			c.closeIdleTime = (v / 2000) / 60
