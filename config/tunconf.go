@@ -79,7 +79,7 @@ func (c *Conf) GetInt(key string) (int, bool) {
 }
 
 func (c *Conf) AddAccessListMember(key string) {
-    for _, item := c.accessList {
+    for _, item := range c.accessList {
         if item == key {
             return
         }
