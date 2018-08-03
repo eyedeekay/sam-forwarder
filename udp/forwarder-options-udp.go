@@ -259,6 +259,40 @@ func SetReduceIdleQuantity(u int) func(*SAMSSUForwarder) error {
 	}
 }
 
+//SetCloseIdle tells the connection to close it's tunnels during extended idle time.
+func SetCloseIdle(b bool) func(*SAMSSUForwarder) error {
+	return func(c *SAMSSUForwarder) error {
+		if b {
+			c.closeIdle = "true"
+			return nil
+		}
+		c.closeIdle = "false"
+		return nil
+	}
+}
+
+//SetCloseIdleTime sets the time to wait before closing tunnels to idle levels
+func SetCloseIdleTime(u int) func(*SAMSSUForwarder) error {
+	return func(c *SAMSSUForwarder) error {
+		if u > 6 {
+			c.closeIdleTime = strconv.Itoa((u * 60) * 1000)
+			return nil
+		}
+		return fmt.Errorf("Invalid reduce idle timeout(Measured in minutes)")
+	}
+}
+
+//SetCloseIdleTimeMs sets the time to wait before closing tunnels to idle levels in milliseconds
+func SetCloseIdleTimeMs(u int) func(*SAMSSUForwarder) error {
+	return func(c *SAMSSUForwarder) error {
+		if u > 300000 {
+			c.closeIdleTime = strconv.Itoa(u)
+			return nil
+		}
+		return fmt.Errorf("Invalid reduce idle timeout(Measured in minutes)")
+	}
+}
+
 //SetAccessListType tells the system to treat the accessList as a whitelist
 func SetAccessListType(s string) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {

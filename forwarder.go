@@ -35,7 +35,7 @@ type SAMForwarder struct {
 
 	// I2CP options
 	encryptLeaseSet    string
-    LeaseSetKeys       *sam3.I2PKeys
+	LeaseSetKeys       *sam3.I2PKeys
 	inAllowZeroHop     string
 	outAllowZeroHop    string
 	inLength           string
@@ -47,6 +47,8 @@ type SAMForwarder struct {
 	inBackupQuantity   string
 	outBackupQuantity  string
 	useCompression     string
+	closeIdle          string
+	closeIdleTime      string
 	reduceIdle         string
 	reduceIdleTime     string
 	reduceIdleQuantity string
@@ -131,6 +133,8 @@ func (f *SAMForwarder) Serve() error {
 			"i2cp.reduceOnIdle=" + f.reduceIdle,
 			"i2cp.reduceIdleTime=" + f.reduceIdleTime,
 			"i2cp.reduceQuantity=" + f.reduceIdleQuantity,
+			"i2cp.closeOnIdle=" + f.closeIdle,
+			"i2cp.closeIdleTime=" + f.closeIdleTime,
 			f.accesslisttype(),
 			f.accesslist(),
 		}); err != nil {
@@ -180,11 +184,13 @@ func NewSAMForwarderFromOptions(opts ...func(*SAMForwarder) error) (*SAMForwarde
 	s.outBackupQuantity = "3"
 	s.inAllowZeroHop = "false"
 	s.outAllowZeroHop = "false"
-    s.encryptLeaseSet = "false"
+	s.encryptLeaseSet = "false"
 	s.useCompression = "true"
 	s.reduceIdle = "false"
 	s.reduceIdleTime = "15"
 	s.reduceIdleQuantity = "4"
+	s.closeIdle = "false"
+	s.closeIdleTime = "30"
 	for _, o := range opts {
 		if err := o(&s); err != nil {
 			return nil, err

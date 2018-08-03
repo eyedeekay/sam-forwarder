@@ -31,6 +31,8 @@ type Conf struct {
 	reduceIdle         bool
 	reduceIdleTime     int
 	reduceIdleQuantity int
+	closeIdle          bool
+	closeIdleTime      int
 	accessListType     string
 	accessList         []string
 }
@@ -79,12 +81,12 @@ func (c *Conf) GetInt(key string) (int, bool) {
 }
 
 func (c *Conf) AddAccessListMember(key string) {
-    for _, item := range c.accessList {
-        if item == key {
-            return
-        }
-    }
-    c.accessList = append(c.accessList, key)
+	for _, item := range c.accessList {
+		if item == key {
+			return
+		}
+	}
+	c.accessList = append(c.accessList, key)
 }
 
 func NewI2PTunConf(iniFile string) (*Conf, error) {
@@ -213,6 +215,17 @@ func NewI2PTunConf(iniFile string) (*Conf, error) {
 			c.reduceIdleQuantity = 3
 		}
 
+		if v, ok := c.config.GetBool("i2cp.closeOnIdle"); ok {
+			c.closeIdle = v
+		} else {
+			c.reduceIdle = false
+		}
+		if v, ok := c.config.GetInt("i2cp.closeIdleTime"); ok {
+			c.closeIdleTime = (v / 2000) / 60
+		} else {
+			c.closeIdleTime = (6 * 60) * 2000
+		}
+
 		if v, ok := c.config.GetBool("i2cp.enableBlackList"); ok {
 			if v {
 				c.accessListType = "blacklist"
@@ -261,6 +274,8 @@ func NewSAMForwarderFromConf(config *Conf) (*samforwarder.SAMForwarder, error) {
 			samforwarder.SetReduceIdle(config.reduceIdle),
 			samforwarder.SetReduceIdleTime(config.reduceIdleTime),
 			samforwarder.SetReduceIdleQuantity(config.reduceIdleQuantity),
+			samforwarder.SetCloseIdle(config.closeIdle),
+			samforwarder.SetCloseIdleTime(config.closeIdleTime),
 			samforwarder.SetAccessListType(config.accessListType),
 			samforwarder.SetAccessList(config.accessList),
 		)
@@ -296,6 +311,8 @@ func NewSAMForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforwarder.
 			samforwarder.SetReduceIdle(config.reduceIdle),
 			samforwarder.SetReduceIdleTime(config.reduceIdleTime),
 			samforwarder.SetReduceIdleQuantity(config.reduceIdleQuantity),
+			samforwarder.SetCloseIdle(config.closeIdle),
+			samforwarder.SetCloseIdleTime(config.closeIdleTime),
 			samforwarder.SetAccessListType(config.accessListType),
 			samforwarder.SetAccessList(config.accessList),
 		)
@@ -331,6 +348,8 @@ func NewSAMSSUForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforward
 			samforwarderudp.SetReduceIdle(config.reduceIdle),
 			samforwarderudp.SetReduceIdleTime(config.reduceIdleTime),
 			samforwarderudp.SetReduceIdleQuantity(config.reduceIdleQuantity),
+			samforwarderudp.SetCloseIdle(config.closeIdle),
+			samforwarderudp.SetCloseIdleTime(config.closeIdleTime),
 			samforwarderudp.SetAccessListType(config.accessListType),
 			samforwarderudp.SetAccessList(config.accessList),
 		)
@@ -362,6 +381,8 @@ func NewSAMSSUForwarderFromConf(config *Conf) (*samforwarderudp.SAMSSUForwarder,
 			samforwarderudp.SetReduceIdle(config.reduceIdle),
 			samforwarderudp.SetReduceIdleTime(config.reduceIdleTime),
 			samforwarderudp.SetReduceIdleQuantity(config.reduceIdleQuantity),
+			samforwarderudp.SetCloseIdle(config.closeIdle),
+			samforwarderudp.SetCloseIdleTime(config.closeIdleTime),
 			samforwarderudp.SetAccessListType(config.accessListType),
 			samforwarderudp.SetAccessList(config.accessList),
 		)

@@ -54,8 +54,8 @@ func main() {
 	udpMode := flag.Bool("udp", false,
 		"UDP mode(true or false)")
 
-    //EncryptedLeasesetKeys := flag.String("lsk","none",
-    //  "path to saved encrypted leaseset keys")
+	//EncryptedLeasesetKeys := flag.String("lsk","none",
+	//  "path to saved encrypted leaseset keys")
 	TargetDir := flag.String("dir", "",
 		"Directory to save tunnel configuration file in.")
 	iniFile := flag.String("ini", "none",
