@@ -84,7 +84,7 @@ func (c *Conf) AddAccessListMember(key string) {
             return
         }
     }
-    c.accessList = append(a.accessList, key)
+    c.accessList = append(c.accessList, key)
 }
 
 func NewI2PTunConf(iniFile string) (*Conf, error) {
