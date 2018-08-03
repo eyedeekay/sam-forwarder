@@ -157,7 +157,7 @@ func (f *SAMSSUForwarder) Serve() error {
 	log.Println("SAM stream session established.")
 	log.Println("Starting Listener.")
 	b := string(f.SamKeys.Addr().Base32())
-	log.Println("SAM Listener created,", b+".b32.i2p")
+	log.Println("SAM Keys created,", b)
 	for {
 		log.Printf("Accepted connection %v\n", f.publishConnection)
 		go f.forward()

@@ -228,6 +228,37 @@ func NewI2PTunConf(iniFile string) (*Conf, error) {
 	return nil, nil
 }
 
+func NewSAMForwarderFromConf(config *Conf) (*samforwarder.SAMForwarder, error) {
+	if config != nil {
+		return samforwarder.NewSAMForwarderFromOptions(
+			samforwarder.SetSaveFile(config.saveFile),
+			samforwarder.SetHost(config.TargetHost),
+			samforwarder.SetPort(config.TargetPort),
+			samforwarder.SetSAMHost(config.SamHost),
+			samforwarder.SetSAMPort(config.SamPort),
+			samforwarder.SetName(config.TunName),
+			samforwarder.SetInLength(config.inLength),
+			samforwarder.SetOutLength(config.outLength),
+			samforwarder.SetInVariance(config.inVariance),
+			samforwarder.SetOutVariance(config.outVariance),
+			samforwarder.SetInQuantity(config.inQuantity),
+			samforwarder.SetOutQuantity(config.outQuantity),
+			samforwarder.SetInBackups(config.inBackupQuantity),
+			samforwarder.SetOutBackups(config.outBackupQuantity),
+			samforwarder.SetEncrypt(config.encryptLeaseSet),
+			samforwarder.SetAllowZeroIn(config.inAllowZeroHop),
+			samforwarder.SetAllowZeroOut(config.outAllowZeroHop),
+			samforwarder.SetCompress(config.useCompression),
+			samforwarder.SetReduceIdle(config.reduceIdle),
+			samforwarder.SetReduceIdleTime(config.reduceIdleTime),
+			samforwarder.SetReduceIdleQuantity(config.reduceIdleQuantity),
+			samforwarder.SetAccessListType(config.accessListType),
+			samforwarder.SetAccessList(config.accessList),
+		)
+	}
+	return nil, nil
+}
+
 func NewSAMForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforwarder.SAMForwarder, error) {
 	if iniFile != "none" {
 		config, err := NewI2PTunConf(iniFile)
@@ -269,6 +300,37 @@ func NewSAMSSUForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforward
 		if err != nil {
 			return nil, err
 		}
+		return samforwarderudp.NewSAMSSUForwarderFromOptions(
+			samforwarderudp.SetSaveFile(config.saveFile),
+			samforwarderudp.SetHost(config.TargetHost),
+			samforwarderudp.SetPort(config.TargetPort),
+			samforwarderudp.SetSAMHost(config.SamHost),
+			samforwarderudp.SetSAMPort(config.SamPort),
+			samforwarderudp.SetName(config.TunName),
+			samforwarderudp.SetInLength(config.inLength),
+			samforwarderudp.SetOutLength(config.outLength),
+			samforwarderudp.SetInVariance(config.inVariance),
+			samforwarderudp.SetOutVariance(config.outVariance),
+			samforwarderudp.SetInQuantity(config.inQuantity),
+			samforwarderudp.SetOutQuantity(config.outQuantity),
+			samforwarderudp.SetInBackups(config.inBackupQuantity),
+			samforwarderudp.SetOutBackups(config.outBackupQuantity),
+			samforwarderudp.SetEncrypt(config.encryptLeaseSet),
+			samforwarderudp.SetAllowZeroIn(config.inAllowZeroHop),
+			samforwarderudp.SetAllowZeroOut(config.outAllowZeroHop),
+			samforwarderudp.SetCompress(config.useCompression),
+			samforwarderudp.SetReduceIdle(config.reduceIdle),
+			samforwarderudp.SetReduceIdleTime(config.reduceIdleTime),
+			samforwarderudp.SetReduceIdleQuantity(config.reduceIdleQuantity),
+			samforwarderudp.SetAccessListType(config.accessListType),
+			samforwarderudp.SetAccessList(config.accessList),
+		)
+	}
+	return nil, nil
+}
+
+func NewSAMSSUForwarderFromConf(config *Conf) (*samforwarderudp.SAMSSUForwarder, error) {
+	if config != nil {
 		return samforwarderudp.NewSAMSSUForwarderFromOptions(
 			samforwarderudp.SetSaveFile(config.saveFile),
 			samforwarderudp.SetHost(config.TargetHost),

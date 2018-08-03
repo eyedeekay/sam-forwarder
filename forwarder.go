@@ -143,7 +143,7 @@ func (f *SAMForwarder) Serve() error {
 	}
 	log.Println("Starting Listener.")
 	b := string(f.SamKeys.Addr().Base32())
-	log.Println("SAM Listener created,", b+".b32.i2p")
+	log.Println("SAM Listener created,", b)
 
 	for {
 		conn, err := f.publishListen.Accept()
