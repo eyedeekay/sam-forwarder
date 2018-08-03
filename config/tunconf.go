@@ -78,6 +78,15 @@ func (c *Conf) GetInt(key string) (int, bool) {
 	return c.config.GetInt(key)
 }
 
+func (c *Conf) AddAccessListMember(key string) {
+    for _, item := c.accessList {
+        if item == key {
+            return
+        }
+    }
+    c.accessList = append(a.accessList, key)
+}
+
 func NewI2PTunConf(iniFile string) (*Conf, error) {
 	var err error
 	var c Conf
