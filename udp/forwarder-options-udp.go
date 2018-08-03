@@ -275,7 +275,7 @@ func SetCloseIdle(b bool) func(*SAMSSUForwarder) error {
 func SetCloseIdleTime(u int) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
 		if u > 6 {
-			c.closeIdleTime = strconv.Itoa((u * 60) * 1000)
+			c.closeIdleTime = strconv.Itoa((u * 60) * 2000)
 			return nil
 		}
 		return fmt.Errorf("Invalid reduce idle timeout(Measured in minutes)")
@@ -285,7 +285,7 @@ func SetCloseIdleTime(u int) func(*SAMSSUForwarder) error {
 //SetCloseIdleTimeMs sets the time to wait before closing tunnels to idle levels in milliseconds
 func SetCloseIdleTimeMs(u int) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
-		if u > 300000 {
+		if u > 600000 {
 			c.closeIdleTime = strconv.Itoa(u)
 			return nil
 		}
