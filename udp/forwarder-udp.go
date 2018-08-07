@@ -131,6 +131,11 @@ func (f *SAMSSUForwarder) Base32() string {
 	return f.SamKeys.Addr().Base32()
 }
 
+//Base64 returns the base64 address where the local service is being forwarded
+func (f *SAMSSUForwarder) Base64() string {
+	return f.SamKeys.Addr().Base64()
+}
+
 //Serve starts the SAM connection and and forwards the local host:port to i2p
 func (f *SAMSSUForwarder) Serve() error {
 	if f.publishConnection, err = f.samConn.NewDatagramSession(f.TunName, f.SamKeys,
