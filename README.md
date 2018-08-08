@@ -54,6 +54,21 @@ format, but it only supports the following options:
 Also it doesn't support sections. Didn't realize that at first. Will address
 soon.
 
+## Static eepsite in like no seconds
+
+Using this port forwarder, it's possible to create an instant eepsite from a
+folder full of html files(and the resources they call upon). Probably obviously
+to everybody reading this right now, but maybe not obviously to everyone reading
+this forever. A go application that does this I call eephttpd can be built with
+the command:
+
+        make server
+
+and run from ./bin/eephttpd. The default behavior is to look for the files to
+serve under the current directory in ./www. It can be configured to behave
+differently according to the rules in [USAGE.md](USAGE.md). A Dockerfile is also
+available.
+
 ## Quick-And-Dirty i2p-enabled golang web applications
 
 Normal web applications can easily add the ability to serve itself over i2p by
