@@ -1,15 +1,9 @@
-<h1>ephsite - Easy forwarding of local services to i2p</h1>
-
-<p>ephsite is a forwarding proxy designed to configure a tunnel for use
-with i2p. It can be used to easily forward a local service to the
-i2p network using i2p's SAM API instead of the tunnel interface.</p>
-
-<h2>usage:</h2>
-
-<p><code>
-Usage of ./bin/ephsite:
+<h1 id="ephsite---easy-forwarding-of-local-services-to-i2p">ephsite - Easy forwarding of local services to i2p</h1>
+<p>ephsite is a forwarding proxy designed to configure a tunnel for use with i2p. It can be used to easily forward a local service to the i2p network using i2p's SAM API instead of the tunnel interface.</p>
+<h2 id="usage">usage:</h2>
+<pre><code>Usage of ./bin/ephsite:
   -access string
-        Type of access list to use, can be "whitelist" "blacklist" or "none". (default "none")
+        Type of access list to use, can be &quot;whitelist&quot; &quot;blacklist&quot; or &quot;none&quot;. (default &quot;none&quot;)
   -accesslist value
         Specify an access list member(can be used multiple times)
   -dir string
@@ -19,19 +13,19 @@ Usage of ./bin/ephsite:
   -gzip
         Uze gzip(true or false)
   -host string
-        Target host(Host of service to forward to i2p) (default "127.0.0.1")
+        Target host(Host of service to forward to i2p) (default &quot;127.0.0.1&quot;)
   -inback int
         Set inbound tunnel backup quantity(0 to 5) (default 4)
   -incount int
         Set inbound tunnel quantity(0 to 15) (default 8)
   -ini string
-        Use an ini file for configuration(config file options override passed arguments for now.) (default "none")
+        Use an ini file for configuration(config file options override passed arguments for now.) (default &quot;none&quot;)
   -inlen int
         Set inbound tunnel length(0 to 7) (default 3)
   -invar int
         Set inbound tunnel length variance(-7 to 7)
   -name string
-        Tunnel name, this must be unique but can be anything. (default "forwarder")
+        Tunnel name, this must be unique but can be anything. (default &quot;forwarder&quot;)
   -outback int
         Set outbound tunnel backup quantity(0 to 5) (default 4)
   -outcount int
@@ -41,7 +35,7 @@ Usage of ./bin/ephsite:
   -outvar int
         Set outbound tunnel length variance(-7 to 7)
   -port string
-        Target port(Port of service to forward to i2p) (default "8081")
+        Target port(Port of service to forward to i2p) (default &quot;8081&quot;)
   -reduce
         Reduce tunnel quantity when idle(true or false)
   -reducecount int
@@ -49,9 +43,9 @@ Usage of ./bin/ephsite:
   -reducetime int
         Reduce tunnel quantity after X (minutes) (default 10)
   -samhost string
-        SAM host (default "127.0.0.1")
+        SAM host (default &quot;127.0.0.1&quot;)
   -samport string
-        SAM port (default "7656")
+        SAM port (default &quot;7656&quot;)
   -save
         Use saved file and persist tunnel(If false, tunnel will not persist after program is stopped.
   -udp
@@ -59,27 +53,18 @@ Usage of ./bin/ephsite:
   -zeroin
         Allow zero-hop, non-anonymous tunnels in(true or false)
   -zeroout
-        Allow zero-hop, non-anonymous tunnels out(true or false)
-</code></p>
-
-<h1>eephttpd - Static file server automatically forwarded to i2p</h1>
-
-<h2>usage:</h2>
-
-<p>eephttpd is a static http server which automatically runs on i2p with
-the help of the SAM bridge. By default it will only be available from
-the localhost and it's i2p tunnel. It can be masked from the localhost
-using a container.</p>
-
-<p><code>
-Usage of ./bin/eephttpd:
+        Allow zero-hop, non-anonymous tunnels out(true or false)</code></pre>
+<h1 id="eephttpd---static-file-server-automatically-forwarded-to-i2p">eephttpd - Static file server automatically forwarded to i2p</h1>
+<h2 id="usage-1">usage:</h2>
+<p>eephttpd is a static http server which automatically runs on i2p with the help of the SAM bridge. By default it will only be available from the localhost and it's i2p tunnel. It can be masked from the localhost using a container.</p>
+<pre><code>Usage of ./bin/eephttpd:
   -a string
-        hostname to serve on (default "127.0.0.1")
+        hostname to serve on (default &quot;127.0.0.1&quot;)
   -c    Use an encrypted leaseset(true or false)
   -d string
-        the directory of static files to host(default ./www) (default "./www")
+        the directory of static files to host(default ./www) (default &quot;./www&quot;)
   -f string
-        Use an ini file for configuration (default "none")
+        Use an ini file for configuration (default &quot;none&quot;)
   -g    Uze gzip(true or false) (default true)
   -i    save i2p keys(and thus destinations) across reboots (default true)
   -ib int
@@ -91,7 +76,7 @@ Usage of ./bin/eephttpd:
   -iv int
         Set inbound tunnel length variance(-7 to 7)
   -n string
-        name to give the tunnel(default static-eepSite) (default "static-eepSite")
+        name to give the tunnel(default static-eepSite) (default &quot;static-eepSite&quot;)
   -ob int
         Set outbound tunnel backup quantity(0 to 5) (default 4)
   -ol int
@@ -101,31 +86,23 @@ Usage of ./bin/eephttpd:
   -ov int
         Set outbound tunnel length variance(-7 to 7)
   -p string
-        port to serve locally on (default "8100")
+        port to serve locally on (default &quot;8100&quot;)
   -r    Reduce tunnel quantity when idle(true or false)
   -rc int
         Reduce idle tunnel quantity to X (0 to 5) (default 3)
   -rt int
         Reduce tunnel quantity after X (minutes) (default 10)
   -s string
-        the directory to save the keys in(default ./) (default ".")
+        the directory to save the keys in(default ./) (default &quot;.&quot;)
   -sh string
-        sam host to connect to (default "127.0.0.1")
+        sam host to connect to (default &quot;127.0.0.1&quot;)
   -sp string
-        sam port to connect to (default "7656")
-  -z    Allow zero-hop, non-anonymous tunnels(true or false)
-</code></p>
-
-<h3>build in docker</h3>
-
-<p><code>
-docker build --build-arg user=eephttpd -f Dockerfile -t eyedeekay/eephttpd .
-</code></p>
-
-<h3>Run in docker</h3>
-
-<p><code>
-docker run -i -t -d --network si \
+        sam port to connect to (default &quot;7656&quot;)
+  -z    Allow zero-hop, non-anonymous tunnels(true or false)</code></pre>
+<h3 id="build-in-docker">build in docker</h3>
+<pre><code>docker build --build-arg user=eephttpd -f Dockerfile -t eyedeekay/eephttpd .</code></pre>
+<h3 id="run-in-docker">Run in docker</h3>
+<pre><code>docker run -i -t -d --network si \
     --env samhost=sam-host \
     --env samport=7656 \
     --env args=-r # Additional arguments to pass to eephttpd\
@@ -134,5 +111,4 @@ docker run -i -t -d --network si \
     --name eephttpd \
     --restart always \
     --volume eephttpd:/home/eephttpd/ \
-    eyedeekay/eephttpd
-</code></p>
+    eyedeekay/eephttpd</code></pre>

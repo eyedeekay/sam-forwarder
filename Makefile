@@ -123,4 +123,4 @@ docker-cmd:
 	@echo '```' >> USAGE.md
 
 index:
-	markdown USAGE.md | tee example/www/index.html
+	pandoc USAGE.md -o example/www/index.html
