@@ -3,6 +3,8 @@ GOPATH = $(PWD)/.go
 
 appname = ephsite
 
+eephttpd = eephttpd
+
 echo:
 	@echo "$(GOPATH)"
 	find . -name "*.go" -exec gofmt -w {} \;
