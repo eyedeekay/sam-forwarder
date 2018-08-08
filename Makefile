@@ -26,11 +26,11 @@ bin/$(appname):
 	mkdir -p bin
 	cd main && go build -a -tags netgo -ldflags '-w -extldflags "-static"' -o ../bin/$(appname)
 
-server: clean-server bin/eephttpd
+server: clean-server bin/$(eephttpd)
 
-bin/eephttpd:
+bin/$(eephttpd):
 	mkdir -p bin
-	go build -a -tags netgo -ldflags '-w -extldflags "-static"' -o ./bin/eephttpd ./example/serve.go
+	go build -a -tags netgo -ldflags '-w -extldflags "-static"' -o ./bin/$(eephttpd) ./example/serve.go
 
 all: build server
 
@@ -38,7 +38,7 @@ clean:
 	rm -f bin/$(appname)
 
 clean-server:
-	rm -f bin/eephttpd
+	rm -f bin/$(eephttpd)
 
 noopts: clean
 	mkdir -p bin
@@ -59,28 +59,29 @@ gendoc: all
 	./bin/$(appname) -h  2>> USAGE.md; true
 	@echo '```' >> USAGE.md
 	@echo "" >> USAGE.md
-	@echo "eephttpd - Static file server automatically forwarded to i2p" >> USAGE.md
+	@echo "$(eephttpd) - Static file server automatically forwarded to i2p" >> USAGE.md
 	@echo "============================================================" >> USAGE.md
 	@echo "" >> USAGE.md
-	@echo "eephttpd is a static http server which automatically runs on i2p with" >> USAGE.md
+	@echo "$(eephttpd) is a static http server which automatically runs on i2p with" >> USAGE.md
 	@echo "the help of the SAM bridge. By default it will only be available from" >> USAGE.md
 	@echo "the localhost and it's i2p tunnel. It can be masked from the localhost" >> USAGE.md
 	@echo "using a container." >> USAGE.md
 	@echo "" >> USAGE.md
 	@echo '```' >> USAGE.md
-	./bin/eephttpd -h  2>> USAGE.md; true
+	./bin/$(eephttpd) -h  2>> USAGE.md; true
 	@echo '```' >> USAGE.md
 	@echo "" >> USAGE.md
+	@cat USAGE.md
 
 docker-build:
-	docker build -f Dockerfile -t eyedeekay/eephttpd .
+	docker build -f Dockerfile -t eyedeekay/$(eephttpd) .
 
 docker-run:
 	docker run -i -t -d \
 		--network si \
-		--network-alias eephttpd \
-		--hostname eephttpd \
-		--name eephttpd \
+		--network-alias $(eephttpd) \
+		--hostname $(eephttpd) \
+		--name $(eephttpd) \
 		--restart always \
-		--volume eephttpd:/home/eephttpd/www \
-		eyedeekay/eephttpd
+		--volume $(eephttpd):/home/$(eephttpd)/www \
+		eyedeekay/$(eephttpd)

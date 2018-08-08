@@ -30,7 +30,7 @@ func main() {
 		"name to give the tunnel(default static-eepSite)")
 	useCompression := flag.Bool("g", true,
 		"Uze gzip(true or false)")
-	encryptLeaseSet := flag.Bool("c", true,
+	encryptLeaseSet := flag.Bool("c", false,
 		"Use an encrypted leaseset(true or false)")
 
 	allowZeroHop := flag.Bool("z", false,

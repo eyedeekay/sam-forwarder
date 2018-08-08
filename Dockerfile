@@ -3,16 +3,12 @@ RUN apk update -U
 RUN apk add go git make musl-dev
 RUN mkdir -p /opt/eephttpd
 RUN adduser -h /opt/eephttpd -D -g 'eephttpd,,,,' eephttpd
-
-USER eephttpd
-RUN git clone https://github.com/eyedeekay/sam-forwarder /opt/eephttpd/src
-WORKDIR /opt/eephttpd/src
+COPY . /usr/src/eephttpd
+WORKDIR /usr/src/eephttpd
 RUN make deps server
+RUN install -m755 bin/eephttpd /usr/bin/eephttpd
 
-USER root
-RUN ls -lah bin ; false
-RUN cp bin/eephttpd /usr/bin/eephttpd
 USER eephttpd
-
+WORKDIR /opt/eephttpd/
 VOLUME /opt/eephttpd/www
-CMD eephttpd
+CMD eephttpd -sh=sam-host -sp=7656 -r
