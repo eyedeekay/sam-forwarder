@@ -101,7 +101,7 @@ func main() {
 
 	http.Handle("/", http.FileServer(http.Dir(*directory)))
 
-	log.Printf("Serving %s on HTTP port: %s\n", *directory, *port, "and on",
-		forwarder.Base32()+".b32.i2p")
+	log.Printf("Serving %s on HTTP port: %s\n\t and on %s", *directory, *port,
+		forwarder.Base32())
 	log.Fatal(http.ListenAndServe(*host+":"+*port, nil))
 }
