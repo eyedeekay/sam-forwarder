@@ -145,5 +145,5 @@ instance
 --------
 
 a running instance of eephttpd with the example index file is availble on
-  jhnnybq5gvcldvidornz6q3l55tkbftjwbciqjuzzx26eu3gq4ka.b32.i2p
+  zxcccyozq3pdi4h5mmohzdujzn4zkjzjpvdh4bzkgjljckt3wgaa.b32.i2p
 
