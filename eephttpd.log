@@ -5,3 +5,21 @@
 2018/08/08 22:50:23 SAM stream session established.
 2018/08/08 22:50:23 Starting Listener.
 2018/08/08 22:50:23 SAM Listener created, 6vdci6cxqcwtcjfnt537on7fwuihevyg3u7pntaiijts7pqkqo4a.b32.i2p
+2018/08/08 22:55:50 SAM Bridge connection established.
+2018/08/08 22:55:50 Destination keys generated, tunnel name: static-eepSite
+2018/08/08 22:55:50 Serving ./www on HTTP port: 8100
+	 and on 6vdci6cxqcwtcjfnt537on7fwuihevyg3u7pntaiijts7pqkqo4a.b32.i2p
+2018/08/08 22:56:06 SAM Bridge connection established.
+2018/08/08 22:56:06 Destination keys generated, tunnel name: static-eepSite
+2018/08/08 22:56:06 Serving ./www on HTTP port: 8100
+	 and on 6vdci6cxqcwtcjfnt537on7fwuihevyg3u7pntaiijts7pqkqo4a.b32.i2p
+2018/08/08 22:56:06 Stream Creation error: Duplicate tunnel name
+2018/08/08 22:59:22 SAM Bridge connection established.
+2018/08/08 22:59:22 Destination keys generated, tunnel name: static-eepSite
+2018/08/08 22:59:22 Serving ./www on HTTP port: 8100
+	 and on 6vdci6cxqcwtcjfnt537on7fwuihevyg3u7pntaiijts7pqkqo4a.b32.i2p
+2018/08/08 22:59:42 SAM stream session established.
+2018/08/08 22:59:42 Starting Listener.
+2018/08/08 22:59:42 SAM Listener created, 6vdci6cxqcwtcjfnt537on7fwuihevyg3u7pntaiijts7pqkqo4a.b32.i2p
+2018/08/08 23:01:48 Accepted connection &{sO90W5~J00I0nfoo5c4vWI4NHByHQ9oxf~FNXSsNALavUDhbXg154JZbwmdddAF3dFC~x~0m0RvPxl1wWgr9ML4Xga5MlkXIvy1AWigov-1m1gjN41LPq4d-OwTYnIyO3DbgcG9eb2j4gbSIBNHHsLHgbMBwMucvk9rYe93nmOOHhV7kIVFmpCtEXEqrYPL9KbsLALNFNKque~ehvywlRnCw5cNW1nNKJw0MKhrgulYDQAhqSbjnrMYzwhQxv90wNPNxUusYtnf4VnPq~2CZlAIMiYhWqLRGOtGo7a7jWwjcvK9LWkBfE74AWN5-f5z8UiKkjTdQeiCwt0fLaohNTAWYgzv6UNSjjSZmHrX7UIMw2Gb4BQOV3AqARfr4MZi5qXpTgLcqVif1ImQiQUuidA~28evK6vvm-IgvSkh901dGJz8X1zCO7g7yev9QdMQyIF44WcmCTEkBV7Qa3Y-EmVpOD79Ws-KSnnVzlBC1c90zWZcaIygBr-aMkgtOtwbAAAAA RFtce1f~M~BsiOQ0XNvu83INzjctpuqfn7Ox~RKE8plwEBXq2mAWvtFebBFyF9acnKG9pAPTmSc~CfnXwAr3J11laVOWFxKkTV9e6MPAzfbRWj1KUhmb3gOlcsu~hTx4U9F9-NXrv7ehlXUoHRmoZPLLmghYKZn8Gh364Xs2iPhYKQlxgJM3R-I42GuXVvY9S7HFE5noL0RqoISqOCXxznnTDQymEto~4t6IdXsnxoiko24RELS5E~icAdJ~YlQaA7TqkdKa0KHe0c~ZZQkcS9~IUj2lImVLUnqUBpuOpwwfjc9BKFgdVz0vJA1WfPha-RGTaYL0Itwnebm37wt8R42RL7rh4XgHgnda1MzMzYLh~1GlziqHfgNMbt6biRuuHGchEA9BqXQt-kRaWj5Rz3c-c63n~QwPRMnV2ZAbgdlf3XUOL7dG52aol5DfYaSYTO~w-Ga4G-mZ0HnJ0JryWuCZAIot5LEMKe2GskjFNJKNSdj-U~mGBhMLD7sZbGsDAAAA 0xc42014e040}
+2018/08/08 23:01:48 Connected to localhost &{sO90W5~J00I0nfoo5c4vWI4NHByHQ9oxf~FNXSsNALavUDhbXg154JZbwmdddAF3dFC~x~0m0RvPxl1wWgr9ML4Xga5MlkXIvy1AWigov-1m1gjN41LPq4d-OwTYnIyO3DbgcG9eb2j4gbSIBNHHsLHgbMBwMucvk9rYe93nmOOHhV7kIVFmpCtEXEqrYPL9KbsLALNFNKque~ehvywlRnCw5cNW1nNKJw0MKhrgulYDQAhqSbjnrMYzwhQxv90wNPNxUusYtnf4VnPq~2CZlAIMiYhWqLRGOtGo7a7jWwjcvK9LWkBfE74AWN5-f5z8UiKkjTdQeiCwt0fLaohNTAWYgzv6UNSjjSZmHrX7UIMw2Gb4BQOV3AqARfr4MZi5qXpTgLcqVif1ImQiQUuidA~28evK6vvm-IgvSkh901dGJz8X1zCO7g7yev9QdMQyIF44WcmCTEkBV7Qa3Y-EmVpOD79Ws-KSnnVzlBC1c90zWZcaIygBr-aMkgtOtwbAAAAA RFtce1f~M~BsiOQ0XNvu83INzjctpuqfn7Ox~RKE8plwEBXq2mAWvtFebBFyF9acnKG9pAPTmSc~CfnXwAr3J11laVOWFxKkTV9e6MPAzfbRWj1KUhmb3gOlcsu~hTx4U9F9-NXrv7ehlXUoHRmoZPLLmghYKZn8Gh364Xs2iPhYKQlxgJM3R-I42GuXVvY9S7HFE5noL0RqoISqOCXxznnTDQymEto~4t6IdXsnxoiko24RELS5E~icAdJ~YlQaA7TqkdKa0KHe0c~ZZQkcS9~IUj2lImVLUnqUBpuOpwwfjc9BKFgdVz0vJA1WfPha-RGTaYL0Itwnebm37wt8R42RL7rh4XgHgnda1MzMzYLh~1GlziqHfgNMbt6biRuuHGchEA9BqXQt-kRaWj5Rz3c-c63n~QwPRMnV2ZAbgdlf3XUOL7dG52aol5DfYaSYTO~w-Ga4G-mZ0HnJ0JryWuCZAIot5LEMKe2GskjFNJKNSdj-U~mGBhMLD7sZbGsDAAAA 0xc42014e040}
