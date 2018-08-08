@@ -120,3 +120,6 @@ docker-cmd:
 	@echo "    --volume $(eephttpd):/home/$(eephttpd)/ \\" >> USAGE.md
 	@echo "    eyedeekay/$(eephttpd)" >> USAGE.md
 	@echo '```' >> USAGE.md
+
+index:
+	markdown USAGE.md | tee example/www/index.html
