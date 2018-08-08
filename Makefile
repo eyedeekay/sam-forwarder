@@ -62,13 +62,16 @@ gendoc: all
 	@echo "$(eephttpd) - Static file server automatically forwarded to i2p" >> USAGE.md
 	@echo "============================================================" >> USAGE.md
 	@echo "" >> USAGE.md
+	@echo "usage:" >> USAGE.md
+	@echo "------" >> USAGE.md
+	@echo "" >> USAGE.md
 	@echo "$(eephttpd) is a static http server which automatically runs on i2p with" >> USAGE.md
 	@echo "the help of the SAM bridge. By default it will only be available from" >> USAGE.md
 	@echo "the localhost and it's i2p tunnel. It can be masked from the localhost" >> USAGE.md
 	@echo "using a container." >> USAGE.md
 	@echo "" >> USAGE.md
 	@echo '```' >> USAGE.md
-	./bin/$(eephttpd) -h  2>> USAGE.md; true
+	./bin/$(eephttpd) -?  2>> USAGE.md; true
 	@echo '```' >> USAGE.md
 	@echo "" >> USAGE.md
 	@cat USAGE.md
