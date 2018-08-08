@@ -145,7 +145,6 @@ func main() {
 			forwarder, err = i2ptunconf.NewSAMForwarderFromConfig(*iniFile, *SamHost, *SamPort)
 		} else {
 			forwarder, err = samforwarder.NewSAMForwarderFromOptions(
-				samforwarder.SetName(*TunName),
 				samforwarder.SetFilePath(*TargetDir),
 				samforwarder.SetSaveFile(*saveFile),
 				samforwarder.SetHost(*TargetHost),
