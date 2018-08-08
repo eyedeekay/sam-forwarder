@@ -93,7 +93,7 @@ docker-build:
 	docker build --build-arg user=$(eephttpd) -f Dockerfile -t eyedeekay/$(eephttpd) .
 
 docker-run:
-	docker rm -f eephttpd
+	docker rm -f eephttpd; true
 	docker run -i -t -d \
 		--network $(network) \
 		--env samhost=$(samhost) \
