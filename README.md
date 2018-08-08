@@ -129,3 +129,11 @@ existing flags should also be aliased to be more familiar and netcat-like.
 I want it to be able to use poorly formed ini files, in order to accomodate the
 use of INI-like labels. For now, my workaround is to comment out the labels
 until I deal with this.
+
+I want it to be able to save ini files based on the settings used for a running
+forwarder. Should be easy, I just need to decide how I want to do it. Also to
+focus a bit more.
+
+I've written a handful of example tools, but some of them might be better as
+their own projects. An i2p-native static site generator in the style of jekyll
+(but in go) could be cool.

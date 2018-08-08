@@ -20,12 +20,25 @@ deps:
 	go get -u github.com/eyedeekay/sam-forwarder/config
 	go get -u github.com/kpetku/sam3
 
-build: clean
+build: clean bin/$(appname)
+
+bin/$(appname):
 	mkdir -p bin
 	cd main && go build -a -tags netgo -ldflags '-w -extldflags "-static"' -o ../bin/$(appname)
 
+server: clean-server bin/eephttpd
+
+bin/eephttpd:
+	mkdir -p bin
+	go build -a -tags netgo -ldflags '-w -extldflags "-static"' -o ../bin/eephttpd ./example/serve.go
+
+all: build server
+
 clean:
 	rm -f bin/$(appname)
+
+clean-server:
+	rm -f bin/eephttpd
 
 noopts: clean
 	mkdir -p bin

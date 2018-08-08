@@ -7,8 +7,8 @@ import (
 )
 
 import (
-    "github.com/eyedeekay/sam-forwarder"
-    "github.com/eyedeekay/sam-forwarder/config"
+	"github.com/eyedeekay/sam-forwarder"
+	"github.com/eyedeekay/sam-forwarder/config"
 )
 
 func main() {
@@ -63,6 +63,7 @@ func main() {
 		"Use an ini file for configuration")
 
 	flag.Parse()
+
 	var forwarder *samforwarder.SAMForwarder
 	var err error
 	if *iniFile != "none" {
@@ -102,5 +103,5 @@ func main() {
 
 	log.Printf("Serving %s on HTTP port: %s\n", *directory, *port, "and on",
 		forwarder.Base32()+".b32.i2p")
-	log.Fatal(http.ListenAndServe("127.0.0.1:"+*port, nil))
+	log.Fatal(http.ListenAndServe(*host+":"+*port, nil))
 }
