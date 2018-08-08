@@ -120,7 +120,6 @@ Usage of ./bin/eephttpd:
   -z	Allow zero-hop, non-anonymous tunnels(true or false)
 ```
 
-
 ### build in docker
 
 ```
@@ -133,13 +132,12 @@ docker build --build-arg user=eephttpd -f Dockerfile -t eyedeekay/eephttpd .
 docker run -i -t -d --network si \
     --env samhost=sam-host \
     --env samport=7656 \
-    --env args=-r \
+    --env args=-r # Additional arguments to pass to eephttpd\
     --network-alias eephttpd \
     --hostname eephttpd \
     --name eephttpd \
     --restart always \
-    --volume eephttpd:/home/eephttpd/www \
+    --volume eephttpd:/home/eephttpd/ \
     eyedeekay/eephttpd
 ```
-
 

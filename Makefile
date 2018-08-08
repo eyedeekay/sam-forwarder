@@ -117,6 +117,6 @@ docker-cmd:
 	@echo "    --hostname $(eephttpd) \\" >> USAGE.md
 	@echo "    --name $(eephttpd) \\" >> USAGE.md
 	@echo "    --restart always \\" >> USAGE.md
-	@echo "    --volume $(eephttpd):/home/$(eephttpd)/www \\" >> USAGE.md
+	@echo "    --volume $(eephttpd):/home/$(eephttpd)/ \\" >> USAGE.md
 	@echo "    eyedeekay/$(eephttpd)" >> USAGE.md
 	@echo '```' >> USAGE.md

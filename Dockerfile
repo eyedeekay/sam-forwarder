@@ -14,5 +14,6 @@ RUN install -m755 bin/eephttpd /usr/bin/eephttpd
 
 USER $user
 WORKDIR /opt/$user/
-VOLUME /opt/$user/www
+VOLUME /opt/$user/
+COPY www /opt/$user/www
 CMD eephttpd -sh=$samhost -sp=$samport $args
