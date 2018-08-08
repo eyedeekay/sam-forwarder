@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	host := flag.String("h", "127.0.0.1",
+	host := flag.String("a", "127.0.0.1",
 		"hostname to serve on")
 	port := flag.String("p", "8100",
 		"port to serve locally on")

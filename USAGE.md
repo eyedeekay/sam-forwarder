@@ -67,22 +67,24 @@ Usage of ./bin/ephsite:
 eephttpd - Static file server automatically forwarded to i2p
 ============================================================
 
+usage:
+------
+
 eephttpd is a static http server which automatically runs on i2p with
 the help of the SAM bridge. By default it will only be available from
 the localhost and it's i2p tunnel. It can be masked from the localhost
 using a container.
 
 ```
-flag needs an argument: -h
 Usage of ./bin/eephttpd:
-  -c	Use an encrypted leaseset(true or false) (default true)
+  -a string
+    	hostname to serve on (default "127.0.0.1")
+  -c	Use an encrypted leaseset(true or false)
   -d string
     	the directory of static files to host(default ./www) (default "./www")
   -f string
     	Use an ini file for configuration (default "none")
   -g	Uze gzip(true or false) (default true)
-  -h string
-    	hostname to serve on (default "127.0.0.1")
   -i	save i2p keys(and thus destinations) across reboots (default true)
   -ib int
     	Set inbound tunnel backup quantity(0 to 5) (default 4)
@@ -117,4 +119,27 @@ Usage of ./bin/eephttpd:
     	sam port to connect to (default "7656")
   -z	Allow zero-hop, non-anonymous tunnels(true or false)
 ```
+
+
+### build in docker
+
+```
+docker build --build-arg user=eephttpd -f Dockerfile -t eyedeekay/eephttpd .
+```
+
+### Run in docker
+
+```
+docker run -i -t -d --network si \
+    --env samhost=sam-host \
+    --env samport=7656 \
+    --env args=-r \
+    --network-alias eephttpd \
+    --hostname eephttpd \
+    --name eephttpd \
+    --restart always \
+    --volume eephttpd:/home/eephttpd/www \
+    eyedeekay/eephttpd
+```
+
 

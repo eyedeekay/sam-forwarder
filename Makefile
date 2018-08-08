@@ -2,8 +2,11 @@
 GOPATH = $(PWD)/.go
 
 appname = ephsite
-
 eephttpd = eephttpd
+network = si
+samhost = sam-host
+samport = 7656
+args = -r
 
 echo:
 	@echo "$(GOPATH)"
@@ -73,20 +76,47 @@ gendoc: all
 	@echo "using a container." >> USAGE.md
 	@echo "" >> USAGE.md
 	@echo '```' >> USAGE.md
-	./bin/$(eephttpd) -?  2>> USAGE.md; true
+	./bin/$(eephttpd) -h  2>> USAGE.md; true
 	@echo '```' >> USAGE.md
+	@echo "" >> USAGE.md
+	make docker-cmd
 	@echo "" >> USAGE.md
 	@cat USAGE.md
 
 docker-build:
-	docker build -f Dockerfile -t eyedeekay/$(eephttpd) .
+	docker build --build-arg user=$(eephttpd) -f Dockerfile -t eyedeekay/$(eephttpd) .
 
 docker-run:
 	docker run -i -t -d \
-		--network si \
+		--network $(network) \
+		--env samhost=$(samhost) \
+		--env samport=$(samport) \
+		--env args=$(args) \
 		--network-alias $(eephttpd) \
 		--hostname $(eephttpd) \
 		--name $(eephttpd) \
 		--restart always \
 		--volume $(eephttpd):/home/$(eephttpd)/www \
 		eyedeekay/$(eephttpd)
+
+docker-cmd:
+	@echo "### build in docker" >> USAGE.md
+	@echo "" >> USAGE.md
+	@echo '```' >> USAGE.md
+	@echo "docker build --build-arg user=$(eephttpd) -f Dockerfile -t eyedeekay/$(eephttpd) ." >> USAGE.md
+	@echo '```' >> USAGE.md
+	@echo "" >> USAGE.md
+	@echo "### Run in docker" >> USAGE.md
+	@echo "" >> USAGE.md
+	@echo '```' >> USAGE.md
+	@echo "docker run -i -t -d --network $(network) \\" >> USAGE.md
+	@echo "    --env samhost=$(samhost) \\" >> USAGE.md
+	@echo "    --env samport=$(samport) \\" >> USAGE.md
+	@echo "    --env args=$(args) # Additional arguments to pass to eephttpd\\" >> USAGE.md
+	@echo "    --network-alias $(eephttpd) \\" >> USAGE.md
+	@echo "    --hostname $(eephttpd) \\" >> USAGE.md
+	@echo "    --name $(eephttpd) \\" >> USAGE.md
+	@echo "    --restart always \\" >> USAGE.md
+	@echo "    --volume $(eephttpd):/home/$(eephttpd)/www \\" >> USAGE.md
+	@echo "    eyedeekay/$(eephttpd)" >> USAGE.md
+	@echo '```' >> USAGE.md
