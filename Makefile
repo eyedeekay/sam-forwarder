@@ -81,6 +81,12 @@ gendoc: all
 	@echo "" >> USAGE.md
 	make docker-cmd
 	@echo "" >> USAGE.md
+	@echo "instance" >> USAGE.md
+	@echo "--------" >> USAGE.md
+	@echo "" >> USAGE.md
+	@echo "a running instance of eephttpd with the example index file is availble on" >> USAGE.md
+	@grep 'and on' eephttpd.log | sed 's|and on||g' | tr -d '\t' >> USAGE.md
+	@echo "" >> USAGE.md
 	@cat USAGE.md
 
 docker-build:
