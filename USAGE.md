@@ -123,7 +123,7 @@ Usage of ./bin/eephttpd:
 ### build in docker
 
 ```
-docker build --build-arg user=eephttpd -f Dockerfile -t eyedeekay/eephttpd .
+docker build --build-arg user=eephttpd  --build-arg path=example/www -f Dockerfile -t eyedeekay/eephttpd .
 ```
 
 ### Run in docker
@@ -145,5 +145,5 @@ instance
 --------
 
 a running instance of eephttpd with the example index file is availble on
-  ttkljrsaqlyrq5nqed4bobvp3u3uk323sjtdhisitevlaepo4aoq.b32.i2p
+  6vdci6cxqcwtcjfnt537on7fwuihevyg3u7pntaiijts7pqkqo4a.b32.i2p
 

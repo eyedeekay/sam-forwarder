@@ -4,6 +4,7 @@ ARG path=example/path
 ENV samhost=sam-host
 ENV samport=7656
 ENV args="-r"
+ENV user=$user
 RUN apk update -U
 RUN apk add go git make musl-dev
 RUN mkdir -p /opt/$user
@@ -17,4 +18,4 @@ USER $user
 WORKDIR /opt/$user/
 COPY $path /opt/$user/www
 #VOLUME /opt/$user/
-CMD eephttpd -sh=$samhost -sp=$samport $args
+CMD eephttpd -s /opt/$user/ -sh=$samhost -sp=$samport $args
