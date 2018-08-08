@@ -90,7 +90,7 @@ gendoc: all
 	@cat USAGE.md
 
 docker-build:
-	docker build --build-arg user=$(eephttpd) -f Dockerfile -t eyedeekay/$(eephttpd) .
+	docker build --build-arg user=$(eephttpd) --build-arg path=example/www -f Dockerfile -t eyedeekay/$(eephttpd) .
 
 docker-run:
 	docker rm -f eephttpd; true
@@ -110,7 +110,7 @@ docker-cmd:
 	@echo "### build in docker" >> USAGE.md
 	@echo "" >> USAGE.md
 	@echo '```' >> USAGE.md
-	@echo "docker build --build-arg user=$(eephttpd) -f Dockerfile -t eyedeekay/$(eephttpd) ." >> USAGE.md
+	@echo "docker build --build-arg user=$(eephttpd)  --build-arg path=example/www -f Dockerfile -t eyedeekay/$(eephttpd) ." >> USAGE.md
 	@echo '```' >> USAGE.md
 	@echo "" >> USAGE.md
 	@echo "### Run in docker" >> USAGE.md
