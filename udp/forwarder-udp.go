@@ -108,8 +108,8 @@ func (f *SAMSSUForwarder) forward() {
 		buffer := make([]byte, 1024)
 		if size, addr, readerr := f.clientConnection.ReadFrom(buffer); readerr == nil {
 			if size2, writeerr := f.publishConnection.WriteTo(buffer, addr); writeerr == nil {
-				log.Printf("%s of %s bytes read", size, size2)
-				log.Printf("%s of %s bytes written", size2, size)
+				log.Printf("%q of %q bytes read", size, size2)
+				log.Printf("%q of %q bytes written", size2, size)
 			}
 		}
 	}()
@@ -119,8 +119,8 @@ func (f *SAMSSUForwarder) forward() {
 		buffer := make([]byte, 1024)
 		if size, addr, readerr := f.publishConnection.ReadFrom(buffer); readerr == nil {
 			if size2, writeerr := f.clientConnection.WriteTo(buffer, addr); writeerr == nil {
-				log.Printf("%s of %s bytes read", size, size2)
-				log.Printf("%s of %s bytes written", size2, size)
+				log.Printf("%q of %q bytes read", size, size2)
+				log.Printf("%q of %q bytes written", size2, size)
 			}
 		}
 	}()
