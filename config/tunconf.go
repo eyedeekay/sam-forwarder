@@ -13,6 +13,7 @@ import (
 // when you use it for in conjunction with command-line flags
 type Conf struct {
 	config             *goini.INI
+	SaveDirectory      string
 	SaveFile           bool
 	TargetHost         string
 	TargetPort         string
@@ -166,6 +167,20 @@ func (c *Conf) GetSAMPort(arg, def string) string {
 		return arg
 	}
 	if x, o := c.Get("samport"); o {
+		return x
+	}
+	return arg
+}
+
+// GetDir takes an argument and a default. If the argument differs from the
+// default, the argument is always returned. If the argument and default are
+// the same and the key exists, the key is returned. If the key is absent, the
+// default is returned.
+func (c *Conf) GetDir(arg, def string) string {
+	if arg != def {
+		return arg
+	}
+	if x, o := c.Get("dir"); o {
 		return x
 	}
 	return arg
@@ -407,6 +422,12 @@ func NewI2PTunConf(iniFile string) (*Conf, error) {
 			return nil, err
 		}
 
+		if v, ok := c.config.Get("dir"); ok {
+			c.SaveDirectory = v
+		} else {
+			c.SaveDirectory = "./"
+		}
+
 		if _, ok := c.config.Get("keys"); ok {
 			c.SaveFile = true
 		} else {
@@ -563,6 +584,7 @@ func NewSAMForwarderFromConf(config *Conf) (*samforwarder.SAMForwarder, error) {
 	if config != nil {
 		return samforwarder.NewSAMForwarderFromOptions(
 			samforwarder.SetSaveFile(config.SaveFile),
+			samforwarder.SetFilePath(config.SaveDirectory),
 			samforwarder.SetHost(config.TargetHost),
 			samforwarder.SetPort(config.TargetPort),
 			samforwarder.SetSAMHost(config.SamHost),
@@ -601,6 +623,7 @@ func NewSAMForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforwarder.
 		}
 		return samforwarder.NewSAMForwarderFromOptions(
 			samforwarder.SetSaveFile(config.SaveFile),
+			samforwarder.SetFilePath(config.SaveDirectory),
 			samforwarder.SetHost(config.TargetHost),
 			samforwarder.SetPort(config.TargetPort),
 			samforwarder.SetSAMHost(config.SamHost),
@@ -639,6 +662,7 @@ func NewSAMSSUForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforward
 		}
 		return samforwarderudp.NewSAMSSUForwarderFromOptions(
 			samforwarderudp.SetSaveFile(config.SaveFile),
+			samforwarderudp.SetFilePath(config.SaveDirectory),
 			samforwarderudp.SetHost(config.TargetHost),
 			samforwarderudp.SetPort(config.TargetPort),
 			samforwarderudp.SetSAMHost(config.SamHost),
@@ -673,6 +697,7 @@ func NewSAMSSUForwarderFromConf(config *Conf) (*samforwarderudp.SAMSSUForwarder,
 	if config != nil {
 		return samforwarderudp.NewSAMSSUForwarderFromOptions(
 			samforwarderudp.SetSaveFile(config.SaveFile),
+			samforwarderudp.SetFilePath(config.SaveDirectory),
 			samforwarderudp.SetHost(config.TargetHost),
 			samforwarderudp.SetPort(config.TargetPort),
 			samforwarderudp.SetSAMHost(config.SamHost),

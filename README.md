@@ -31,6 +31,7 @@ format, but it only supports the following options:
 
         host = 127.0.0.1
         port = 22
+        dir = /path/to/save/data/in #This is not shared with i2pd tunnels.conf
         inbound.length = 6
         outbound.length = 6
         inbound.lengthVariance = 6
