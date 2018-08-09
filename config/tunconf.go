@@ -8,6 +8,8 @@ import (
 	"strings"
 )
 
+// Conf is a tructure containing an ini config, with some functions to help
+// when you use it for in conjunction with command-line flags
 type Conf struct {
 	config             *goini.INI
 	SaveFile           bool
@@ -37,6 +39,7 @@ type Conf struct {
 	AccessList         []string
 }
 
+// Print emits a newline-delimited list of settings for tunnels to stdout.
 func (c *Conf) Print() {
 	log.Println(
 		"\n", c.SaveFile,
@@ -80,6 +83,7 @@ func (c *Conf) GetInt(key string) (int, bool) {
 	return c.config.GetInt(key)
 }
 
+// AddAccessListMember adds a member to either the blacklist or the whitelist
 func (c *Conf) AddAccessListMember(key string) {
 	for _, item := range c.AccessList {
 		if item == key {
@@ -88,131 +92,290 @@ func (c *Conf) AddAccessListMember(key string) {
 	}
 	c.AccessList = append(c.AccessList, key)
 }
-func (c *Conf) GetHost(arg string) string {
+
+// GetHost takes an argument and a default. If the argument differs from the
+// default, the argument is always returned. If the argument and default are
+// the same and the key exists, the key is returned. If the key is absent, the
+// default is returned.
+func (c *Conf) GetHost(arg, def string) string {
+	if arg != def {
+		return arg
+	}
 	if x, o := c.Get("host"); o {
 		return x
 	}
 	return arg
 }
 
-func (c *Conf) GetPort(arg string) string {
+// GetPort takes an argument and a default. If the argument differs from the
+// default, the argument is always returned. If the argument and default are
+// the same and the key exists, the key is returned. If the key is absent, the
+// default is returned.
+func (c *Conf) GetPort(arg, def string) string {
+	if arg != def {
+		return arg
+	}
 	if x, o := c.Get("port"); o {
 		return x
 	}
 	return arg
 }
-func (c *Conf) GetSAMHost(arg string) string {
+
+// GetSAMHost takes an argument and a default. If the argument differs from the
+// default, the argument is always returned. If the argument and default are
+// the same and the key exists, the key is returned. If the key is absent, the
+// default is returned.
+func (c *Conf) GetSAMHost(arg, def string) string {
+	if arg != def {
+		return arg
+	}
 	if x, o := c.Get("samhost"); o {
 		return x
 	}
 	return arg
 }
 
-func (c *Conf) GetSAMPort(arg string) string {
+// GetSAMPort takes an argument and a default. If the argument differs from the
+// default, the argument is always returned. If the argument and default are
+// the same and the key exists, the key is returned. If the key is absent, the
+// default is returned.
+func (c *Conf) GetSAMPort(arg, def string) string {
+	if arg != def {
+		return arg
+	}
 	if x, o := c.Get("samport"); o {
 		return x
 	}
 	return arg
 }
 
-func (c *Conf) GetKeys(arg string) string {
+// GetKeys takes an argument and a default. If the argument differs from the
+// default, the argument is always returned. If the argument and default are
+// the same and the key exists, the key is returned. If the key is absent, the
+// default is returned.
+func (c *Conf) GetKeys(arg, def string) string {
+	if arg != def {
+		return arg
+	}
 	if x, o := c.Get("keys"); o {
 		return x
 	}
 	return arg
 }
 
-func (c *Conf) GetInLength(arg int) int {
+// GetInLength takes an argument and a default. If the argument differs from the
+// default, the argument is always returned. If the argument and default are
+// the same and the key exists, the key is returned. If the key is absent, the
+// default is returned.
+func (c *Conf) GetInLength(arg, def int) int {
+	if arg != def {
+		return arg
+	}
 	if x, o := c.GetInt("inbound.length"); o {
 		return x
 	}
 	return arg
 }
 
-func (c *Conf) GetOutLength(arg int) int {
+// GetOutLength takes an argument and a default. If the argument differs from the
+// default, the argument is always returned. If the argument and default are
+// the same and the key exists, the key is returned. If the key is absent, the
+// default is returned.
+func (c *Conf) GetOutLength(arg, def int) int {
+	if arg != def {
+		return arg
+	}
 	if x, o := c.GetInt("outbound.length"); o {
 		return x
 	}
 	return arg
 }
-func (c *Conf) GetInVariance(arg int) int {
+
+// GetInVariance takes an argument and a default. If the argument differs from the
+// default, the argument is always returned. If the argument and default are
+// the same and the key exists, the key is returned. If the key is absent, the
+// default is returned.
+func (c *Conf) GetInVariance(arg, def int) int {
+	if arg != def {
+		return arg
+	}
 	if x, o := c.GetInt("inbound.variance"); o {
 		return x
 	}
 	return arg
 }
-func (c *Conf) GetOutVariance(arg int) int {
+
+// GetOutVariance takes an argument and a default. If the argument differs from the
+// default, the argument is always returned. If the argument and default are
+// the same and the key exists, the key is returned. If the key is absent, the
+// default is returned.
+func (c *Conf) GetOutVariance(arg, def int) int {
+	if arg != def {
+		return arg
+	}
 	if x, o := c.GetInt("outbound.variance"); o {
 		return x
 	}
 	return arg
 }
-func (c *Conf) GetInQuantity(arg int) int {
+
+// GetInQuantity takes an argument and a default. If the argument differs from the
+// default, the argument is always returned. If the argument and default are
+// the same and the key exists, the key is returned. If the key is absent, the
+// default is returned.
+func (c *Conf) GetInQuantity(arg, def int) int {
+	if arg != def {
+		return arg
+	}
 	if x, o := c.GetInt("inbound.quantity"); o {
 		return x
 	}
 	return arg
 }
-func (c *Conf) GetOutQuantity(arg int) int {
+
+// GetOutQuantity takes an argument and a default. If the argument differs from the
+// default, the argument is always returned. If the argument and default are
+// the same and the key exists, the key is returned. If the key is absent, the
+// default is returned.
+func (c *Conf) GetOutQuantity(arg, def int) int {
+	if arg != def {
+		return arg
+	}
 	if x, o := c.GetInt("outbound.quantity"); o {
 		return x
 	}
 	return arg
 }
-func (c *Conf) GetInBackups(arg int) int {
+
+// GetInBackups takes an argument and a default. If the argument differs from the
+// default, the argument is always returned. If the argument and default are
+// the same and the key exists, the key is returned. If the key is absent, the
+// default is returned.
+func (c *Conf) GetInBackups(arg, def int) int {
+	if arg != def {
+		return arg
+	}
 	if x, o := c.GetInt("inbound.backupQuantity"); o {
 		return x
 	}
 	return arg
 }
-func (c *Conf) GetOutBackups(arg int) int {
+
+// GetOutBackups takes an argument and a default. If the argument differs from the
+// default, the argument is always returned. If the argument and default are
+// the same and the key exists, the key is returned. If the key is absent, the
+// default is returned.
+func (c *Conf) GetOutBackups(arg, def int) int {
+	if arg != def {
+		return arg
+	}
 	if x, o := c.GetInt("outbound.backupQuantity"); o {
 		return x
 	}
 	return arg
 }
-func (c *Conf) GetEncryptLeaseset(arg bool) bool {
+
+// GetEncryptLeaseset takes an argument and a default. If the argument differs from the
+// default, the argument is always returned. If the argument and default are
+// the same and the key exists, the key is returned. If the key is absent, the
+// default is returned.
+func (c *Conf) GetEncryptLeaseset(arg, def bool) bool {
+	if arg != def {
+		return arg
+	}
 	if x, o := c.GetBool("i2cp.encryptLeaseSet"); o {
 		return x
 	}
 	return arg
 }
-func (c *Conf) GetInAllowZeroHop(arg bool) bool {
+
+// GetInAllowZeroHop takes an argument and a default. If the argument differs from the
+// default, the argument is always returned. If the argument and default are
+// the same and the key exists, the key is returned. If the key is absent, the
+// default is returned.
+func (c *Conf) GetInAllowZeroHop(arg, def bool) bool {
+	if arg != def {
+		return arg
+	}
 	if x, o := c.GetBool("inbound.allowZeroHop"); o {
 		return x
 	}
 	return arg
 }
-func (c *Conf) GetOutAllowZeroHop(arg bool) bool {
+
+// GetOutAllowZeroHop takes an argument and a default. If the argument differs from the
+// default, the argument is always returned. If the argument and default are
+// the same and the key exists, the key is returned. If the key is absent, the
+// default is returned.
+func (c *Conf) GetOutAllowZeroHop(arg, def bool) bool {
+	if arg != def {
+		return arg
+	}
 	if x, o := c.GetBool("outbound.allowZeroHop"); o {
 		return x
 	}
 	return arg
 }
-func (c *Conf) GetUseCompression(arg bool) bool {
+
+// GetUseCompression takes an argument and a default. If the argument differs from the
+// default, the argument is always returned. If the argument and default are
+// the same and the key exists, the key is returned. If the key is absent, the
+// default is returned.
+func (c *Conf) GetUseCompression(arg, def bool) bool {
+	if arg != def {
+		return arg
+	}
 	if x, o := c.GetBool("gzip"); o {
 		return x
 	}
 	return arg
 }
-func (c *Conf) GetReduceOnIdle(arg bool) bool {
+
+// GetReduceOnIdle takes an argument and a default. If the argument differs from the
+// default, the argument is always returned. If the argument and default are
+// the same and the key exists, the key is returned. If the key is absent, the
+// default is returned.
+func (c *Conf) GetReduceOnIdle(arg, def bool) bool {
+	if arg != def {
+		return arg
+	}
 	if x, o := c.GetBool("i2cp.reduceOnIdle"); o {
 		return x
 	}
 	return arg
 }
-func (c *Conf) GetReduceIdleTime(arg int) int {
+
+// GetReduceIdleTime takes an argument and a default. If the argument differs from the
+// default, the argument is always returned. If the argument and default are
+// the same and the key exists, the key is returned. If the key is absent, the
+// default is returned.
+func (c *Conf) GetReduceIdleTime(arg, def int) int {
+	if arg != def {
+		return arg
+	}
 	if x, o := c.GetInt("i2cp.reduceIdleTime"); o {
 		return x
 	}
 	return arg
 }
-func (c *Conf) GetReduceIdleQuantity(arg int) int {
+
+// GetReduceIdleQuantity takes an argument and a default. If the argument differs from the
+// default, the argument is always returned. If the argument and default are
+// the same and the key exists, the key is returned. If the key is absent, the
+// default is returned.
+func (c *Conf) GetReduceIdleQuantity(arg, def int) int {
+	if arg != def {
+		return arg
+	}
 	if x, o := c.GetInt("i2cp.reduceIdleQuantity"); o {
 		return x
 	}
 	return arg
 }
+
+
+// NewI2PTunConf returns a Conf structure from an ini file, for modification
+// before starting the tunnel
 func NewI2PTunConf(iniFile string) (*Conf, error) {
 	var err error
 	var c Conf
@@ -374,6 +537,7 @@ func NewI2PTunConf(iniFile string) (*Conf, error) {
 	return nil, nil
 }
 
+// NewSAMForwarderFromConf generates a SAMforwarder from *i2ptunconf.Conf
 func NewSAMForwarderFromConf(config *Conf) (*samforwarder.SAMForwarder, error) {
 	if config != nil {
 		return samforwarder.NewSAMForwarderFromOptions(
@@ -407,6 +571,7 @@ func NewSAMForwarderFromConf(config *Conf) (*samforwarder.SAMForwarder, error) {
 	return nil, nil
 }
 
+// NewSAMForwarderFromConfig generates a new SAMForwarder from a config file
 func NewSAMForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforwarder.SAMForwarder, error) {
 	if iniFile != "none" {
 		config, err := NewI2PTunConf(iniFile)
@@ -444,6 +609,7 @@ func NewSAMForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforwarder.
 	return nil, nil
 }
 
+// NewSAMSSUForwarderFromConfig generates a new SAMSSUForwarder from a config file
 func NewSAMSSUForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforwarderudp.SAMSSUForwarder, error) {
 	if iniFile != "none" {
 		config, err := NewI2PTunConf(iniFile)
@@ -481,6 +647,7 @@ func NewSAMSSUForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforward
 	return nil, nil
 }
 
+// NewSAMSSUForwarderFromConf generates a SAMSSUforwarder from *i2ptunconf.Conf
 func NewSAMSSUForwarderFromConf(config *Conf) (*samforwarderudp.SAMSSUForwarder, error) {
 	if config != nil {
 		return samforwarderudp.NewSAMSSUForwarderFromOptions(
