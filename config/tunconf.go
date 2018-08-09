@@ -1,8 +1,10 @@
 package i2ptunconf
 
 import (
-	"github.com/eyedeekay/sam-forwarder"
-	"github.com/eyedeekay/sam-forwarder/udp"
+	//"github.com/eyedeekay/sam-forwarder"
+	//"github.com/eyedeekay/sam-forwarder/udp"
+    ".."
+    "../udp"
 	"github.com/zieckey/goini"
 	"log"
 	"strings"
@@ -16,23 +18,23 @@ type Conf struct {
 	SamHost            string
 	SamPort            string
 	TunName            string
-	encryptLeaseSet    bool
-	inAllowZeroHop     bool
-	outAllowZeroHop    bool
-	inLength           int
-	outLength          int
-	inQuantity         int
-	outQuantity        int
-	inVariance         int
-	outVariance        int
-	inBackupQuantity   int
-	outBackupQuantity  int
-	useCompression     bool
-	reduceIdle         bool
-	reduceIdleTime     int
-	reduceIdleQuantity int
-	closeIdle          bool
-	closeIdleTime      int
+	EncryptLeaseSet    bool
+	InAllowZeroHop     bool
+	OutAllowZeroHop    bool
+	InLength           int
+	OutLength          int
+	InQuantity         int
+	OutQuantity        int
+	InVariance         int
+	OutVariance        int
+	InBackupQuantity   int
+	OutBackupQuantity  int
+	UseCompression     bool
+	ReduceIdle         bool
+	ReduceIdleTime     int
+	ReduceIdleQuantity int
+	CloseIdle          bool
+	CloseIdleTime      int
 	AccessListType     string
 	AccessList         []string
 }
@@ -45,21 +47,21 @@ func (c *Conf) Print() {
 		"\n", c.SamHost,
 		"\n", c.SamPort,
 		"\n", c.TunName,
-		"\n", c.encryptLeaseSet,
-		"\n", c.inAllowZeroHop,
-		"\n", c.outAllowZeroHop,
-		"\n", c.inLength,
-		"\n", c.outLength,
-		"\n", c.inQuantity,
-		"\n", c.outQuantity,
-		"\n", c.inVariance,
-		"\n", c.outVariance,
-		"\n", c.inBackupQuantity,
-		"\n", c.outBackupQuantity,
-		"\n", c.useCompression,
-		"\n", c.reduceIdle,
-		"\n", c.reduceIdleTime,
-		"\n", c.reduceIdleQuantity,
+		"\n", c.EncryptLeaseSet,
+		"\n", c.InAllowZeroHop,
+		"\n", c.OutAllowZeroHop,
+		"\n", c.InLength,
+		"\n", c.OutLength,
+		"\n", c.InQuantity,
+		"\n", c.OutQuantity,
+		"\n", c.InVariance,
+		"\n", c.OutVariance,
+		"\n", c.InBackupQuantity,
+		"\n", c.OutBackupQuantity,
+		"\n", c.UseCompression,
+		"\n", c.ReduceIdle,
+		"\n", c.ReduceIdleTime,
+		"\n", c.ReduceIdleQuantity,
 		"\n", c.AccessListType,
 		"\n", c.AccessList,
 	)
@@ -133,97 +135,97 @@ func NewI2PTunConf(iniFile string) (*Conf, error) {
 			c.TunName = "fowarder"
 		}
 		if v, ok := c.config.GetBool("i2cp.encryptLeaseSet"); ok {
-			c.encryptLeaseSet = v
+			c.EncryptLeaseSet = v
 		} else {
-			c.encryptLeaseSet = false
+			c.EncryptLeaseSet = false
 		}
 
 		if v, ok := c.config.GetBool("inbound.allowZeroHop"); ok {
-			c.inAllowZeroHop = v
+			c.InAllowZeroHop = v
 		} else {
-			c.inAllowZeroHop = false
+			c.InAllowZeroHop = false
 		}
 		if v, ok := c.config.GetBool("outbound.allowZeroHop"); ok {
-			c.outAllowZeroHop = v
+			c.OutAllowZeroHop = v
 		} else {
-			c.outAllowZeroHop = false
+			c.OutAllowZeroHop = false
 		}
 
 		if v, ok := c.config.GetInt("inbound.length"); ok {
-			c.inLength = v
+			c.InLength = v
 		} else {
-			c.inLength = 3
+			c.InLength = 3
 		}
 		if v, ok := c.config.GetInt("outbound.length"); ok {
-			c.outLength = v
+			c.OutLength = v
 		} else {
-			c.outLength = 3
+			c.OutLength = 3
 		}
 
 		if v, ok := c.config.GetInt("inbound.quantity"); ok {
-			c.inQuantity = v
+			c.InQuantity = v
 		} else {
-			c.inQuantity = 5
+			c.InQuantity = 5
 		}
 		if v, ok := c.config.GetInt("outbound.quantity"); ok {
-			c.outQuantity = v
+			c.OutQuantity = v
 		} else {
-			c.outQuantity = 5
+			c.OutQuantity = 5
 		}
 
 		if v, ok := c.config.GetInt("inbound.variance"); ok {
-			c.inVariance = v
+			c.InVariance = v
 		} else {
-			c.inVariance = 0
+			c.InVariance = 0
 		}
 		if v, ok := c.config.GetInt("outbound.variance"); ok {
-			c.outVariance = v
+			c.OutVariance = v
 		} else {
-			c.outVariance = 0
+			c.OutVariance = 0
 		}
 
 		if v, ok := c.config.GetInt("inbound.backupQuantity"); ok {
-			c.inBackupQuantity = v
+			c.InBackupQuantity = v
 		} else {
-			c.inBackupQuantity = 2
+			c.InBackupQuantity = 2
 		}
 		if v, ok := c.config.GetInt("outbound.backupQuantity"); ok {
-			c.outBackupQuantity = v
+			c.OutBackupQuantity = v
 		} else {
-			c.outBackupQuantity = 2
+			c.OutBackupQuantity = 2
 		}
 
 		if v, ok := c.config.GetBool("gzip"); ok {
-			c.useCompression = v
+			c.UseCompression = v
 		} else {
-			c.useCompression = true
+			c.UseCompression = true
 		}
 
 		if v, ok := c.config.GetBool("i2cp.reduceOnIdle"); ok {
-			c.reduceIdle = v
+			c.ReduceIdle = v
 		} else {
-			c.reduceIdle = false
+			c.ReduceIdle = false
 		}
 		if v, ok := c.config.GetInt("i2cp.reduceIdleTime"); ok {
-			c.reduceIdleTime = (v / 1000) / 60
+			c.ReduceIdleTime = (v / 1000) / 60
 		} else {
-			c.reduceIdleTime = (6 * 60) * 1000
+			c.ReduceIdleTime = (6 * 60) * 1000
 		}
 		if v, ok := c.config.GetInt("i2cp.reduceQuantity"); ok {
-			c.reduceIdleQuantity = v
+			c.ReduceIdleQuantity = v
 		} else {
-			c.reduceIdleQuantity = 3
+			c.ReduceIdleQuantity = 3
 		}
 
 		if v, ok := c.config.GetBool("i2cp.closeOnIdle"); ok {
-			c.closeIdle = v
+			c.CloseIdle = v
 		} else {
-			c.closeIdle = false
+			c.CloseIdle = false
 		}
 		if v, ok := c.config.GetInt("i2cp.closeIdleTime"); ok {
-			c.closeIdleTime = (v / 2000) / 60
+			c.CloseIdleTime = (v / 2000) / 60
 		} else {
-			c.closeIdleTime = (6 * 60) * 2000
+			c.CloseIdleTime = (6 * 60) * 2000
 		}
 
 		if v, ok := c.config.GetBool("i2cp.enableBlackList"); ok {
@@ -239,7 +241,7 @@ func NewI2PTunConf(iniFile string) (*Conf, error) {
 		if c.AccessListType != "whitelist" && c.AccessListType != "blacklist" {
 			c.AccessListType = "none"
 		}
-		if v, ok := c.config.Get("i2cp.AccessList"); ok {
+		if v, ok := c.config.Get("i2cp.accessList"); ok {
 			csv := strings.Split(v, ",")
 			for _, z := range csv {
 				c.AccessList = append(c.AccessList, z)
@@ -259,23 +261,23 @@ func NewSAMForwarderFromConf(config *Conf) (*samforwarder.SAMForwarder, error) {
 			samforwarder.SetSAMHost(config.SamHost),
 			samforwarder.SetSAMPort(config.SamPort),
 			samforwarder.SetName(config.TunName),
-			samforwarder.SetInLength(config.inLength),
-			samforwarder.SetOutLength(config.outLength),
-			samforwarder.SetInVariance(config.inVariance),
-			samforwarder.SetOutVariance(config.outVariance),
-			samforwarder.SetInQuantity(config.inQuantity),
-			samforwarder.SetOutQuantity(config.outQuantity),
-			samforwarder.SetInBackups(config.inBackupQuantity),
-			samforwarder.SetOutBackups(config.outBackupQuantity),
-			samforwarder.SetEncrypt(config.encryptLeaseSet),
-			samforwarder.SetAllowZeroIn(config.inAllowZeroHop),
-			samforwarder.SetAllowZeroOut(config.outAllowZeroHop),
-			samforwarder.SetCompress(config.useCompression),
-			samforwarder.SetReduceIdle(config.reduceIdle),
-			samforwarder.SetReduceIdleTime(config.reduceIdleTime),
-			samforwarder.SetReduceIdleQuantity(config.reduceIdleQuantity),
-			samforwarder.SetCloseIdle(config.closeIdle),
-			samforwarder.SetCloseIdleTime(config.closeIdleTime),
+			samforwarder.SetInLength(config.InLength),
+			samforwarder.SetOutLength(config.OutLength),
+			samforwarder.SetInVariance(config.InVariance),
+			samforwarder.SetOutVariance(config.OutVariance),
+			samforwarder.SetInQuantity(config.InQuantity),
+			samforwarder.SetOutQuantity(config.OutQuantity),
+			samforwarder.SetInBackups(config.InBackupQuantity),
+			samforwarder.SetOutBackups(config.OutBackupQuantity),
+			samforwarder.SetEncrypt(config.EncryptLeaseSet),
+			samforwarder.SetAllowZeroIn(config.InAllowZeroHop),
+			samforwarder.SetAllowZeroOut(config.OutAllowZeroHop),
+			samforwarder.SetCompress(config.UseCompression),
+			samforwarder.SetReduceIdle(config.ReduceIdle),
+			samforwarder.SetReduceIdleTime(config.ReduceIdleTime),
+			samforwarder.SetReduceIdleQuantity(config.ReduceIdleQuantity),
+			samforwarder.SetCloseIdle(config.CloseIdle),
+			samforwarder.SetCloseIdleTime(config.CloseIdleTime),
 			samforwarder.SetAccessListType(config.AccessListType),
 			samforwarder.SetAccessList(config.AccessList),
 		)
@@ -296,23 +298,23 @@ func NewSAMForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforwarder.
 			samforwarder.SetSAMHost(config.SamHost),
 			samforwarder.SetSAMPort(config.SamPort),
 			samforwarder.SetName(config.TunName),
-			samforwarder.SetInLength(config.inLength),
-			samforwarder.SetOutLength(config.outLength),
-			samforwarder.SetInVariance(config.inVariance),
-			samforwarder.SetOutVariance(config.outVariance),
-			samforwarder.SetInQuantity(config.inQuantity),
-			samforwarder.SetOutQuantity(config.outQuantity),
-			samforwarder.SetInBackups(config.inBackupQuantity),
-			samforwarder.SetOutBackups(config.outBackupQuantity),
-			samforwarder.SetEncrypt(config.encryptLeaseSet),
-			samforwarder.SetAllowZeroIn(config.inAllowZeroHop),
-			samforwarder.SetAllowZeroOut(config.outAllowZeroHop),
-			samforwarder.SetCompress(config.useCompression),
-			samforwarder.SetReduceIdle(config.reduceIdle),
-			samforwarder.SetReduceIdleTime(config.reduceIdleTime),
-			samforwarder.SetReduceIdleQuantity(config.reduceIdleQuantity),
-			samforwarder.SetCloseIdle(config.closeIdle),
-			samforwarder.SetCloseIdleTime(config.closeIdleTime),
+			samforwarder.SetInLength(config.InLength),
+			samforwarder.SetOutLength(config.OutLength),
+			samforwarder.SetInVariance(config.InVariance),
+			samforwarder.SetOutVariance(config.OutVariance),
+			samforwarder.SetInQuantity(config.InQuantity),
+			samforwarder.SetOutQuantity(config.OutQuantity),
+			samforwarder.SetInBackups(config.InBackupQuantity),
+			samforwarder.SetOutBackups(config.OutBackupQuantity),
+			samforwarder.SetEncrypt(config.EncryptLeaseSet),
+			samforwarder.SetAllowZeroIn(config.InAllowZeroHop),
+			samforwarder.SetAllowZeroOut(config.OutAllowZeroHop),
+			samforwarder.SetCompress(config.UseCompression),
+			samforwarder.SetReduceIdle(config.ReduceIdle),
+			samforwarder.SetReduceIdleTime(config.ReduceIdleTime),
+			samforwarder.SetReduceIdleQuantity(config.ReduceIdleQuantity),
+			samforwarder.SetCloseIdle(config.CloseIdle),
+			samforwarder.SetCloseIdleTime(config.CloseIdleTime),
 			samforwarder.SetAccessListType(config.AccessListType),
 			samforwarder.SetAccessList(config.AccessList),
 		)
@@ -333,23 +335,23 @@ func NewSAMSSUForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforward
 			samforwarderudp.SetSAMHost(config.SamHost),
 			samforwarderudp.SetSAMPort(config.SamPort),
 			samforwarderudp.SetName(config.TunName),
-			samforwarderudp.SetInLength(config.inLength),
-			samforwarderudp.SetOutLength(config.outLength),
-			samforwarderudp.SetInVariance(config.inVariance),
-			samforwarderudp.SetOutVariance(config.outVariance),
-			samforwarderudp.SetInQuantity(config.inQuantity),
-			samforwarderudp.SetOutQuantity(config.outQuantity),
-			samforwarderudp.SetInBackups(config.inBackupQuantity),
-			samforwarderudp.SetOutBackups(config.outBackupQuantity),
-			samforwarderudp.SetEncrypt(config.encryptLeaseSet),
-			samforwarderudp.SetAllowZeroIn(config.inAllowZeroHop),
-			samforwarderudp.SetAllowZeroOut(config.outAllowZeroHop),
-			samforwarderudp.SetCompress(config.useCompression),
-			samforwarderudp.SetReduceIdle(config.reduceIdle),
-			samforwarderudp.SetReduceIdleTime(config.reduceIdleTime),
-			samforwarderudp.SetReduceIdleQuantity(config.reduceIdleQuantity),
-			samforwarderudp.SetCloseIdle(config.closeIdle),
-			samforwarderudp.SetCloseIdleTime(config.closeIdleTime),
+			samforwarderudp.SetInLength(config.InLength),
+			samforwarderudp.SetOutLength(config.OutLength),
+			samforwarderudp.SetInVariance(config.InVariance),
+			samforwarderudp.SetOutVariance(config.OutVariance),
+			samforwarderudp.SetInQuantity(config.InQuantity),
+			samforwarderudp.SetOutQuantity(config.OutQuantity),
+			samforwarderudp.SetInBackups(config.InBackupQuantity),
+			samforwarderudp.SetOutBackups(config.OutBackupQuantity),
+			samforwarderudp.SetEncrypt(config.EncryptLeaseSet),
+			samforwarderudp.SetAllowZeroIn(config.InAllowZeroHop),
+			samforwarderudp.SetAllowZeroOut(config.OutAllowZeroHop),
+			samforwarderudp.SetCompress(config.UseCompression),
+			samforwarderudp.SetReduceIdle(config.ReduceIdle),
+			samforwarderudp.SetReduceIdleTime(config.ReduceIdleTime),
+			samforwarderudp.SetReduceIdleQuantity(config.ReduceIdleQuantity),
+			samforwarderudp.SetCloseIdle(config.CloseIdle),
+			samforwarderudp.SetCloseIdleTime(config.CloseIdleTime),
 			samforwarderudp.SetAccessListType(config.AccessListType),
 			samforwarderudp.SetAccessList(config.AccessList),
 		)
@@ -366,23 +368,23 @@ func NewSAMSSUForwarderFromConf(config *Conf) (*samforwarderudp.SAMSSUForwarder,
 			samforwarderudp.SetSAMHost(config.SamHost),
 			samforwarderudp.SetSAMPort(config.SamPort),
 			samforwarderudp.SetName(config.TunName),
-			samforwarderudp.SetInLength(config.inLength),
-			samforwarderudp.SetOutLength(config.outLength),
-			samforwarderudp.SetInVariance(config.inVariance),
-			samforwarderudp.SetOutVariance(config.outVariance),
-			samforwarderudp.SetInQuantity(config.inQuantity),
-			samforwarderudp.SetOutQuantity(config.outQuantity),
-			samforwarderudp.SetInBackups(config.inBackupQuantity),
-			samforwarderudp.SetOutBackups(config.outBackupQuantity),
-			samforwarderudp.SetEncrypt(config.encryptLeaseSet),
-			samforwarderudp.SetAllowZeroIn(config.inAllowZeroHop),
-			samforwarderudp.SetAllowZeroOut(config.outAllowZeroHop),
-			samforwarderudp.SetCompress(config.useCompression),
-			samforwarderudp.SetReduceIdle(config.reduceIdle),
-			samforwarderudp.SetReduceIdleTime(config.reduceIdleTime),
-			samforwarderudp.SetReduceIdleQuantity(config.reduceIdleQuantity),
-			samforwarderudp.SetCloseIdle(config.closeIdle),
-			samforwarderudp.SetCloseIdleTime(config.closeIdleTime),
+			samforwarderudp.SetInLength(config.InLength),
+			samforwarderudp.SetOutLength(config.OutLength),
+			samforwarderudp.SetInVariance(config.InVariance),
+			samforwarderudp.SetOutVariance(config.OutVariance),
+			samforwarderudp.SetInQuantity(config.InQuantity),
+			samforwarderudp.SetOutQuantity(config.OutQuantity),
+			samforwarderudp.SetInBackups(config.InBackupQuantity),
+			samforwarderudp.SetOutBackups(config.OutBackupQuantity),
+			samforwarderudp.SetEncrypt(config.EncryptLeaseSet),
+			samforwarderudp.SetAllowZeroIn(config.InAllowZeroHop),
+			samforwarderudp.SetAllowZeroOut(config.OutAllowZeroHop),
+			samforwarderudp.SetCompress(config.UseCompression),
+			samforwarderudp.SetReduceIdle(config.ReduceIdle),
+			samforwarderudp.SetReduceIdleTime(config.ReduceIdleTime),
+			samforwarderudp.SetReduceIdleQuantity(config.ReduceIdleQuantity),
+			samforwarderudp.SetCloseIdle(config.CloseIdle),
+			samforwarderudp.SetCloseIdleTime(config.CloseIdleTime),
 			samforwarderudp.SetAccessListType(config.AccessListType),
 			samforwarderudp.SetAccessList(config.AccessList),
 		)
