@@ -6,6 +6,7 @@ import (
 	"github.com/zieckey/goini"
 	"log"
 	"strings"
+    "strconv"
 )
 
 // Conf is a tructure containing an ini config, with some functions to help
@@ -39,33 +40,54 @@ type Conf struct {
 	AccessList         []string
 }
 
-// Print emits a newline-delimited list of settings for tunnels to stdout.
-func (c *Conf) Print() {
-	log.Println(
-		"\n", c.SaveFile,
-		"\n", c.TargetHost,
-		"\n", c.TargetPort,
-		"\n", c.SamHost,
-		"\n", c.SamPort,
-		"\n", c.TunName,
-		"\n", c.EncryptLeaseSet,
-		"\n", c.InAllowZeroHop,
-		"\n", c.OutAllowZeroHop,
-		"\n", c.InLength,
-		"\n", c.OutLength,
-		"\n", c.InQuantity,
-		"\n", c.OutQuantity,
-		"\n", c.InVariance,
-		"\n", c.OutVariance,
-		"\n", c.InBackupQuantity,
-		"\n", c.OutBackupQuantity,
-		"\n", c.UseCompression,
-		"\n", c.ReduceIdle,
-		"\n", c.ReduceIdleTime,
-		"\n", c.ReduceIdleQuantity,
-		"\n", c.AccessListType,
-		"\n", c.AccessList,
-	)
+func (c *Conf) accesslisttype() string {
+	if c.AccessListType == "whitelist" {
+		return "i2cp.enableAccessList=true"
+	} else if c.AccessListType == "blacklist" {
+		return "i2cp.enableBlackList=true"
+	} else if c.AccessListType == "none" {
+		return ""
+	}
+	return ""
+}
+
+func (c *Conf) accesslist() string {
+	if c.AccessListType != "" && len(c.AccessList) > 0 {
+		r := ""
+		for _, s := range c.AccessList {
+			r += s + ","
+		}
+		return "i2cp.accessList=" + strings.TrimSuffix(r, ",")
+	}
+	return ""
+}
+
+// Print returns and prints a formatted list of configured tunnel settings.
+func (c *Conf) Print() []string {
+    confstring := []string{
+        "inbound.length=" + strconv.Itoa(c.InLength),
+        "outbound.length=" + strconv.Itoa(c.OutLength),
+        "inbound.lengthVariance=" + strconv.Itoa(c.InVariance),
+        "outbound.lengthVariance=" + strconv.Itoa(c.OutVariance),
+        "inbound.backupQuantity=" + strconv.Itoa(c.InBackupQuantity),
+        "outbound.backupQuantity=" + strconv.Itoa(c.OutBackupQuantity),
+        "inbound.quantity=" + strconv.Itoa(c.InQuantity),
+        "outbound.quantity=" + strconv.Itoa(c.OutQuantity),
+        "inbound.allowZeroHop=" + strconv.FormatBool(c.InAllowZeroHop),
+        "outbound.allowZeroHop=" + strconv.FormatBool(c.OutAllowZeroHop),
+        "i2cp.encryptLeaseSet=" + strconv.FormatBool(c.EncryptLeaseSet),
+        "i2cp.gzip=" + strconv.FormatBool(c.UseCompression),
+        "i2cp.reduceOnIdle=" + strconv.FormatBool(c.ReduceIdle),
+        "i2cp.reduceIdleTime=" + strconv.Itoa(c.ReduceIdleTime),
+        "i2cp.reduceQuantity=" + strconv.Itoa(c.ReduceIdleQuantity),
+        "i2cp.closeOnIdle=" + strconv.FormatBool(c.CloseIdle),
+        "i2cp.closeIdleTime=" + strconv.Itoa(c.CloseIdleTime),
+        c.accesslisttype(),
+        c.accesslist(),
+    }
+
+	log.Println(confstring)
+    return confstring
 }
 
 // Get passes directly through to goini.Get

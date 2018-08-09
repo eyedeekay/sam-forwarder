@@ -75,7 +75,7 @@ Normal web applications can easily add the ability to serve itself over i2p by
 importing and configuring this forwarding doodad. Wherever it takes the argument
 for the web server's listening host and/or port, pass that same host and/or port
 to a new instance of the "SAMForwarder" and then run the "Serve" function of the
-SAMForwarder as a gorouting. This simply forwards the running service to the i2p
+SAMForwarder as a goroutine. This simply forwards the running service to the i2p
 network, it doesn't do any filtering, and if your application establishes
 out-of-band connections, those may escape. Also, if your application is
 listening on all addresses, it will be visible from the local network.
@@ -155,7 +155,7 @@ their own projects. An i2p-native static site generator in the style of jekyll
 
 Haha. Well shit. I migrated colluding\_sites\_attack to auto-configure using
 the forwarder and the X-I2p-Dest* headers aren't passed through. Implies some
-interesting arrangements, but also makes my software useless in it's present
-state. I mean I know what I did with si-i2p-plugin works, so it's not that
-important. I'll have to look for a way to make this behavior configurable
-though.
+interesting arrangements, but also makes colluding\_sites\_attack useless in
+it's present state. I mean I know what I did with si-i2p-plugin works, so it's
+not that important. I'll have to look for a way to make this behavior
+configurable though.
