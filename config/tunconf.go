@@ -88,7 +88,131 @@ func (c *Conf) AddAccessListMember(key string) {
 	}
 	c.AccessList = append(c.AccessList, key)
 }
+func (c *Conf) GetHost(arg string) string {
+	if x, o := c.Get("host"); o {
+		return x
+	}
+	return arg
+}
 
+func (c *Conf) GetPort(arg string) string {
+	if x, o := c.Get("port"); o {
+		return x
+	}
+	return arg
+}
+func (c *Conf) GetSAMHost(arg string) string {
+	if x, o := c.Get("samhost"); o {
+		return x
+	}
+	return arg
+}
+
+func (c *Conf) GetSAMPort(arg string) string {
+	if x, o := c.Get("samport"); o {
+		return x
+	}
+	return arg
+}
+
+func (c *Conf) GetKeys(arg string) string {
+	if x, o := c.Get("keys"); o {
+		return x
+	}
+	return arg
+}
+
+func (c *Conf) GetInLength(arg int) int {
+	if x, o := c.GetInt("inbound.length"); o {
+		return x
+	}
+	return arg
+}
+
+func (c *Conf) GetOutLength(arg int) int {
+	if x, o := c.GetInt("outbound.length"); o {
+		return x
+	}
+	return arg
+}
+func (c *Conf) GetInVariance(arg int) int {
+	if x, o := c.GetInt("inbound.variance"); o {
+		return x
+	}
+	return arg
+}
+func (c *Conf) GetOutVariance(arg int) int {
+	if x, o := c.GetInt("outbound.variance"); o {
+		return x
+	}
+	return arg
+}
+func (c *Conf) GetInQuantity(arg int) int {
+	if x, o := c.GetInt("inbound.quantity"); o {
+		return x
+	}
+	return arg
+}
+func (c *Conf) GetOutQuantity(arg int) int {
+	if x, o := c.GetInt("outbound.quantity"); o {
+		return x
+	}
+	return arg
+}
+func (c *Conf) GetInBackups(arg int) int {
+	if x, o := c.GetInt("inbound.backupQuantity"); o {
+		return x
+	}
+	return arg
+}
+func (c *Conf) GetOutBackups(arg int) int {
+	if x, o := c.GetInt("outbound.backupQuantity"); o {
+		return x
+	}
+	return arg
+}
+func (c *Conf) GetEncryptLeaseset(arg bool) bool {
+	if x, o := c.GetBool("i2cp.encryptLeaseSet"); o {
+		return x
+	}
+	return arg
+}
+func (c *Conf) GetInAllowZeroHop(arg bool) bool {
+	if x, o := c.GetBool("inbound.allowZeroHop"); o {
+		return x
+	}
+	return arg
+}
+func (c *Conf) GetOutAllowZeroHop(arg bool) bool {
+	if x, o := c.GetBool("outbound.allowZeroHop"); o {
+		return x
+	}
+	return arg
+}
+func (c *Conf) GetUseCompression(arg bool) bool {
+	if x, o := c.GetBool("gzip"); o {
+		return x
+	}
+	return arg
+}
+func (c *Conf) GetReduceOnIdle(arg bool) bool {
+	if x, o := c.GetBool("i2cp.reduceOnIdle"); o {
+		return x
+	}
+	return arg
+}
+func (c *Conf) GetReduceIdleTime(arg int) int {
+	if x, o := c.GetInt("i2cp.reduceIdleTime"); o {
+		return x
+	}
+	return arg
+}
+func (c *Conf) GetReduceIdleQuantity(arg int) int {
+	if x, o := c.GetInt("i2cp.reduceIdleQuantity"); o {
+		return x
+	}
+	return arg
+}
 func NewI2PTunConf(iniFile string) (*Conf, error) {
 	var err error
 	var c Conf
