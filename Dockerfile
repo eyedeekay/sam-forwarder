@@ -18,4 +18,4 @@ USER $user
 WORKDIR /opt/$user/
 COPY $path /opt/$user/www
 #VOLUME /opt/$user/
-CMD eephttpd -s /opt/$user/ -sh=$samhost -sp=$samport $args
+CMD eephttpd -f /usr/src/eephttpd/etc/eephttpd/eephttpd.conf -s /opt/$user/ -sh=$samhost -sp=$samport $args
