@@ -373,7 +373,6 @@ func (c *Conf) GetReduceIdleQuantity(arg, def int) int {
 	return arg
 }
 
-
 // NewI2PTunConf returns a Conf structure from an ini file, for modification
 // before starting the tunnel
 func NewI2PTunConf(iniFile string) (*Conf, error) {
