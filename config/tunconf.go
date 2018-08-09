@@ -124,6 +124,9 @@ func (c *Conf) GetHost(arg, def string) string {
 	if arg != def {
 		return arg
 	}
+	if c.config == nil {
+		return arg
+	}
 	if x, o := c.Get("host"); o {
 		return x
 	}
@@ -136,6 +139,9 @@ func (c *Conf) GetHost(arg, def string) string {
 // default is returned.
 func (c *Conf) GetPort(arg, def string) string {
 	if arg != def {
+		return arg
+	}
+	if c.config == nil {
 		return arg
 	}
 	if x, o := c.Get("port"); o {
@@ -152,6 +158,9 @@ func (c *Conf) GetSAMHost(arg, def string) string {
 	if arg != def {
 		return arg
 	}
+	if c.config == nil {
+		return arg
+	}
 	if x, o := c.Get("samhost"); o {
 		return x
 	}
@@ -164,6 +173,9 @@ func (c *Conf) GetSAMHost(arg, def string) string {
 // default is returned.
 func (c *Conf) GetSAMPort(arg, def string) string {
 	if arg != def {
+		return arg
+	}
+	if c.config == nil {
 		return arg
 	}
 	if x, o := c.Get("samport"); o {
@@ -180,10 +192,41 @@ func (c *Conf) GetDir(arg, def string) string {
 	if arg != def {
 		return arg
 	}
+	if c.config == nil {
+		return arg
+	}
 	if x, o := c.Get("dir"); o {
 		return x
 	}
 	return arg
+}
+
+// GetSaveFile takes an argument and a default. If the argument differs from the
+// default, the argument is always returned. If the argument and default are
+// the same and the key exists, the key is returned. If the key is absent, the
+// default is returned.
+func (c *Conf) GetSaveFile(arg, def bool) bool {
+	if arg != def {
+		return arg
+	}
+	if c.config == nil {
+		return arg
+	}
+	return c.SaveFile
+}
+
+// GetAccessListType takes an argument and a default. If the argument differs from the
+// default, the argument is always returned. If the argument and default are
+// the same and the key exists, the key is returned. If the key is absent, the
+// default is returned.
+func (c *Conf) GetAccessListType(arg, def string) string {
+	if arg != def {
+		return arg
+	}
+	if c.config == nil {
+		return arg
+	}
+	return c.AccessListType
 }
 
 // GetKeys takes an argument and a default. If the argument differs from the
@@ -192,6 +235,9 @@ func (c *Conf) GetDir(arg, def string) string {
 // default is returned.
 func (c *Conf) GetKeys(arg, def string) string {
 	if arg != def {
+		return arg
+	}
+	if c.config == nil {
 		return arg
 	}
 	if x, o := c.Get("keys"); o {
@@ -208,6 +254,9 @@ func (c *Conf) GetInLength(arg, def int) int {
 	if arg != def {
 		return arg
 	}
+	if c.config == nil {
+		return arg
+	}
 	if x, o := c.GetInt("inbound.length"); o {
 		return x
 	}
@@ -220,6 +269,9 @@ func (c *Conf) GetInLength(arg, def int) int {
 // default is returned.
 func (c *Conf) GetOutLength(arg, def int) int {
 	if arg != def {
+		return arg
+	}
+	if c.config == nil {
 		return arg
 	}
 	if x, o := c.GetInt("outbound.length"); o {
@@ -236,6 +288,9 @@ func (c *Conf) GetInVariance(arg, def int) int {
 	if arg != def {
 		return arg
 	}
+	if c.config == nil {
+		return arg
+	}
 	if x, o := c.GetInt("inbound.variance"); o {
 		return x
 	}
@@ -248,6 +303,9 @@ func (c *Conf) GetInVariance(arg, def int) int {
 // default is returned.
 func (c *Conf) GetOutVariance(arg, def int) int {
 	if arg != def {
+		return arg
+	}
+	if c.config == nil {
 		return arg
 	}
 	if x, o := c.GetInt("outbound.variance"); o {
@@ -264,6 +322,9 @@ func (c *Conf) GetInQuantity(arg, def int) int {
 	if arg != def {
 		return arg
 	}
+	if c.config == nil {
+		return arg
+	}
 	if x, o := c.GetInt("inbound.quantity"); o {
 		return x
 	}
@@ -276,6 +337,9 @@ func (c *Conf) GetInQuantity(arg, def int) int {
 // default is returned.
 func (c *Conf) GetOutQuantity(arg, def int) int {
 	if arg != def {
+		return arg
+	}
+	if c.config == nil {
 		return arg
 	}
 	if x, o := c.GetInt("outbound.quantity"); o {
@@ -292,6 +356,9 @@ func (c *Conf) GetInBackups(arg, def int) int {
 	if arg != def {
 		return arg
 	}
+	if c.config == nil {
+		return arg
+	}
 	if x, o := c.GetInt("inbound.backupQuantity"); o {
 		return x
 	}
@@ -304,6 +371,9 @@ func (c *Conf) GetInBackups(arg, def int) int {
 // default is returned.
 func (c *Conf) GetOutBackups(arg, def int) int {
 	if arg != def {
+		return arg
+	}
+	if c.config == nil {
 		return arg
 	}
 	if x, o := c.GetInt("outbound.backupQuantity"); o {
@@ -320,6 +390,9 @@ func (c *Conf) GetEncryptLeaseset(arg, def bool) bool {
 	if arg != def {
 		return arg
 	}
+	if c.config == nil {
+		return arg
+	}
 	if x, o := c.GetBool("i2cp.encryptLeaseSet"); o {
 		return x
 	}
@@ -332,6 +405,9 @@ func (c *Conf) GetEncryptLeaseset(arg, def bool) bool {
 // default is returned.
 func (c *Conf) GetInAllowZeroHop(arg, def bool) bool {
 	if arg != def {
+		return arg
+	}
+	if c.config == nil {
 		return arg
 	}
 	if x, o := c.GetBool("inbound.allowZeroHop"); o {
@@ -348,6 +424,9 @@ func (c *Conf) GetOutAllowZeroHop(arg, def bool) bool {
 	if arg != def {
 		return arg
 	}
+	if c.config == nil {
+		return arg
+	}
 	if x, o := c.GetBool("outbound.allowZeroHop"); o {
 		return x
 	}
@@ -360,6 +439,9 @@ func (c *Conf) GetOutAllowZeroHop(arg, def bool) bool {
 // default is returned.
 func (c *Conf) GetUseCompression(arg, def bool) bool {
 	if arg != def {
+		return arg
+	}
+	if c.config == nil {
 		return arg
 	}
 	if x, o := c.GetBool("gzip"); o {
@@ -376,6 +458,9 @@ func (c *Conf) GetReduceOnIdle(arg, def bool) bool {
 	if arg != def {
 		return arg
 	}
+	if c.config == nil {
+		return arg
+	}
 	if x, o := c.GetBool("i2cp.reduceOnIdle"); o {
 		return x
 	}
@@ -390,6 +475,9 @@ func (c *Conf) GetReduceIdleTime(arg, def int) int {
 	if arg != def {
 		return arg
 	}
+	if c.config == nil {
+		return arg
+	}
 	if x, o := c.GetInt("i2cp.reduceIdleTime"); o {
 		return x
 	}
@@ -402,6 +490,9 @@ func (c *Conf) GetReduceIdleTime(arg, def int) int {
 // default is returned.
 func (c *Conf) GetReduceIdleQuantity(arg, def int) int {
 	if arg != def {
+		return arg
+	}
+	if c.config == nil {
 		return arg
 	}
 	if x, o := c.GetInt("i2cp.reduceIdleQuantity"); o {
