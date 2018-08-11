@@ -502,7 +502,7 @@ func (c *Conf) GetReduceIdleQuantity(arg, def int) int {
 }
 
 // I2PINILoad loads variables from an ini file into the Conf data structure.
-func I2PINILoad(iniFile string, c *Conf) (error) {
+func (c *Conf) I2PINILoad(iniFile string) (error) {
     var err error
 	if iniFile != "none" {
         c.config = goini.New()
@@ -673,7 +673,7 @@ func I2PINILoad(iniFile string, c *Conf) (error) {
 func NewI2PTunConf(iniFile string) (*Conf, error) {
 	var err error
 	var c Conf
-	if err = I2PINILoad(iniFile, &c); err != nil {
+	if err = c.I2PINILoad(iniFile); err != nil {
 		return nil, err
 	}
 	return &c, nil
