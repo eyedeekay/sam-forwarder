@@ -16,6 +16,7 @@ echo:
 test:
 	go test
 	cd udp && go test
+	cd config && go test
 
 
 deps:
