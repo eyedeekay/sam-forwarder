@@ -144,7 +144,8 @@ existing flags should also be aliased to be more familiar and netcat-like.
 
 I want it to be able to use poorly formed ini files, in order to accomodate the
 use of INI-like labels. For now, my workaround is to comment out the labels
-until I deal with this.
+until I deal with this. Basically I just want it to ignore the lables and treat
+the whole thing as flat.
 
 I want it to be able to save ini files based on the settings used for a running
 forwarder. Should be easy, I just need to decide how I want to do it. Also to

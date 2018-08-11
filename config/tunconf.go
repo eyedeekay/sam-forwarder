@@ -501,16 +501,14 @@ func (c *Conf) GetReduceIdleQuantity(arg, def int) int {
 	return arg
 }
 
-// NewI2PTunConf returns a Conf structure from an ini file, for modification
-// before starting the tunnel
-func NewI2PTunConf(iniFile string) (*Conf, error) {
-	var err error
-	var c Conf
-	c.config = goini.New()
+// I2PINILoad loads variables from an ini file into the Conf data structure.
+func I2PINILoad(iniFile string, c *Conf) (error) {
+    var err error
 	if iniFile != "none" {
+        c.config = goini.New()
 		err = c.config.ParseFile(iniFile)
 		if err != nil {
-			return nil, err
+			return err
 		}
 
 		if v, ok := c.config.Get("dir"); ok {
@@ -665,9 +663,20 @@ func NewI2PTunConf(iniFile string) (*Conf, error) {
 				c.AccessList = append(c.AccessList, z)
 			}
 		}
-		return &c, nil
+        log.Println(c.Print())
 	}
-	return nil, nil
+    return nil
+}
+
+// NewI2PTunConf returns a Conf structure from an ini file, for modification
+// before starting the tunnel
+func NewI2PTunConf(iniFile string) (*Conf, error) {
+	var err error
+	var c Conf
+	if err = I2PINILoad(iniFile, &c); err != nil {
+		return nil, err
+	}
+	return &c, nil
 }
 
 // NewSAMForwarderFromConf generates a SAMforwarder from *i2ptunconf.Conf
