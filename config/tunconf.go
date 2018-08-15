@@ -712,7 +712,7 @@ func NewSAMForwarderFromConf(config *Conf) (*samforwarder.SAMForwarder, error) {
 			samforwarder.SetReduceIdleTimeMs(config.ReduceIdleTime),
 			samforwarder.SetReduceIdleQuantity(config.ReduceIdleQuantity),
 			samforwarder.SetCloseIdle(config.CloseIdle),
-			samforwarder.SetCloseIdleTime(config.CloseIdleTime),
+			samforwarder.SetCloseIdleTimeMs(config.CloseIdleTime),
 			samforwarder.SetAccessListType(config.AccessListType),
 			samforwarder.SetAccessList(config.AccessList),
 		)
@@ -751,7 +751,7 @@ func NewSAMForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforwarder.
 			samforwarder.SetReduceIdleTimeMs(config.ReduceIdleTime),
 			samforwarder.SetReduceIdleQuantity(config.ReduceIdleQuantity),
 			samforwarder.SetCloseIdle(config.CloseIdle),
-			samforwarder.SetCloseIdleTime(config.CloseIdleTime),
+			samforwarder.SetCloseIdleTimeMs(config.CloseIdleTime),
 			samforwarder.SetAccessListType(config.AccessListType),
 			samforwarder.SetAccessList(config.AccessList),
 		)
@@ -790,7 +790,7 @@ func NewSAMSSUForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforward
 			samforwarderudp.SetReduceIdleTimeMs(config.ReduceIdleTime),
 			samforwarderudp.SetReduceIdleQuantity(config.ReduceIdleQuantity),
 			samforwarderudp.SetCloseIdle(config.CloseIdle),
-			samforwarderudp.SetCloseIdleTime(config.CloseIdleTime),
+			samforwarderudp.SetCloseIdleTimeMs(config.CloseIdleTime),
 			samforwarderudp.SetAccessListType(config.AccessListType),
 			samforwarderudp.SetAccessList(config.AccessList),
 		)
@@ -825,7 +825,7 @@ func NewSAMSSUForwarderFromConf(config *Conf) (*samforwarderudp.SAMSSUForwarder,
 			samforwarderudp.SetReduceIdleTimeMs(config.ReduceIdleTime),
 			samforwarderudp.SetReduceIdleQuantity(config.ReduceIdleQuantity),
 			samforwarderudp.SetCloseIdle(config.CloseIdle),
-			samforwarderudp.SetCloseIdleTime(config.CloseIdleTime),
+			samforwarderudp.SetCloseIdleTimeMs(config.CloseIdleTime),
 			samforwarderudp.SetAccessListType(config.AccessListType),
 			samforwarderudp.SetAccessList(config.AccessList),
 		)
