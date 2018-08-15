@@ -450,6 +450,40 @@ func (c *Conf) GetUseCompression(arg, def bool) bool {
 	return arg
 }
 
+// GetCloseOnIdle takes an argument and a default. If the argument differs from the
+// default, the argument is always returned. If the argument and default are
+// the same and the key exists, the key is returned. If the key is absent, the
+// default is returned.
+func (c *Conf) GetCloseOnIdle(arg, def bool) bool {
+	if arg != def {
+		return arg
+	}
+	if c.config == nil {
+		return arg
+	}
+	if x, o := c.GetBool("i2cp.closeOnIdle"); o {
+		return x
+	}
+	return arg
+}
+
+// GetCloseIdleTime takes an argument and a default. If the argument differs from the
+// default, the argument is always returned. If the argument and default are
+// the same and the key exists, the key is returned. If the key is absent, the
+// default is returned.
+func (c *Conf) GetCloseIdleTime(arg, def int) int {
+	if arg != def {
+		return arg
+	}
+	if c.config == nil {
+		return arg
+	}
+	if x, o := c.GetInt("i2cp.closeIdleTime"); o {
+		return x
+	}
+	return arg
+}
+
 // GetReduceOnIdle takes an argument and a default. If the argument differs from the
 // default, the argument is always returned. If the argument and default are
 // the same and the key exists, the key is returned. If the key is absent, the
