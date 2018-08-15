@@ -93,6 +93,22 @@ func TestOptionReduceIdleQuantity(t *testing.T) {
 	log.Println(client.Base32())
 }
 
+func TestOptionReduceIdleTimeMs(t *testing.T) {
+	client, err := NewSAMForwarderFromOptions(SetReduceIdleTimeMs(300000))
+	if err != nil {
+		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
+	}
+	log.Println(client.Base32())
+}
+
+func TestOptionReduceIdleTime(t *testing.T) {
+	client, err := NewSAMForwarderFromOptions(SetReduceIdleTime(6))
+	if err != nil {
+		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
+	}
+	log.Println(client.Base32())
+}
+
 func TestOptionEncryptLease(t *testing.T) {
 	client, err := NewSAMForwarderFromOptions(SetEncrypt(true))
 	if err != nil {
