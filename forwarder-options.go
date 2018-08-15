@@ -233,7 +233,7 @@ func SetReduceIdleTime(u int) func(*SAMForwarder) error {
 			c.reduceIdleTime = strconv.Itoa((u * 60) * 1000)
 			return nil
 		}
-		return fmt.Errorf("Invalid reduce idle timeout(Measured in minutes)")
+		return fmt.Errorf("Invalid reduce idle timeout(Measured in minutes)%s", u)
 	}
 }
 
@@ -244,7 +244,7 @@ func SetReduceIdleTimeMs(u int) func(*SAMForwarder) error {
 			c.reduceIdleTime = strconv.Itoa(u)
 			return nil
 		}
-		return fmt.Errorf("Invalid reduce idle timeout(Measured in milliseconds)")
+		return fmt.Errorf("Invalid reduce idle timeout(Measured in milliseconds)%s", u)
 	}
 }
 
@@ -274,22 +274,22 @@ func SetCloseIdle(b bool) func(*SAMForwarder) error {
 //SetCloseIdleTime sets the time to wait before closing tunnels to idle levels
 func SetCloseIdleTime(u int) func(*SAMForwarder) error {
 	return func(c *SAMForwarder) error {
-		if u > 6 {
-			c.closeIdleTime = strconv.Itoa((u * 60) * 2000)
+		if u >= 6 {
+			c.closeIdleTime = strconv.Itoa((u * 60) * 1000)
 			return nil
 		}
-		return fmt.Errorf("Invalid reduce idle timeout(Measured in minutes)")
+		return fmt.Errorf("Invalid reduce idle timeout(Measured in minutes) %s", u)
 	}
 }
 
 //SetCloseIdleTimeMs sets the time to wait before closing tunnels to idle levels in milliseconds
 func SetCloseIdleTimeMs(u int) func(*SAMForwarder) error {
 	return func(c *SAMForwarder) error {
-		if u > 600000 {
+		if u >= 300000 {
 			c.closeIdleTime = strconv.Itoa(u)
 			return nil
 		}
-		return fmt.Errorf("Invalid reduce idle timeout(Measured in milliseconds)")
+		return fmt.Errorf("Invalid reduce idle timeout(Measured in milliseconds)%s", u)
 	}
 }
 

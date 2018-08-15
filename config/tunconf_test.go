@@ -6,10 +6,10 @@ import (
 )
 
 func TestConf(t *testing.T) {
-    log.Println("testing configuration loader")
+	log.Println("testing configuration loader")
 	if config, err := NewI2PTunConf("../etc/sam-forwarder/tunnels.ini"); err != nil {
 		log.Fatal(err)
-	}else{
-        log.Println(config.Print())
-    }
+	} else {
+		log.Println(config.Print())
+	}
 }

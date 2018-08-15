@@ -502,10 +502,10 @@ func (c *Conf) GetReduceIdleQuantity(arg, def int) int {
 }
 
 // I2PINILoad loads variables from an ini file into the Conf data structure.
-func (c *Conf) I2PINILoad(iniFile string) (error) {
-    var err error
+func (c *Conf) I2PINILoad(iniFile string) error {
+	var err error
 	if iniFile != "none" {
-        c.config = goini.New()
+		c.config = goini.New()
 		err = c.config.ParseFile(iniFile)
 		if err != nil {
 			return err
@@ -623,9 +623,9 @@ func (c *Conf) I2PINILoad(iniFile string) (error) {
 			c.ReduceIdle = false
 		}
 		if v, ok := c.config.GetInt("i2cp.reduceIdleTime"); ok {
-			c.ReduceIdleTime = (v / 1000) / 60
+			c.ReduceIdleTime = v
 		} else {
-			c.ReduceIdleTime = (6 * 60) * 1000
+			c.ReduceIdleTime = v
 		}
 		if v, ok := c.config.GetInt("i2cp.reduceQuantity"); ok {
 			c.ReduceIdleQuantity = v
@@ -639,9 +639,9 @@ func (c *Conf) I2PINILoad(iniFile string) (error) {
 			c.CloseIdle = false
 		}
 		if v, ok := c.config.GetInt("i2cp.closeIdleTime"); ok {
-			c.CloseIdleTime = (v / 2000) / 60
+			c.CloseIdleTime = v
 		} else {
-			c.CloseIdleTime = (6 * 60) * 2000
+			c.CloseIdleTime = v
 		}
 
 		if v, ok := c.config.GetBool("i2cp.enableBlackList"); ok {
@@ -663,14 +663,14 @@ func (c *Conf) I2PINILoad(iniFile string) (error) {
 				c.AccessList = append(c.AccessList, z)
 			}
 		}
-        log.Println(c.Print())
+		log.Println(c.Print())
 	}
-    return nil
+	return nil
 }
 
 // NewI2PBlankTunConf returns an empty but intialized tunconf
 func NewI2PBlankTunConf() *Conf {
-    var c Conf
+	var c Conf
 	return &c
 }
 
@@ -709,7 +709,7 @@ func NewSAMForwarderFromConf(config *Conf) (*samforwarder.SAMForwarder, error) {
 			samforwarder.SetAllowZeroOut(config.OutAllowZeroHop),
 			samforwarder.SetCompress(config.UseCompression),
 			samforwarder.SetReduceIdle(config.ReduceIdle),
-			samforwarder.SetReduceIdleTime(config.ReduceIdleTime),
+			samforwarder.SetReduceIdleTimeMs(config.ReduceIdleTime),
 			samforwarder.SetReduceIdleQuantity(config.ReduceIdleQuantity),
 			samforwarder.SetCloseIdle(config.CloseIdle),
 			samforwarder.SetCloseIdleTime(config.CloseIdleTime),
@@ -748,7 +748,7 @@ func NewSAMForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforwarder.
 			samforwarder.SetAllowZeroOut(config.OutAllowZeroHop),
 			samforwarder.SetCompress(config.UseCompression),
 			samforwarder.SetReduceIdle(config.ReduceIdle),
-			samforwarder.SetReduceIdleTime(config.ReduceIdleTime),
+			samforwarder.SetReduceIdleTimeMs(config.ReduceIdleTime),
 			samforwarder.SetReduceIdleQuantity(config.ReduceIdleQuantity),
 			samforwarder.SetCloseIdle(config.CloseIdle),
 			samforwarder.SetCloseIdleTime(config.CloseIdleTime),
@@ -787,7 +787,7 @@ func NewSAMSSUForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforward
 			samforwarderudp.SetAllowZeroOut(config.OutAllowZeroHop),
 			samforwarderudp.SetCompress(config.UseCompression),
 			samforwarderudp.SetReduceIdle(config.ReduceIdle),
-			samforwarderudp.SetReduceIdleTime(config.ReduceIdleTime),
+			samforwarderudp.SetReduceIdleTimeMs(config.ReduceIdleTime),
 			samforwarderudp.SetReduceIdleQuantity(config.ReduceIdleQuantity),
 			samforwarderudp.SetCloseIdle(config.CloseIdle),
 			samforwarderudp.SetCloseIdleTime(config.CloseIdleTime),
@@ -822,7 +822,7 @@ func NewSAMSSUForwarderFromConf(config *Conf) (*samforwarderudp.SAMSSUForwarder,
 			samforwarderudp.SetAllowZeroOut(config.OutAllowZeroHop),
 			samforwarderudp.SetCompress(config.UseCompression),
 			samforwarderudp.SetReduceIdle(config.ReduceIdle),
-			samforwarderudp.SetReduceIdleTime(config.ReduceIdleTime),
+			samforwarderudp.SetReduceIdleTimeMs(config.ReduceIdleTime),
 			samforwarderudp.SetReduceIdleQuantity(config.ReduceIdleQuantity),
 			samforwarderudp.SetCloseIdle(config.CloseIdle),
 			samforwarderudp.SetCloseIdleTime(config.CloseIdleTime),
