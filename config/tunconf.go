@@ -668,6 +668,12 @@ func (c *Conf) I2PINILoad(iniFile string) (error) {
     return nil
 }
 
+// NewI2PBlankTunConf returns an empty but intialized tunconf
+func NewI2PBlankTunConf() *Conf {
+    var c Conf
+	return &c
+}
+
 // NewI2PTunConf returns a Conf structure from an ini file, for modification
 // before starting the tunnel
 func NewI2PTunConf(iniFile string) (*Conf, error) {
