@@ -60,6 +60,8 @@ func main() {
 		"Directory to save tunnel configuration file in.")
 	iniFile := flag.String("ini", "none",
 		"Use an ini file for configuration(config file options override passed arguments for now.)")
+    //TargetDestination := flag.String("dest", "i2p-projekt.i2p",
+		//"Destination for client tunnels. Ignored for service tunnels.")
 	TargetHost := flag.String("host", "127.0.0.1",
 		"Target host(Host of service to forward to i2p)")
 	TargetPort := flag.String("port", "8081",
