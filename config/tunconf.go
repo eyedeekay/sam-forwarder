@@ -773,7 +773,7 @@ func (c *Conf) SetReduceIdleTime() {
 	if v, ok := c.config.GetInt("i2cp.reduceIdleTime"); ok {
 		c.ReduceIdleTime = v
 	} else {
-		c.ReduceIdleTime = 300000
+		c.ReduceIdleTime = strconv.Itoa(300000)
 	}
 
 }
@@ -803,7 +803,7 @@ func (c *Conf) SetCloseIdleTime() {
 	if v, ok := c.config.GetInt("i2cp.closeIdleTime"); ok {
 		c.CloseIdleTime = v
 	} else {
-		c.CloseIdleTime = 300000
+		c.CloseIdleTime = strconv.Itoa(300000)
 	}
 }
 
