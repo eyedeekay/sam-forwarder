@@ -103,7 +103,7 @@ func main() {
 	config.CloseIdleTime = config.GetReduceIdleTime(*closeIdleTime, 600000)
 	config.Type = config.GetType(*client, *udpMode, "server")
 
-	if config.client {
+	if config.Client {
 		if *targetDestination == "none" {
 			log.Fatal("Client mode requires you to specify a base32 or jump destination")
 		} else {
