@@ -95,7 +95,13 @@ gendoc: all
 docker-build:
 	docker build --build-arg user=$(eephttpd) --build-arg path=example/www -f Dockerfile -t eyedeekay/$(eephttpd) .
 
-docker-run:
+docker-volume:
+	docker run -i -t -d \
+		--name $(eephttpd)-volume \
+		--volume $(eephttpd):/home/$(eephttpd)/ \
+		eyedeekay/$(eephttpd); true
+
+docker-run: docker-volume
 	docker rm -f eephttpd; true
 	docker run -i -t -d \
 		--network $(network) \
@@ -106,8 +112,10 @@ docker-run:
 		--hostname $(eephttpd) \
 		--name $(eephttpd) \
 		--restart always \
-		--volume $(eephttpd):/home/$(eephttpd)/www \
+		--volumes-from $(eephttpd)-volume \
 		eyedeekay/$(eephttpd)
+
+docker: docker-build docker-volume docker-run
 
 docker-cmd:
 	@echo "### build in docker" >> USAGE.md

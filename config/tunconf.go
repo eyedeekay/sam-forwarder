@@ -694,9 +694,9 @@ func (c *Conf) SetOutLength() {
 // SetInQuantity sets the inbound tunnel quantity from config file
 func (c *Conf) SetInQuantity() {
 	if v, ok := c.config.GetInt("inbound.quantity"); ok {
-		c.OutQuantity = v
+		c.InQuantity = v
 	} else {
-		c.OutQuantity = 5
+		c.InQuantity = 5
 	}
 }
 
