@@ -1079,37 +1079,36 @@ func NewSAMSSUForwarderFromConf(config *Conf) (*samforwarderudp.SAMSSUForwarder,
 }
 
 // NewSAMSSUClientForwarderFromConf generates a SAMSSUforwarder from *i2ptunconf.Conf
-/*func NewSAMSSUClientForwarderFromConf(config *Conf) (*samforwarderudp.SAMSSUClientForwarder, error) {
+func NewSAMSSUClientForwarderFromConf(config *Conf) (*samforwarderudp.SAMSSUClientForwarder, error) {
 	if config != nil {
-		return samforwarderudp.NewSAMSSUForwarderFromOptions(
-			samforwarderudp.SetSaveFile(config.SaveFile),
-			samforwarderudp.SetFilePath(config.SaveDirectory),
-			samforwarderudp.SetHost(config.TargetHost),
-			samforwarderudp.SetPort(config.TargetPort),
-			samforwarderudp.SetSAMHost(config.SamHost),
-			samforwarderudp.SetSAMPort(config.SamPort),
-			samforwarderudp.SetName(config.TunName),
-			samforwarderudp.SetInLength(config.InLength),
-			samforwarderudp.SetOutLength(config.OutLength),
-			samforwarderudp.SetInVariance(config.InVariance),
-			samforwarderudp.SetOutVariance(config.OutVariance),
-			samforwarderudp.SetInQuantity(config.InQuantity),
-			samforwarderudp.SetOutQuantity(config.OutQuantity),
-			samforwarderudp.SetInBackups(config.InBackupQuantity),
-			samforwarderudp.SetOutBackups(config.OutBackupQuantity),
-			samforwarderudp.SetEncrypt(config.EncryptLeaseSet),
-			samforwarderudp.SetAllowZeroIn(config.InAllowZeroHop),
-			samforwarderudp.SetAllowZeroOut(config.OutAllowZeroHop),
-			samforwarderudp.SetCompress(config.UseCompression),
-			samforwarderudp.SetReduceIdle(config.ReduceIdle),
-			samforwarderudp.SetReduceIdleTimeMs(config.ReduceIdleTime),
-			samforwarderudp.SetReduceIdleQuantity(config.ReduceIdleQuantity),
-			samforwarderudp.SetCloseIdle(config.CloseIdle),
-			samforwarderudp.SetCloseIdleTimeMs(config.CloseIdleTime),
-			samforwarderudp.SetAccessListType(config.AccessListType),
-			samforwarderudp.SetAccessList(config.AccessList),
+		return samforwarderudp.NewSAMSSUClientForwarderFromOptions(
+			samforwarderudp.SetClientSaveFile(config.SaveFile),
+			samforwarderudp.SetClientFilePath(config.SaveDirectory),
+			samforwarderudp.SetClientHost(config.TargetHost),
+			samforwarderudp.SetClientPort(config.TargetPort),
+			samforwarderudp.SetClientSAMHost(config.SamHost),
+			samforwarderudp.SetClientSAMPort(config.SamPort),
+			samforwarderudp.SetClientName(config.TunName),
+			samforwarderudp.SetClientInLength(config.InLength),
+			samforwarderudp.SetClientOutLength(config.OutLength),
+			samforwarderudp.SetClientInVariance(config.InVariance),
+			samforwarderudp.SetClientOutVariance(config.OutVariance),
+			samforwarderudp.SetClientInQuantity(config.InQuantity),
+			samforwarderudp.SetClientOutQuantity(config.OutQuantity),
+			samforwarderudp.SetClientInBackups(config.InBackupQuantity),
+			samforwarderudp.SetClientOutBackups(config.OutBackupQuantity),
+			samforwarderudp.SetClientEncrypt(config.EncryptLeaseSet),
+			samforwarderudp.SetClientAllowZeroIn(config.InAllowZeroHop),
+			samforwarderudp.SetClientAllowZeroOut(config.OutAllowZeroHop),
+			samforwarderudp.SetClientCompress(config.UseCompression),
+			samforwarderudp.SetClientReduceIdle(config.ReduceIdle),
+			samforwarderudp.SetClientReduceIdleTimeMs(config.ReduceIdleTime),
+			samforwarderudp.SetClientReduceIdleQuantity(config.ReduceIdleQuantity),
+			samforwarderudp.SetClientCloseIdle(config.CloseIdle),
+			samforwarderudp.SetClientCloseIdleTimeMs(config.CloseIdleTime),
+			samforwarderudp.SetClientAccessListType(config.AccessListType),
+			samforwarderudp.SetClientAccessList(config.AccessList),
 		)
 	}
 	return nil, nil
 }
-*/
