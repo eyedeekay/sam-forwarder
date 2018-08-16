@@ -108,3 +108,139 @@ func TestOptionUDPSaveFile(t *testing.T) {
 	}
 	log.Println(client.Base32())
 }
+
+func TestClientOptionHost(t *testing.T) {
+	client, err := NewSAMSSUClientForwarderFromOptions(SetClientHost("127.0.0.1"))
+	if err != nil {
+		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
+	}
+	log.Println(client.Base32())
+}
+
+func TestClientOptionPort(t *testing.T) {
+	client, err := NewSAMSSUClientForwarderFromOptions(SetClientSAMPort("7656"))
+	if err != nil {
+		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
+	}
+	log.Println(client.Base32())
+}
+
+func TestClientOptionInLength(t *testing.T) {
+	client, err := NewSAMSSUClientForwarderFromOptions(SetClientInLength(3))
+	if err != nil {
+		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
+	}
+	log.Println(client.Base32())
+}
+
+func TestClientOptionOutLength(t *testing.T) {
+	client, err := NewSAMSSUClientForwarderFromOptions(SetClientInLength(3))
+	if err != nil {
+		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
+	}
+	log.Println(client.Base32())
+}
+
+func TestClientOptionInVariance(t *testing.T) {
+	client, err := NewSAMSSUClientForwarderFromOptions(SetClientInVariance(1))
+	if err != nil {
+		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
+	}
+	log.Println(client.Base32())
+}
+
+func TestClientOptionOutVariance(t *testing.T) {
+	client, err := NewSAMSSUClientForwarderFromOptions(SetClientOutVariance(1))
+	if err != nil {
+		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
+	}
+	log.Println(client.Base32())
+}
+
+func TestClientOptionInQuantity(t *testing.T) {
+	client, err := NewSAMSSUClientForwarderFromOptions(SetClientInQuantity(6))
+	if err != nil {
+		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
+	}
+	log.Println(client.Base32())
+}
+
+func TestClientOptionOutQuantity(t *testing.T) {
+	client, err := NewSAMSSUClientForwarderFromOptions(SetClientOutQuantity(6))
+	if err != nil {
+		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
+	}
+	log.Println(client.Base32())
+}
+
+func TestClientOptionInBackups(t *testing.T) {
+	client, err := NewSAMSSUClientForwarderFromOptions(SetClientInBackups(5))
+	if err != nil {
+		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
+	}
+	log.Println(client.Base32())
+}
+
+func TestClientOptionOutBackups(t *testing.T) {
+	client, err := NewSAMSSUClientForwarderFromOptions(SetClientOutBackups(5))
+	if err != nil {
+		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
+	}
+	log.Println(client.Base32())
+}
+
+func TestClientOptionReduceIdleQuantity(t *testing.T) {
+	client, err := NewSAMSSUClientForwarderFromOptions(SetClientReduceIdleQuantity(4))
+	if err != nil {
+		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
+	}
+	log.Println(client.Base32())
+}
+
+func TestClientOptionReduceIdleTimeMs(t *testing.T) {
+	client, err := NewSAMSSUClientForwarderFromOptions(SetClientReduceIdleTimeMs(300000))
+	if err != nil {
+		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
+	}
+	log.Println(client.Base32())
+}
+
+func TestClientOptionReduceIdleTime(t *testing.T) {
+	client, err := NewSAMSSUClientForwarderFromOptions(SetClientReduceIdleTime(6))
+	if err != nil {
+		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
+	}
+	log.Println(client.Base32())
+}
+
+func TestClientOptionCloseIdleTimeMs(t *testing.T) {
+	client, err := NewSAMSSUClientForwarderFromOptions(SetClientCloseIdleTimeMs(300000))
+	if err != nil {
+		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
+	}
+	log.Println(client.Base32())
+}
+
+func TestClientOptionCloseIdleTime(t *testing.T) {
+	client, err := NewSAMSSUClientForwarderFromOptions(SetClientCloseIdleTime(6))
+	if err != nil {
+		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
+	}
+	log.Println(client.Base32())
+}
+
+func TestClientOptionEncryptLease(t *testing.T) {
+	client, err := NewSAMSSUClientForwarderFromOptions(SetClientEncrypt(true))
+	if err != nil {
+		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
+	}
+	log.Println(client.Base32())
+}
+
+func TestClientOptionSaveFile(t *testing.T) {
+	client, err := NewSAMSSUClientForwarderFromOptions(SetClientSaveFile(true))
+	if err != nil {
+		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
+	}
+	log.Println(client.Base32())
+}
