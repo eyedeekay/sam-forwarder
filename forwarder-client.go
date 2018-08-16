@@ -190,10 +190,10 @@ func NewSAMClientForwarderFromOptions(opts ...func(*SAMClientForwarder) error) (
 	s.encryptLeaseSet = "false"
 	s.useCompression = "true"
 	s.reduceIdle = "false"
-	s.reduceIdleTime = "15"
+	s.reduceIdleTime = "300000"
 	s.reduceIdleQuantity = "4"
 	s.closeIdle = "false"
-	s.closeIdleTime = "30"
+	s.closeIdleTime = "300000"
 	s.dest = "none"
 	for _, o := range opts {
 		if err := o(&s); err != nil {

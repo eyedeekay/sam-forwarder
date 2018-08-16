@@ -120,7 +120,7 @@ Usage of ./bin/eephttpd:
   -rc int
     	Reduce idle tunnel quantity to X (0 to 5) (default 3)
   -rt int
-    	Reduce tunnel quantity after X (minutes) (default 10)
+    	Reduce tunnel quantity after X (milliseconds) (default 600000)
   -s string
     	the directory to save the keys in(default ./) (default ".")
   -sh string
@@ -139,6 +139,9 @@ docker build --build-arg user=eephttpd  --build-arg path=example/www -f Dockerfi
 ### Run in docker
 
 ```
+```
+
+```
 docker run -i -t -d --network si \
     --env samhost=sam-host \
     --env samport=7656 \
@@ -147,7 +150,7 @@ docker run -i -t -d --network si \
     --hostname eephttpd \
     --name eephttpd \
     --restart always \
-    --volume eephttpd:/home/eephttpd/ \
+    --volumes-from eephttpd-volume \
     eyedeekay/eephttpd
 ```
 

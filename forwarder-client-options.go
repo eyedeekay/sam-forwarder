@@ -237,6 +237,7 @@ func SetClientReduceIdle(b bool) func(*SAMClientForwarder) error {
 //SetClientReduceIdleTime sets the time to wait before reducing tunnels to idle levels
 func SetClientReduceIdleTime(u int) func(*SAMClientForwarder) error {
 	return func(c *SAMClientForwarder) error {
+        c.reduceIdleTime = 300000
 		if u >= 6 {
 			c.reduceIdleTime = strconv.Itoa((u * 60) * 1000)
 			return nil
@@ -248,6 +249,7 @@ func SetClientReduceIdleTime(u int) func(*SAMClientForwarder) error {
 //SetClientReduceIdleTimeMs sets the time to wait before reducing tunnels to idle levels in milliseconds
 func SetClientReduceIdleTimeMs(u int) func(*SAMClientForwarder) error {
 	return func(c *SAMClientForwarder) error {
+        c.reduceIdleTime = 300000
 		if u >= 300000 {
 			c.reduceIdleTime = strconv.Itoa(u)
 			return nil
@@ -282,6 +284,7 @@ func SetClientCloseIdle(b bool) func(*SAMClientForwarder) error {
 //SetClientCloseIdleTime sets the time to wait before closing tunnels to idle levels
 func SetClientCloseIdleTime(u int) func(*SAMClientForwarder) error {
 	return func(c *SAMClientForwarder) error {
+        c.closeIdleTime = 300000
 		if u >= 6 {
 			c.closeIdleTime = strconv.Itoa((u * 60) * 1000)
 			return nil
@@ -293,6 +296,7 @@ func SetClientCloseIdleTime(u int) func(*SAMClientForwarder) error {
 //SetClientCloseIdleTimeMs sets the time to wait before closing tunnels to idle levels in milliseconds
 func SetClientCloseIdleTimeMs(u int) func(*SAMClientForwarder) error {
 	return func(c *SAMClientForwarder) error {
+        c.closeIdleTime = 300000
 		if u >= 300000 {
 			c.closeIdleTime = strconv.Itoa(u)
 			return nil

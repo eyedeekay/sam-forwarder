@@ -90,8 +90,8 @@ func main() {
 			samforwarder.SetAllowZeroOut(*allowZeroHop),
 			samforwarder.SetCompress(*useCompression),
 			samforwarder.SetReduceIdle(*reduceIdle),
-			samforwarder.SetReduceIdleTime(*reduceIdleTime),
-            samforwarder.SetCloseIdleTime(*reduceIdleTime),
+			samforwarder.SetReduceIdleTimeMs(*reduceIdleTime),
+            samforwarder.SetCloseIdleTimeMs(*reduceIdleTime),
 			samforwarder.SetReduceIdleQuantity(*reduceIdleQuantity),
 		)
 	}

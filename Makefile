@@ -93,7 +93,7 @@ gendoc: all
 	@cat USAGE.md
 
 docker-build:
-	docker build --build-arg user=$(eephttpd) --build-arg path=example/www -f Dockerfile -t eyedeekay/$(eephttpd) .
+	docker build --force-rm --no-cache --build-arg user=$(eephttpd) --build-arg path=example/www -f Dockerfile -t eyedeekay/$(eephttpd) .
 
 docker-volume:
 	docker run -i -t -d \
@@ -103,7 +103,7 @@ docker-volume:
 
 docker-run: docker-volume
 	docker rm -f eephttpd; true
-	docker run -i -t -d \
+	docker run -i -t \
 		--network $(network) \
 		--env samhost=$(samhost) \
 		--env samport=$(samport) \
@@ -127,6 +127,13 @@ docker-cmd:
 	@echo "### Run in docker" >> USAGE.md
 	@echo "" >> USAGE.md
 	@echo '```' >> USAGE.md
+	@echo "docker run -i -t -d \\"
+	@echo "    --name $(eephttpd)-volume \\"
+	@echo "    --volume $(eephttpd):/home/$(eephttpd)/ \\"
+	@echo "    eyedeekay/$(eephttpd)"
+	@echo '```' >> USAGE.md
+	@echo "" >> USAGE.md
+	@echo '```' >> USAGE.md
 	@echo "docker run -i -t -d --network $(network) \\" >> USAGE.md
 	@echo "    --env samhost=$(samhost) \\" >> USAGE.md
 	@echo "    --env samport=$(samport) \\" >> USAGE.md
@@ -135,7 +142,7 @@ docker-cmd:
 	@echo "    --hostname $(eephttpd) \\" >> USAGE.md
 	@echo "    --name $(eephttpd) \\" >> USAGE.md
 	@echo "    --restart always \\" >> USAGE.md
-	@echo "    --volume $(eephttpd):/home/$(eephttpd)/ \\" >> USAGE.md
+	@echo "    --volumes-from $(eephttpd)-volume \\" >> USAGE.md
 	@echo "    eyedeekay/$(eephttpd)" >> USAGE.md
 	@echo '```' >> USAGE.md
 

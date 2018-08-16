@@ -195,7 +195,7 @@ func NewSAMForwarderFromOptions(opts ...func(*SAMForwarder) error) (*SAMForwarde
 	s.reduceIdleTime = "15"
 	s.reduceIdleQuantity = "4"
 	s.closeIdle = "false"
-	s.closeIdleTime = "30"
+	s.closeIdleTime = "300000"
 	for _, o := range opts {
 		if err := o(&s); err != nil {
 			return nil, err
