@@ -100,10 +100,11 @@ docker-volume:
 		--name $(eephttpd)-volume \
 		--volume $(eephttpd):/home/$(eephttpd)/ \
 		eyedeekay/$(eephttpd); true
+	docker stop $(eephttpd)-volume; true
 
 docker-run: docker-volume
 	docker rm -f eephttpd; true
-	docker run -i -t \
+	docker run -i -t -d \
 		--network $(network) \
 		--env samhost=$(samhost) \
 		--env samport=$(samport) \
@@ -114,6 +115,8 @@ docker-run: docker-volume
 		--restart always \
 		--volumes-from $(eephttpd)-volume \
 		eyedeekay/$(eephttpd)
+	docker rm -f $(eephttpd)-volume; true
+	docker logs -f $(eephttpd)
 
 docker: docker-build docker-volume docker-run
 
