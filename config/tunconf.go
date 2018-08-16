@@ -972,34 +972,7 @@ func NewSAMForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforwarder.
 		if err != nil {
 			return nil, err
 		}
-		return samforwarder.NewSAMForwarderFromOptions(
-			samforwarder.SetSaveFile(config.SaveFile),
-			samforwarder.SetFilePath(config.SaveDirectory),
-			samforwarder.SetHost(config.TargetHost),
-			samforwarder.SetPort(config.TargetPort),
-			samforwarder.SetSAMHost(config.SamHost),
-			samforwarder.SetSAMPort(config.SamPort),
-			samforwarder.SetName(config.TunName),
-			samforwarder.SetInLength(config.InLength),
-			samforwarder.SetOutLength(config.OutLength),
-			samforwarder.SetInVariance(config.InVariance),
-			samforwarder.SetOutVariance(config.OutVariance),
-			samforwarder.SetInQuantity(config.InQuantity),
-			samforwarder.SetOutQuantity(config.OutQuantity),
-			samforwarder.SetInBackups(config.InBackupQuantity),
-			samforwarder.SetOutBackups(config.OutBackupQuantity),
-			samforwarder.SetEncrypt(config.EncryptLeaseSet),
-			samforwarder.SetAllowZeroIn(config.InAllowZeroHop),
-			samforwarder.SetAllowZeroOut(config.OutAllowZeroHop),
-			samforwarder.SetCompress(config.UseCompression),
-			samforwarder.SetReduceIdle(config.ReduceIdle),
-			samforwarder.SetReduceIdleTimeMs(config.ReduceIdleTime),
-			samforwarder.SetReduceIdleQuantity(config.ReduceIdleQuantity),
-			samforwarder.SetCloseIdle(config.CloseIdle),
-			samforwarder.SetCloseIdleTimeMs(config.CloseIdleTime),
-			samforwarder.SetAccessListType(config.AccessListType),
-			samforwarder.SetAccessList(config.AccessList),
-		)
+		return NewSAMForwarderFromConf(config)
 	}
 	return nil, nil
 }
@@ -1011,34 +984,31 @@ func NewSAMSSUForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforward
 		if err != nil {
 			return nil, err
 		}
-		return samforwarderudp.NewSAMSSUForwarderFromOptions(
-			samforwarderudp.SetSaveFile(config.SaveFile),
-			samforwarderudp.SetFilePath(config.SaveDirectory),
-			samforwarderudp.SetHost(config.TargetHost),
-			samforwarderudp.SetPort(config.TargetPort),
-			samforwarderudp.SetSAMHost(config.SamHost),
-			samforwarderudp.SetSAMPort(config.SamPort),
-			samforwarderudp.SetName(config.TunName),
-			samforwarderudp.SetInLength(config.InLength),
-			samforwarderudp.SetOutLength(config.OutLength),
-			samforwarderudp.SetInVariance(config.InVariance),
-			samforwarderudp.SetOutVariance(config.OutVariance),
-			samforwarderudp.SetInQuantity(config.InQuantity),
-			samforwarderudp.SetOutQuantity(config.OutQuantity),
-			samforwarderudp.SetInBackups(config.InBackupQuantity),
-			samforwarderudp.SetOutBackups(config.OutBackupQuantity),
-			samforwarderudp.SetEncrypt(config.EncryptLeaseSet),
-			samforwarderudp.SetAllowZeroIn(config.InAllowZeroHop),
-			samforwarderudp.SetAllowZeroOut(config.OutAllowZeroHop),
-			samforwarderudp.SetCompress(config.UseCompression),
-			samforwarderudp.SetReduceIdle(config.ReduceIdle),
-			samforwarderudp.SetReduceIdleTimeMs(config.ReduceIdleTime),
-			samforwarderudp.SetReduceIdleQuantity(config.ReduceIdleQuantity),
-			samforwarderudp.SetCloseIdle(config.CloseIdle),
-			samforwarderudp.SetCloseIdleTimeMs(config.CloseIdleTime),
-			samforwarderudp.SetAccessListType(config.AccessListType),
-			samforwarderudp.SetAccessList(config.AccessList),
-		)
+		return NewSAMSSUForwarderFromConf(config)
+	}
+	return nil, nil
+}
+
+// NewSAMClientForwarderFromConfig generates a new SAMForwarder from a config file
+func NewSAMClientForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforwarder.SAMClientForwarder, error) {
+	if iniFile != "none" {
+		config, err := NewI2PTunConf(iniFile)
+		if err != nil {
+			return nil, err
+		}
+		return NewSAMClientForwarderFromConf(config)
+	}
+	return nil, nil
+}
+
+// NewSAMSSUClientForwarderFromConfig generates a new SAMSSUForwarder from a config file
+func NewSAMSSUClientForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforwarderudp.SAMSSUClientForwarder, error) {
+	if iniFile != "none" {
+		config, err := NewI2PTunConf(iniFile)
+		if err != nil {
+			return nil, err
+		}
+		return NewSAMSSUClientForwarderFromConf(config)
 	}
 	return nil, nil
 }
