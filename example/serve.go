@@ -38,8 +38,8 @@ func main() {
 
 	reduceIdle := flag.Bool("r", false,
 		"Reduce tunnel quantity when idle(true or false)")
-	reduceIdleTime := flag.Int("rt", 10,
-		"Reduce tunnel quantity after X (minutes)")
+	reduceIdleTime := flag.Int("rt", 600000,
+		"Reduce tunnel quantity after X (milliseconds)")
 	reduceIdleQuantity := flag.Int("rc", 3,
 		"Reduce idle tunnel quantity to X (0 to 5)")
 
@@ -91,6 +91,7 @@ func main() {
 			samforwarder.SetCompress(*useCompression),
 			samforwarder.SetReduceIdle(*reduceIdle),
 			samforwarder.SetReduceIdleTime(*reduceIdleTime),
+            samforwarder.SetCloseIdleTime(*reduceIdleTime),
 			samforwarder.SetReduceIdleQuantity(*reduceIdleQuantity),
 		)
 	}
