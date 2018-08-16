@@ -1030,3 +1030,39 @@ func NewSAMSSUForwarderFromConf(config *Conf) (*samforwarderudp.SAMSSUForwarder,
 	}
 	return nil, nil
 }
+
+// NewSAMSSUClientForwarderFromConf generates a SAMSSUforwarder from *i2ptunconf.Conf
+/*func NewSAMSSUClientForwarderFromConf(config *Conf) (*samforwarderudp.SAMSSUClientForwarder, error) {
+	if config != nil {
+		return samforwarderudp.NewSAMSSUForwarderFromOptions(
+			samforwarderudp.SetSaveFile(config.SaveFile),
+			samforwarderudp.SetFilePath(config.SaveDirectory),
+			samforwarderudp.SetHost(config.TargetHost),
+			samforwarderudp.SetPort(config.TargetPort),
+			samforwarderudp.SetSAMHost(config.SamHost),
+			samforwarderudp.SetSAMPort(config.SamPort),
+			samforwarderudp.SetName(config.TunName),
+			samforwarderudp.SetInLength(config.InLength),
+			samforwarderudp.SetOutLength(config.OutLength),
+			samforwarderudp.SetInVariance(config.InVariance),
+			samforwarderudp.SetOutVariance(config.OutVariance),
+			samforwarderudp.SetInQuantity(config.InQuantity),
+			samforwarderudp.SetOutQuantity(config.OutQuantity),
+			samforwarderudp.SetInBackups(config.InBackupQuantity),
+			samforwarderudp.SetOutBackups(config.OutBackupQuantity),
+			samforwarderudp.SetEncrypt(config.EncryptLeaseSet),
+			samforwarderudp.SetAllowZeroIn(config.InAllowZeroHop),
+			samforwarderudp.SetAllowZeroOut(config.OutAllowZeroHop),
+			samforwarderudp.SetCompress(config.UseCompression),
+			samforwarderudp.SetReduceIdle(config.ReduceIdle),
+			samforwarderudp.SetReduceIdleTimeMs(config.ReduceIdleTime),
+			samforwarderudp.SetReduceIdleQuantity(config.ReduceIdleQuantity),
+			samforwarderudp.SetCloseIdle(config.CloseIdle),
+			samforwarderudp.SetCloseIdleTimeMs(config.CloseIdleTime),
+			samforwarderudp.SetAccessListType(config.AccessListType),
+			samforwarderudp.SetAccessList(config.AccessList),
+		)
+	}
+	return nil, nil
+}
+*/

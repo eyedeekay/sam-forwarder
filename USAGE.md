@@ -40,6 +40,8 @@ Usage of ./bin/ephsite:
     	Set inbound tunnel length(0 to 7) (default 3)
   -invar int
     	Set inbound tunnel length variance(-7 to 7)
+  -lsk string
+    	path to saved encrypted leaseset keys (default "none")
   -name string
     	Tunnel name, this must be unique but can be anything. (default "forwarder")
   -outback int
