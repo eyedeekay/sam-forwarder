@@ -1,12 +1,15 @@
 package i2ptunconf
 
 import (
-	"github.com/eyedeekay/sam-forwarder"
-	"github.com/eyedeekay/sam-forwarder/udp"
-	"github.com/zieckey/goini"
 	"log"
 	"strconv"
 	"strings"
+)
+
+import (
+	"github.com/eyedeekay/sam-forwarder"
+	"github.com/eyedeekay/sam-forwarder/udp"
+	"github.com/zieckey/goini"
 )
 
 // Conf is a tructure containing an ini config, with some functions to help
@@ -163,7 +166,7 @@ func (c *Conf) GetType(argc, argu bool, def string) string {
 	}
 	if argc {
 		typ += "client"
-        c.Client = true
+		c.Client = true
 	} else {
 		typ += "server"
 	}

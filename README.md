@@ -30,8 +30,9 @@ generate tunnels from snippets of i2pd tunnel configuration files. That's kinda
 useful. It appears to be more-or-less compatible with i2pd's tunnels.conf
 format, but it only supports the following options:
 
+        type = server
         host = 127.0.0.1
-        port = 22
+        port = 8081
         dir = /path/to/save/data/in #This is not shared with i2pd tunnels.conf
         inbound.length = 6
         outbound.length = 6
@@ -51,7 +52,7 @@ format, but it only supports the following options:
         i2cp.enableWhiteList = false
         i2cp.enableBlackList = true
         i2cp.accessList = BASE64KEYSSEPARATEDBY,COMMAS
-        keys = ssh.dat
+        keys = forwarder
 
 Also it doesn't support sections. Didn't realize that at first. Will address
 soon.

@@ -91,12 +91,12 @@ func (f *SAMClientForwarder) sam() string {
 	return f.SamHost + ":" + f.SamPort
 }
 
-//Base32 returns the base32 address where the local service is being forwarded
+//Base32 returns the base32 address of the local destination
 func (f *SAMClientForwarder) Base32() string {
 	return f.SamKeys.Addr().Base32()
 }
 
-//Base64 returns the base64 address where the local service is being forwarded
+//Base64 returns the base64 address of the local destiantion
 func (f *SAMClientForwarder) Base64() string {
 	return f.SamKeys.Addr().Base64()
 }
