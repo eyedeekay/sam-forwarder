@@ -8,10 +8,10 @@ func ClientMode() {
 	if *udpMode {
 
 	} else {
-		log.Println("Redirecting tcp", *TargetHost+":"+*TargetPort, "to i2p")
+		log.Println("Proxying tcp", *TargetHost+":"+*TargetPort, "to", *TargetDestination)
 		forwarder, err := i2ptunconf.NewSAMClientForwarderFromConf(config)
 		if err == nil {
-			forwarder.Serve()
+			forwarder.Serve(*TargetDestination)
 		} else {
 			log.Println(err.Error())
 		}

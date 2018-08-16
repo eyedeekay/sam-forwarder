@@ -106,8 +106,8 @@ func main() {
 		if *TargetDestination == "none" {
 			log.Fatal("Client mode requires you to specify a base32 or jump destination")
 		} else {
-			log.Println("Client mode not implemented yet.")
-			//ClientMode()
+			log.Println("Client mode is still experimental.")
+			ClientMode()
 		}
 	} else {
 		ServeMode()
