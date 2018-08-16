@@ -1,6 +1,7 @@
 # sam-forwarder
-Forward a local port to i2p over the SAM API. This is a work-in-progress, but
-the basic functionality is there and it's already pretty useful.
+Forward a local port to i2p over the SAM API, or proxy a destination to a port
+on the local host. This is a work-in-progress, but the basic functionality is,
+there and it's already pretty useful.
 
 ## building
 

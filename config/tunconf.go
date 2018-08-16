@@ -535,6 +535,256 @@ func (c *Conf) GetReduceIdleQuantity(arg, def int) int {
 	return arg
 }
 
+// SetDir
+func (c *Conf) SetDir() {
+	if v, ok := c.config.Get("dir"); ok {
+		c.SaveDirectory = v
+	} else {
+		c.SaveDirectory = "./"
+	}
+}
+
+// SetKeys
+func (c *Conf) SetKeys() {
+	if _, ok := c.config.Get("keys"); ok {
+		c.SaveFile = true
+	} else {
+		c.SaveFile = false
+	}
+}
+
+// SetHost
+func (c *Conf) SetHost() {
+	if v, ok := c.config.Get("host"); ok {
+		c.TargetHost = strings.Replace(v, ":", "", -1)
+	} else {
+		c.TargetHost = "127.0.0.1"
+	}
+}
+
+// SetPort
+func (c *Conf) SetPort() {
+	if v, ok := c.config.Get("port"); ok {
+		c.TargetPort = strings.Replace(v, ":", "", -1)
+	} else {
+		c.TargetPort = "8081"
+	}
+}
+
+// Set
+func (c *Conf) SetSAMHost() {
+	if v, ok := c.config.Get("samhost"); ok {
+		c.SamHost = strings.Replace(v, ":", "", -1)
+	} else {
+		c.SamHost = "127.0.0.1"
+	}
+}
+
+// Set
+func (c *Conf) SetSAMPort() {
+	if v, ok := c.config.Get("samport"); ok {
+		c.SamPort = strings.Replace(v, ":", "", -1)
+	} else {
+		c.SamPort = "7656"
+	}
+}
+
+// Set
+func (c *Conf) SetTunName() {
+	if v, ok := c.config.Get("keys"); ok {
+		c.TunName = v
+	} else {
+		c.TunName = "fowarder"
+	}
+}
+
+// Set
+func (c *Conf) SetEncryptLease() {
+	if v, ok := c.config.GetBool("i2cp.encryptLeaseSet"); ok {
+		c.EncryptLeaseSet = v
+	} else {
+		c.EncryptLeaseSet = false
+	}
+}
+
+// Set
+func (c *Conf) SetAllowZeroHopIn() {
+	if v, ok := c.config.GetBool("inbound.allowZeroHop"); ok {
+		c.InAllowZeroHop = v
+	} else {
+		c.InAllowZeroHop = false
+	}
+
+}
+
+// Set
+func (c *Conf) SetAllowZeroHopOut() {
+	if v, ok := c.config.GetBool("outbound.allowZeroHop"); ok {
+		c.OutAllowZeroHop = v
+	} else {
+		c.OutAllowZeroHop = false
+	}
+}
+
+// Set
+func (c *Conf) SetInLength() {
+	if v, ok := c.config.GetInt("outbound.length"); ok {
+		c.OutLength = v
+	} else {
+		c.OutLength = 3
+	}
+}
+
+// Set
+func (c *Conf) SetOutLength() {
+	if v, ok := c.config.GetInt("inbound.length"); ok {
+		c.InLength = v
+	} else {
+		c.InLength = 3
+	}
+
+}
+
+// Set
+func (c *Conf) SetInQuantity() {
+	if v, ok := c.config.GetInt("inbound.quantity"); ok {
+		c.OutQuantity = v
+	} else {
+		c.OutQuantity = 5
+	}
+}
+
+// Set
+func (c *Conf) SetOutQuantity() {
+	if v, ok := c.config.GetInt("outbound.quantity"); ok {
+		c.OutQuantity = v
+	} else {
+		c.OutQuantity = 5
+	}
+}
+
+// Set
+func (c *Conf) SetInVariance() {
+	if v, ok := c.config.GetInt("inbound.variance"); ok {
+		c.InVariance = v
+	} else {
+		c.InVariance = 0
+	}
+
+}
+
+// Set
+func (c *Conf) SetOutVariance() {
+	if v, ok := c.config.GetInt("outbound.variance"); ok {
+		c.OutVariance = v
+	} else {
+		c.OutVariance = 0
+	}
+
+}
+
+// Set
+func (c *Conf) SetInBackups() {
+	if v, ok := c.config.GetInt("inbound.backupQuantity"); ok {
+		c.InBackupQuantity = v
+	} else {
+		c.InBackupQuantity = 2
+	}
+
+}
+
+// Set
+func (c *Conf) SetOutBackups() {
+	if v, ok := c.config.GetInt("outbound.backupQuantity"); ok {
+		c.OutBackupQuantity = v
+	} else {
+		c.OutBackupQuantity = 2
+	}
+}
+
+// Set
+func (c *Conf) SetCompressed() {
+	if v, ok := c.config.GetBool("gzip"); ok {
+		c.UseCompression = v
+	} else {
+		c.UseCompression = true
+	}
+
+}
+
+// Set
+func (c *Conf) SetReduceIdle() {
+	if v, ok := c.config.GetBool("i2cp.reduceOnIdle"); ok {
+		c.ReduceIdle = v
+	} else {
+		c.ReduceIdle = false
+	}
+
+}
+
+// Set
+func (c *Conf) SetReduceIdleTime() {
+	if v, ok := c.config.GetInt("i2cp.reduceIdleTime"); ok {
+		c.ReduceIdleTime = v
+	} else {
+		c.ReduceIdleTime = v
+	}
+
+}
+
+// Set
+func (c *Conf) SetReduceIdleQuantity() {
+	if v, ok := c.config.GetInt("i2cp.reduceQuantity"); ok {
+		c.ReduceIdleQuantity = v
+	} else {
+		c.ReduceIdleQuantity = 3
+	}
+
+}
+
+// Set
+func (c *Conf) SetCloseIdle() {
+	if v, ok := c.config.GetBool("i2cp.closeOnIdle"); ok {
+		c.CloseIdle = v
+	} else {
+		c.CloseIdle = false
+	}
+
+}
+
+// Set
+func (c *Conf) SetCloseIdleTime() {
+	if v, ok := c.config.GetInt("i2cp.closeIdleTime"); ok {
+		c.CloseIdleTime = v
+	} else {
+		c.CloseIdleTime = v
+	}
+}
+
+// Set
+func (c *Conf) SetAccessListType() {
+	if v, ok := c.config.GetBool("i2cp.enableBlackList"); ok {
+		if v {
+			c.AccessListType = "blacklist"
+		}
+	}
+	if v, ok := c.config.GetBool("i2cp.enableAccessList"); ok {
+		if v {
+			c.AccessListType = "whitelist"
+		}
+	}
+	if c.AccessListType != "whitelist" && c.AccessListType != "blacklist" {
+		c.AccessListType = "none"
+	}
+}
+
+/*
+// Set
+func (c *Conf) Set() {
+
+}
+*/
+
 // I2PINILoad loads variables from an ini file into the Conf data structure.
 func (c *Conf) I2PINILoad(iniFile string) error {
 	var err error
@@ -544,153 +794,32 @@ func (c *Conf) I2PINILoad(iniFile string) error {
 		if err != nil {
 			return err
 		}
+		c.SetDir()
+		c.SetKeys()
+		c.SetHost()
+		c.SetPort()
+		c.SetSAMHost()
+		c.SetSAMPort()
+		c.SetTunName()
+		c.SetEncryptLease()
+		c.SetAllowZeroHopIn()
+		c.SetAllowZeroHopOut()
+		c.SetInLength()
+		c.SetOutLength()
+		c.SetInQuantity()
+		c.SetOutQuantity()
+		c.SetInVariance()
+		c.SetOutVariance()
+		c.SetInBackups()
+		c.SetOutBackups()
+		c.SetCompressed()
+		c.SetReduceIdle()
+		c.SetReduceIdleTime()
+		c.SetReduceIdleQuantity()
+		c.SetCloseIdle()
+		c.SetCloseIdleTime()
+		c.SetAccessListType()
 
-		if v, ok := c.config.Get("dir"); ok {
-			c.SaveDirectory = v
-		} else {
-			c.SaveDirectory = "./"
-		}
-
-		if _, ok := c.config.Get("keys"); ok {
-			c.SaveFile = true
-		} else {
-			c.SaveFile = false
-		}
-
-		if v, ok := c.config.Get("host"); ok {
-			c.TargetHost = strings.Replace(v, ":", "", -1)
-		} else {
-			c.TargetHost = "127.0.0.1"
-		}
-		if v, ok := c.config.Get("port"); ok {
-			c.TargetPort = strings.Replace(v, ":", "", -1)
-		} else {
-			c.TargetPort = "8081"
-		}
-
-		if v, ok := c.config.Get("samhost"); ok {
-			c.SamHost = strings.Replace(v, ":", "", -1)
-		} else {
-			c.SamHost = "127.0.0.1"
-		}
-		if v, ok := c.config.Get("samport"); ok {
-			c.SamPort = strings.Replace(v, ":", "", -1)
-		} else {
-			c.SamPort = "7656"
-		}
-
-		if v, ok := c.config.Get("keys"); ok {
-			c.TunName = v
-		} else {
-			c.TunName = "fowarder"
-		}
-		if v, ok := c.config.GetBool("i2cp.encryptLeaseSet"); ok {
-			c.EncryptLeaseSet = v
-		} else {
-			c.EncryptLeaseSet = false
-		}
-
-		if v, ok := c.config.GetBool("inbound.allowZeroHop"); ok {
-			c.InAllowZeroHop = v
-		} else {
-			c.InAllowZeroHop = false
-		}
-		if v, ok := c.config.GetBool("outbound.allowZeroHop"); ok {
-			c.OutAllowZeroHop = v
-		} else {
-			c.OutAllowZeroHop = false
-		}
-
-		if v, ok := c.config.GetInt("inbound.length"); ok {
-			c.InLength = v
-		} else {
-			c.InLength = 3
-		}
-		if v, ok := c.config.GetInt("outbound.length"); ok {
-			c.OutLength = v
-		} else {
-			c.OutLength = 3
-		}
-
-		if v, ok := c.config.GetInt("inbound.quantity"); ok {
-			c.InQuantity = v
-		} else {
-			c.InQuantity = 5
-		}
-		if v, ok := c.config.GetInt("outbound.quantity"); ok {
-			c.OutQuantity = v
-		} else {
-			c.OutQuantity = 5
-		}
-
-		if v, ok := c.config.GetInt("inbound.variance"); ok {
-			c.InVariance = v
-		} else {
-			c.InVariance = 0
-		}
-		if v, ok := c.config.GetInt("outbound.variance"); ok {
-			c.OutVariance = v
-		} else {
-			c.OutVariance = 0
-		}
-
-		if v, ok := c.config.GetInt("inbound.backupQuantity"); ok {
-			c.InBackupQuantity = v
-		} else {
-			c.InBackupQuantity = 2
-		}
-		if v, ok := c.config.GetInt("outbound.backupQuantity"); ok {
-			c.OutBackupQuantity = v
-		} else {
-			c.OutBackupQuantity = 2
-		}
-
-		if v, ok := c.config.GetBool("gzip"); ok {
-			c.UseCompression = v
-		} else {
-			c.UseCompression = true
-		}
-
-		if v, ok := c.config.GetBool("i2cp.reduceOnIdle"); ok {
-			c.ReduceIdle = v
-		} else {
-			c.ReduceIdle = false
-		}
-		if v, ok := c.config.GetInt("i2cp.reduceIdleTime"); ok {
-			c.ReduceIdleTime = v
-		} else {
-			c.ReduceIdleTime = v
-		}
-		if v, ok := c.config.GetInt("i2cp.reduceQuantity"); ok {
-			c.ReduceIdleQuantity = v
-		} else {
-			c.ReduceIdleQuantity = 3
-		}
-
-		if v, ok := c.config.GetBool("i2cp.closeOnIdle"); ok {
-			c.CloseIdle = v
-		} else {
-			c.CloseIdle = false
-		}
-		if v, ok := c.config.GetInt("i2cp.closeIdleTime"); ok {
-			c.CloseIdleTime = v
-		} else {
-			c.CloseIdleTime = v
-		}
-
-		if v, ok := c.config.GetBool("i2cp.enableBlackList"); ok {
-			if v {
-				c.AccessListType = "blacklist"
-			}
-		}
-		if v, ok := c.config.GetBool("i2cp.enableAccessList"); ok {
-			if v {
-				c.AccessListType = "whitelist"
-			}
-		}
-		if c.AccessListType != "whitelist" && c.AccessListType != "blacklist" {
-			c.AccessListType = "none"
-		}
 		if v, ok := c.config.Get("i2cp.accessList"); ok {
 			csv := strings.Split(v, ",")
 			for _, z := range csv {
