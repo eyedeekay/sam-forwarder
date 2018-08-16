@@ -55,6 +55,9 @@ format, but it only supports the following options:
 Also it doesn't support sections. Didn't realize that at first. Will address
 soon.
 
+Other options are added to the config structure, but have to be referenced
+manually, there are no convenience functions for them.
+
 ## Static eepsite in like no seconds
 
 Using this port forwarder, it's possible to create an instant eepsite from a
@@ -145,7 +148,8 @@ existing flags should also be aliased to be more familiar and netcat-like.
 I want it to be able to use poorly formed ini files, in order to accomodate the
 use of INI-like labels. For now, my workaround is to comment out the labels
 until I deal with this. Basically I just want it to ignore the lables and treat
-the whole thing as flat.
+the whole thing as flat. Alternatively I guess I could just have it start a
+multiple forwarders, one-per-label, without losing features.
 
 I want it to be able to save ini files based on the settings used for a running
 forwarder. Should be easy, I just need to decide how I want to do it. Also to
