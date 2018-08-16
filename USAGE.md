@@ -139,10 +139,15 @@ docker build --build-arg user=eephttpd  --build-arg path=example/www -f Dockerfi
 ### Run in docker
 
 ```
+docker run -i -t -d \
+    --name eephttpd-volume \
+    --volume eephttpd:/home/eephttpd/ \
+    eyedeekay/eephttpd
 ```
 
 ```
-docker run -i -t -d --network si \
+docker run -i -t -d \
+    --network si \
     --env samhost=sam-host \
     --env samport=7656 \
     --env args=-r # Additional arguments to pass to eephttpd\

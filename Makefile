@@ -130,14 +130,15 @@ docker-cmd:
 	@echo "### Run in docker" >> USAGE.md
 	@echo "" >> USAGE.md
 	@echo '```' >> USAGE.md
-	@echo "docker run -i -t -d \\"
-	@echo "    --name $(eephttpd)-volume \\"
-	@echo "    --volume $(eephttpd):/home/$(eephttpd)/ \\"
-	@echo "    eyedeekay/$(eephttpd)"
+	@echo "docker run -i -t -d \\" >> USAGE.md
+	@echo "    --name $(eephttpd)-volume \\" >> USAGE.md
+	@echo "    --volume $(eephttpd):/home/$(eephttpd)/ \\" >> USAGE.md
+	@echo "    eyedeekay/$(eephttpd)" >> USAGE.md
 	@echo '```' >> USAGE.md
 	@echo "" >> USAGE.md
 	@echo '```' >> USAGE.md
-	@echo "docker run -i -t -d --network $(network) \\" >> USAGE.md
+	@echo "docker run -i -t -d \\" >> USAGE.md
+	@echo "    --network $(network) \\" >> USAGE.md
 	@echo "    --env samhost=$(samhost) \\" >> USAGE.md
 	@echo "    --env samport=$(samport) \\" >> USAGE.md
 	@echo "    --env args=$(args) # Additional arguments to pass to eephttpd\\" >> USAGE.md
