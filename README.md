@@ -1,7 +1,9 @@
 # sam-forwarder
 Forward a local port to i2p over the SAM API, or proxy a destination to a port
 on the local host. This is a work-in-progress, but the basic functionality is,
-there and it's already pretty useful.
+there and it's already pretty useful. Everything TCP works, but UDP forwarding
+is still not well tested, and UDP clients aren't enabled yet. I'm out of excuses
+not to finish it now, too.
 
 ## building
 
@@ -133,7 +135,8 @@ Datagrams are still a work-in-progress. They're enabled, but I don't know for
 sure how well they'll work yet. TCP is pretty good though.
 
 I'm in the process of adding client proxying to a specific i2p destination by
-base32 or (pre-added)jump address.
+base32 or (pre-added)jump address. TCP works well. UDP exists, but is disabled
+and untested.
 
 I've only enabled the use of a subset of the i2cp and tunnel configuration
 options, the ones I use the most and for no other real reason assume other

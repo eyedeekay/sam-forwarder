@@ -6,7 +6,7 @@ import (
 	"net"
 	"os"
 	"path/filepath"
-	//"strconv"
+	"strconv"
 	"strings"
 )
 
@@ -26,10 +26,10 @@ type SAMSSUClientForwarder struct {
 
 	samConn           *sam3.SAM
 	SamKeys           sam3.I2PKeys
-	connectStream     *sam3.StreamSession
+	connectStream     *sam3.DatagramSession
 	dest              string
 	addr              sam3.I2PAddr
-	publishConnection net.Listener
+	publishConnection net.PacketConn
 
 	FilePath string
 	file     io.ReadWriter
@@ -100,48 +100,11 @@ func (f *SAMSSUClientForwarder) Base64() string {
 	return f.SamKeys.Addr().Base64()
 }
 
-func (f *SAMSSUClientForwarder) forward(conn net.Conn) {
-	/*var err error
-	p, _ := strconv.Atoi(f.TargetPort)
-	f.clientConnection, err = net.DialUDP("udp", &net.UDPAddr{
-		Port: p,
-		IP:   net.ParseIP(f.TargetHost),
-	}, nil)
-	if err != nil {
-		log.Fatalf("Dial failed: %v", err)
-	}
-	log.Printf("Connected to localhost %v\n", f.publishConnection)
-	go func() {
-		defer f.clientConnection.Close()
-		defer f.publishConnection.Close()
-		buffer := make([]byte, 1024)
-		if size, addr, readerr := f.clientConnection.ReadFrom(buffer); readerr == nil {
-			if size2, writeerr := f.publishConnection.WriteTo(buffer, addr); writeerr == nil {
-				log.Printf("%q of %q bytes read", size, size2)
-				log.Printf("%q of %q bytes written", size2, size)
-			}
-		}
-	}()
-	go func() {
-		defer f.clientConnection.Close()
-		defer f.publishConnection.Close()
-		buffer := make([]byte, 1024)
-		if size, addr, readerr := f.publishConnection.ReadFrom(buffer); readerr == nil {
-			if size2, writeerr := f.clientConnection.WriteTo(buffer, addr); writeerr == nil {
-				log.Printf("%q of %q bytes read", size, size2)
-				log.Printf("%q of %q bytes written", size2, size)
-			}
-		}
-	}()*/
-}
-
-//Serve starts the SAM connection and and forwards the local host:port to i2p
-func (f *SAMSSUClientForwarder) Serve(dest string) error {
-	f.dest = dest
-	if f.addr, err = f.samConn.Lookup(f.dest); err != nil {
-		return err
-	}
-	if f.connectStream, err = f.samConn.NewStreamSession(f.TunName, f.SamKeys,
+func (f *SAMSSUClientForwarder) forward(conn net.PacketConn) {
+	var err error
+	//p, _ := strconv.Atoi(f.TargetPort)
+	sp, _ := strconv.Atoi(f.SamPort)
+	if f.connectStream, err = f.samConn.NewDatagramSession(f.TunName, f.SamKeys,
 		[]string{
 			"inbound.length=" + f.inLength,
 			"outbound.length=" + f.outLength,
@@ -162,19 +125,49 @@ func (f *SAMSSUClientForwarder) Serve(dest string) error {
 			"i2cp.closeIdleTime=" + f.closeIdleTime,
 			f.accesslisttype(),
 			f.accesslist(),
-		}); err != nil {
-		log.Println("Stream Creation error:", err.Error())
-		return err
+		}, sp); err != nil {
+		log.Fatal("Stream Creation error:", err.Error())
 	}
 	log.Println("SAM stream session established.")
+	log.Printf("Connected to localhost %v\n", f.publishConnection)
+	go func() {
+		defer f.connectStream.Close()
+		defer f.publishConnection.Close()
+		buffer := make([]byte, 1024)
+		if size, addr, readerr := f.publishConnection.ReadFrom(buffer); readerr == nil {
+			if size2, writeerr := f.connectStream.WriteTo(buffer, addr); writeerr == nil {
+				log.Printf("%q of %q bytes read", size, size2)
+				log.Printf("%q of %q bytes written", size2, size)
+			}
+		}
+	}()
+	go func() {
+		defer f.connectStream.Close()
+		defer f.publishConnection.Close()
+		buffer := make([]byte, 1024)
+		if size, addr, readerr := f.connectStream.ReadFrom(buffer); readerr == nil {
+			if size2, writeerr := f.publishConnection.WriteTo(buffer, addr); writeerr == nil {
+				log.Printf("%q of %q bytes read", size, size2)
+				log.Printf("%q of %q bytes written", size2, size)
+			}
+		}
+	}()
+}
+
+//Serve starts the SAM connection and and forwards the local host:port to i2p
+func (f *SAMSSUClientForwarder) Serve(dest string) error {
+	f.dest = dest
+	if f.addr, err = f.samConn.Lookup(f.dest); err != nil {
+		return err
+	}
 
 	for {
-		conn, err := f.publishConnection.Accept()
+		//f.packetConn, err := f.publishConnection.Accept()
 		if err != nil {
 			return err
 		}
 		log.Println("Forwarding client to i2p address:", f.addr.Base32())
-		go f.forward(conn)
+		go f.forward(f.publishConnection)
 	}
 }
 
@@ -186,7 +179,7 @@ func NewSAMSSUClientForwarderFromOptions(opts ...func(*SAMSSUClientForwarder) er
 	s.FilePath = ""
 	s.save = false
 	s.TargetHost = "127.0.0.1"
-	s.TargetPort = "8081"
+	s.TargetPort = "0"
 	s.TunName = "samSSUForwarder"
 	s.inLength = "3"
 	s.outLength = "3"
@@ -210,6 +203,9 @@ func NewSAMSSUClientForwarderFromOptions(opts ...func(*SAMSSUClientForwarder) er
 		if err := o(&s); err != nil {
 			return nil, err
 		}
+	}
+	if s.publishConnection, err = net.ListenPacket("udp", s.TargetHost+":"+s.TargetPort); err != nil {
+		return nil, err
 	}
 	if s.samConn, err = sam3.NewSAM(s.sam()); err != nil {
 		return nil, err

@@ -138,6 +138,7 @@ func (f *SAMSSUForwarder) Base64() string {
 
 //Serve starts the SAM connection and and forwards the local host:port to i2p
 func (f *SAMSSUForwarder) Serve() error {
+	sp, _ := strconv.Atoi(f.SamPort)
 	if f.publishConnection, err = f.samConn.NewDatagramSession(f.TunName, f.SamKeys,
 		[]string{
 			"inbound.length=" + f.inLength,
@@ -159,7 +160,7 @@ func (f *SAMSSUForwarder) Serve() error {
 			"i2cp.closeIdleTime=" + f.closeIdleTime,
 			f.accesslisttype(),
 			f.accesslist(),
-		}, 0); err != nil {
+		}, sp); err != nil {
 		log.Println("Stream Creation error:", err.Error())
 		return err
 	}
