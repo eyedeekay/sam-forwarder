@@ -14,6 +14,14 @@ Usage of ./bin/ephsite:
     	Type of access list to use, can be "whitelist" "blacklist" or "none". (default "none")
   -accesslist value
     	Specify an access list member(can be used multiple times)
+  -client
+    	Client proxy mode(true or false)
+  -close
+    	Close tunnel idle(true or false)
+  -closetime int
+    	Reduce tunnel quantity after X (milliseconds) (default 600000)
+  -dest string
+    	Destination for client tunnels. Ignored for service tunnels. (default "none")
   -dir string
     	Directory to save tunnel configuration file in.
   -encryptlease
@@ -25,7 +33,7 @@ Usage of ./bin/ephsite:
   -inback int
     	Set inbound tunnel backup quantity(0 to 5) (default 4)
   -incount int
-    	Set inbound tunnel quantity(0 to 15) (default 8)
+    	Set inbound tunnel quantity(0 to 15) (default 6)
   -ini string
     	Use an ini file for configuration(config file options override passed arguments for now.) (default "none")
   -inlen int
@@ -37,7 +45,7 @@ Usage of ./bin/ephsite:
   -outback int
     	Set outbound tunnel backup quantity(0 to 5) (default 4)
   -outcount int
-    	Set outbound tunnel quantity(0 to 15) (default 8)
+    	Set outbound tunnel quantity(0 to 15) (default 6)
   -outlen int
     	Set outbound tunnel length(0 to 7) (default 3)
   -outvar int
@@ -49,7 +57,7 @@ Usage of ./bin/ephsite:
   -reducecount int
     	Reduce idle tunnel quantity to X (0 to 5) (default 3)
   -reducetime int
-    	Reduce tunnel quantity after X (minutes) (default 10)
+    	Reduce tunnel quantity after X (milliseconds) (default 600000)
   -samhost string
     	SAM host (default "127.0.0.1")
   -samport string
@@ -105,7 +113,7 @@ Usage of ./bin/eephttpd:
   -ov int
     	Set outbound tunnel length variance(-7 to 7)
   -p string
-    	port to serve locally on (default "8100")
+    	port to serve locally on (default "7880")
   -r	Reduce tunnel quantity when idle(true or false)
   -rc int
     	Reduce idle tunnel quantity to X (0 to 5) (default 3)
@@ -145,4 +153,4 @@ instance
 --------
 
 a running instance of eephttpd with the example index file is availble on
-  6vdci6cxqcwtcjfnt537on7fwuihevyg3u7pntaiijts7pqkqo4a.b32.i2p
+

@@ -6,6 +6,8 @@ import (
 	"strings"
 )
 
+import "github.com/eyedeekay/sam-forwarder/config"
+
 type flagOpts []string
 
 func (f *flagOpts) String() string {
@@ -36,6 +38,7 @@ var (
 	outAllowZeroHop = flag.Bool("zeroout", false, "Allow zero-hop, non-anonymous tunnels out(true or false)")
 	useCompression  = flag.Bool("gzip", false, "Uze gzip(true or false)")
 	reduceIdle      = flag.Bool("reduce", false, "Reduce tunnel quantity when idle(true or false)")
+	closeIdle       = flag.Bool("close", false, "Close tunnel idle(true or false)")
 	udpMode         = flag.Bool("udp", false, "UDP mode(true or false)")
 	clientMode      = flag.Bool("client", false, "Client proxy mode(true or false)")
 	//EncryptedLeasesetKeys = flag.String("lsk","none", "path to saved encrypted leaseset keys")
@@ -50,22 +53,55 @@ var (
 	accessListType     = flag.String("access", "none", "Type of access list to use, can be \"whitelist\" \"blacklist\" or \"none\".")
 	inLength           = flag.Int("inlen", 3, "Set inbound tunnel length(0 to 7)")
 	outLength          = flag.Int("outlen", 3, "Set outbound tunnel length(0 to 7)")
-	inQuantity         = flag.Int("incount", 8, "Set inbound tunnel quantity(0 to 15)")
-	outQuantity        = flag.Int("outcount", 8, "Set outbound tunnel quantity(0 to 15)")
+	inQuantity         = flag.Int("incount", 6, "Set inbound tunnel quantity(0 to 15)")
+	outQuantity        = flag.Int("outcount", 6, "Set outbound tunnel quantity(0 to 15)")
 	inVariance         = flag.Int("invar", 0, "Set inbound tunnel length variance(-7 to 7)")
 	outVariance        = flag.Int("outvar", 0, "Set outbound tunnel length variance(-7 to 7)")
 	inBackupQuantity   = flag.Int("inback", 4, "Set inbound tunnel backup quantity(0 to 5)")
 	outBackupQuantity  = flag.Int("outback", 4, "Set outbound tunnel backup quantity(0 to 5)")
-	reduceIdleTime     = flag.Int("reducetime", 10, "Reduce tunnel quantity after X (minutes)")
+	reduceIdleTime     = flag.Int("reducetime", 600000, "Reduce tunnel quantity after X (milliseconds)")
+	closeIdleTime      = flag.Int("closetime", 600000, "Reduce tunnel quantity after X (milliseconds)")
 	reduceIdleQuantity = flag.Int("reducecount", 3, "Reduce idle tunnel quantity to X (0 to 5)")
 )
 
 var err error
 var accessList flagOpts
+var config *i2ptunconf.Conf
 
 func main() {
 	flag.Var(&accessList, "accesslist", "Specify an access list member(can be used multiple times)")
 	flag.Parse()
+
+	config = i2ptunconf.NewI2PBlankTunConf()
+	if *iniFile != "none" {
+		config, err = i2ptunconf.NewI2PTunConf(*iniFile)
+	}
+	config.TargetHost = config.GetHost(*TargetHost, "127.0.0.1")
+	config.TargetPort = config.GetPort(*TargetPort, "8081")
+	config.SaveFile = config.GetSaveFile(*saveFile, true)
+	config.SaveDirectory = config.GetDir(*TargetDir, "../")
+	config.SamHost = config.GetSAMHost(*SamHost, "127.0.0.1")
+	config.SamPort = config.GetSAMPort(*SamPort, "7656")
+	config.TunName = config.GetKeys(*TunName, "forwarder")
+	config.InLength = config.GetInLength(*inLength, 3)
+	config.OutLength = config.GetOutLength(*outLength, 3)
+	config.InVariance = config.GetInVariance(*inVariance, 0)
+	config.OutVariance = config.GetOutVariance(*outVariance, 0)
+	config.InQuantity = config.GetInQuantity(*inQuantity, 6)
+	config.OutQuantity = config.GetOutQuantity(*outQuantity, 6)
+	config.InBackupQuantity = config.GetInBackups(*inBackupQuantity, 5)
+	config.OutBackupQuantity = config.GetOutBackups(*outBackupQuantity, 5)
+	config.EncryptLeaseSet = config.GetEncryptLeaseset(*encryptLeaseSet, false)
+	config.InAllowZeroHop = config.GetInAllowZeroHop(*inAllowZeroHop, false)
+	config.OutAllowZeroHop = config.GetOutAllowZeroHop(*outAllowZeroHop, false)
+	config.UseCompression = config.GetUseCompression(*useCompression, true)
+	config.ReduceIdle = config.GetReduceOnIdle(*reduceIdle, true)
+	config.ReduceIdleTime = config.GetReduceIdleTime(*reduceIdleTime, 600000)
+	config.ReduceIdleQuantity = config.GetReduceIdleQuantity(*reduceIdleQuantity, 2)
+	config.AccessListType = config.GetAccessListType(*accessListType, "none")
+	config.CloseIdle = config.GetCloseOnIdle(*closeIdle, false)
+	config.CloseIdleTime = config.GetReduceIdleTime(*closeIdleTime, 600000)
+
 	if *clientMode {
 		if *TargetDestination == "none" {
 			log.Fatal("Client mode requires you to specify a base32 or jump destination")

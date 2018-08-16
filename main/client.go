@@ -8,8 +8,8 @@ import (
 	//"github.com/eyedeekay/sam-forwarder/udp"
 )
 
-func ClientMode(){
-    if *udpMode {
+func ClientMode() {
+	if *udpMode {
 
 	} else {
 		var forwarder *samforwarder.SAMClientForwarder

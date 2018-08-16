@@ -130,6 +130,9 @@ Current limitations:
 Datagrams are still a work-in-progress. They're enabled, but I don't know for
 sure how well they'll work yet. TCP is pretty good though.
 
+I'm in the process of adding client proxying to a specific i2p destination by
+base32 or (pre-added)jump address.
+
 I've only enabled the use of a subset of the i2cp and tunnel configuration
 options, the ones I use the most and for no other real reason assume other
 people use the most. They're pretty easy to add, it's just boring. *If you*
@@ -138,7 +141,7 @@ people use the most. They're pretty easy to add, it's just boring. *If you*
 be added within 24 hours.
 
 Encrypted leasesets are only half-implemented. The option seems to do nothing at
-the moment. Soon it will be configurable. Like that's what I'm doing tonight.
+the moment. Soon it will be configurable.
 
 I should probably have some options that are available in other general network
 utilities like netcat and socat(ephsite may have it's name changed to samcat at
@@ -165,3 +168,6 @@ interesting arrangements, but also makes colluding\_sites\_attack useless in
 it's present state. I mean I know what I did with si-i2p-plugin works, so it's
 not that important. I'll have to look for a way to make this behavior
 configurable though.
+
+It would be really awesome if I could make this run on Android. So I'll make
+that happen eventually.
