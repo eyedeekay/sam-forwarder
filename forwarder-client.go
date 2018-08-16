@@ -193,7 +193,7 @@ func NewSAMClientForwarderFromOptions(opts ...func(*SAMClientForwarder) error) (
 	s.reduceIdleQuantity = "4"
 	s.closeIdle = "false"
 	s.closeIdleTime = "30"
-	s.dest = "i2p-projekt.i2p"
+	s.dest = "none"
 	for _, o := range opts {
 		if err := o(&s); err != nil {
 			return nil, err
