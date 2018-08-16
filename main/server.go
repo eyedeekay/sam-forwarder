@@ -4,9 +4,9 @@ import "log"
 
 import "github.com/eyedeekay/sam-forwarder/config"
 
-func ServeMode() {
+func serveMode() {
 	if *udpMode {
-		log.Println("Redirecting udp", *TargetHost+":"+*TargetPort, "to i2p")
+		log.Println("Redirecting udp", *targetHost+":"+*targetPort, "to i2p")
 		forwarder, err := i2ptunconf.NewSAMSSUForwarderFromConf(config)
 		if err == nil {
 			forwarder.Serve()
@@ -14,7 +14,7 @@ func ServeMode() {
 			log.Println(err.Error())
 		}
 	} else {
-		log.Println("Redirecting tcp", *TargetHost+":"+*TargetPort, "to i2p")
+		log.Println("Redirecting tcp", *targetHost+":"+*targetPort, "to i2p")
 		forwarder, err := i2ptunconf.NewSAMForwarderFromConf(config)
 		if err == nil {
 			forwarder.Serve()

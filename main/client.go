@@ -4,14 +4,14 @@ import "log"
 
 import "github.com/eyedeekay/sam-forwarder/config"
 
-func ClientMode() {
+func clientMode() {
 	if *udpMode {
 
 	} else {
-		log.Println("Proxying tcp", *TargetHost+":"+*TargetPort, "to", *TargetDestination)
+		log.Println("Proxying tcp", *targetHost+":"+*targetPort, "to", *targetDestination)
 		forwarder, err := i2ptunconf.NewSAMClientForwarderFromConf(config)
 		if err == nil {
-			forwarder.Serve(*TargetDestination)
+			forwarder.Serve(*targetDestination)
 		} else {
 			log.Println(err.Error())
 		}
