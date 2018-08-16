@@ -754,6 +754,41 @@ func NewSAMForwarderFromConf(config *Conf) (*samforwarder.SAMForwarder, error) {
 	return nil, nil
 }
 
+// NewSAMClientForwarderFromConf generates a SAMforwarder from *i2ptunconf.Conf
+func NewSAMClientForwarderFromConf(config *Conf) (*samforwarder.SAMClientForwarder, error) {
+	if config != nil {
+		return samforwarder.NewSAMClientForwarderFromOptions(
+			samforwarder.SetClientSaveFile(config.SaveFile),
+			samforwarder.SetClientFilePath(config.SaveDirectory),
+			samforwarder.SetClientHost(config.TargetHost),
+			samforwarder.SetClientPort(config.TargetPort),
+			samforwarder.SetClientSAMHost(config.SamHost),
+			samforwarder.SetClientSAMPort(config.SamPort),
+			samforwarder.SetClientName(config.TunName),
+			samforwarder.SetClientInLength(config.InLength),
+			samforwarder.SetClientOutLength(config.OutLength),
+			samforwarder.SetClientInVariance(config.InVariance),
+			samforwarder.SetClientOutVariance(config.OutVariance),
+			samforwarder.SetClientInQuantity(config.InQuantity),
+			samforwarder.SetClientOutQuantity(config.OutQuantity),
+			samforwarder.SetClientInBackups(config.InBackupQuantity),
+			samforwarder.SetClientOutBackups(config.OutBackupQuantity),
+			samforwarder.SetClientEncrypt(config.EncryptLeaseSet),
+			samforwarder.SetClientAllowZeroIn(config.InAllowZeroHop),
+			samforwarder.SetClientAllowZeroOut(config.OutAllowZeroHop),
+			samforwarder.SetClientCompress(config.UseCompression),
+			samforwarder.SetClientReduceIdle(config.ReduceIdle),
+			samforwarder.SetClientReduceIdleTimeMs(config.ReduceIdleTime),
+			samforwarder.SetClientReduceIdleQuantity(config.ReduceIdleQuantity),
+			samforwarder.SetClientCloseIdle(config.CloseIdle),
+			samforwarder.SetClientCloseIdleTimeMs(config.CloseIdleTime),
+			samforwarder.SetClientAccessListType(config.AccessListType),
+			samforwarder.SetClientAccessList(config.AccessList),
+		)
+	}
+	return nil, nil
+}
+
 // NewSAMForwarderFromConfig generates a new SAMForwarder from a config file
 func NewSAMForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforwarder.SAMForwarder, error) {
 	if iniFile != "none" {

@@ -107,6 +107,7 @@ func main() {
 			log.Fatal("Client mode requires you to specify a base32 or jump destination")
 		} else {
 			log.Println("Client mode not implemented yet.")
+			//ClientMode()
 		}
 	} else {
 		ServeMode()
