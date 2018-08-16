@@ -121,6 +121,9 @@ func (f *SAMClientForwarder) forward(conn net.Conn) {
 //Serve starts the SAM connection and and forwards the local host:port to i2p
 func (f *SAMClientForwarder) Serve(dest string) error {
     f.dest = dest
+    if f.addr, err = f.samConn.Lookup(f.dest); err != nil {
+		return err
+	}
 	if f.connectStream, err = f.samConn.NewStreamSession(f.TunName, f.SamKeys,
 		[]string{
 			"inbound.length=" + f.inLength,
@@ -226,9 +229,6 @@ func NewSAMClientForwarderFromOptions(opts ...func(*SAMClientForwarder) error) (
 		if err != nil {
 			return nil, err
 		}
-	}
-	if s.addr, err = s.samConn.Lookup(s.dest); err != nil {
-		return nil, err
 	}
 	return &s, nil
 }
