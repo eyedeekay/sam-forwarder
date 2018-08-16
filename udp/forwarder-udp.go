@@ -202,9 +202,9 @@ func NewSAMSSUForwarderFromOptions(opts ...func(*SAMSSUForwarder) error) (*SAMSS
 	s.useCompression = "true"
 	s.encryptLeaseSet = "false"
 	s.reduceIdle = "false"
-	s.reduceIdleTime = "15"
+	s.reduceIdleTime = "300000"
 	s.closeIdle = "false"
-	s.closeIdleTime = "30"
+	s.closeIdleTime = "300000"
 	s.reduceIdleQuantity = "4"
 	for _, o := range opts {
 		if err := o(&s); err != nil {
