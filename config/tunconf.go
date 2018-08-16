@@ -13,6 +13,8 @@ import (
 // when you use it for in conjunction with command-line flags
 type Conf struct {
 	config             *goini.INI
+	Client             bool
+	Type               string
 	SaveDirectory      string
 	SaveFile           bool
 	TargetHost         string
@@ -148,6 +150,33 @@ func (c *Conf) GetPort(arg, def string) string {
 		return x
 	}
 	return arg
+}
+
+// GetType takes an argument and a default. If the argument differs from the
+// default, the argument is always returned. If the argument and default are
+// the same and the key exists, the key is returned. If the key is absent, the
+// default is returned.
+func (c *Conf) GetType(argc, argu bool, def string) string {
+	var typ string
+	if argu {
+		typ += "udp"
+	}
+	if argc {
+		typ += "client"
+        c.Client = true
+	} else {
+		typ += "server"
+	}
+	if typ != def {
+		return typ
+	}
+	if c.config == nil {
+		return typ
+	}
+	if x, o := c.Get("type"); o {
+		return x
+	}
+	return def
 }
 
 // GetSAMHost takes an argument and a default. If the argument differs from the
@@ -553,6 +582,20 @@ func (c *Conf) SetKeys() {
 	}
 }
 
+// SetType sets the type of proxy to create from the config file
+func (c *Conf) SetType() {
+	if v, ok := c.config.Get("type"); ok {
+		if strings.Contains(v, "client") {
+			c.Client = true
+		}
+		if c.Type == "server" || c.Type == "client" || c.Type == "udpserver" || c.Type == "udpclient" {
+			c.Type = v
+		}
+	} else {
+		c.Type = "server"
+	}
+}
+
 // SetHost sets the host to forward from the config file
 func (c *Conf) SetHost() {
 	if v, ok := c.config.Get("host"); ok {
@@ -795,6 +838,7 @@ func (c *Conf) I2PINILoad(iniFile string) error {
 			return err
 		}
 		c.SetDir()
+		c.SetType()
 		c.SetKeys()
 		c.SetHost()
 		c.SetPort()
