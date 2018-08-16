@@ -40,6 +40,8 @@ bin/$(eephttpd):
 
 all: build server
 
+clean-all: clean clean-server
+
 clean:
 	rm -f bin/$(appname)
 

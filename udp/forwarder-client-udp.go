@@ -135,7 +135,7 @@ func (f *SAMSSUClientForwarder) forward(conn net.PacketConn) {
 		defer f.publishConnection.Close()
 		buffer := make([]byte, 1024)
 		if size, addr, readerr := f.publishConnection.ReadFrom(buffer); readerr == nil {
-			if size2, writeerr := f.connectStream.WriteTo(buffer, addr); writeerr == nil {
+			if size2, writeerr := f.connectStream.WriteTo(buffer, f.addr); writeerr == nil {
 				log.Printf("%q of %q bytes read", size, size2)
 				log.Printf("%q of %q bytes written", size2, size)
 			}
@@ -146,7 +146,7 @@ func (f *SAMSSUClientForwarder) forward(conn net.PacketConn) {
 		defer f.publishConnection.Close()
 		buffer := make([]byte, 1024)
 		if size, addr, readerr := f.connectStream.ReadFrom(buffer); readerr == nil {
-			if size2, writeerr := f.publishConnection.WriteTo(buffer, addr); writeerr == nil {
+			if size2, writeerr := f.publishConnection.WriteTo(buffer, f.addr); writeerr == nil {
 				log.Printf("%q of %q bytes read", size, size2)
 				log.Printf("%q of %q bytes written", size2, size)
 			}
