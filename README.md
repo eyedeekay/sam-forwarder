@@ -135,8 +135,8 @@ Datagrams are still a work-in-progress. They're enabled, but I don't know for
 sure how well they'll work yet. TCP is pretty good though.
 
 I'm in the process of adding client proxying to a specific i2p destination by
-base32 or (pre-added)jump address. TCP works well. UDP exists, but is disabled
-and untested.
+base32 or (pre-added)jump address. TCP works well. UDP exists, but is not
+thoroughly tested.
 
 I've only enabled the use of a subset of the i2cp and tunnel configuration
 options, the ones I use the most and for no other real reason assume other

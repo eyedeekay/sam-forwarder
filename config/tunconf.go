@@ -567,6 +567,16 @@ func (c *Conf) GetReduceIdleQuantity(arg, def int) int {
 	return arg
 }
 
+/*
+// Get takes an argument and a default. If the argument differs from the
+// default, the argument is always returned. If the argument and default are
+// the same and the key exists, the key is returned. If the key is absent, the
+// default is returned.
+func (c *Conf) Get(arg, def int) int {
+    return 0
+}
+*/
+
 // SetDir sets the key save directory from the config file
 func (c *Conf) SetDir() {
 	if v, ok := c.config.Get("dir"); ok {
@@ -930,6 +940,18 @@ func NewSAMForwarderFromConf(config *Conf) (*samforwarder.SAMForwarder, error) {
 	return nil, nil
 }
 
+// NewSAMForwarderFromConfig generates a new SAMForwarder from a config file
+func NewSAMForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforwarder.SAMForwarder, error) {
+	if iniFile != "none" {
+		config, err := NewI2PTunConf(iniFile)
+		if err != nil {
+			return nil, err
+		}
+		return NewSAMForwarderFromConf(config)
+	}
+	return nil, nil
+}
+
 // NewSAMClientForwarderFromConf generates a SAMforwarder from *i2ptunconf.Conf
 func NewSAMClientForwarderFromConf(config *Conf) (*samforwarder.SAMClientForwarder, error) {
 	if config != nil {
@@ -965,30 +987,6 @@ func NewSAMClientForwarderFromConf(config *Conf) (*samforwarder.SAMClientForward
 	return nil, nil
 }
 
-// NewSAMForwarderFromConfig generates a new SAMForwarder from a config file
-func NewSAMForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforwarder.SAMForwarder, error) {
-	if iniFile != "none" {
-		config, err := NewI2PTunConf(iniFile)
-		if err != nil {
-			return nil, err
-		}
-		return NewSAMForwarderFromConf(config)
-	}
-	return nil, nil
-}
-
-// NewSAMSSUForwarderFromConfig generates a new SAMSSUForwarder from a config file
-func NewSAMSSUForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforwarderudp.SAMSSUForwarder, error) {
-	if iniFile != "none" {
-		config, err := NewI2PTunConf(iniFile)
-		if err != nil {
-			return nil, err
-		}
-		return NewSAMSSUForwarderFromConf(config)
-	}
-	return nil, nil
-}
-
 // NewSAMClientForwarderFromConfig generates a new SAMForwarder from a config file
 func NewSAMClientForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforwarder.SAMClientForwarder, error) {
 	if iniFile != "none" {
@@ -997,18 +995,6 @@ func NewSAMClientForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforw
 			return nil, err
 		}
 		return NewSAMClientForwarderFromConf(config)
-	}
-	return nil, nil
-}
-
-// NewSAMSSUClientForwarderFromConfig generates a new SAMSSUForwarder from a config file
-func NewSAMSSUClientForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforwarderudp.SAMSSUClientForwarder, error) {
-	if iniFile != "none" {
-		config, err := NewI2PTunConf(iniFile)
-		if err != nil {
-			return nil, err
-		}
-		return NewSAMSSUClientForwarderFromConf(config)
 	}
 	return nil, nil
 }
@@ -1048,6 +1034,18 @@ func NewSAMSSUForwarderFromConf(config *Conf) (*samforwarderudp.SAMSSUForwarder,
 	return nil, nil
 }
 
+// NewSAMSSUForwarderFromConfig generates a new SAMSSUForwarder from a config file
+func NewSAMSSUForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforwarderudp.SAMSSUForwarder, error) {
+	if iniFile != "none" {
+		config, err := NewI2PTunConf(iniFile)
+		if err != nil {
+			return nil, err
+		}
+		return NewSAMSSUForwarderFromConf(config)
+	}
+	return nil, nil
+}
+
 // NewSAMSSUClientForwarderFromConf generates a SAMSSUforwarder from *i2ptunconf.Conf
 func NewSAMSSUClientForwarderFromConf(config *Conf) (*samforwarderudp.SAMSSUClientForwarder, error) {
 	if config != nil {
@@ -1079,6 +1077,18 @@ func NewSAMSSUClientForwarderFromConf(config *Conf) (*samforwarderudp.SAMSSUClie
 			samforwarderudp.SetClientAccessListType(config.AccessListType),
 			samforwarderudp.SetClientAccessList(config.AccessList),
 		)
+	}
+	return nil, nil
+}
+
+// NewSAMSSUClientForwarderFromConfig generates a new SAMSSUForwarder from a config file
+func NewSAMSSUClientForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforwarderudp.SAMSSUClientForwarder, error) {
+	if iniFile != "none" {
+		config, err := NewI2PTunConf(iniFile)
+		if err != nil {
+			return nil, err
+		}
+		return NewSAMSSUClientForwarderFromConf(config)
 	}
 	return nil, nil
 }
