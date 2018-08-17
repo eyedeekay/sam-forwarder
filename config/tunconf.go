@@ -947,6 +947,12 @@ func NewSAMForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforwarder.
 		if err != nil {
 			return nil, err
 		}
+		if SamHost != "" && SamHost != "127.0.0.1" && SamHost != "localhost" {
+			config.SamHost = config.GetSAMHost(SamHost, config.SamHost)
+		}
+		if SamPort != "" && SamPort != "7656" {
+			config.SamPort = config.GetSAMPort(SamPort, config.SamPort)
+		}
 		return NewSAMForwarderFromConf(config)
 	}
 	return nil, nil
@@ -993,6 +999,12 @@ func NewSAMClientForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforw
 		config, err := NewI2PTunConf(iniFile)
 		if err != nil {
 			return nil, err
+		}
+		if SamHost != "" && SamHost != "127.0.0.1" && SamHost != "localhost" {
+			config.SamHost = config.GetSAMHost(SamHost, config.SamHost)
+		}
+		if SamPort != "" && SamPort != "7656" {
+			config.SamPort = config.GetSAMPort(SamPort, config.SamPort)
 		}
 		return NewSAMClientForwarderFromConf(config)
 	}
@@ -1041,6 +1053,12 @@ func NewSAMSSUForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforward
 		if err != nil {
 			return nil, err
 		}
+		if SamHost != "" && SamHost != "127.0.0.1" && SamHost != "localhost" {
+			config.SamHost = config.GetSAMHost(SamHost, config.SamHost)
+		}
+		if SamPort != "" && SamPort != "7656" {
+			config.SamPort = config.GetSAMPort(SamPort, config.SamPort)
+		}
 		return NewSAMSSUForwarderFromConf(config)
 	}
 	return nil, nil
@@ -1087,6 +1105,12 @@ func NewSAMSSUClientForwarderFromConfig(iniFile, SamHost, SamPort string) (*samf
 		config, err := NewI2PTunConf(iniFile)
 		if err != nil {
 			return nil, err
+		}
+		if SamHost != "" && SamHost != "127.0.0.1" && SamHost != "localhost" {
+			config.SamHost = config.GetSAMHost(SamHost, config.SamHost)
+		}
+		if SamPort != "" && SamPort != "7656" {
+			config.SamPort = config.GetSAMPort(SamPort, config.SamPort)
 		}
 		return NewSAMSSUClientForwarderFromConf(config)
 	}
