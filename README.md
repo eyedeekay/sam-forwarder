@@ -176,3 +176,5 @@ configurable though.
 
 It would be really awesome if I could make this run on Android. So I'll make
 that happen eventually.
+
+TLS configuration is experimental. It might not be possible. But maybe.
