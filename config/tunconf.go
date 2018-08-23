@@ -1017,7 +1017,6 @@ func NewSAMClientForwarderFromConf(config *Conf) (*samforwarder.SAMClientForward
 			samforwarder.SetClientCloseIdleTimeMs(config.CloseIdleTime),
 			samforwarder.SetClientAccessListType(config.AccessListType),
 			samforwarder.SetClientAccessList(config.AccessList),
-			samforwarder.SetTargetForPort443(config.TargetForPort443),
 		)
 	}
 	return nil, nil
