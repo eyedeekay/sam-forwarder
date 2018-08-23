@@ -52,6 +52,11 @@ noopts: clean
 	mkdir -p bin
 	cd main && go build -o ../bin/$(appname)
 
+install:
+	install -m755 bin/ephsite
+
+remove:
+
 gendoc: all
 	@echo "$(appname) - Easy forwarding of local services to i2p" > USAGE.md
 	@echo "==================================================" >> USAGE.md

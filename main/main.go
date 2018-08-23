@@ -47,7 +47,7 @@ var (
 	targetDestination     = flag.String("dest", "none", "Destination for client tunnels. Ignored for service tunnels.")
 	targetHost            = flag.String("host", "127.0.0.1", "Target host(Host of service to forward to i2p)")
 	targetPort            = flag.String("port", "8081", "Target port(Port of service to forward to i2p)")
-    targetPort443         = flag.String("tlsport", "", "Target TLS port(HTTPS Port of service to forward to i2p)")
+	targetPort443         = flag.String("tlsport", "", "Target TLS port(HTTPS Port of service to forward to i2p)")
 	samHost               = flag.String("samhost", "127.0.0.1", "SAM host")
 	samPort               = flag.String("samport", "7656", "SAM port")
 	tunName               = flag.String("name", "forwarder", "Tunnel name, this must be unique but can be anything.")
@@ -103,7 +103,7 @@ func main() {
 	config.CloseIdle = config.GetCloseOnIdle(*closeIdle, false)
 	config.CloseIdleTime = config.GetReduceIdleTime(*closeIdleTime, 600000)
 	config.Type = config.GetType(*client, *udpMode, "server")
-    config.TargetForPort443 = config.GetTargetPort443(*targetForPort443, "")
+	config.TargetForPort443 = config.GetPort443(*targetForPort443, "")
 
 	if config.Client {
 		if *targetDestination == "none" {
