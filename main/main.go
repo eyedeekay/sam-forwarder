@@ -101,9 +101,9 @@ func main() {
 	config.ReduceIdleQuantity = config.GetReduceIdleQuantity(*reduceIdleQuantity, 2)
 	config.AccessListType = config.GetAccessListType(*accessListType, "none")
 	config.CloseIdle = config.GetCloseOnIdle(*closeIdle, false)
-	config.CloseIdleTime = config.GetReduceIdleTime(*closeIdleTime, 600000)
+	config.CloseIdleTime = config.GetCloseIdleTime(*closeIdleTime, 600000)
 	config.Type = config.GetType(*client, *udpMode, "server")
-	config.TargetForPort443 = config.GetPort443(*targetForPort443, "")
+	config.TargetForPort443 = config.GetPort443(*targetPort443, "")
 
 	if config.Client {
 		if *targetDestination == "none" {

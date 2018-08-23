@@ -53,7 +53,12 @@ noopts: clean
 	cd main && go build -o ../bin/$(appname)
 
 install:
-	install -m755 bin/ephsite
+	install -m755 bin/ephsite /usr/local/bin/ephsite
+
+install-server:
+	install -m755 bin/eephttpd /usr/local/bin/eephttpd
+
+install-all: install install-server
 
 remove:
 
