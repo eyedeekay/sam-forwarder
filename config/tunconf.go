@@ -24,6 +24,7 @@ type Conf struct {
 	TargetPort         string
 	SamHost            string
 	SamPort            string
+	TargetForPort443   string
 	TunName            string
 	EncryptLeaseSet    bool
 	InAllowZeroHop     bool
@@ -150,6 +151,23 @@ func (c *Conf) GetPort(arg, def string) string {
 		return arg
 	}
 	if x, o := c.Get("port"); o {
+		return x
+	}
+	return arg
+}
+
+// GetPort443 takes an argument and a default. If the argument differs from the
+// default, the argument is always returned. If the argument and default are
+// the same and the key exists, the key is returned. If the key is absent, the
+// default is returned.
+func (c *Conf) GetPort443(arg, def string) string {
+	if arg != def {
+		return arg
+	}
+	if c.config == nil {
+		return arg
+	}
+	if x, o := c.Get("targetForPort.443"); o {
 		return x
 	}
 	return arg
@@ -627,6 +645,15 @@ func (c *Conf) SetPort() {
 	}
 }
 
+// SetTargetPort443 sets the port to forward from the config file
+func (c *Conf) SetTargetPort443() {
+	if v, ok := c.config.Get("targetForPort.443"); ok {
+		c.TargetForPort443 = v
+	} else {
+		c.TargetForPort443 = ""
+	}
+}
+
 // SetSAMHost sets the SAM host from the config file
 func (c *Conf) SetSAMHost() {
 	if v, ok := c.config.Get("samhost"); ok {
@@ -876,6 +903,7 @@ func (c *Conf) I2PINILoad(iniFile string) error {
 		c.SetCloseIdle()
 		c.SetCloseIdleTime()
 		c.SetAccessListType()
+		c.SetTargetPort443()
 
 		if v, ok := c.config.Get("i2cp.accessList"); ok {
 			csv := strings.Split(v, ",")
@@ -935,6 +963,7 @@ func NewSAMForwarderFromConf(config *Conf) (*samforwarder.SAMForwarder, error) {
 			samforwarder.SetCloseIdleTimeMs(config.CloseIdleTime),
 			samforwarder.SetAccessListType(config.AccessListType),
 			samforwarder.SetAccessList(config.AccessList),
+			samforwarder.SetTargetForPort443(config.TargetForPort443),
 		)
 	}
 	return nil, nil
@@ -988,6 +1017,7 @@ func NewSAMClientForwarderFromConf(config *Conf) (*samforwarder.SAMClientForward
 			samforwarder.SetClientCloseIdleTimeMs(config.CloseIdleTime),
 			samforwarder.SetClientAccessListType(config.AccessListType),
 			samforwarder.SetClientAccessList(config.AccessList),
+			samforwarder.SetTargetForPort443(config.TargetForPort443),
 		)
 	}
 	return nil, nil
