@@ -5,7 +5,6 @@ import (
 	"flag"
 	"log"
 	"net/http"
-	"strconv"
 )
 
 import (
@@ -85,22 +84,9 @@ func main() {
 	config.ReduceIdle = config.GetReduceOnIdle(*reduceIdle, true)
 	config.ReduceIdleTime = config.GetReduceIdleTime(*reduceIdleTime, 600000)
 	config.ReduceIdleQuantity = config.GetReduceIdleQuantity(*reduceIdleQuantity, 2)
+    config.CloseIdleTime = config.GetCloseIdleTime(*reduceIdleTime, 600000)
 	config.AccessListType = config.GetAccessListType(*accessListType, "none")
 	config.Type = config.GetType(false, false, "server")
-
-	if *useTLS {
-		if i, e := strconv.Atoi(*port); e == nil {
-			j := i //+ 1
-			if tlsport = strconv.Itoa(j); e == nil {
-				config.TargetForPort443 = config.GetPort443(*host+":"+tlsport, *host+":"+*port)
-				config.TargetPort = config.GetPort(tlsport, *port)
-			} else {
-				log.Fatal(e.Error())
-			}
-		} else {
-			log.Fatal(e.Error())
-		}
-	}
 
 	if forwarder, err = i2ptunconf.NewSAMForwarderFromConf(config); err != nil {
 		log.Fatal(err.Error())
@@ -122,12 +108,11 @@ func main() {
 			),
 		)
 	} else {
-		http.Handle("/", http.FileServer(http.Dir(*directory)))
 		log.Printf("Serving %s on HTTP port: %s\n\t and on %s", *directory, *port, forwarder.Base32())
 		log.Fatal(
 			http.ListenAndServe(
 				*host+":"+*port,
-				nil,
+				http.FileServer(http.Dir(*directory)),
 			),
 		)
 	}
