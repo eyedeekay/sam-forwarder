@@ -52,8 +52,6 @@ type SAMForwarder struct {
 	reduceIdle         string
 	reduceIdleTime     string
 	reduceIdleQuantity string
-	TargetForPort443   string
-
 	//Streaming Library options
 	accessListType string
 	accessList     []string
@@ -61,12 +59,12 @@ type SAMForwarder struct {
 
 var err error
 
-func (f *SAMForwarder) targetForPort443() string {
+/*func (f *SAMForwarder) targetForPort443() string {
 	if f.TargetForPort443 != "" {
-		return "targetForPort.4443=" + f.TargetHost +":"+ f.TargetForPort443
+		return "targetForPort.4443=" + f.TargetHost + ":" + f.TargetForPort443
 	}
 	return ""
-}
+}*/
 
 func (f *SAMForwarder) accesslisttype() string {
 	if f.accessListType == "whitelist" {
@@ -131,7 +129,7 @@ func (f *SAMForwarder) Base64() string {
 func (f *SAMForwarder) Serve() error {
 	if f.publishStream, err = f.samConn.NewStreamSession(f.TunName, f.SamKeys,
 		[]string{
-			f.targetForPort443(),
+			//f.targetForPort443(),
 			"inbound.length=" + f.inLength,
 			"outbound.length=" + f.outLength,
 			"inbound.lengthVariance=" + f.inVariance,
@@ -205,7 +203,6 @@ func NewSAMForwarderFromOptions(opts ...func(*SAMForwarder) error) (*SAMForwarde
 	s.reduceIdleQuantity = "4"
 	s.closeIdle = "false"
 	s.closeIdleTime = "300000"
-	s.TargetForPort443 = ""
 	for _, o := range opts {
 		if err := o(&s); err != nil {
 			return nil, err

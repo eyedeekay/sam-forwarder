@@ -330,7 +330,7 @@ func SetAccessList(s []string) func(*SAMForwarder) error {
 }
 
 //SetTargetForPort sets the port of the SAMForwarder's SAM bridge using a string
-func SetTargetForPort443(s string) func(*SAMForwarder) error {
+/*func SetTargetForPort443(s string) func(*SAMForwarder) error {
 	return func(c *SAMForwarder) error {
 		port, err := strconv.Atoi(s)
 		if err != nil {
@@ -343,3 +343,4 @@ func SetTargetForPort443(s string) func(*SAMForwarder) error {
 		return fmt.Errorf("Invalid port")
 	}
 }
+*/

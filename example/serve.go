@@ -12,6 +12,18 @@ import (
 	"github.com/eyedeekay/sam-forwarder/config"
 )
 
+var cfg = &tls.Config{
+	MinVersion:               tls.VersionTLS12,
+	CurvePreferences:         []tls.CurveID{tls.CurveP521, tls.CurveP384, tls.CurveP256},
+	PreferServerCipherSuites: true,
+	CipherSuites: []uint16{
+		tls.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,
+		tls.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
+		tls.TLS_RSA_WITH_AES_256_GCM_SHA384,
+		tls.TLS_RSA_WITH_AES_256_CBC_SHA,
+	},
+}
+
 var (
 	host               = flag.String("a", "127.0.0.1", "hostname to serve on")
 	port               = flag.String("p", "7880", "port to serve locally on")
@@ -74,6 +86,7 @@ func main() {
 	config.ReduceIdleQuantity = config.GetReduceIdleQuantity(*reduceIdleQuantity, 2)
 	config.AccessListType = config.GetAccessListType(*accessListType, "none")
 	config.Type = config.GetType(false, false, "server")
+
 	if *useTLS {
 		if i, e := strconv.Atoi(*port); e == nil {
 			j := i + 1
@@ -86,15 +99,29 @@ func main() {
 			log.Fatal(e.Error())
 		}
 	}
+
 	if forwarder, err = i2ptunconf.NewSAMForwarderFromConf(config); err != nil {
 		log.Fatal(err.Error())
 	}
 	go forwarder.Serve()
+
 	http.Handle("/", http.FileServer(http.Dir(*directory)))
-	log.Printf("Serving %s on HTTP port: %s\n\t and on %s", *directory, *port,
-		forwarder.Base32())
+
 	if *useTLS {
-		go log.Fatal(http.ListenAndServe(*host+":"+tlsport, nil))
+		go http.ListenAndServeTLS(
+			*host+":"+tlsport,
+			*sdirectory+"/"+*certFile+".crt",
+			*sdirectory+"/"+*certFile+".key",
+			nil,
+		)
+		log.Printf("Serving %s on HTTPS port: %s\n\t and on %s", *directory, *tlsport, forwarder.Base32())
 	}
-	log.Fatal(http.ListenAndServe(*host+":"+*port, nil))
+
+	log.Printf("Serving %s on HTTP port: %s\n\t and on %s", *directory, *port, forwarder.Base32())
+	log.Fatal(
+		http.ListenAndServe(
+			*host+":"+*port,
+			nil,
+		),
+	)
 }

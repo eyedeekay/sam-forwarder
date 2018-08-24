@@ -277,10 +277,10 @@ func TestClientOptionSaveFile(t *testing.T) {
 	log.Println(client.Base32())
 }
 
-func TestOptionTargetForPort443(t *testing.T) {
+/*func TestOptionTargetForPort443(t *testing.T) {
 	client, err := NewSAMForwarderFromOptions(SetTargetForPort443("443"))
 	if err != nil {
 		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
 	}
 	log.Println(client.Base32())
-}
+}*/
