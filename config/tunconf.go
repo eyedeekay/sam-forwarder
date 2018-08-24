@@ -963,7 +963,7 @@ func NewSAMForwarderFromConf(config *Conf) (*samforwarder.SAMForwarder, error) {
 			samforwarder.SetCloseIdleTimeMs(config.CloseIdleTime),
 			samforwarder.SetAccessListType(config.AccessListType),
 			samforwarder.SetAccessList(config.AccessList),
-			samforwarder.SetTargetForPort443(config.TargetForPort443),
+			//samforwarder.SetTargetForPort443(config.TargetForPort443),
 		)
 	}
 	return nil, nil
