@@ -44,6 +44,7 @@ var (
 func main() {
 	flag.Parse()
 	var forwarder *samforwarder.SAMForwarder
+	var tlsport string
 	var err error
 	config := i2ptunconf.NewI2PBlankTunConf()
 	if *iniFile != "none" {
@@ -76,8 +77,8 @@ func main() {
 	if *useTLS {
 		if i, e := strconv.Atoi(*port); e == nil {
 			j := i + 1
-			if p := strconv.Itoa(j); e == nil {
-				config.TargetForPort443 = config.GetPort443(*host+":"+p, *host+":"+p)
+			if tlsport = strconv.Itoa(j); e == nil {
+				config.TargetForPort443 = config.GetPort443(*host+":"+tlsport, *host+":"+tlsport)
 			} else {
 				log.Fatal(e.Error())
 			}
@@ -92,5 +93,8 @@ func main() {
 	http.Handle("/", http.FileServer(http.Dir(*directory)))
 	log.Printf("Serving %s on HTTP port: %s\n\t and on %s", *directory, *port,
 		forwarder.Base32())
+	if *useTLS {
+		go log.Fatal(http.ListenAndServe(*host+":"+tlsport, nil))
+	}
 	log.Fatal(http.ListenAndServe(*host+":"+*port, nil))
 }

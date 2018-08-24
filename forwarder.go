@@ -63,7 +63,7 @@ var err error
 
 func (f *SAMForwarder) targetForPort443() string {
 	if f.TargetForPort443 != "" {
-		return "targetForPort.4443=" + f.TargetForPort443
+		return "targetForPort.4443=" + f.TargetHost +":"+ f.TargetForPort443
 	}
 	return ""
 }
