@@ -4,6 +4,7 @@ import (
 	"flag"
 	"log"
 	"net/http"
+    "crypto/tls"
 	"strconv"
 )
 
@@ -89,9 +90,10 @@ func main() {
 
 	if *useTLS {
 		if i, e := strconv.Atoi(*port); e == nil {
-			j := i + 1
+			j := i //+ 1
 			if tlsport = strconv.Itoa(j); e == nil {
-				config.TargetForPort443 = config.GetPort443(*host+":"+tlsport, *host+":"+tlsport)
+				config.TargetForPort443 = config.GetPort443(*host+":"+tlsport, *host+":"+*port)
+                config.TargetPort = config.GetPort(tlsport, *port)
 			} else {
 				log.Fatal(e.Error())
 			}
@@ -105,23 +107,28 @@ func main() {
 	}
 	go forwarder.Serve()
 
-	http.Handle("/", http.FileServer(http.Dir(*directory)))
-
 	if *useTLS {
-		go http.ListenAndServeTLS(
-			*host+":"+tlsport,
-			*sdirectory+"/"+*certFile+".crt",
-			*sdirectory+"/"+*certFile+".key",
-			nil,
+        srv := &http.Server{
+            Addr:         *host+":"+tlsport,
+            Handler:      http.FileServer(http.Dir(*directory)),
+            TLSConfig:    cfg,
+            TLSNextProto: make(map[string]func(*http.Server, *tls.Conn, http.Handler), 0),
+        }
+		log.Printf("Serving %s on HTTPS port: %s\n\t and on %s", *directory, tlsport, forwarder.Base32())
+		log.Fatal(
+			srv.ListenAndServeTLS(
+				*sdirectory+"/"+*certFile+".crt",
+				*sdirectory+"/"+*certFile+".key",
+			),
 		)
-		log.Printf("Serving %s on HTTPS port: %s\n\t and on %s", *directory, *tlsport, forwarder.Base32())
+	} else {
+        http.Handle("/", http.FileServer(http.Dir(*directory)))
+		log.Printf("Serving %s on HTTP port: %s\n\t and on %s", *directory, *port, forwarder.Base32())
+		log.Fatal(
+			http.ListenAndServe(
+				*host+":"+*port,
+				nil,
+			),
+		)
 	}
-
-	log.Printf("Serving %s on HTTP port: %s\n\t and on %s", *directory, *port, forwarder.Base32())
-	log.Fatal(
-		http.ListenAndServe(
-			*host+":"+*port,
-			nil,
-		),
-	)
 }
