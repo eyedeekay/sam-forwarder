@@ -5,6 +5,7 @@ import (
 	"flag"
 	"log"
 	"net/http"
+	"path/filepath"
 )
 
 import (
@@ -56,7 +57,6 @@ var (
 func main() {
 	flag.Parse()
 	var forwarder *samforwarder.SAMForwarder
-	var tlsport string
 	var err error
 	config := i2ptunconf.NewI2PBlankTunConf()
 	if *iniFile != "none" {
@@ -84,7 +84,7 @@ func main() {
 	config.ReduceIdle = config.GetReduceOnIdle(*reduceIdle, true)
 	config.ReduceIdleTime = config.GetReduceIdleTime(*reduceIdleTime, 600000)
 	config.ReduceIdleQuantity = config.GetReduceIdleQuantity(*reduceIdleQuantity, 2)
-    config.CloseIdleTime = config.GetCloseIdleTime(*reduceIdleTime, 600000)
+	config.CloseIdleTime = config.GetCloseIdleTime(*reduceIdleTime, 600000)
 	config.AccessListType = config.GetAccessListType(*accessListType, "none")
 	config.Type = config.GetType(false, false, "server")
 
@@ -95,16 +95,16 @@ func main() {
 
 	if *useTLS {
 		srv := &http.Server{
-			Addr:         *host + ":" + tlsport,
+			Addr:         *host + ":" + *port,
 			Handler:      http.FileServer(http.Dir(*directory)),
 			TLSConfig:    cfg,
 			TLSNextProto: make(map[string]func(*http.Server, *tls.Conn, http.Handler), 0),
 		}
-		log.Printf("Serving %s on HTTPS port: %s\n\t and on %s", *directory, tlsport, forwarder.Base32())
+		log.Printf("Serving %s on HTTPS port: %s\n\t and on %s", *directory, *port, forwarder.Base32())
 		log.Fatal(
 			srv.ListenAndServeTLS(
-				*sdirectory+"/"+*certFile+".crt",
-				*sdirectory+"/"+*certFile+".key",
+				filepath.Join(*sdirectory+"/", *certFile+".crt"),
+				filepath.Join(*sdirectory+"/", *certFile+".key"),
 			),
 		)
 	} else {

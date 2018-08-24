@@ -630,7 +630,7 @@ func (c *Conf) SetType() {
 // SetHost sets the host to forward from the config file
 func (c *Conf) SetHost() {
 	if v, ok := c.config.Get("host"); ok {
-		c.TargetHost = strings.Replace(v, ":", "", -1)
+		c.TargetHost = v
 	} else {
 		c.TargetHost = "127.0.0.1"
 	}
@@ -639,7 +639,7 @@ func (c *Conf) SetHost() {
 // SetPort sets the port to forward from the config file
 func (c *Conf) SetPort() {
 	if v, ok := c.config.Get("port"); ok {
-		c.TargetPort = strings.Replace(v, ":", "", -1)
+		c.TargetPort = v
 	} else {
 		c.TargetPort = "8081"
 	}
@@ -657,7 +657,7 @@ func (c *Conf) SetTargetPort443() {
 // SetSAMHost sets the SAM host from the config file
 func (c *Conf) SetSAMHost() {
 	if v, ok := c.config.Get("samhost"); ok {
-		c.SamHost = strings.Replace(v, ":", "", -1)
+		c.SamHost = v
 	} else {
 		c.SamHost = "127.0.0.1"
 	}
@@ -666,7 +666,7 @@ func (c *Conf) SetSAMHost() {
 // SetSAMPort sets the SAM port from the config file
 func (c *Conf) SetSAMPort() {
 	if v, ok := c.config.Get("samport"); ok {
-		c.SamPort = strings.Replace(v, ":", "", -1)
+		c.SamPort = v
 	} else {
 		c.SamPort = "7656"
 	}
