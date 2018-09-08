@@ -13,7 +13,7 @@ echo:
 	find . -name "*.go" -exec gofmt -w {} \;
 	find . -name "*.i2pkeys" -exec rm {} \;
 
-test: echo
+test:
 	go test
 	cd udp && go test
 	cd config && go test

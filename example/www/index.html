@@ -6,6 +6,14 @@
         Type of access list to use, can be &quot;whitelist&quot; &quot;blacklist&quot; or &quot;none&quot;. (default &quot;none&quot;)
   -accesslist value
         Specify an access list member(can be used multiple times)
+  -client
+        Client proxy mode(true or false)
+  -close
+        Close tunnel idle(true or false)
+  -closetime int
+        Reduce tunnel quantity after X (milliseconds) (default 600000)
+  -dest string
+        Destination for client tunnels. Ignored for service tunnels. (default &quot;none&quot;)
   -dir string
         Directory to save tunnel configuration file in.
   -encryptlease
@@ -17,19 +25,21 @@
   -inback int
         Set inbound tunnel backup quantity(0 to 5) (default 4)
   -incount int
-        Set inbound tunnel quantity(0 to 15) (default 8)
+        Set inbound tunnel quantity(0 to 15) (default 6)
   -ini string
         Use an ini file for configuration(config file options override passed arguments for now.) (default &quot;none&quot;)
   -inlen int
         Set inbound tunnel length(0 to 7) (default 3)
   -invar int
         Set inbound tunnel length variance(-7 to 7)
+  -lsk string
+        path to saved encrypted leaseset keys (default &quot;none&quot;)
   -name string
         Tunnel name, this must be unique but can be anything. (default &quot;forwarder&quot;)
   -outback int
         Set outbound tunnel backup quantity(0 to 5) (default 4)
   -outcount int
-        Set outbound tunnel quantity(0 to 15) (default 8)
+        Set outbound tunnel quantity(0 to 15) (default 6)
   -outlen int
         Set outbound tunnel length(0 to 7) (default 3)
   -outvar int
@@ -41,13 +51,15 @@
   -reducecount int
         Reduce idle tunnel quantity to X (0 to 5) (default 3)
   -reducetime int
-        Reduce tunnel quantity after X (minutes) (default 10)
+        Reduce tunnel quantity after X (milliseconds) (default 600000)
   -samhost string
         SAM host (default &quot;127.0.0.1&quot;)
   -samport string
         SAM port (default &quot;7656&quot;)
   -save
         Use saved file and persist tunnel(If false, tunnel will not persist after program is stopped.
+  -tlsport string
+        (Currently inoperative. Target TLS port(HTTPS Port of service to forward to i2p)
   -udp
         UDP mode(true or false)
   -zeroin
@@ -75,6 +87,10 @@
         Set inbound tunnel quantity(0 to 15) (default 8)
   -iv int
         Set inbound tunnel length variance(-7 to 7)
+  -l string
+        Type of access list to use, can be &quot;whitelist&quot; &quot;blacklist&quot; or &quot;none&quot;. (default &quot;none&quot;)
+  -m string
+        Certificate name to use (default &quot;cert&quot;)
   -n string
         name to give the tunnel(default static-eepSite) (default &quot;static-eepSite&quot;)
   -ob int
@@ -86,23 +102,29 @@
   -ov int
         Set outbound tunnel length variance(-7 to 7)
   -p string
-        port to serve locally on (default &quot;8100&quot;)
+        port to serve locally on (default &quot;7880&quot;)
   -r    Reduce tunnel quantity when idle(true or false)
   -rc int
         Reduce idle tunnel quantity to X (0 to 5) (default 3)
   -rt int
-        Reduce tunnel quantity after X (minutes) (default 10)
+        Reduce tunnel quantity after X (milliseconds) (default 600000)
   -s string
         the directory to save the keys in(default ./) (default &quot;.&quot;)
   -sh string
         sam host to connect to (default &quot;127.0.0.1&quot;)
   -sp string
         sam port to connect to (default &quot;7656&quot;)
+  -t    Generate or use an existing TLS certificate
   -z    Allow zero-hop, non-anonymous tunnels(true or false)</code></pre>
 <h3 id="build-in-docker">build in docker</h3>
 <pre><code>docker build --build-arg user=eephttpd  --build-arg path=example/www -f Dockerfile -t eyedeekay/eephttpd .</code></pre>
 <h3 id="run-in-docker">Run in docker</h3>
-<pre><code>docker run -i -t -d --network si \
+<pre><code>docker run -i -t -d \
+    --name eephttpd-volume \
+    --volume eephttpd:/home/eephttpd/ \
+    eyedeekay/eephttpd</code></pre>
+<pre><code>docker run -i -t -d \
+    --network si \
     --env samhost=sam-host \
     --env samport=7656 \
     --env args=-r # Additional arguments to pass to eephttpd\
@@ -110,7 +132,7 @@
     --hostname eephttpd \
     --name eephttpd \
     --restart always \
-    --volume eephttpd:/home/eephttpd/ \
+    --volumes-from eephttpd-volume \
     eyedeekay/eephttpd</code></pre>
 <h2 id="instance">instance</h2>
-<p>a running instance of eephttpd with the example index file is availble on 6vdci6cxqcwtcjfnt537on7fwuihevyg3u7pntaiijts7pqkqo4a.b32.i2p 6vdci6cxqcwtcjfnt537on7fwuihevyg3u7pntaiijts7pqkqo4a.b32.i2p 6vdci6cxqcwtcjfnt537on7fwuihevyg3u7pntaiijts7pqkqo4a.b32.i2p 6vdci6cxqcwtcjfnt537on7fwuihevyg3u7pntaiijts7pqkqo4a.b32.i2p</p>
+<p>a running instance of eephttpd with the example index file is availble on</p>

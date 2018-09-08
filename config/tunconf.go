@@ -177,7 +177,7 @@ func (c *Conf) GetPort443(arg, def string) string {
 // default, the argument is always returned. If the argument and default are
 // the same and the key exists, the key is returned. If the key is absent, the
 // default is returned.
-func (c *Conf) GetType(argc, argu bool, def string) string {
+func (c *Conf) GetType(argc, argu, argh bool, def string) string {
 	var typ string
 	if argu {
 		typ += "udp"
@@ -186,7 +186,11 @@ func (c *Conf) GetType(argc, argu bool, def string) string {
 		typ += "client"
 		c.Client = true
 	} else {
-		typ += "server"
+		if argh == true {
+			typ += "http"
+		} else {
+			typ += "server"
+		}
 	}
 	if typ != def {
 		return typ
@@ -619,7 +623,7 @@ func (c *Conf) SetType() {
 		if strings.Contains(v, "client") {
 			c.Client = true
 		}
-		if c.Type == "server" || c.Type == "client" || c.Type == "udpserver" || c.Type == "udpclient" {
+		if c.Type == "server" || c.Type == "http" || c.Type == "client" || c.Type == "udpserver" || c.Type == "udpclient" {
 			c.Type = v
 		}
 	} else {
@@ -937,6 +941,7 @@ func NewI2PTunConf(iniFile string) (*Conf, error) {
 func NewSAMForwarderFromConf(config *Conf) (*samforwarder.SAMForwarder, error) {
 	if config != nil {
 		return samforwarder.NewSAMForwarderFromOptions(
+			samforwarder.SetType(config.Type),
 			samforwarder.SetSaveFile(config.SaveFile),
 			samforwarder.SetFilePath(config.SaveDirectory),
 			samforwarder.SetHost(config.TargetHost),

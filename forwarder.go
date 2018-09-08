@@ -33,6 +33,8 @@ type SAMForwarder struct {
 	file     io.ReadWriter
 	save     bool
 
+	Type string
+
 	// I2CP options
 	encryptLeaseSet    string
 	LeaseSetKeys       *sam3.I2PKeys

@@ -153,12 +153,6 @@ utilities like netcat and socat(ephsite may have it's name changed to samcat at
 that point). Configuring timeouts and the like. In order to do this, some of the
 existing flags should also be aliased to be more familiar and netcat-like.
 
-I want it to be able to use poorly formed ini files, in order to accomodate the
-use of INI-like labels. For now, my workaround is to comment out the labels
-until I deal with this. Basically I just want it to ignore the lables and treat
-the whole thing as flat. Alternatively I guess I could just have it start a
-multiple forwarders, one-per-label, without losing features.
-
 I want it to be able to save ini files based on the settings used for a running
 forwarder. Should be easy, I just need to decide how I want to do it. Also to
 focus a bit more.
@@ -172,9 +166,11 @@ the forwarder and the X-I2p-Dest* headers aren't passed through. Implies some
 interesting arrangements, but also makes colluding\_sites\_attack useless in
 it's present state. I mean I know what I did with si-i2p-plugin works, so it's
 not that important. I'll have to look for a way to make this behavior
-configurable though.
+configurable though. On a related note, I finally know the difference between
+http tunnels and server tunnels.
 
 It would be really awesome if I could make this run on Android. So I'll make
 that happen eventually.
 
-TLS configuration is experimental. It might not be possible. But maybe.
+TLS configuration is experimental. It might not be possible(To multiplex http
+and https on the same SAM tunnel).

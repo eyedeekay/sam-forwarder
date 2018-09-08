@@ -66,6 +66,8 @@ Usage of ./bin/ephsite:
     	SAM port (default "7656")
   -save
     	Use saved file and persist tunnel(If false, tunnel will not persist after program is stopped.
+  -tlsport string
+    	(Currently inoperative. Target TLS port(HTTPS Port of service to forward to i2p)
   -udp
     	UDP mode(true or false)
   -zeroin
@@ -104,6 +106,10 @@ Usage of ./bin/eephttpd:
     	Set inbound tunnel quantity(0 to 15) (default 8)
   -iv int
     	Set inbound tunnel length variance(-7 to 7)
+  -l string
+    	Type of access list to use, can be "whitelist" "blacklist" or "none". (default "none")
+  -m string
+    	Certificate name to use (default "cert")
   -n string
     	name to give the tunnel(default static-eepSite) (default "static-eepSite")
   -ob int
@@ -127,6 +133,7 @@ Usage of ./bin/eephttpd:
     	sam host to connect to (default "127.0.0.1")
   -sp string
     	sam port to connect to (default "7656")
+  -t	Generate or use an existing TLS certificate
   -z	Allow zero-hop, non-anonymous tunnels(true or false)
 ```
 

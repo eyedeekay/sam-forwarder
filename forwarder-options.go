@@ -16,6 +16,20 @@ func SetFilePath(s string) func(*SAMForwarder) error {
 	}
 }
 
+//SetType sets the type of the forwarder server
+func SetType(s string) func(*SAMForwarder) error {
+	return func(c *SAMForwarder) error {
+		if s == "http" {
+			c.Type = s
+			return nil
+		} else if s == "server" {
+			c.Type = s
+			return nil
+		}
+		return fmt.Errorf("Invalid server type")
+	}
+}
+
 //SetSaveFile tells the router to use an encrypted leaseset
 func SetSaveFile(b bool) func(*SAMForwarder) error {
 	return func(c *SAMForwarder) error {
