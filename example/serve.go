@@ -86,7 +86,7 @@ func main() {
 	config.ReduceIdleQuantity = config.GetReduceIdleQuantity(*reduceIdleQuantity, 2)
 	config.CloseIdleTime = config.GetCloseIdleTime(*reduceIdleTime, 600000)
 	config.AccessListType = config.GetAccessListType(*accessListType, "none")
-	config.Type = config.GetType(false, false, "server")
+	config.Type = config.GetType(false, false, false, "server")
 
 	if forwarder, err = i2ptunconf.NewSAMForwarderFromConf(config); err != nil {
 		log.Fatal(err.Error())

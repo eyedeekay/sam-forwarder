@@ -105,6 +105,9 @@ func (f *SAMForwarder) forward(conn net.Conn) {
 		log.Fatalf("Dial failed: %v", err)
 	}
 	log.Printf("Connected to localhost %v\n", conn)
+    if Type == "http" {
+        //
+    }
 	go func() {
 		defer client.Close()
 		defer conn.Close()
