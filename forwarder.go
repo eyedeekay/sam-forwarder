@@ -1,9 +1,11 @@
 package samforwarder
 
 import (
+    "bufio"
 	"io"
 	"log"
 	"net"
+    "net/http"
 	"os"
 	"path/filepath"
 	"strings"
@@ -100,13 +102,21 @@ func (f *SAMForwarder) sam() string {
 }
 
 func (f *SAMForwarder) forward(conn net.Conn) {
+    var request *http.Request
+    var err error
 	client, err := net.Dial("tcp", f.Target())
 	if err != nil {
 		log.Fatalf("Dial failed: %v", err)
 	}
 	log.Printf("Connected to localhost %v\n", conn)
-    if Type == "http" {
-        //
+    if f.Type == "http" {
+        request, err = http.ReadRequest(bufio.NewReader(conn))
+        if err != nil {
+            log.Fatal(err)
+        }
+        request.Header.Add("X-I2p-Dest-Base64", "test")
+        request.Header.Add("X-I2p-Dest-Base32", "test")
+        //request.Header.Add("X-I2p-Dest-Hash", "test")
     }
 	go func() {
 		defer client.Close()
