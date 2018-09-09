@@ -110,18 +110,23 @@ func (f *SAMForwarder) forward (conn *sam3.SAMConn) { //(conn net.Conn) {
 		log.Fatalf("Dial failed: %v", err)
 	}
 	log.Printf("Connected to localhost %v\n", conn)
-	if f.Type == "http" {
-		request, err = http.ReadRequest(bufio.NewReader(conn))
-		if err != nil {
-			log.Fatal(err)
-		}
-        dest := conn.RemoteAddr().(sam3.I2PAddr)
-        log.Println("Adding headers to http connection", dest.Base64(), dest.Base32(), dest.DestHash().String())
-		request.Header.Add("X-I2p-Dest-Base64", dest.Base64())
-		request.Header.Add("X-I2p-Dest-Base32", dest.Base32())
-		request.Header.Add("X-I2p-Dest-Hash", dest.DestHash().String())
-	}
 	go func() {
+		defer client.Close()
+		defer conn.Close()
+        io.Copy(conn, client)
+	}()
+	go func() {
+        if f.Type == "http" {
+            request, err = http.ReadRequest(bufio.NewReader(conn))
+            if err != nil {
+                log.Fatal(err)
+            }
+            dest := conn.RemoteAddr().(sam3.I2PAddr)
+            log.Println("Adding headers to http connection", dest.Base64(), dest.Base32(), dest.DestHash().String())
+            request.Header.Add("X-I2p-Dest-Base64", dest.Base64())
+            request.Header.Add("X-I2p-Dest-Base32", dest.Base32())
+            request.Header.Add("X-I2p-Dest-Hash", dest.DestHash().String())
+        }
 		defer client.Close()
 		defer conn.Close()
 		if f.Type == "http" {
@@ -130,17 +135,6 @@ func (f *SAMForwarder) forward (conn *sam3.SAMConn) { //(conn net.Conn) {
 			}
 		} else {
 			io.Copy(client, conn)
-		}
-	}()
-	go func() {
-		defer client.Close()
-		defer conn.Close()
-		if f.Type == "http" {
-			if x, e := httputil.DumpRequest(request, true); e != nil {
-				client.Write(x)
-			}
-		} else {
-			io.Copy(conn, client)
 		}
 	}()
 }
