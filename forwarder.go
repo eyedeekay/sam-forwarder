@@ -135,13 +135,13 @@ func (f *SAMForwarder) forward (conn *sam3.SAMConn) { //(conn net.Conn) {
 	go func() {
 		defer client.Close()
 		defer conn.Close()
-		/*if f.Type == "http" {
+		if f.Type == "http" {
 			if x, e := httputil.DumpRequest(request, true); e != nil {
 				client.Write(x)
 			}
-		} else {*/
+		} else {
 			io.Copy(conn, client)
-		//}
+		}
 	}()
 }
 
