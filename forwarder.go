@@ -109,13 +109,8 @@ func (f *SAMForwarder) forward (conn *sam3.SAMConn) { //(conn net.Conn) {
 	if err != nil {
 		log.Fatalf("Dial failed: %v", err)
 	}
-	log.Printf("Connected to localhost %v\n", conn)
-	go func() {
-		defer client.Close()
-		defer conn.Close()
-        io.Copy(conn, client)
-	}()
-	go func() {
+	//log.Printf("Connected to localhost %v\n", conn)
+    go func() {
         if f.Type == "http" {
             request, err = http.ReadRequest(bufio.NewReader(conn))
             if err != nil {
@@ -131,11 +126,17 @@ func (f *SAMForwarder) forward (conn *sam3.SAMConn) { //(conn net.Conn) {
 		defer conn.Close()
 		if f.Type == "http" {
 			if x, e := httputil.DumpRequest(request, true); e != nil {
+                log.Println(string(x))
 				client.Write(x)
 			}
 		} else {
 			io.Copy(client, conn)
 		}
+	}()
+	go func() {
+		defer client.Close()
+		defer conn.Close()
+        io.Copy(conn, client)
 	}()
 }
 
