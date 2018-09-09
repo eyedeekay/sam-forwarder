@@ -41,7 +41,7 @@ var (
 	closeIdle             = flag.Bool("close", false, "Close tunnel idle(true or false)")
 	udpMode               = flag.Bool("udp", false, "UDP mode(true or false)")
 	client                = flag.Bool("client", false, "Client proxy mode(true or false)")
-    useHttp                = flag.Bool("http", false, "HTTP server mode(true or false)")
+	useHttp               = flag.Bool("http", false, "HTTP server mode(true or false)")
 	encryptedLeasesetKeys = flag.String("lsk", "none", "path to saved encrypted leaseset keys")
 	targetDir             = flag.String("dir", "", "Directory to save tunnel configuration file in.")
 	iniFile               = flag.String("ini", "none", "Use an ini file for configuration(config file options override passed arguments for now.)")

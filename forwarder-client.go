@@ -10,7 +10,7 @@ import (
 )
 
 import (
-	"github.com/kpetku/sam3"
+	"github.com/eyedeekay/sam3"
 )
 
 // SAMClientForwarder is a tcp proxy that automatically forwards ports to i2p

@@ -25,6 +25,7 @@ deps:
 	go get -u github.com/eyedeekay/sam-forwarder/udp
 	go get -u github.com/eyedeekay/sam-forwarder/config
 	go get -u github.com/kpetku/sam3
+	go get -u github.com/eyedeekay/sam3
 
 
 build: clean bin/$(appname)
