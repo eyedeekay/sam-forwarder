@@ -102,7 +102,7 @@ func (f *SAMForwarder) sam() string {
 	return f.SamHost + ":" + f.SamPort
 }
 
-func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
+func (f *SAMForwarder) forward (conn *sam3.SAMConn) { //(conn net.Conn) {
 	var request *http.Request
 	var err error
 	client, err := net.Dial("tcp", f.Target())
@@ -115,8 +115,8 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		dest := conn.RemoteAddr().(sam3.I2PAddr)
-		log.Println("Adding headers to http connection", dest.Base32(), dest.Base32(), dest.DestHash().String())
+        dest := conn.RemoteAddr().(sam3.I2PAddr)
+        log.Println("Adding headers to http connection", dest.Base64(), dest.Base32(), dest.DestHash().String())
 		request.Header.Add("X-I2p-Dest-Base64", dest.Base64())
 		request.Header.Add("X-I2p-Dest-Base32", dest.Base32())
 		request.Header.Add("X-I2p-Dest-Hash", dest.DestHash().String())
@@ -124,18 +124,24 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 	go func() {
 		defer client.Close()
 		defer conn.Close()
-		io.Copy(client, conn)
-	}()
-	go func() {
-		defer client.Close()
-		defer conn.Close()
 		if f.Type == "http" {
 			if x, e := httputil.DumpRequest(request, true); e != nil {
-				client.Write(x)
+				conn.Write(x)
 			}
 		} else {
 			io.Copy(conn, client)
 		}
+	}()
+	go func() {
+		defer client.Close()
+		defer conn.Close()
+		/*if f.Type == "http" {
+			if x, e := httputil.DumpRequest(request, true); e != nil {
+				client.Write(x)
+			}
+		} else {*/
+			io.Copy(conn, client)
+		//}
 	}()
 }
 

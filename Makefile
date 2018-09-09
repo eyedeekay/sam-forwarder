@@ -127,7 +127,6 @@ docker-run: docker-volume
 		--restart always \
 		--volumes-from $(eephttpd)-volume \
 		eyedeekay/$(eephttpd)
-	docker rm -f $(eephttpd)-volume; true
 	docker logs -f $(eephttpd)
 
 docker: docker-build docker-volume docker-run
