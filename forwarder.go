@@ -173,7 +173,7 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 					log.Println("Error: ", b, e)
 				}
 			} else {
-				log.Println("Error: ", e)
+				log.Println("Error: ", err)
 			}
 		} else {
 			io.Copy(conn, client)
