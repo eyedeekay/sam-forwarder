@@ -9,10 +9,8 @@ import (
 )
 
 import (
-	//"github.com/eyedeekay/sam-forwarder"
-	//"github.com/eyedeekay/sam-forwarder/config"
-    ".."
-    "../config"
+	"github.com/eyedeekay/sam-forwarder"
+	"github.com/eyedeekay/sam-forwarder/config"
 )
 
 var cfg = &tls.Config{
