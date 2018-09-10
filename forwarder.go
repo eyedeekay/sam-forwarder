@@ -140,49 +140,37 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 	var request *http.Request
 	var requestbytes []byte
 	var err error
-    var client net.Conn
-    defer conn.Close()
+	var client net.Conn
+	if client, err = net.Dial("tcp", f.Target()); err == nil {
+		defer client.Close()
+	} else {
+		log.Fatalf("Dial failed: %v", err)
+	}
+	defer conn.Close()
 	go func() {
 		if f.Type == "http" {
-			if client, err = net.Dial("tcp", f.Target()); err == nil {
-				if requestbytes, request, err = f.HTTPRequestBytes(conn); err == nil {
-					log.Printf("Forwarding modified request: \n\t %s", string(requestbytes))
-					client.Write(requestbytes)
-				} else {
-					log.Println("Error: ", requestbytes, err)
-				}
+			if requestbytes, request, err = f.HTTPRequestBytes(conn); err == nil {
+				log.Printf("Forwarding modified request: \n\t %s", string(requestbytes))
+				client.Write(requestbytes)
 			} else {
-				log.Fatalf("Dial failed: %v", err)
+				log.Println("Error: ", requestbytes, err)
 			}
 		} else {
-			if client, err = net.Dial("tcp", f.Target()); err == nil {
-				io.Copy(client, conn)
-			} else {
-				log.Fatalf("Dial failed: %v", err)
-			}
+			io.Copy(client, conn)
 		}
 	}()
 	go func() {
 		if f.Type == "http" {
-			if client, err = net.Dial("tcp", f.Target()); err == nil {
-				if requestbytes, err = f.HTTPResponseBytes(client, request); err == nil {
-					log.Printf("Forwarding modified response: \n\t%s", string(requestbytes))
-					conn.Write(requestbytes)
-				} else {
-					log.Println("Error: ", requestbytes, err)
-				}
+			if requestbytes, err = f.HTTPResponseBytes(client, request); err == nil {
+				log.Printf("Forwarding modified response: \n\t%s", string(requestbytes))
+				conn.Write(requestbytes)
 			} else {
-				log.Fatalf("Dial failed: %v", err)
+				log.Println("Error: ", requestbytes, err)
 			}
 		} else {
-			if client, err = net.Dial("tcp", f.Target()); err == nil {
-				io.Copy(conn, client)
-			} else {
-				log.Println("Error:", err)
-			}
+			io.Copy(conn, client)
 		}
 	}()
-    defer client.Close()
 }
 
 //Base32 returns the base32 address where the local service is being forwarded
