@@ -133,6 +133,7 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 		defer conn.Close()
 		if f.Type == "http" {
 			if b, e := f.HTTPRequestBytes(conn); e == nil {
+				log.Println("Forwarding modified request: ", string(b))
 				client.Write(b)
 			} else {
 				log.Println("Error: ", b, e)
