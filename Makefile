@@ -170,4 +170,4 @@ index:
 	pandoc USAGE.md -o example/www/index.html
 
 visit:
-	http_proxy=http://127.0.0.1:44443 surf http://566niximlxdzpanmn4qouucvua3k7neniwss47li5r6ugoertzuq.b32.i2p
+	http_proxy=http://127.0.0.1:4444 surf http://566niximlxdzpanmn4qouucvua3k7neniwss47li5r6ugoertzuq.b32.i2p
