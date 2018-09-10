@@ -138,52 +138,54 @@ func (f *SAMForwarder) HTTPResponseBytes(conn net.Conn, req *http.Request) ([]by
 
 func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 	var request *http.Request
+	var requestbytes []byte
+	var err error
+    var client net.Conn
+    defer client.Close()
+    defer conn.Close()
 	go func() {
-		defer conn.Close()
 		if f.Type == "http" {
-            if client, err := net.Dial("tcp", f.Target()); err == nil {
-                defer client.Close()
-                var b []byte
-                var e error
-                if b, request, e = f.HTTPRequestBytes(conn); e == nil {
-                    log.Printf("Forwarding modified request: \n\t %s", string(b))
-                    client.Write(b)
-                } else {
-                    log.Println("Error: ", b, e)
-                }
-            }else{
-                log.Fatalf("Dial failed: %v", err)
-            }
-		} else {
-            if client, err := net.Dial("tcp", f.Target()); err == nil {
-                defer client.Close()
-                io.Copy(client, conn)
-            }else{
-                log.Fatalf("Dial failed: %v", err)
-            }
-		}
-	}()
-	go func() {
-		defer conn.Close()
-		if f.Type == "http" {
-			if client, err := net.Dial("tcp", f.Target()); err == nil {
-                defer client.Close()
-				if b, e := f.HTTPResponseBytes(client, request); e == nil {
-					log.Printf("Forwarding modified response: \n\t%s", string(b))
-					conn.Write(b)
+			if client, err = net.Dial("tcp", f.Target()); err == nil {
+				//defer client.Close()
+				if requestbytes, request, err = f.HTTPRequestBytes(conn); err == nil {
+					log.Printf("Forwarding modified request: \n\t %s", string(requestbytes))
+					client.Write(requestbytes)
 				} else {
-					log.Println("Error: ", b, e)
+					log.Println("Error: ", requestbytes, err)
 				}
 			} else {
 				log.Fatalf("Dial failed: %v", err)
 			}
 		} else {
-            if client, err := net.Dial("tcp", f.Target()); err == nil {
-                defer client.Close()
-                io.Copy(conn, client)
-            }else{
-                log.Println("Error:", err)
-            }
+			if client, err := net.Dial("tcp", f.Target()); err == nil {
+				//defer client.Close()
+				io.Copy(client, conn)
+			} else {
+				log.Fatalf("Dial failed: %v", err)
+			}
+		}
+	}()
+	go func() {
+		//defer conn.Close()
+		if f.Type == "http" {
+			if client, err = net.Dial("tcp", f.Target()); err == nil {
+				//defer client.Close()
+				if requestbytes, err = f.HTTPResponseBytes(client, request); err == nil {
+					log.Printf("Forwarding modified response: \n\t%s", string(requestbytes))
+					conn.Write(requestbytes)
+				} else {
+					log.Println("Error: ", requestbytes, err)
+				}
+			} else {
+				log.Fatalf("Dial failed: %v", err)
+			}
+		} else {
+			if client, err := net.Dial("tcp", f.Target()); err == nil {
+				//defer client.Close()
+				io.Copy(conn, client)
+			} else {
+				log.Println("Error:", err)
+			}
 		}
 	}()
 }
