@@ -28,6 +28,8 @@ Usage of ./bin/ephsite:
     	Use an encrypted leaseset(true or false) (default true)
   -gzip
     	Uze gzip(true or false)
+  -headers
+    	Inject X-I2P-DEST headers
   -host string
     	Target host(Host of service to forward to i2p) (default "127.0.0.1")
   -inback int
@@ -134,6 +136,7 @@ Usage of ./bin/eephttpd:
   -sp string
     	sam port to connect to (default "7656")
   -t	Generate or use an existing TLS certificate
+  -x	Inject X-I2P-DEST headers (default true)
   -z	Allow zero-hop, non-anonymous tunnels(true or false)
 ```
 

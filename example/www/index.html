@@ -20,6 +20,8 @@
         Use an encrypted leaseset(true or false) (default true)
   -gzip
         Uze gzip(true or false)
+  -headers
+        Inject X-I2P-DEST headers
   -host string
         Target host(Host of service to forward to i2p) (default &quot;127.0.0.1&quot;)
   -inback int
@@ -115,6 +117,7 @@
   -sp string
         sam port to connect to (default &quot;7656&quot;)
   -t    Generate or use an existing TLS certificate
+  -x    Inject X-I2P-DEST headers (default true)
   -z    Allow zero-hop, non-anonymous tunnels(true or false)</code></pre>
 <h3 id="build-in-docker">build in docker</h3>
 <pre><code>docker build --build-arg user=eephttpd  --build-arg path=example/www -f Dockerfile -t eyedeekay/eephttpd .</code></pre>
