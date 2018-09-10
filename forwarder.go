@@ -1,12 +1,12 @@
 package samforwarder
 
 import (
-	//"bufio"
+	"bufio"
 	"io"
 	"log"
 	"net"
-	//"net/http"
-	//"net/http/httputil"
+	"net/http"
+	"net/http/httputil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -102,36 +102,38 @@ func (f *SAMForwarder) sam() string {
 	return f.SamHost + ":" + f.SamPort
 }
 
+func (f *SAMForwarder) HTTPRequestBytes(conn *sam3.SAMConn) ([]byte, error) {
+        var request *http.Request
+        var retrequest []byte
+        var err error
+		request, err = http.ReadRequest(bufio.NewReader(conn))
+		if err != nil {
+			return nil, err
+		}
+		dest := conn.RemoteAddr().(sam3.I2PAddr)
+		log.Printf("Adding headers to http connection\n\tX-I2p-Dest-Base64=%s\n\tX-I2p-Dest-Base32=%s\n\tX-I2p-Dest-Hash=%s",
+            dest.Base64(), dest.Base32(), dest.DestHash().String())
+		request.Header.Add("X-I2p-Dest-Base64", dest.Base64())
+		request.Header.Add("X-I2p-Dest-Base32", dest.Base32())
+		request.Header.Add("X-I2p-Dest-Hash", dest.DestHash().String())
+        if retrequest, err = httputil.DumpRequest(request, true); err != nil {
+            return nil, err
+        }
+        return retrequest, nil
+}
+
 func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
-	//var request *http.Request
 	var err error
 	client, err := net.Dial("tcp", f.Target())
 	if err != nil {
 		log.Fatalf("Dial failed: %v", err)
 	}
-	//log.Printf("Connected to localhost %v\n", conn)
-	if f.Type == "http" {
-		/*request, err = http.ReadRequest(bufio.NewReader(conn))
-		if err != nil {
-			log.Fatal(err)
-		}
-		dest := conn.RemoteAddr().(sam3.I2PAddr)
-		log.Println("Adding headers to http connection", dest.Base64(), dest.Base32(), dest.DestHash().String())
-		request.Header.Add("X-I2p-Dest-Base64", dest.Base64())
-		request.Header.Add("X-I2p-Dest-Base32", dest.Base32())
-		request.Header.Add("X-I2p-Dest-Hash", dest.DestHash().String())*/
-	}
 	go func() {
 		defer client.Close()
 		defer conn.Close()
 		if f.Type == "http" {
-			/*if x, e := httputil.DumpRequest(request, true); e != nil {
-				log.Println(string(x))
-				client.Write(x)
-			} else {
-				log.Println(e)*/
-				io.Copy(client, conn)
-			//}
+            /**/
+			io.Copy(client, conn)
 		} else {
 			io.Copy(client, conn)
 		}
@@ -140,13 +142,8 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 		defer client.Close()
 		defer conn.Close()
 		if f.Type == "http" {
-			/*if x, e := httputil.DumpRequest(request, true); e != nil {
-				log.Println(string(x))
-				client.Write(x)
-			} else {
-				log.Println(e)*/
-				io.Copy(conn, client)
-			//}
+            /**/
+            io.Copy(conn, client)
 		} else {
 			io.Copy(conn, client)
 		}
