@@ -146,7 +146,6 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 	go func() {
 		if f.Type == "http" {
 			if client, err = net.Dial("tcp", f.Target()); err == nil {
-				//defer client.Close()
 				if requestbytes, request, err = f.HTTPRequestBytes(conn); err == nil {
 					log.Printf("Forwarding modified request: \n\t %s", string(requestbytes))
 					client.Write(requestbytes)
@@ -157,8 +156,7 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 				log.Fatalf("Dial failed: %v", err)
 			}
 		} else {
-			if client, err := net.Dial("tcp", f.Target()); err == nil {
-				//defer client.Close()
+			if client, err = net.Dial("tcp", f.Target()); err == nil {
 				io.Copy(client, conn)
 			} else {
 				log.Fatalf("Dial failed: %v", err)
@@ -166,10 +164,8 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 		}
 	}()
 	go func() {
-		//defer conn.Close()
 		if f.Type == "http" {
 			if client, err = net.Dial("tcp", f.Target()); err == nil {
-				//defer client.Close()
 				if requestbytes, err = f.HTTPResponseBytes(client, request); err == nil {
 					log.Printf("Forwarding modified response: \n\t%s", string(requestbytes))
 					conn.Write(requestbytes)
@@ -180,8 +176,7 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 				log.Fatalf("Dial failed: %v", err)
 			}
 		} else {
-			if client, err := net.Dial("tcp", f.Target()); err == nil {
-				//defer client.Close()
+			if client, err = net.Dial("tcp", f.Target()); err == nil {
 				io.Copy(conn, client)
 			} else {
 				log.Println("Error:", err)
