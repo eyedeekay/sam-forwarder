@@ -1,9 +1,9 @@
 package main
 
 /*
-    WARNING: This is not the official version of eephttpd. It is an older
-    verion I use to test new sam-forwarder features. It is not intended for
-    use in production.
+   WARNING: This is not the official version of eephttpd. It is an older
+   verion I use to test new sam-forwarder features. It is not intended for
+   use in production.
 */
 
 import (
@@ -41,6 +41,7 @@ var (
 	usei2p             = flag.Bool("i", true, "save i2p keys(and thus destinations) across reboots")
 	servicename        = flag.String("n", "static-eepSite", "name to give the tunnel(default static-eepSite)")
 	useCompression     = flag.Bool("g", true, "Uze gzip(true or false)")
+	injectHeaders      = flag.Bool("x", true, "Inject X-I2P-DEST headers")
 	accessListType     = flag.String("l", "none", "Type of access list to use, can be \"whitelist\" \"blacklist\" or \"none\".")
 	encryptLeaseSet    = flag.Bool("c", false, "Use an encrypted leaseset(true or false)")
 	allowZeroHop       = flag.Bool("z", false, "Allow zero-hop, non-anonymous tunnels(true or false)")
@@ -92,7 +93,7 @@ func main() {
 	config.ReduceIdleQuantity = config.GetReduceIdleQuantity(*reduceIdleQuantity, 2)
 	config.CloseIdleTime = config.GetCloseIdleTime(*reduceIdleTime, 600000)
 	config.AccessListType = config.GetAccessListType(*accessListType, "none")
-	config.Type = config.GetType(false, false, false, "server")
+	config.Type = config.GetType(false, false, injectHeaders, "server")
 
 	if forwarder, err = i2ptunconf.NewSAMForwarderFromConf(config); err != nil {
 		log.Fatal(err.Error())
