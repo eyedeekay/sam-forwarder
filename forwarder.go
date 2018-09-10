@@ -1,12 +1,12 @@
 package samforwarder
 
 import (
-	"bufio"
+	//"bufio"
 	"io"
 	"log"
 	"net"
-	"net/http"
-	"net/http/httputil"
+	//"net/http"
+	//"net/http/httputil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -103,7 +103,7 @@ func (f *SAMForwarder) sam() string {
 }
 
 func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
-	var request *http.Request
+	//var request *http.Request
 	var err error
 	client, err := net.Dial("tcp", f.Target())
 	if err != nil {
@@ -111,7 +111,7 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 	}
 	//log.Printf("Connected to localhost %v\n", conn)
 	if f.Type == "http" {
-		request, err = http.ReadRequest(bufio.NewReader(conn))
+		/*request, err = http.ReadRequest(bufio.NewReader(conn))
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -119,19 +119,19 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 		log.Println("Adding headers to http connection", dest.Base64(), dest.Base32(), dest.DestHash().String())
 		request.Header.Add("X-I2p-Dest-Base64", dest.Base64())
 		request.Header.Add("X-I2p-Dest-Base32", dest.Base32())
-		request.Header.Add("X-I2p-Dest-Hash", dest.DestHash().String())
+		request.Header.Add("X-I2p-Dest-Hash", dest.DestHash().String())*/
 	}
 	go func() {
 		defer client.Close()
 		defer conn.Close()
 		if f.Type == "http" {
-			if x, e := httputil.DumpRequest(request, true); e != nil {
+			/*if x, e := httputil.DumpRequest(request, true); e != nil {
 				log.Println(string(x))
 				client.Write(x)
 			} else {
-				log.Println(e)
+				log.Println(e)*/
 				io.Copy(client, conn)
-			}
+			//}
 		} else {
 			io.Copy(client, conn)
 		}
