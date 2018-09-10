@@ -141,7 +141,6 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 	var requestbytes []byte
 	var err error
     var client net.Conn
-    defer client.Close()
     defer conn.Close()
 	go func() {
 		if f.Type == "http" {
@@ -183,6 +182,7 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 			}
 		}
 	}()
+    defer client.Close()
 }
 
 //Base32 returns the base32 address where the local service is being forwarded
