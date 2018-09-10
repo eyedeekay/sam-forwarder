@@ -139,6 +139,7 @@ func (f *SAMForwarder) HTTPResponseBytes(conn net.Conn, req *http.Request) ([]by
 func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 	var request *http.Request
 	var requestbytes []byte
+    var responsebytes []byte
 	var err error
 	var client net.Conn
 	if client, err = net.Dial("tcp", f.Target()); err == nil {
@@ -161,11 +162,11 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 	}()
 	go func() {
 		if f.Type == "http" {
-			if requestbytes, err = f.HTTPResponseBytes(client, request); err == nil {
+			if responsebytes, err = f.HTTPResponseBytes(client, request); err == nil {
 				log.Printf("Forwarding modified response: \n\t%s", string(requestbytes))
 				conn.Write(requestbytes)
 			} else {
-				log.Println("Error: ", requestbytes, err)
+				log.Println("Error: ", responsebytes, err)
 			}
 		} else {
 			io.Copy(conn, client)
