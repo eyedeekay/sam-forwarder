@@ -105,7 +105,11 @@ gendoc: all
 	@cat USAGE.md
 
 docker-build:
-	docker build --force-rm --build-arg user=$(eephttpd) --build-arg path=example/www -f Dockerfile -t eyedeekay/$(eephttpd) .
+	docker build --force-rm \
+		--build-arg user=$(eephttpd) \
+		--build-arg path=example/www \
+		-f Dockerfile \
+		-t eyedeekay/$(eephttpd) .
 
 docker-volume:
 	docker run -i -t -d \
