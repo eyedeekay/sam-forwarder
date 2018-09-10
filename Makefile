@@ -18,11 +18,8 @@ test:
 	cd udp && go test
 	cd config && go test
 
-
 deps:
 	go get -u github.com/zieckey/goini
-	#mkdir -p $(GOPATH)/src/github.com/eyedeekay/sam-forwarder
-	#cp -rv . $(GOPATH)/src/github.com/eyedeekay/sam-forwarder
 	go get -u github.com/eyedeekay/sam-forwarder
 	go get -u github.com/eyedeekay/sam-forwarder/udp
 	go get -u github.com/eyedeekay/sam-forwarder/config

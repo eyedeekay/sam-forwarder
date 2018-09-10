@@ -135,7 +135,7 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 			if b, e := f.HTTPRequestBytes(conn); e != nil {
 				client.Write(b)
 			} else {
-				log.Println("Error: ", e)
+				log.Println("Error: ", b, e)
 			}
 		} else {
 			io.Copy(client, conn)
