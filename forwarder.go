@@ -165,12 +165,15 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 		defer client.Close()
 		defer conn.Close()
 		if f.Type == "http" {
-            client, err := net.Dial("tcp", f.Target())
-            if b, e := f.HTTPResponseBytes(client); e == nil {
-				log.Println("Forwarding modified request: ", string(b))
-				conn.Write(b)
+			if client, err := net.Dial("tcp", f.Target()); err == nil {
+				if b, e := f.HTTPResponseBytes(client); e == nil {
+					log.Println("Forwarding modified request: ", string(b))
+					conn.Write(b)
+				} else {
+					log.Println("Error: ", b, e)
+				}
 			} else {
-				log.Println("Error: ", b, e)
+				log.Println("Error: ", e)
 			}
 		} else {
 			io.Copy(conn, client)
