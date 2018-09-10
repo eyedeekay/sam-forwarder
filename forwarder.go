@@ -102,39 +102,34 @@ func (f *SAMForwarder) sam() string {
 	return f.SamHost + ":" + f.SamPort
 }
 
-func (f *SAMForwarder) HTTPRequestBytes(conn *sam3.SAMConn) ([]byte, error) {
+func (f *SAMForwarder) HTTPRequestBytes(conn *sam3.SAMConn) ([]byte, *http.Request, error) {
 	var request *http.Request
 	var retrequest []byte
 	var err error
 	request, err = http.ReadRequest(bufio.NewReader(conn))
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	dest := conn.RemoteAddr().(sam3.I2PAddr)
-	log.Printf("Adding headers to http connection\n\tX-I2p-Dest-Base64=%s\n\tX-I2p-Dest-Base32=%s\n\tX-I2p-Dest-Hash=%s",
-		dest.Base64(), dest.Base32(), dest.DestHash().String())
 	request.Header.Add("X-I2p-Dest-Base64", dest.Base64())
 	request.Header.Add("X-I2p-Dest-Base32", dest.Base32())
 	request.Header.Add("X-I2p-Dest-Hash", dest.DestHash().String())
 	if retrequest, err = httputil.DumpRequest(request, true); err != nil {
-		return nil, err
+		return nil, nil, err
 	}
-	return retrequest, nil
+	return retrequest, request, nil
 }
 
-func (f *SAMForwarder) HTTPResponseBytes(conn net.Conn) ([]byte, error) {
+func (f *SAMForwarder) HTTPResponseBytes(conn net.Conn, req *http.Request) ([]byte, error) {
 	var response *http.Response
 	var retresponse []byte
 	var err error
-	response, err = http.ReadResponse(bufio.NewReader(conn), nil)
+	response, err = http.ReadResponse(bufio.NewReader(conn), req)
 	if err != nil {
 		return nil, err
 	}
-	log.Printf("Adding headers to http connection\n\tX-I2p-Dest-Base64=%s\n\tX-I2p-Dest-Base32=%s\n",
-		f.Base64(), f.Base32())
 	response.Header.Add("X-I2p-Dest-Base64", f.Base64())
 	response.Header.Add("X-I2p-Dest-Base32", f.Base32())
-	//response.Header.Add("X-I2p-Dest-Hash", dest.DestHash().String())
 	if retresponse, err = httputil.DumpResponse(response, true); err != nil {
 		return nil, err
 	}
@@ -143,6 +138,7 @@ func (f *SAMForwarder) HTTPResponseBytes(conn net.Conn) ([]byte, error) {
 
 func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 	var err error
+	var request *http.Request
 	client, err := net.Dial("tcp", f.Target())
 	if err != nil {
 		log.Fatalf("Dial failed: %v", err)
@@ -151,8 +147,10 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 		defer client.Close()
 		defer conn.Close()
 		if f.Type == "http" {
-			if b, e := f.HTTPRequestBytes(conn); e == nil {
-				log.Println("Forwarding modified request: ", string(b))
+			var b []byte
+			var e error
+			if b, request, e = f.HTTPRequestBytes(conn); e == nil {
+				log.Printf("Forwarding modified request: \n\t %s", string(b))
 				client.Write(b)
 			} else {
 				log.Println("Error: ", b, e)
@@ -166,8 +164,8 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 		defer conn.Close()
 		if f.Type == "http" {
 			if client, err := net.Dial("tcp", f.Target()); err == nil {
-				if b, e := f.HTTPResponseBytes(client); e == nil {
-					log.Println("Forwarding modified request: ", string(b))
+				if b, e := f.HTTPResponseBytes(client, request); e == nil {
+					log.Printf("Forwarding modified request: \n\t%s", string(b))
 					conn.Write(b)
 				} else {
 					log.Println("Error: ", b, e)
