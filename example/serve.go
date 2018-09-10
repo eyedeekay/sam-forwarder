@@ -100,7 +100,7 @@ func main() {
 			TLSConfig:    cfg,
 			TLSNextProto: make(map[string]func(*http.Server, *tls.Conn, http.Handler), 0),
 		}
-		log.Printf("Serving %s on HTTPS port: %s\n\t and on %s", *directory, *port, forwarder.Base32())
+		log.Printf("Serving %s on HTTPS port: %s\n\t and on \n%s", *directory, *port, forwarder.Base32())
 		log.Fatal(
 			srv.ListenAndServeTLS(
 				filepath.Join(*sdirectory+"/", *certFile+".crt"),
@@ -108,7 +108,7 @@ func main() {
 			),
 		)
 	} else {
-		log.Printf("Serving %s on HTTP port: %s\n\t and on %s", *directory, *port, forwarder.Base32())
+		log.Printf("Serving %s on HTTP port: %s\n\t and on \n%s", *directory, *port, forwarder.Base32())
 		log.Fatal(
 			http.ListenAndServe(
 				*host+":"+*port,
