@@ -139,9 +139,9 @@ func (f *SAMForwarder) HTTPResponseBytes(conn net.Conn, req *http.Request) ([]by
 	return retresponse, nil
 }
 
-func (f *SAMForwarder) clientUnlockAndClose(client, conn bool, client net.Conn) {
-	if client == true {
-		f.clientLock = client
+func (f *SAMForwarder) clientUnlockAndClose(cli, conn bool, client net.Conn) {
+	if cli == true {
+		f.clientLock = cli
 	}
 	if conn == true {
 		f.connLock = conn
