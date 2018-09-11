@@ -139,7 +139,7 @@ func (f *SAMForwarder) HTTPResponseBytes(conn net.Conn, req *http.Request) ([]by
 	return retresponse, nil
 }
 
-func (f *SAMForwarder) clientUnlockAndClose(client, conn bool) {
+func (f *SAMForwarder) clientUnlockAndClose(client, conn bool, client net.Conn) {
 	if client == true {
 		f.clientLock = client
 	}
@@ -162,7 +162,7 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 	}
 	go func() {
 		//defer client.Close()
-		defer f.clientUnlockAndClose()
+		defer f.clientUnlockAndClose(true, false, client)
 		defer conn.Close()
 		if f.Type == "http" {
 			if requestbytes, request, err = f.HTTPRequestBytes(conn); err == nil {
@@ -177,7 +177,7 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 	}()
 	go func() {
 		//defer client.Close()
-		defer f.clientUnlockAndClose()
+		defer f.clientUnlockAndClose(true, false, client)
 		defer conn.Close()
 		if f.Type == "http" {
 			if responsebytes, err = f.HTTPResponseBytes(client, request); err == nil {
