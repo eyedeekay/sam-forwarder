@@ -161,7 +161,8 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 		log.Fatalf("Dial failed: %v", err)
 	}
 	go func() {
-		defer f.clientUnlockAndClose(true, false, client)
+		//defer f.clientUnlockAndClose(true, false, client)
+        defer client.Close()
 		defer conn.Close()
 		if f.Type == "http" {
 			if requestbytes, request, err = f.HTTPRequestBytes(conn); err == nil {
@@ -175,7 +176,8 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 		}
 	}()
 	go func() {
-		defer f.clientUnlockAndClose(false, true, client)
+		//defer f.clientUnlockAndClose(false, true, client)
+        defer client.Close()
 		defer conn.Close()
 		if f.Type == "http" {
 			if responsebytes, err = f.HTTPResponseBytes(client, request); err == nil {
