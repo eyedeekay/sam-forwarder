@@ -143,10 +143,10 @@ func (f *SAMForwarder) HTTPResponseBytes(conn net.Conn, req *http.Request) ([]by
 }
 
 func (f *SAMForwarder) clientUnlockAndClose(cli, conn bool, client net.Conn) {
-	if cli == true {
+	if cli {
 		f.clientLock = cli
 	}
-	if conn == true {
+	if conn {
 		f.connLock = conn
 	}
 	if f.clientLock && f.connLock {
@@ -155,10 +155,10 @@ func (f *SAMForwarder) clientUnlockAndClose(cli, conn bool, client net.Conn) {
 }
 
 func (f *SAMForwarder) connUnlockAndClose(cli, conn bool, client *sam3.SAMConn) {
-	if cli == true {
+	if cli {
 		f.connClientLock = cli
 	}
-	if conn == true {
+	if conn {
 		f.connConnLock = conn
 	}
 	if f.connClientLock && f.connConnLock {

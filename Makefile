@@ -171,3 +171,6 @@ index:
 
 visit:
 	http_proxy=http://127.0.0.1:4444 surf http://566niximlxdzpanmn4qouucvua3k7neniwss47li5r6ugoertzuq.b32.i2p
+
+forward:
+	./bin/ephsite -client -dest i2p-projekt.i2p
