@@ -63,6 +63,9 @@ type SAMForwarder struct {
 
 	clientLock bool
 	connLock   bool
+
+    connClientLock bool
+	connConnLock   bool
 }
 
 var err error
@@ -153,12 +156,12 @@ func (f *SAMForwarder) clientUnlockAndClose(cli, conn bool, client net.Conn) {
 
 func (f *SAMForwarder) connUnlockAndClose(cli, conn bool, client *sam3.SAMConn) {
 	if cli == true {
-		f.clientLock = cli
+		f.connClientLock = cli
 	}
 	if conn == true {
-		f.connLock = conn
+		f.connConnLock = conn
 	}
-	if f.clientLock && f.connLock {
+	if f.connClientLock && f.connConnLock {
 		client.Close()
 	}
 }
