@@ -60,6 +60,9 @@ type SAMForwarder struct {
 	//Streaming Library options
 	accessListType string
 	accessList     []string
+
+	clientLock bool
+	connLock   bool
 }
 
 var err error
@@ -136,18 +139,31 @@ func (f *SAMForwarder) HTTPResponseBytes(conn net.Conn, req *http.Request) ([]by
 	return retresponse, nil
 }
 
+func (f *SAMForwarder) clientUnlockAndClose(client, conn bool) {
+	if client == true {
+		f.clientLock = client
+	}
+	if conn == true {
+		f.connLock = conn
+	}
+	if f.clientLock && f.connLock {
+		client.Close()
+	}
+}
+
 func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 	var request *http.Request
 	var requestbytes []byte
-    var responsebytes []byte
+	var responsebytes []byte
 	var err error
 	var client net.Conn
 	if client, err = net.Dial("tcp", f.Target()); err != nil {
-        log.Fatalf("Dial failed: %v", err)
+		log.Fatalf("Dial failed: %v", err)
 	}
 	go func() {
-        defer client.Close()
-        defer conn.Close()
+		//defer client.Close()
+		defer f.clientUnlockAndClose()
+		defer conn.Close()
 		if f.Type == "http" {
 			if requestbytes, request, err = f.HTTPRequestBytes(conn); err == nil {
 				log.Printf("Forwarding modified request: \n\t %s", string(requestbytes))
@@ -160,14 +176,15 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 		}
 	}()
 	go func() {
-        defer client.Close()
-        defer conn.Close()
+		//defer client.Close()
+		defer f.clientUnlockAndClose()
+		defer conn.Close()
 		if f.Type == "http" {
 			if responsebytes, err = f.HTTPResponseBytes(client, request); err == nil {
 				log.Printf("Forwarding modified response: \n\t%s", string(requestbytes))
 				conn.Write(requestbytes)
 			} else {
-				log.Println("Error: ", responsebytes, err)
+				log.Println("Response Error: ", responsebytes, err)
 			}
 		} else {
 			io.Copy(conn, client)
@@ -263,6 +280,8 @@ func NewSAMForwarderFromOptions(opts ...func(*SAMForwarder) error) (*SAMForwarde
 	s.reduceIdleQuantity = "4"
 	s.closeIdle = "false"
 	s.closeIdleTime = "300000"
+	s.clientLock = false
+	s.connLock = false
 	for _, o := range opts {
 		if err := o(&s); err != nil {
 			return nil, err
