@@ -6,7 +6,6 @@ is still not well tested, and UDP clients aren't enabled yet. I'm out of excuses
 not to finish it now, too.
 
 ## building
-
 Just:
 
         make deps build
@@ -67,15 +66,8 @@ manually, there are no convenience functions for them.
 Using this port forwarder, it's possible to create an instant eepsite from a
 folder full of html files(and the resources they call upon). Probably obviously
 to everybody reading this right now, but maybe not obviously to everyone reading
-this forever. A go application that does this I call eephttpd can be built with
-the command:
-
-        make server
-
-and run from ./bin/eephttpd. The default behavior is to look for the files to
-serve under the current directory in ./www. It can be configured to behave
-differently according to the rules in [USAGE.md](USAGE.md). A Dockerfile is also
-available.
+this forever. An example of an application that works this way is available
+[here at my eephttpd repo](https://github.com/eyedeekay/eephttpd).
 
 ## Quick-And-Dirty i2p-enabled golang web applications
 
