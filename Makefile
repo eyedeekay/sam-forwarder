@@ -61,6 +61,7 @@ install-server:
 install-all: install install-server
 
 remove:
+	rm -rf /usr/local/bin/ephsite /usr/local/bin/eephttpd
 
 gendoc: all
 	@echo "$(appname) - Easy forwarding of local services to i2p" > USAGE.md

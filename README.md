@@ -161,14 +161,6 @@ I've written a handful of example tools, but some of them might be better as
 their own projects. An i2p-native static site generator in the style of jekyll
 (but in go) could be cool.
 
-Haha. Well shit. I migrated colluding\_sites\_attack to auto-configure using
-the forwarder and the X-I2p-Dest* headers aren't passed through. Implies some
-interesting arrangements, but also makes colluding\_sites\_attack useless in
-it's present state. I mean I know what I did with si-i2p-plugin works, so it's
-not that important. I'll have to look for a way to make this behavior
-configurable though. On a related note, I finally know the difference between
-http tunnels and server tunnels.
-
 It would be really awesome if I could make this run on Android. So I'll make
 that happen eventually.
 
