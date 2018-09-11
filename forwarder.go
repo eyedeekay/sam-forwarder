@@ -151,6 +151,18 @@ func (f *SAMForwarder) clientUnlockAndClose(cli, conn bool, client net.Conn) {
 	}
 }
 
+func (f *SAMForwarder) connUnlockAndClose(cli, conn bool, client *sam3.SAMConn) {
+	if cli == true {
+		f.clientLock = cli
+	}
+	if conn == true {
+		f.connLock = conn
+	}
+	if f.clientLock && f.connLock {
+		client.Close()
+	}
+}
+
 func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 	var request *http.Request
 	var requestbytes []byte
@@ -161,9 +173,8 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 		log.Fatalf("Dial failed: %v", err)
 	}
 	go func() {
-		//defer f.clientUnlockAndClose(true, false, client)
-        defer client.Close()
-		defer conn.Close()
+		defer f.clientUnlockAndClose(true, false, client) //defer client.Close()
+        defer f.connUnlockAndClose(false, true, conn) //defer conn.Close()
 		if f.Type == "http" {
 			if requestbytes, request, err = f.HTTPRequestBytes(conn); err == nil {
 				log.Printf("Forwarding modified request: \n\t %s", string(requestbytes))
@@ -176,9 +187,8 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 		}
 	}()
 	go func() {
-		//defer f.clientUnlockAndClose(false, true, client)
-        defer client.Close()
-		defer conn.Close()
+		defer f.clientUnlockAndClose(false, true, client) //defer client.Close()
+        defer f.connUnlockAndClose(true, false, conn) //defer conn.Close()
 		if f.Type == "http" {
 			if responsebytes, err = f.HTTPResponseBytes(client, request); err == nil {
 				log.Printf("Forwarding modified response: \n\t%s", string(responsebytes))
