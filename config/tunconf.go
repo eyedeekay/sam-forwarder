@@ -102,9 +102,9 @@ func (c *Conf) Print() []string {
 // Get passes directly through to goini.Get
 func (c *Conf) Get(key string, label ...string) (string, bool) {
 	if len(c.Labels) > 0 {
-        if len(label) > 0 {
-            return c.config.SectionGet(label[0], key)
-        }
+		if len(label) > 0 {
+			return c.config.SectionGet(label[0], key)
+		}
 		return c.config.SectionGet(c.Labels[0], key)
 	} else {
 		return c.config.Get(key)
@@ -114,9 +114,9 @@ func (c *Conf) Get(key string, label ...string) (string, bool) {
 // GetBool passes directly through to goini.GetBool
 func (c *Conf) GetBool(key string, label ...string) (bool, bool) {
 	if len(c.Labels) > 0 {
-        if len(label) > 0 {
-            return c.config.SectionGetBool(label[0], key)
-        }
+		if len(label) > 0 {
+			return c.config.SectionGetBool(label[0], key)
+		}
 		return c.config.SectionGetBool(c.Labels[0], key)
 	} else {
 		return c.config.GetBool(key)
@@ -126,9 +126,9 @@ func (c *Conf) GetBool(key string, label ...string) (bool, bool) {
 // GetInt passes directly through to goini.GetInt
 func (c *Conf) GetInt(key string, label ...string) (int, bool) {
 	if len(c.Labels) > 0 {
-        if len(label) > 0 {
-            return c.config.SectionGetInt(label[0], key)
-        }
+		if len(label) > 0 {
+			return c.config.SectionGetInt(label[0], key)
+		}
 		return c.config.SectionGetInt(c.Labels[0], key)
 	} else {
 		return c.config.GetInt(key)
@@ -1010,10 +1010,10 @@ func NewI2PBlankTunConf() *Conf {
 
 // NewI2PTunConf returns a Conf structure from an ini file, for modification
 // before starting the tunnel
-func NewI2PTunConf(iniFile string) (*Conf, error) {
+func NewI2PTunConf(iniFile string, label ...string) (*Conf, error) {
 	var err error
 	var c Conf
-	if err = c.I2PINILoad(iniFile); err != nil {
+	if err = c.I2PINILoad(iniFile, label...); err != nil {
 		return nil, err
 	}
 	return &c, nil
@@ -1057,9 +1057,9 @@ func NewSAMForwarderFromConf(config *Conf) (*samforwarder.SAMForwarder, error) {
 }
 
 // NewSAMForwarderFromConfig generates a new SAMForwarder from a config file
-func NewSAMForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforwarder.SAMForwarder, error) {
+func NewSAMForwarderFromConfig(iniFile, SamHost, SamPort string, label ...string) (*samforwarder.SAMForwarder, error) {
 	if iniFile != "none" {
-		config, err := NewI2PTunConf(iniFile)
+		config, err := NewI2PTunConf(iniFile, label...)
 		if err != nil {
 			return nil, err
 		}
@@ -1110,9 +1110,9 @@ func NewSAMClientForwarderFromConf(config *Conf) (*samforwarder.SAMClientForward
 }
 
 // NewSAMClientForwarderFromConfig generates a new SAMForwarder from a config file
-func NewSAMClientForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforwarder.SAMClientForwarder, error) {
+func NewSAMClientForwarderFromConfig(iniFile, SamHost, SamPort string, label ...string) (*samforwarder.SAMClientForwarder, error) {
 	if iniFile != "none" {
-		config, err := NewI2PTunConf(iniFile)
+		config, err := NewI2PTunConf(iniFile, label...)
 		if err != nil {
 			return nil, err
 		}
@@ -1163,9 +1163,9 @@ func NewSAMSSUForwarderFromConf(config *Conf) (*samforwarderudp.SAMSSUForwarder,
 }
 
 // NewSAMSSUForwarderFromConfig generates a new SAMSSUForwarder from a config file
-func NewSAMSSUForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforwarderudp.SAMSSUForwarder, error) {
+func NewSAMSSUForwarderFromConfig(iniFile, SamHost, SamPort string, label ...string) (*samforwarderudp.SAMSSUForwarder, error) {
 	if iniFile != "none" {
-		config, err := NewI2PTunConf(iniFile)
+		config, err := NewI2PTunConf(iniFile, label...)
 		if err != nil {
 			return nil, err
 		}
@@ -1216,9 +1216,9 @@ func NewSAMSSUClientForwarderFromConf(config *Conf) (*samforwarderudp.SAMSSUClie
 }
 
 // NewSAMSSUClientForwarderFromConfig generates a new SAMSSUForwarder from a config file
-func NewSAMSSUClientForwarderFromConfig(iniFile, SamHost, SamPort string) (*samforwarderudp.SAMSSUClientForwarder, error) {
+func NewSAMSSUClientForwarderFromConfig(iniFile, SamHost, SamPort string, label ...string) (*samforwarderudp.SAMSSUClientForwarder, error) {
 	if iniFile != "none" {
-		config, err := NewI2PTunConf(iniFile)
+		config, err := NewI2PTunConf(iniFile, label...)
 		if err != nil {
 			return nil, err
 		}
