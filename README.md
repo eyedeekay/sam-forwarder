@@ -31,6 +31,7 @@ generate tunnels from snippets of i2pd tunnel configuration files. That's kinda
 useful. It appears to be more-or-less compatible with i2pd's tunnels.conf
 format, but it only supports the following options:
 
+        [ephsite]
         type = server
         host = 127.0.0.1
         port = 8081
@@ -123,8 +124,15 @@ func main() {																			func main() {
 Current limitations:
 ====================
 
-Datagrams are still a work-in-progress. They're enabled, but I don't know for
-sure how well they'll work yet. TCP is pretty good though.
+I need to document it better soon. Since I'm making a damon to manage a bunch
+of them, I'm going to do it later.
+
+TCP is working very well. HTTP mode also exists, which just adds the X-I2P-DEST
+headers in. It does this both ways, for applying the dest headers inbound to
+identify clients to the server and outbound to identify servers to clients.
+DestHash's don't get added correctly due to a bug in sam3 I think? I'm working
+on making sure that's what it is. Datagrams are still a work-in-progress.
+They're enabled, but I don't know for sure how well they'll work yet.
 
 I'm in the process of adding client proxying to a specific i2p destination by
 base32 or (pre-added)jump address. TCP works well. UDP exists, but is not
@@ -149,12 +157,11 @@ I want it to be able to save ini files based on the settings used for a running
 forwarder. Should be easy, I just need to decide how I want to do it. Also to
 focus a bit more.
 
-I've written a handful of example tools, but some of them might be better as
-their own projects. An i2p-native static site generator in the style of jekyll
-(but in go) could be cool.
+Example tools built using this are being broken off into their own repos. Use
+the other repos where appropriate, so I can leave the examples un-messed with.
 
 It would be really awesome if I could make this run on Android. So I'll make
-that happen eventually.
+that happen eventually. I started a daemon for managing multiple tunnels and I
+figure I give it a web interface to configure stuff with.
 
-TLS configuration is experimental. It might not be possible(To multiplex http
-and https on the same SAM tunnel).
+TLS configuration is experimental.

@@ -2,8 +2,8 @@ package sammanager
 
 import (
 	"context"
+	"log"
 	"net"
-    "log"
 )
 
 import (
@@ -53,9 +53,9 @@ func (s *SAMManager) FindForwarder(lookup string) (bool, int, string) {
 }
 
 func (s *SAMManager) LookupForwarder(lookup string, label ...string) (bool, string) {
-    for _, l := range s.config.Labels {
-        log.Println(l)
-    }
+	for _, l := range s.config.Labels {
+		log.Println(l)
+	}
 	return false, ""
 }
 
@@ -64,15 +64,15 @@ func (s *SAMManager) Dial(ctx context.Context, network, address string) (*net.Co
 }
 
 func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, error) {
-    var s SAMManager
-    s.FilePath = "tunnels.ini"
+	var s SAMManager
+	s.FilePath = "tunnels.ini"
 	s.save = true
 	s.config = i2ptunconf.NewI2PBlankTunConf()
 	s.ServerHost = "localhost"
 	s.ServerPort = "7957"
 	s.SamHost = "localhost"
 	s.SamPort = "7656"
-    for _, o := range opts {
+	for _, o := range opts {
 		if err := o(&s); err != nil {
 			return nil, err
 		}
@@ -80,6 +80,12 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 	return nil, nil
 }
 
-func (s *SAMManager) NewSAMManager(inifile, servhost, servpost, samhost, samport string) (*SAMManager, error) {
-	return NewSamManagerFromOptions()
+func (s *SAMManager) NewSAMManager(inifile, servhost, servport, samhost, samport string) (*SAMManager, error) {
+	return NewSamManagerFromOptions(
+		SetManagerFilePath(inifile),
+		SetManagerHost(servhost),
+		SetManagerPort(servport),
+		SetManagerSAMHost(samhost),
+		SetManagerSAMPort(samport),
+	)
 }
