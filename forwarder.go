@@ -280,6 +280,7 @@ func NewSAMForwarderFromOptions(opts ...func(*SAMForwarder) error) (*SAMForwarde
 	s.TargetHost = "127.0.0.1"
 	s.TargetPort = "8081"
 	s.TunName = "samForwarder"
+	s.Type = "server"
 	s.inLength = "3"
 	s.outLength = "3"
 	s.inQuantity = "8"
