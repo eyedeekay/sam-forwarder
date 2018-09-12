@@ -80,8 +80,8 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 	return nil, nil
 }
 
-func (s *SAMManager) NewSAMManager(inifile, servhost, servport, samhost, samport string) (*SAMManager, error) {
-	return NewSamManagerFromOptions(
+func NewSAMManager(inifile, servhost, servport, samhost, samport string) (*SAMManager, error) {
+	return NewSAMManagerFromOptions(
 		SetManagerFilePath(inifile),
 		SetManagerHost(servhost),
 		SetManagerPort(servport),

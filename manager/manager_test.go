@@ -5,6 +5,14 @@ import (
 	"testing"
 )
 
+func TestOptionFile(t *testing.T) {
+	client, err := NewSAMManagerFromOptions(SetManagerFilePath("../etc/sam-forwarder/tunnels.ini"))
+	if err != nil {
+		t.Fatalf("NewSAMManager() Error: %q\n", err)
+	}
+	log.Println(client.config.Labels)
+}
+
 func TestOptionHost(t *testing.T) {
 	client, err := NewSAMManagerFromOptions(SetManagerHost("127.0.0.1"))
 	if err != nil {
