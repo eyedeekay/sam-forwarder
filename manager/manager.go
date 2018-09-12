@@ -43,6 +43,15 @@ type SAMManager struct {
 	dest               string
 }
 
+func (s *SAMManager) FindForwarder(lookup string) (bool, int) {
+	for index, element := range s.forwarders {
+		if element.TunName == lookup {
+			return true, index
+		}
+	}
+	return false, -1
+}
+
 func (s *SAMManager) Dial(ctx context.Context, network, address string) (*net.Conn, error) {
 	return nil, nil
 }
