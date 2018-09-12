@@ -5,6 +5,8 @@ import (
 	"strconv"
 )
 
+import "github.com/eyedeekay/sam-forwarder/config"
+
 //ManagerOption is a SAMManager Option
 type ManagerOption func(*SAMManager) error
 
@@ -67,5 +69,13 @@ func SetManagerSAMPort(s string) func(*SAMManager) error {
 			return nil
 		}
 		return fmt.Errorf("Invalid port")
+	}
+}
+
+//SetManagerConf sets the host of the SAMManager's SAM bridge
+func SetManagerConf(s *i2ptunconf.Conf) func(*SAMManager) error {
+	return func(c *SAMManager) error {
+		c.config = s
+		return nil
 	}
 }

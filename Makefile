@@ -3,6 +3,7 @@ GOPATH = $(PWD)/.go
 
 appname = ephsite
 eephttpd = eephttpd
+samcatd = samcatd
 network = si
 samhost = sam-host
 samport = 7656
@@ -18,9 +19,9 @@ mng:
 
 test:
 	go test
-	cd manager && go test
 	cd udp && go test
 	cd config && go test
+	cd manager && go test
 
 deps:
 	go get -u github.com/zieckey/goini
@@ -42,7 +43,13 @@ bin/$(eephttpd):
 	mkdir -p bin
 	go build -a -tags netgo -ldflags '-w -extldflags "-static"' -o ./bin/$(eephttpd) ./example/serve.go
 
-all: build server
+daemon: clean-daemon bin/$(samcatd)
+
+bin/$(samcatd):
+	mkdir -p bin
+	go build -a -tags netgo -ldflags '-w -extldflags "-static"' -o ./bin/$(samcatd) ./daemon/main.go
+
+all: samcatd build server
 
 clean-all: clean clean-server
 
@@ -51,6 +58,9 @@ clean:
 
 clean-server:
 	rm -f bin/$(eephttpd)
+
+clean-daemon:
+	rm -f bin/$(samcatd)
 
 noopts: clean
 	mkdir -p bin
