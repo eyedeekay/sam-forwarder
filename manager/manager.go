@@ -99,17 +99,17 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 				case "client":
 					log.Println("found client under", label)
 					if f, e := i2ptunconf.NewSAMClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label); e != nil {
-						s.forwarders = append(s.forwarders, f)
+						s.clientforwarders = append(s.clientforwarders, f)
 					}
 				case "udpserver":
 					log.Println("found udpserver under", label)
 					if f, e := i2ptunconf.NewSAMSSUForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label); e != nil {
-						s.forwarders = append(s.forwarders, f)
+						s.udpforwarders = append(s.udpforwarders, f)
 					}
 				case "udpclient":
 					log.Println("found udpclient under", label)
-					if f, e := i2ptunconf.NewSAMSSUClientForwarderFromConfigs.FilePath, s.SamHost, s.SamPort, label(); e != nil {
-						s.forwarders = append(s.forwarders, f)
+					if f, e := i2ptunconf.NewSAMSSUClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label); e != nil {
+						s.udpclientforwarders = append(s.udpclientforwarders, f)
 					}
 				}
 			}
