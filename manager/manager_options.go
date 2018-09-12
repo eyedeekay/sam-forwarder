@@ -27,7 +27,7 @@ func SetManagerSaveFile(b bool) func(*SAMManager) error {
 //SetManagerHost sets the host of the SAMManager's SAM bridge
 func SetManagerHost(s string) func(*SAMManager) error {
 	return func(c *SAMManager) error {
-		c.TargetHost = s
+		c.ServerHost = s
 		return nil
 	}
 }
@@ -37,10 +37,10 @@ func SetManagerPort(s string) func(*SAMManager) error {
 	return func(c *SAMManager) error {
 		port, err := strconv.Atoi(s)
 		if err != nil {
-			return fmt.Errorf("Invalid Target Port %s; non-number ", s)
+			return fmt.Errorf("Invalid Server Port %s; non-number ", s)
 		}
 		if port < 65536 && port > -1 {
-			c.TargetPort = s
+			c.ServerPort = s
 			return nil
 		}
 		return fmt.Errorf("Invalid port")
