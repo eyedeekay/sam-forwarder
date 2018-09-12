@@ -65,7 +65,7 @@ func (s *SAMManager) Dial(ctx context.Context, network, address string) (*net.Co
 
 func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, error) {
 	var s SAMManager
-	s.FilePath = "tunnels.ini"
+	s.FilePath = ""
 	s.save = true
 	s.config = i2ptunconf.NewI2PBlankTunConf()
 	s.ServerHost = "localhost"
@@ -77,7 +77,30 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 			return nil, err
 		}
 	}
-	return nil, nil
+	var err error
+	if s.FilePath != "" {
+		s.config, err = i2ptunconf.NewI2PTunConf(s.FilePath)
+		if err != nil {
+			return nil, err
+		}
+		for _, label := range s.config.Labels {
+			if t, e := s.config.Get("type", label); e {
+				switch t {
+				case "http":
+					log.Println("found http under", label)
+				case "server":
+					log.Println("found server under", label)
+				case "client":
+					log.Println("found client under", label)
+				case "udpserver":
+					log.Println("found udpserver under", label)
+				case "udpclient":
+					log.Println("found udpclient under", label)
+				}
+			}
+		}
+	}
+	return &s, nil
 }
 
 func NewSAMManager(inifile, servhost, servport, samhost, samport string) (*SAMManager, error) {

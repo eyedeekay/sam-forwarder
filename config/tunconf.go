@@ -102,6 +102,9 @@ func (c *Conf) Print() []string {
 // Get passes directly through to goini.Get
 func (c *Conf) Get(key string, label ...string) (string, bool) {
 	if len(c.Labels) > 0 {
+        if len(label) > 0 {
+            return c.config.SectionGet(label[0], key)
+        }
 		return c.config.SectionGet(c.Labels[0], key)
 	} else {
 		return c.config.Get(key)
@@ -111,6 +114,9 @@ func (c *Conf) Get(key string, label ...string) (string, bool) {
 // GetBool passes directly through to goini.GetBool
 func (c *Conf) GetBool(key string, label ...string) (bool, bool) {
 	if len(c.Labels) > 0 {
+        if len(label) > 0 {
+            return c.config.SectionGetBool(label[0], key)
+        }
 		return c.config.SectionGetBool(c.Labels[0], key)
 	} else {
 		return c.config.GetBool(key)
@@ -120,6 +126,9 @@ func (c *Conf) GetBool(key string, label ...string) (bool, bool) {
 // GetInt passes directly through to goini.GetInt
 func (c *Conf) GetInt(key string, label ...string) (int, bool) {
 	if len(c.Labels) > 0 {
+        if len(label) > 0 {
+            return c.config.SectionGetInt(label[0], key)
+        }
 		return c.config.SectionGetInt(c.Labels[0], key)
 	} else {
 		return c.config.GetInt(key)
@@ -982,7 +991,6 @@ func (c *Conf) I2PINILoad(iniFile string, label ...string) error {
 		c.SetCloseIdleTime(label...)
 		c.SetAccessListType(label...)
 		c.SetTargetPort443(label...)
-
 		if v, ok := c.Get("i2cp.accessList"); ok {
 			csv := strings.Split(v, ",")
 			for _, z := range csv {

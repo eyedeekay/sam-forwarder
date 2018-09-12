@@ -13,6 +13,9 @@ echo:
 	find . -name "*.go" -exec gofmt -w {} \;
 	find . -name "*.i2pkeys" -exec rm {} \;
 
+mng:
+	cd manager && go test
+
 test:
 	go test
 	cd manager && go test
