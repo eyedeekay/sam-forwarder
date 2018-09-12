@@ -36,6 +36,7 @@ func (f *flagOpts) StringSlice() []string {
 
 var (
 	saveFile              = flag.Bool("save", false, "Use saved file and persist tunnel(If false, tunnel will not persist after program is stopped.")
+	startUp               = flag.Bool("start", false, "Start a tunnel with the passed parameters(Otherwise, they will be treated as default values.)")
 	encryptLeaseSet       = flag.Bool("encryptlease", true, "Use an encrypted leaseset(true or false)")
 	inAllowZeroHop        = flag.Bool("zeroin", false, "Allow zero-hop, non-anonymous tunnels in(true or false)")
 	outAllowZeroHop       = flag.Bool("zeroout", false, "Allow zero-hop, non-anonymous tunnels out(true or false)")
@@ -109,7 +110,7 @@ func main() {
 	config.Type = config.GetType(*client, *udpMode, *injectHeaders, "server")
 	config.TargetForPort443 = config.GetPort443(*targetPort443, "")
 
-	if manager, err := sammanager.NewSAMManagerFromConf(config, config.TargetHost, config.TargetPort, config.SamHost, config.SamPort); err == nil {
+	if manager, err := sammanager.NewSAMManagerFromConf(config, config.TargetHost, config.TargetPort, config.SamHost, config.SamPort, *startUp); err == nil {
 		manager.Serve()
 	} else {
 		log.Fatal(err)
