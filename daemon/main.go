@@ -2,7 +2,7 @@ package main
 
 import (
 	"flag"
-	//"log"
+	"log"
 	"strings"
 )
 
@@ -109,6 +109,9 @@ func main() {
 	config.Type = config.GetType(*client, *udpMode, *injectHeaders, "server")
 	config.TargetForPort443 = config.GetPort443(*targetPort443, "")
 
-	manager := sammanager.NewSAMManagerFromConf(config, config.TargetHost, config.TargetPort, config.SamHost, config.SamPort)
-	manager.Serve()
+	if manager, err := sammanager.NewSAMManagerFromConf(config, config.TargetHost, config.TargetPort, config.SamHost, config.SamPort); err == nil {
+		manager.Serve()
+	} else {
+		log.Fatal(err)
+	}
 }
