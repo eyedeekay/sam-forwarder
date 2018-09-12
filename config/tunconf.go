@@ -101,7 +101,7 @@ func (c *Conf) Print() []string {
 
 // Get passes directly through to goini.Get
 func (c *Conf) Get(key string) (string, bool) {
-	if len(c.Labels) == 1 {
+	if len(c.Labels) > 0 {
 		return c.config.SectionGet(c.Labels[0], key)
 	} else {
 		return c.config.Get(key)
@@ -110,7 +110,7 @@ func (c *Conf) Get(key string) (string, bool) {
 
 // GetBool passes directly through to goini.GetBool
 func (c *Conf) GetBool(key string) (bool, bool) {
-	if len(c.Labels) == 1 {
+	if len(c.Labels) > 0 {
 		return c.config.SectionGetBool(c.Labels[0], key)
 	} else {
 		return c.config.GetBool(key)
@@ -119,7 +119,7 @@ func (c *Conf) GetBool(key string) (bool, bool) {
 
 // GetInt passes directly through to goini.GetInt
 func (c *Conf) GetInt(key string) (int, bool) {
-	if len(c.Labels) == 1 {
+	if len(c.Labels) > 0 {
 		return c.config.SectionGetInt(c.Labels[0], key)
 	} else {
 		return c.config.GetInt(key)
@@ -614,16 +614,18 @@ func (c *Conf) Get(arg, def int) int {
 */
 
 // SetDir sets the key save directory from the config file
-func (c *Conf) SetDir() {
-	if v, ok := c.Get("dir"); ok {
-		c.SaveDirectory = v
-	} else {
-		c.SaveDirectory = "./"
-	}
+func (c *Conf) SetDir(label ...string) {
+    //if len(label) == 1 {
+        if v, ok := c.Get("dir"); ok {
+            c.SaveDirectory = v
+        } else {
+            c.SaveDirectory = "./"
+        }
+    //}
 }
 
 // SetKeys sets the key name from the config file
-func (c *Conf) SetKeys() {
+func (c *Conf) SetKeys(label ...string) {
 	if _, ok := c.Get("keys"); ok {
 		c.SaveFile = true
 	} else {
@@ -632,7 +634,7 @@ func (c *Conf) SetKeys() {
 }
 
 // SetType sets the type of proxy to create from the config file
-func (c *Conf) SetType() {
+func (c *Conf) SetType(label ...string) {
 	if v, ok := c.Get("type"); ok {
 		if strings.Contains(v, "client") {
 			c.Client = true
@@ -646,7 +648,7 @@ func (c *Conf) SetType() {
 }
 
 // SetHost sets the host to forward from the config file
-func (c *Conf) SetHost() {
+func (c *Conf) SetHost(label ...string) {
 	if v, ok := c.Get("host"); ok {
 		c.TargetHost = v
 	} else {
@@ -655,7 +657,7 @@ func (c *Conf) SetHost() {
 }
 
 // SetPort sets the port to forward from the config file
-func (c *Conf) SetPort() {
+func (c *Conf) SetPort(label ...string) {
 	if v, ok := c.Get("port"); ok {
 		c.TargetPort = v
 	} else {
@@ -664,7 +666,7 @@ func (c *Conf) SetPort() {
 }
 
 // SetTargetPort443 sets the port to forward from the config file
-func (c *Conf) SetTargetPort443() {
+func (c *Conf) SetTargetPort443(label ...string) {
 	if v, ok := c.Get("targetForPort.443"); ok {
 		c.TargetForPort443 = v
 	} else {
@@ -673,7 +675,7 @@ func (c *Conf) SetTargetPort443() {
 }
 
 // SetSAMHost sets the SAM host from the config file
-func (c *Conf) SetSAMHost() {
+func (c *Conf) SetSAMHost(label ...string) {
 	if v, ok := c.Get("samhost"); ok {
 		c.SamHost = v
 	} else {
@@ -682,7 +684,7 @@ func (c *Conf) SetSAMHost() {
 }
 
 // SetSAMPort sets the SAM port from the config file
-func (c *Conf) SetSAMPort() {
+func (c *Conf) SetSAMPort(label ...string) {
 	if v, ok := c.Get("samport"); ok {
 		c.SamPort = v
 	} else {
@@ -691,7 +693,7 @@ func (c *Conf) SetSAMPort() {
 }
 
 // SetTunName sets the tunnel name from the config file
-func (c *Conf) SetTunName() {
+func (c *Conf) SetTunName(label ...string) {
 	if v, ok := c.Get("keys"); ok {
 		c.TunName = v
 	} else {
@@ -700,7 +702,7 @@ func (c *Conf) SetTunName() {
 }
 
 // SetEncryptLease tells the conf to use encrypted leasesets the from the config file
-func (c *Conf) SetEncryptLease() {
+func (c *Conf) SetEncryptLease(label ...string) {
 	if v, ok := c.GetBool("i2cp.encryptLeaseSet"); ok {
 		c.EncryptLeaseSet = v
 	} else {
@@ -709,7 +711,7 @@ func (c *Conf) SetEncryptLease() {
 }
 
 // SetAllowZeroHopIn sets the config to allow zero-hop tunnels
-func (c *Conf) SetAllowZeroHopIn() {
+func (c *Conf) SetAllowZeroHopIn(label ...string) {
 	if v, ok := c.GetBool("inbound.allowZeroHop"); ok {
 		c.InAllowZeroHop = v
 	} else {
@@ -719,7 +721,7 @@ func (c *Conf) SetAllowZeroHopIn() {
 }
 
 // SetAllowZeroHopOut sets the config to allow zero-hop tunnels
-func (c *Conf) SetAllowZeroHopOut() {
+func (c *Conf) SetAllowZeroHopOut(label ...string) {
 	if v, ok := c.GetBool("outbound.allowZeroHop"); ok {
 		c.OutAllowZeroHop = v
 	} else {
@@ -728,7 +730,7 @@ func (c *Conf) SetAllowZeroHopOut() {
 }
 
 // SetInLength sets the inbound length from the config file
-func (c *Conf) SetInLength() {
+func (c *Conf) SetInLength(label ...string) {
 	if v, ok := c.GetInt("outbound.length"); ok {
 		c.OutLength = v
 	} else {
@@ -737,7 +739,7 @@ func (c *Conf) SetInLength() {
 }
 
 // SetOutLength sets the outbound lenth from the config file
-func (c *Conf) SetOutLength() {
+func (c *Conf) SetOutLength(label ...string) {
 	if v, ok := c.GetInt("inbound.length"); ok {
 		c.InLength = v
 	} else {
@@ -747,7 +749,7 @@ func (c *Conf) SetOutLength() {
 }
 
 // SetInQuantity sets the inbound tunnel quantity from config file
-func (c *Conf) SetInQuantity() {
+func (c *Conf) SetInQuantity(label ...string) {
 	if v, ok := c.GetInt("inbound.quantity"); ok {
 		c.InQuantity = v
 	} else {
@@ -756,7 +758,7 @@ func (c *Conf) SetInQuantity() {
 }
 
 // SetOutQuantity sets the outbound tunnel quantity from config file
-func (c *Conf) SetOutQuantity() {
+func (c *Conf) SetOutQuantity(label ...string) {
 	if v, ok := c.GetInt("outbound.quantity"); ok {
 		c.OutQuantity = v
 	} else {
@@ -765,7 +767,7 @@ func (c *Conf) SetOutQuantity() {
 }
 
 // SetInVariance sets the inbound tunnel variance from config file
-func (c *Conf) SetInVariance() {
+func (c *Conf) SetInVariance(label ...string) {
 	if v, ok := c.GetInt("inbound.variance"); ok {
 		c.InVariance = v
 	} else {
@@ -775,7 +777,7 @@ func (c *Conf) SetInVariance() {
 }
 
 // SetOutVariance sets the outbound tunnel variance from config file
-func (c *Conf) SetOutVariance() {
+func (c *Conf) SetOutVariance(label ...string) {
 	if v, ok := c.GetInt("outbound.variance"); ok {
 		c.OutVariance = v
 	} else {
@@ -785,7 +787,7 @@ func (c *Conf) SetOutVariance() {
 }
 
 // SetInBackups sets the inbound tunnel backups from config file
-func (c *Conf) SetInBackups() {
+func (c *Conf) SetInBackups(label ...string) {
 	if v, ok := c.GetInt("inbound.backupQuantity"); ok {
 		c.InBackupQuantity = v
 	} else {
@@ -795,7 +797,7 @@ func (c *Conf) SetInBackups() {
 }
 
 // SetOutBackups sets the outbound tunnel backups from config file
-func (c *Conf) SetOutBackups() {
+func (c *Conf) SetOutBackups(label ...string) {
 	if v, ok := c.GetInt("outbound.backupQuantity"); ok {
 		c.OutBackupQuantity = v
 	} else {
@@ -804,7 +806,7 @@ func (c *Conf) SetOutBackups() {
 }
 
 // SetCompressed sets the compression from the config file
-func (c *Conf) SetCompressed() {
+func (c *Conf) SetCompressed(label ...string) {
 	if v, ok := c.GetBool("gzip"); ok {
 		c.UseCompression = v
 	} else {
@@ -814,7 +816,7 @@ func (c *Conf) SetCompressed() {
 }
 
 // SetReduceIdle sets the config to reduce tunnels after idle time from config file
-func (c *Conf) SetReduceIdle() {
+func (c *Conf) SetReduceIdle(label ...string) {
 	if v, ok := c.GetBool("i2cp.reduceOnIdle"); ok {
 		c.ReduceIdle = v
 	} else {
@@ -824,7 +826,7 @@ func (c *Conf) SetReduceIdle() {
 }
 
 // SetReduceIdleTime sets the time to wait before reducing tunnels from config file
-func (c *Conf) SetReduceIdleTime() {
+func (c *Conf) SetReduceIdleTime(label ...string) {
 	if v, ok := c.GetInt("i2cp.reduceIdleTime"); ok {
 		c.ReduceIdleTime = v
 	} else {
@@ -834,7 +836,7 @@ func (c *Conf) SetReduceIdleTime() {
 }
 
 // SetReduceIdleQuantity sets the number of tunnels to reduce to from config file
-func (c *Conf) SetReduceIdleQuantity() {
+func (c *Conf) SetReduceIdleQuantity(label ...string) {
 	if v, ok := c.GetInt("i2cp.reduceQuantity"); ok {
 		c.ReduceIdleQuantity = v
 	} else {
@@ -844,7 +846,7 @@ func (c *Conf) SetReduceIdleQuantity() {
 }
 
 // SetCloseIdle sets the tunnel to automatically close on idle from the config file
-func (c *Conf) SetCloseIdle() {
+func (c *Conf) SetCloseIdle(label ...string) {
 	if v, ok := c.GetBool("i2cp.closeOnIdle"); ok {
 		c.CloseIdle = v
 	} else {
@@ -854,7 +856,7 @@ func (c *Conf) SetCloseIdle() {
 }
 
 // SetCloseIdleTime sets the time to wait before killing a tunnel from a config file
-func (c *Conf) SetCloseIdleTime() {
+func (c *Conf) SetCloseIdleTime(label ...string) {
 	if v, ok := c.GetInt("i2cp.closeIdleTime"); ok {
 		c.CloseIdleTime = v
 	} else {
@@ -863,7 +865,7 @@ func (c *Conf) SetCloseIdleTime() {
 }
 
 // SetAccessListType sets the access list type from a config file
-func (c *Conf) SetAccessListType() {
+func (c *Conf) SetAccessListType(label ...string) {
 	if v, ok := c.GetBool("i2cp.enableBlackList"); ok {
 		if v {
 			c.AccessListType = "blacklist"
@@ -887,7 +889,7 @@ func (c *Conf) SetLabels(iniFile string) {
 		for _, element := range tempslice {
 			trimmedelement := strings.Trim(element, "\t\n ")
 			if strings.HasPrefix(trimmedelement, "[") && strings.HasSuffix(trimmedelement, "]") {
-				c.Labels = append(c.Labels, trimmedelement)
+				c.Labels = append(c.Labels, strings.Trim(trimmedelement, "[]"))
 			}
 		}
 	}
@@ -896,7 +898,7 @@ func (c *Conf) SetLabels(iniFile string) {
 
 /*
 // Set
-func (c *Conf) Set() {
+func (c *Conf) Set(label ...string) {
 
 }
 */

@@ -104,7 +104,7 @@ gendoc: all
 	@cat USAGE.md
 
 docker-build:
-	docker build --force-rm \
+	docker build --no-cache \
 		--build-arg user=$(eephttpd) \
 		--build-arg path=example/www \
 		-f Dockerfile \
