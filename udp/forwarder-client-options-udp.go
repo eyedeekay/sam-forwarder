@@ -229,6 +229,7 @@ func SetClientReduceIdle(b bool) func(*SAMSSUClientForwarder) error {
 //SetClientReduceIdleTime sets the time to wait before reducing tunnels to idle levels
 func SetClientReduceIdleTime(u int) func(*SAMSSUClientForwarder) error {
 	return func(c *SAMSSUClientForwarder) error {
+        c.reduceIdleTime = "300000"
 		if u >= 6 {
 			c.reduceIdleTime = strconv.Itoa((u * 60) * 1000)
 			return nil
@@ -240,6 +241,7 @@ func SetClientReduceIdleTime(u int) func(*SAMSSUClientForwarder) error {
 //SetClientReduceIdleTimeMs sets the time to wait before reducing tunnels to idle levels in milliseconds
 func SetClientReduceIdleTimeMs(u int) func(*SAMSSUClientForwarder) error {
 	return func(c *SAMSSUClientForwarder) error {
+        c.reduceIdleTime = "300000"
 		if u >= 300000 {
 			c.reduceIdleTime = strconv.Itoa(u)
 			return nil
@@ -285,6 +287,7 @@ func SetClientCloseIdleTime(u int) func(*SAMSSUClientForwarder) error {
 //SetClientCloseIdleTimeMs sets the time to wait before closing tunnels to idle levels in milliseconds
 func SetClientCloseIdleTimeMs(u int) func(*SAMSSUClientForwarder) error {
 	return func(c *SAMSSUClientForwarder) error {
+        c.closeIdleTime = "300000"
 		if u >= 300000 {
 			c.closeIdleTime = strconv.Itoa(u)
 			return nil
