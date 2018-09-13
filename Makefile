@@ -90,7 +90,7 @@ gendoc:
 	@echo "------" >> USAGE.md
 	@echo "" >> USAGE.md
 	@echo '```' >> USAGE.md
-	./bin/$(appname) -h  2>> USAGE.md; true
+	./bin/$(appname) -help  2>> USAGE.md; true
 	@echo '```' >> USAGE.md
 	@echo "" >> USAGE.md
 	@echo "$(samcatd) - Router-independent tunnel management for i2p" >> USAGE.md
