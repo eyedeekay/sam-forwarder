@@ -110,7 +110,14 @@ func main() {
 	config.Type = config.GetType(*client, *udpMode, *injectHeaders, "server")
 	config.TargetForPort443 = config.GetPort443(*targetPort443, "")
 
-	if manager, err := sammanager.NewSAMManagerFromConf(config, config.TargetHost, config.TargetPort, config.SamHost, config.SamPort, *startUp); err == nil {
+	if manager, err := sammanager.NewSAMManagerFromConf(
+		config,
+		config.TargetHost,
+		config.TargetPort,
+		config.SamHost,
+		config.SamPort,
+		*startUp,
+	); err == nil {
 		manager.Serve()
 	} else {
 		log.Fatal(err)

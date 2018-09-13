@@ -67,6 +67,8 @@ func (s *SAMManager) Serve() bool {
 	for _, element := range s.udpclientforwarders {
 		go element.Serve(element.Destination())
 	}
+	for true {
+	}
 	return false
 }
 
