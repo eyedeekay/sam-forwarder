@@ -78,7 +78,7 @@ install-all: install install-server
 remove:
 	rm -rf /usr/local/bin/ephsite /usr/local/bin/eephttpd
 
-gendoc: all
+gendoc:
 	@echo "$(appname) - Easy forwarding of local services to i2p" > USAGE.md
 	@echo "==================================================" >> USAGE.md
 	@echo "" >> USAGE.md
@@ -93,30 +93,33 @@ gendoc: all
 	./bin/$(appname) -h  2>> USAGE.md; true
 	@echo '```' >> USAGE.md
 	@echo "" >> USAGE.md
-	@echo "$(eephttpd) - Static file server automatically forwarded to i2p" >> USAGE.md
-	@echo "============================================================" >> USAGE.md
+	@echo "$(samcatd) - Router-independent tunnel management for i2p" >> USAGE.md
+	@echo "=========================================================" >> USAGE.md
+	@echo "" >> USAGE.md
+	@echo "$(samcatd) is a daemon which runs a group of forwarding proxies to" >> USAGE.md
+	@echo "provide services over i2p independent of the router. It also serves" >> USAGE.md
+	@echo "as a generalized i2p networking utility for power-users." >> USAGE.md
 	@echo "" >> USAGE.md
 	@echo "usage:" >> USAGE.md
 	@echo "------" >> USAGE.md
 	@echo "" >> USAGE.md
-	@echo "$(eephttpd) is a static http server which automatically runs on i2p with" >> USAGE.md
-	@echo "the help of the SAM bridge. By default it will only be available from" >> USAGE.md
-	@echo "the localhost and it's i2p tunnel. It can be masked from the localhost" >> USAGE.md
-	@echo "using a container." >> USAGE.md
-	@echo "" >> USAGE.md
 	@echo '```' >> USAGE.md
-	./bin/$(eephttpd) -h  2>> USAGE.md; true
+	./bin/$(samcatd) -h  2>> USAGE.md; true
 	@echo '```' >> USAGE.md
 	@echo "" >> USAGE.md
-	make docker-cmd
+	make example-config
+
+example-config:
+	@echo "example config - valid for both ephsite and samcat" >> USAGE.md
+	@echo "==================================================" >> USAGE.md
 	@echo "" >> USAGE.md
-	@echo "instance" >> USAGE.md
-	@echo "--------" >> USAGE.md
+	@echo "(ephsite will only use top-level options)" >> USAGE.md
 	@echo "" >> USAGE.md
-	@echo "a running instance of eephttpd with the example index file is availble on" >> USAGE.md
-	@grep 'and on' eephttpd.log | sed 's|and on||g' | tr -d '\t' >> USAGE.md
+	@echo '```' >> USAGE.md
+	cat etc/sam-forwarder/tunnels.ini >> USAGE.md
+	@echo '```' >> USAGE.md
 	@echo "" >> USAGE.md
-	@cat USAGE.md
+
 
 docker-build:
 	docker build --no-cache \
@@ -151,36 +154,6 @@ follow:
 	docker logs -f $(eephttpd)
 
 docker: docker-build docker-volume docker-run
-
-docker-cmd:
-	@echo "### build in docker" >> USAGE.md
-	@echo "" >> USAGE.md
-	@echo '```' >> USAGE.md
-	@echo "docker build --build-arg user=$(eephttpd)  --build-arg path=example/www -f Dockerfile -t eyedeekay/$(eephttpd) ." >> USAGE.md
-	@echo '```' >> USAGE.md
-	@echo "" >> USAGE.md
-	@echo "### Run in docker" >> USAGE.md
-	@echo "" >> USAGE.md
-	@echo '```' >> USAGE.md
-	@echo "docker run -i -t -d \\" >> USAGE.md
-	@echo "    --name $(eephttpd)-volume \\" >> USAGE.md
-	@echo "    --volume $(eephttpd):/home/$(eephttpd)/ \\" >> USAGE.md
-	@echo "    eyedeekay/$(eephttpd)" >> USAGE.md
-	@echo '```' >> USAGE.md
-	@echo "" >> USAGE.md
-	@echo '```' >> USAGE.md
-	@echo "docker run -i -t -d \\" >> USAGE.md
-	@echo "    --network $(network) \\" >> USAGE.md
-	@echo "    --env samhost=$(samhost) \\" >> USAGE.md
-	@echo "    --env samport=$(samport) \\" >> USAGE.md
-	@echo "    --env args=$(args) # Additional arguments to pass to eephttpd\\" >> USAGE.md
-	@echo "    --network-alias $(eephttpd) \\" >> USAGE.md
-	@echo "    --hostname $(eephttpd) \\" >> USAGE.md
-	@echo "    --name $(eephttpd) \\" >> USAGE.md
-	@echo "    --restart always \\" >> USAGE.md
-	@echo "    --volumes-from $(eephttpd)-volume \\" >> USAGE.md
-	@echo "    eyedeekay/$(eephttpd)" >> USAGE.md
-	@echo '```' >> USAGE.md
 
 index:
 	pandoc USAGE.md -o example/www/index.html

@@ -24,6 +24,13 @@ So, to serve an eepSite version of a local service on port 8080 -
 
 For more information, [look here](USAGE.md)
 
+## binaries
+
+Two binaries are produced by this repo. The first, ephsite, is only capable
+of running one tunnel at a time. The second, samcatd, is more advanced. It can
+start multiple tunnels with their own settings, or be used to start tunnels on
+the fly like ephsite by passing the -start option.
+
 ## ini-like configuration
 
 I made it parse INI-like configuration files, optionally, which allows it to
