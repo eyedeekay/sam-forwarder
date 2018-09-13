@@ -37,7 +37,7 @@ func SetPort(s string) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
 		port, err := strconv.Atoi(s)
 		if err != nil {
-			return fmt.Errorf("Invalid Target Port %s; non-number ", s)
+			return fmt.Errorf("Invalid SSU Server Target Port %s; non-number ", s)
 		}
 		if port < 65536 && port > -1 {
 			c.TargetPort = s
