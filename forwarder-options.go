@@ -289,8 +289,8 @@ func SetCloseIdle(b bool) func(*SAMForwarder) error {
 //SetCloseIdleTime sets the time to wait before closing tunnels to idle levels
 func SetCloseIdleTime(u int) func(*SAMForwarder) error {
 	return func(c *SAMForwarder) error {
-		c.closeIdleTime = "600000"
-		if u >= 12 {
+		c.closeIdleTime = "300000"
+		if u >= 6 {
 			c.closeIdleTime = strconv.Itoa((u * 60) * 1000)
 			return nil
 		}
@@ -301,8 +301,8 @@ func SetCloseIdleTime(u int) func(*SAMForwarder) error {
 //SetCloseIdleTimeMs sets the time to wait before closing tunnels to idle levels in milliseconds
 func SetCloseIdleTimeMs(u int) func(*SAMForwarder) error {
 	return func(c *SAMForwarder) error {
-		c.closeIdleTime = "600000"
-		if u >= 600000 {
+		c.closeIdleTime = "300000"
+		if u >= 300000 {
 			c.closeIdleTime = strconv.Itoa(u)
 			return nil
 		}
