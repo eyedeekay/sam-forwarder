@@ -178,6 +178,39 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 			}
 		}
 	}
+	if len(s.config.Labels) == 0 {
+		t, b := s.config.Get("type")
+		if !b {
+			return nil, fmt.Errorf("samcat was instructed to start a tunnel with insufficient default settings information.")
+		}
+		switch t {
+		case "http":
+			log.Println("found http under")
+			if f, e := i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort); e == nil {
+				s.forwarders = append(s.forwarders, f)
+			}
+		case "server":
+			log.Println("found server under")
+			if f, e := i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort); e == nil {
+				s.forwarders = append(s.forwarders, f)
+			}
+		case "client":
+			log.Println("found client under")
+			if f, e := i2ptunconf.NewSAMClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort); e == nil {
+				s.clientforwarders = append(s.clientforwarders, f)
+			}
+		case "udpserver":
+			log.Println("found udpserver under")
+			if f, e := i2ptunconf.NewSAMSSUForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort); e == nil {
+				s.udpforwarders = append(s.udpforwarders, f)
+			}
+		case "udpclient":
+			log.Println("found udpclient under")
+			if f, e := i2ptunconf.NewSAMSSUClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort); e == nil {
+				s.udpclientforwarders = append(s.udpclientforwarders, f)
+			}
+		}
+	}
 	return &s, nil
 }
 
