@@ -274,7 +274,7 @@ func SetClientCloseIdle(b bool) func(*SAMSSUClientForwarder) error {
 //SetClientCloseIdleTime sets the time to wait before closing tunnels to idle levels
 func SetClientCloseIdleTime(u int) func(*SAMSSUClientForwarder) error {
 	return func(c *SAMSSUClientForwarder) error {
-		if u >== 6 {
+		if u >= 6 {
 			c.closeIdleTime = strconv.Itoa((u * 60) * 1000)
 			return nil
 		}
