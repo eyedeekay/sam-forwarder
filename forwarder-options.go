@@ -22,11 +22,10 @@ func SetType(s string) func(*SAMForwarder) error {
 		if s == "http" {
 			c.Type = s
 			return nil
-		} else if s == "server" {
-			c.Type = s
+		} else {
+			c.Type = "server"
 			return nil
 		}
-		return fmt.Errorf("Invalid server type")
 	}
 }
 
