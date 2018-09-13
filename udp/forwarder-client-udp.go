@@ -82,7 +82,7 @@ func (f *SAMSSUClientForwarder) accesslist() string {
 }
 
 // Destination returns the destination of the i2p service you want to forward locally
-func (f *SAMClientForwarder) Destination() string {
+func (f *SAMSSUClientForwarder) Destination() string {
 	return f.addr.Base32()
 }
 
