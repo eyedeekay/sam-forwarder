@@ -89,74 +89,67 @@ usage:
 ------
 
 ```
+flag needs an argument: -h
 Usage of ./bin/samcatd:
-  -access string
+  -a string
     	Type of access list to use, can be "whitelist" "blacklist" or "none". (default "none")
   -accesslist value
     	Specify an access list member(can be used multiple times)
-  -client
-    	Client proxy mode(true or false)
-  -close
-    	Close tunnel idle(true or false)
-  -closetime int
+  -c	Client proxy mode(true or false)
+  -ct int
     	Reduce tunnel quantity after X (milliseconds) (default 600000)
-  -dest string
-    	Destination for client tunnels. Ignored for service tunnels. (default "none")
-  -dir string
+  -d string
     	Directory to save tunnel configuration file in.
-  -encryptlease
-    	Use an encrypted leaseset(true or false) (default true)
-  -gzip
-    	Uze gzip(true or false)
-  -headers
-    	Inject X-I2P-DEST headers
-  -host string
-    	Target host(Host of service to forward to i2p) (default "127.0.0.1")
-  -inback int
-    	Set inbound tunnel backup quantity(0 to 5) (default 4)
-  -incount int
-    	Set inbound tunnel quantity(0 to 15) (default 6)
-  -ini string
+  -f string
     	Use an ini file for configuration(config file options override passed arguments for now.) (default "none")
-  -inlen int
+  -h string
+    	Target host(Host of service to forward to i2p) (default "127.0.0.1")
+  -i string
+    	Destination for client tunnels. Ignored for service tunnels. (default "none")
+  -ib int
+    	Set inbound tunnel backup quantity(0 to 5) (default 4)
+  -ic int
+    	Set inbound tunnel quantity(0 to 15) (default 6)
+  -ih
+    	Inject X-I2P-DEST headers
+  -il int
     	Set inbound tunnel length(0 to 7) (default 3)
-  -invar int
+  -iv int
     	Set inbound tunnel length variance(-7 to 7)
-  -lsk string
+  -k string
     	path to saved encrypted leaseset keys (default "none")
-  -name string
+  -l	Use an encrypted leaseset(true or false) (default true)
+  -n string
     	Tunnel name, this must be unique but can be anything. (default "forwarder")
-  -outback int
+  -ob int
     	Set outbound tunnel backup quantity(0 to 5) (default 4)
-  -outcount int
+  -oc int
     	Set outbound tunnel quantity(0 to 15) (default 6)
-  -outlen int
+  -ol int
     	Set outbound tunnel length(0 to 7) (default 3)
-  -outvar int
+  -ov int
     	Set outbound tunnel length variance(-7 to 7)
-  -port string
+  -p string
     	Target port(Port of service to forward to i2p) (default "8081")
-  -reduce
-    	Reduce tunnel quantity when idle(true or false)
-  -reducecount int
+  -r	Reduce tunnel quantity when idle(true or false)
+  -rc int
     	Reduce idle tunnel quantity to X (0 to 5) (default 3)
-  -reducetime int
+  -rt int
     	Reduce tunnel quantity after X (milliseconds) (default 600000)
-  -samhost string
+  -s	Start a tunnel with the passed parameters(Otherwise, they will be treated as default values.)
+  -sh string
     	SAM host (default "127.0.0.1")
-  -samport string
+  -sp string
     	SAM port (default "7656")
-  -save
-    	Use saved file and persist tunnel(If false, tunnel will not persist after program is stopped.
-  -start
-    	Start a tunnel with the passed parameters(Otherwise, they will be treated as default values.)
-  -tlsport string
+  -t	Use saved file and persist tunnel(If false, tunnel will not persist after program is stopped.
+  -tls string
     	(Currently inoperative. Target TLS port(HTTPS Port of service to forward to i2p)
-  -udp
-    	UDP mode(true or false)
-  -zeroin
+  -u	UDP mode(true or false)
+  -x	Close tunnel idle(true or false)
+  -z	Uze gzip(true or false)
+  -zi
     	Allow zero-hop, non-anonymous tunnels in(true or false)
-  -zeroout
+  -zo
     	Allow zero-hop, non-anonymous tunnels out(true or false)
 ```
 
