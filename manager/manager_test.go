@@ -6,7 +6,9 @@ import (
 )
 
 func TestOptionFile(t *testing.T) {
-	client, err := NewSAMManagerFromOptions(SetManagerFilePath("../etc/sam-forwarder/tunnels.ini"))
+	client, err := NewSAMManagerFromOptions(
+		SetManagerFilePath("../etc/sam-forwarder/tunnels.ini"),
+	)
 	if err != nil {
 		t.Fatalf("NewSAMManager() Error: %q\n", err)
 	}
@@ -21,7 +23,7 @@ func TestOptionHost(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewSAMManager() Error: %q\n", err)
 	}
-	log.Println(client.config.Labels)
+	log.Println(client.config.Type)
 }
 
 func TestOptionPort(t *testing.T) {
@@ -32,7 +34,7 @@ func TestOptionPort(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewSAMManager() Error: %q\n", err)
 	}
-	log.Println(client.config.Labels)
+	log.Println(client.config.Type)
 }
 
 func TestOptionSAMHost(t *testing.T) {
@@ -43,16 +45,16 @@ func TestOptionSAMHost(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewSAMManager() Error: %q\n", err)
 	}
-	log.Println(client.config.Labels)
+	log.Println(client.config.Type)
 }
 
 func TestOptionSAMPort(t *testing.T) {
 	client, err := NewSAMManagerFromOptions(
-		SetManagerSAMPort("7957"),
+		SetManagerSAMPort("7656"),
 		SetManagerFilePath("../etc/sam-forwarder/tunnels.ini"),
 	)
 	if err != nil {
 		t.Fatalf("NewSAMManager() Error: %q\n", err)
 	}
-	log.Println(client.config.Labels)
+	log.Println(client.config.Type)
 }
