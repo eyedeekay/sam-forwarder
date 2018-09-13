@@ -49,7 +49,7 @@ bin/$(samcatd):
 	mkdir -p bin
 	go build -a -tags netgo -ldflags '-w -extldflags "-static"' -o ./bin/$(samcatd) ./daemon/main.go
 
-all: samcatd build server
+all: daemon build server
 
 clean-all: clean clean-server
 
