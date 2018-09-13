@@ -55,6 +55,7 @@ func (s *SAMManager) FindForwarder(lookup string) (bool, int, string) {
 }
 
 func (s *SAMManager) Serve() bool {
+	log.Println("Starting tunnels")
 	for _, element := range s.forwarders {
 		log.Println("Starting NTCP service tunnel", element.TunName)
 		go element.Serve()
