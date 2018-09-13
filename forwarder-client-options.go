@@ -45,7 +45,7 @@ func SetClientPort(s string) func(*SAMClientForwarder) error {
 	return func(c *SAMClientForwarder) error {
 		port, err := strconv.Atoi(s)
 		if err != nil {
-			return fmt.Errorf("Invalid Target Port %s; non-number ", s)
+			return fmt.Errorf("Invalid TCP Client Target Port %s; non-number ", s)
 		}
 		if port < 65536 && port > -1 {
 			c.TargetPort = s

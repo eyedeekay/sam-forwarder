@@ -18,7 +18,7 @@ type SAMClientForwarder struct {
 	SamHost string
 	SamPort string
 	TunName string
-    Type    string
+	Type    string
 
 	TargetHost string
 	TargetPort string
@@ -201,7 +201,7 @@ func NewSAMClientForwarderFromOptions(opts ...func(*SAMClientForwarder) error) (
 	s.closeIdle = "false"
 	s.closeIdleTime = "300000"
 	s.dest = "none"
-    s.Type = "client"
+	s.Type = "client"
 	for _, o := range opts {
 		if err := o(&s); err != nil {
 			return nil, err

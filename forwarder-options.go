@@ -50,7 +50,7 @@ func SetPort(s string) func(*SAMForwarder) error {
 	return func(c *SAMForwarder) error {
 		port, err := strconv.Atoi(s)
 		if err != nil {
-			return fmt.Errorf("Invalid Target Port %s; non-number ", s)
+			return fmt.Errorf("Invalid TCP Server Target Port %s; non-number ", s)
 		}
 		if port < 65536 && port > -1 {
 			c.TargetPort = s

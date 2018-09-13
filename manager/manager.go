@@ -103,6 +103,7 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 			return nil, err
 		}
 	}
+	log.Println("tunnel settings", s.ServerHost, s.ServerPort, s.SamHost, s.SamPort)
 	var err error
 	if s.FilePath != "" {
 		s.config, err = i2ptunconf.NewI2PTunConf(s.FilePath)
@@ -203,6 +204,7 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 }
 
 func NewSAMManager(inifile, servhost, servport, samhost, samport string, start bool) (*SAMManager, error) {
+	log.Println("tunnel settings", servhost, servport, samhost, samport)
 	return NewSAMManagerFromOptions(
 		SetManagerFilePath(inifile),
 		SetManagerHost(servhost),
@@ -214,6 +216,7 @@ func NewSAMManager(inifile, servhost, servport, samhost, samport string, start b
 }
 
 func NewSAMManagerFromConf(conf *i2ptunconf.Conf, servhost, servport, samhost, samport string, start bool) (*SAMManager, error) {
+	log.Println("tunnel settings", servhost, servport, samhost, samport)
 	return NewSAMManagerFromOptions(
 		SetManagerConf(conf),
 		SetManagerHost(servhost),
