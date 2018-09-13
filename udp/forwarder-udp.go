@@ -20,6 +20,7 @@ type SAMSSUForwarder struct {
 	SamHost string
 	SamPort string
 	TunName string
+    Type    string
 
 	TargetHost string
 	TargetPort string
@@ -206,6 +207,7 @@ func NewSAMSSUForwarderFromOptions(opts ...func(*SAMSSUForwarder) error) (*SAMSS
 	s.closeIdle = "false"
 	s.closeIdleTime = "300000"
 	s.reduceIdleQuantity = "4"
+    s.Type = "udpserver"
 	for _, o := range opts {
 		if err := o(&s); err != nil {
 			return nil, err

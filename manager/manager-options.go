@@ -39,7 +39,7 @@ func SetManagerPort(s string) func(*SAMManager) error {
 	return func(c *SAMManager) error {
 		port, err := strconv.Atoi(s)
 		if err != nil {
-			return fmt.Errorf("Invalid Server Port %s; non-number ", s)
+			return fmt.Errorf("Invalid Manager Server Port %s; non-number ", s)
 		}
 		if port < 65536 && port > -1 {
 			c.ServerPort = s
@@ -62,7 +62,7 @@ func SetManagerSAMPort(s string) func(*SAMManager) error {
 	return func(c *SAMManager) error {
 		port, err := strconv.Atoi(s)
 		if err != nil {
-			return fmt.Errorf("Invalid SAM Port %s; non-number", s)
+			return fmt.Errorf("Invalid Manager SAM Port %s; non-number", s)
 		}
 		if port < 65536 && port > -1 {
 			c.SamPort = s
