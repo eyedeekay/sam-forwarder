@@ -16,6 +16,7 @@ import (
 type SAMManager struct {
 	FilePath string
 	save     bool
+	start    bool
 	config   *i2ptunconf.Conf
 
 	ServerHost string
@@ -58,13 +59,13 @@ func (s *SAMManager) Serve() bool {
 		go element.Serve()
 	}
 	//for _, element := range s.clientforwarders {
-	//go element.Serve()
+	//    go element.Serve(element.Destination())
 	//}
 	for _, element := range s.udpforwarders {
 		go element.Serve()
 	}
 	//for _, element := range s.udpclientforwarders {
-	//go element.Serve()
+	//    go element.Serve(element.Destination())
 	//}
 	return false
 }
@@ -84,6 +85,7 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 	var s SAMManager
 	s.FilePath = ""
 	s.save = true
+	s.start = false
 	s.config = i2ptunconf.NewI2PBlankTunConf()
 	s.ServerHost = "localhost"
 	s.ServerPort = "7957"
@@ -106,32 +108,66 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 		}
 		s.FilePath = s.config.FilePath
 	}
+	if s.start {
+		t, b := s.config.Get("type")
+		if !b {
+			return nil, fmt.Errorf("samcat was instructed to start a tunnel with insufficient default settings information.")
+		}
+		switch t {
+		case "http":
+			log.Println("found http under")
+			if f, e := i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort); e == nil {
+				s.forwarders = append(s.forwarders, f)
+			}
+		case "server":
+			log.Println("found server under")
+			if f, e := i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort); e == nil {
+				s.forwarders = append(s.forwarders, f)
+			}
+		case "client":
+			log.Println("found client under")
+			if f, e := i2ptunconf.NewSAMClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort); e == nil {
+				s.clientforwarders = append(s.clientforwarders, f)
+			}
+		case "udpserver":
+			log.Println("found udpserver under")
+			if f, e := i2ptunconf.NewSAMSSUForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort); e == nil {
+				s.udpforwarders = append(s.udpforwarders, f)
+			}
+		case "udpclient":
+			log.Println("found udpclient under")
+			if f, e := i2ptunconf.NewSAMSSUClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort); e == nil {
+				s.udpclientforwarders = append(s.udpclientforwarders, f)
+			}
+		}
+		return &s, nil
+	}
 	for _, label := range s.config.Labels {
 		if t, e := s.config.Get("type", label); e {
 			switch t {
 			case "http":
 				log.Println("found http under", label)
-				if f, e := i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label); e != nil {
+				if f, e := i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label); e == nil {
 					s.forwarders = append(s.forwarders, f)
 				}
 			case "server":
 				log.Println("found server under", label)
-				if f, e := i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label); e != nil {
+				if f, e := i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label); e == nil {
 					s.forwarders = append(s.forwarders, f)
 				}
 			case "client":
 				log.Println("found client under", label)
-				if f, e := i2ptunconf.NewSAMClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label); e != nil {
+				if f, e := i2ptunconf.NewSAMClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label); e == nil {
 					s.clientforwarders = append(s.clientforwarders, f)
 				}
 			case "udpserver":
 				log.Println("found udpserver under", label)
-				if f, e := i2ptunconf.NewSAMSSUForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label); e != nil {
+				if f, e := i2ptunconf.NewSAMSSUForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label); e == nil {
 					s.udpforwarders = append(s.udpforwarders, f)
 				}
 			case "udpclient":
 				log.Println("found udpclient under", label)
-				if f, e := i2ptunconf.NewSAMSSUClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label); e != nil {
+				if f, e := i2ptunconf.NewSAMSSUClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label); e == nil {
 					s.udpclientforwarders = append(s.udpclientforwarders, f)
 				}
 			}
@@ -150,7 +186,7 @@ func NewSAMManager(inifile, servhost, servport, samhost, samport string) (*SAMMa
 	)
 }
 
-func NewSAMManagerFromConf(conf *i2ptunconf.Conf, servhost, servport, samhost, samport string) (*SAMManager, error) {
+func NewSAMManagerFromConf(conf *i2ptunconf.Conf, servhost, servport, samhost, samport string, start bool) (*SAMManager, error) {
 	return NewSAMManagerFromOptions(
 		SetManagerConf(conf),
 		SetManagerHost(servhost),
