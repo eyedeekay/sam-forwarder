@@ -79,3 +79,11 @@ func SetManagerConf(s *i2ptunconf.Conf) func(*SAMManager) error {
 		return nil
 	}
 }
+
+//SetManagerStart sets the host of the SAMManager's SAM bridge
+func SetManagerStart(s bool) func(*SAMManager) error {
+	return func(c *SAMManager) error {
+		c.start = s
+		return nil
+	}
+}

@@ -140,7 +140,6 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 				s.udpclientforwarders = append(s.udpclientforwarders, f)
 			}
 		}
-		return &s, nil
 	}
 	for _, label := range s.config.Labels {
 		if t, e := s.config.Get("type", label); e {
@@ -176,13 +175,14 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 	return &s, nil
 }
 
-func NewSAMManager(inifile, servhost, servport, samhost, samport string) (*SAMManager, error) {
+func NewSAMManager(inifile, servhost, servport, samhost, samport string, start bool) (*SAMManager, error) {
 	return NewSAMManagerFromOptions(
 		SetManagerFilePath(inifile),
 		SetManagerHost(servhost),
 		SetManagerPort(servport),
 		SetManagerSAMHost(samhost),
 		SetManagerSAMPort(samport),
+		SetManagerStart(start),
 	)
 }
 
@@ -193,5 +193,6 @@ func NewSAMManagerFromConf(conf *i2ptunconf.Conf, servhost, servport, samhost, s
 		SetManagerPort(servport),
 		SetManagerSAMHost(samhost),
 		SetManagerSAMPort(samport),
+		SetManagerStart(start),
 	)
 }
