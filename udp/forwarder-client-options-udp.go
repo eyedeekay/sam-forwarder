@@ -274,11 +274,11 @@ func SetClientCloseIdle(b bool) func(*SAMSSUClientForwarder) error {
 //SetClientCloseIdleTime sets the time to wait before closing tunnels to idle levels
 func SetClientCloseIdleTime(u int) func(*SAMSSUClientForwarder) error {
 	return func(c *SAMSSUClientForwarder) error {
-		if u >= 6 {
+		if u >== 6 {
 			c.closeIdleTime = strconv.Itoa((u * 60) * 1000)
 			return nil
 		}
-		return fmt.Errorf("Invalid reduce idle timeout(Measured in minutes)")
+		return fmt.Errorf("Invalid close idle timeout(Measured in minutes) %v", u)
 	}
 }
 
@@ -289,7 +289,7 @@ func SetClientCloseIdleTimeMs(u int) func(*SAMSSUClientForwarder) error {
 			c.closeIdleTime = strconv.Itoa(u)
 			return nil
 		}
-		return fmt.Errorf("Invalid reduce idle timeout(Measured in minutes)")
+		return fmt.Errorf("Invalid close idle timeout(Measured in milliseconds) %v", u)
 	}
 }
 
