@@ -58,15 +58,15 @@ func (s *SAMManager) Serve() bool {
 	for _, element := range s.forwarders {
 		go element.Serve()
 	}
-	//for _, element := range s.clientforwarders {
-	//    go element.Serve(element.Destination())
-	//}
+	for _, element := range s.clientforwarders {
+		go element.Serve(element.Destination())
+	}
 	for _, element := range s.udpforwarders {
 		go element.Serve()
 	}
-	//for _, element := range s.udpclientforwarders {
-	//    go element.Serve(element.Destination())
-	//}
+	for _, element := range s.udpclientforwarders {
+		go element.Serve(element.Destination())
+	}
 	return false
 }
 
