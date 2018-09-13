@@ -81,6 +81,8 @@ func main() {
 	config = i2ptunconf.NewI2PBlankTunConf()
 	if *iniFile != "none" && *iniFile != "" {
 		config, err = i2ptunconf.NewI2PTunConf(*iniFile)
+	} else {
+		*startUp = true
 	}
 	config.TargetHost = config.GetHost(*targetHost, "127.0.0.1")
 	config.TargetPort = config.GetPort(*targetPort, "8081")
