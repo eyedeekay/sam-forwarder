@@ -163,9 +163,9 @@ example config - valid for both ephsite and samcat
 Options are still being added, pretty much as fast as I can put them
 in. For up-to-the-minute options, see [the checklist](config/CHECKLIST.md)
 
-(ephsite will only use top-level options, but they can be labeled or
+(**ephsite** will only use top-level options, but they can be labeled or
 unlabeled)
-(samcatd treats the first set of options it sees as the default, and
+(**samcatd** treats the first set of options it sees as the default, and
 does not start tunnels based on unlabeled options unless passed the
 -s flag.)
 
