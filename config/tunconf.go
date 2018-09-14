@@ -41,6 +41,7 @@ type Conf struct {
 	InBackupQuantity   int
 	OutBackupQuantity  int
 	UseCompression     bool
+	FastRecieve        bool
 	ReduceIdle         bool
 	ReduceIdleTime     int
 	ReduceIdleQuantity int
@@ -176,6 +177,7 @@ func (c *Conf) I2PINILoad(iniFile string, label ...string) error {
 		c.SetOutVariance(label...)
 		c.SetInBackups(label...)
 		c.SetOutBackups(label...)
+		c.SetFastRecieve(label...)
 		c.SetCompressed(label...)
 		c.SetReduceIdle(label...)
 		c.SetReduceIdleTime(label...)
@@ -235,6 +237,7 @@ func NewSAMForwarderFromConf(config *Conf) (*samforwarder.SAMForwarder, error) {
 			samforwarder.SetEncrypt(config.EncryptLeaseSet),
 			samforwarder.SetAllowZeroIn(config.InAllowZeroHop),
 			samforwarder.SetAllowZeroOut(config.OutAllowZeroHop),
+			samforwarder.SetFastRecieve(config.FastRecieve),
 			samforwarder.SetCompress(config.UseCompression),
 			samforwarder.SetReduceIdle(config.ReduceIdle),
 			samforwarder.SetReduceIdleTimeMs(config.ReduceIdleTime),
@@ -289,6 +292,7 @@ func NewSAMClientForwarderFromConf(config *Conf) (*samforwarder.SAMClientForward
 			samforwarder.SetClientEncrypt(config.EncryptLeaseSet),
 			samforwarder.SetClientAllowZeroIn(config.InAllowZeroHop),
 			samforwarder.SetClientAllowZeroOut(config.OutAllowZeroHop),
+			samforwarder.SetClientFastRecieve(config.FastRecieve),
 			samforwarder.SetClientCompress(config.UseCompression),
 			samforwarder.SetClientReduceIdle(config.ReduceIdle),
 			samforwarder.SetClientReduceIdleTimeMs(config.ReduceIdleTime),
@@ -342,6 +346,7 @@ func NewSAMSSUForwarderFromConf(config *Conf) (*samforwarderudp.SAMSSUForwarder,
 			samforwarderudp.SetEncrypt(config.EncryptLeaseSet),
 			samforwarderudp.SetAllowZeroIn(config.InAllowZeroHop),
 			samforwarderudp.SetAllowZeroOut(config.OutAllowZeroHop),
+			samforwarderudp.SetFastRecieve(config.FastRecieve),
 			samforwarderudp.SetCompress(config.UseCompression),
 			samforwarderudp.SetReduceIdle(config.ReduceIdle),
 			samforwarderudp.SetReduceIdleTimeMs(config.ReduceIdleTime),
@@ -395,6 +400,7 @@ func NewSAMSSUClientForwarderFromConf(config *Conf) (*samforwarderudp.SAMSSUClie
 			samforwarderudp.SetClientEncrypt(config.EncryptLeaseSet),
 			samforwarderudp.SetClientAllowZeroIn(config.InAllowZeroHop),
 			samforwarderudp.SetClientAllowZeroOut(config.OutAllowZeroHop),
+			samforwarderudp.SetClientFastRecieve(config.FastRecieve),
 			samforwarderudp.SetClientCompress(config.UseCompression),
 			samforwarderudp.SetClientReduceIdle(config.ReduceIdle),
 			samforwarderudp.SetClientReduceIdleTimeMs(config.ReduceIdleTime),

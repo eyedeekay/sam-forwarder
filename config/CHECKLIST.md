@@ -1,6 +1,9 @@
 I2CP/Tunnel Options Implementation Checklist
 ============================================
 
+This version of this document is valid for sam-forwarder. If you'd like to use
+it, the original is at [CHECKLIST.orig.md](CHECKLIST.orig.md).
+
 key:
 
     - \[U\] - Undone/Unknoqn

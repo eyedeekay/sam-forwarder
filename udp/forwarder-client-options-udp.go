@@ -202,6 +202,18 @@ func SetClientAllowZeroOut(b bool) func(*SAMSSUClientForwarder) error {
 	}
 }
 
+//SetFastRecieve tells clients to use compression
+func SetClientFastRecieve(b bool) func(*SAMSSUClientForwarder) error {
+	return func(c *SAMSSUClientForwarder) error {
+		if b {
+			c.fastRecieve = "true"
+			return nil
+		}
+		c.fastRecieve = "false"
+		return nil
+	}
+}
+
 //SetClientCompress tells clients to use compression
 func SetClientCompress(b bool) func(*SAMSSUClientForwarder) error {
 	return func(c *SAMSSUClientForwarder) error {

@@ -48,6 +48,7 @@ type SAMSSUClientForwarder struct {
 	outVariance        string
 	inBackupQuantity   string
 	outBackupQuantity  string
+    fastRecieve        string
 	useCompression     string
 	closeIdle          string
 	closeIdleTime      string
@@ -123,12 +124,14 @@ func (f *SAMSSUClientForwarder) forward(conn net.PacketConn) {
 			"inbound.allowZeroHop=" + f.inAllowZeroHop,
 			"outbound.allowZeroHop=" + f.outAllowZeroHop,
 			"i2cp.encryptLeaseSet=" + f.encryptLeaseSet,
+            "i2cp.fastRecieve=" + f.fastRecieve,
 			"i2cp.gzip=" + f.useCompression,
 			"i2cp.reduceOnIdle=" + f.reduceIdle,
 			"i2cp.reduceIdleTime=" + f.reduceIdleTime,
 			"i2cp.reduceQuantity=" + f.reduceIdleQuantity,
 			"i2cp.closeOnIdle=" + f.closeIdle,
 			"i2cp.closeIdleTime=" + f.closeIdleTime,
+            "i2cp.dontPublishLeaseSet=true",
 			f.accesslisttype(),
 			f.accesslist(),
 		}, sp); err != nil {
@@ -197,6 +200,7 @@ func NewSAMSSUClientForwarderFromOptions(opts ...func(*SAMSSUClientForwarder) er
 	s.outBackupQuantity = "3"
 	s.inAllowZeroHop = "false"
 	s.outAllowZeroHop = "false"
+    s.fastRecieve = "false"
 	s.useCompression = "true"
 	s.encryptLeaseSet = "false"
 	s.reduceIdle = "false"

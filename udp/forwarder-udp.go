@@ -46,6 +46,7 @@ type SAMSSUForwarder struct {
 	outVariance        string
 	inBackupQuantity   string
 	outBackupQuantity  string
+    fastRecieve        string
 	useCompression     string
 	closeIdle          string
 	closeIdleTime      string
@@ -153,6 +154,7 @@ func (f *SAMSSUForwarder) Serve() error {
 			"inbound.allowZeroHop=" + f.inAllowZeroHop,
 			"outbound.allowZeroHop=" + f.outAllowZeroHop,
 			"i2cp.encryptLeaseSet=" + f.encryptLeaseSet,
+            "i2cp.fastRecieve=" + f.fastRecieve,
 			"i2cp.gzip=" + f.useCompression,
 			"i2cp.reduceOnIdle=" + f.reduceIdle,
 			"i2cp.reduceIdleTime=" + f.reduceIdleTime,
@@ -200,6 +202,7 @@ func NewSAMSSUForwarderFromOptions(opts ...func(*SAMSSUForwarder) error) (*SAMSS
 	s.outBackupQuantity = "3"
 	s.inAllowZeroHop = "false"
 	s.outAllowZeroHop = "false"
+    s.fastRecieve = "false"
 	s.useCompression = "true"
 	s.encryptLeaseSet = "false"
 	s.reduceIdle = "false"

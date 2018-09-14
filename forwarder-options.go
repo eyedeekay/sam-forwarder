@@ -227,6 +227,18 @@ func SetCompress(b bool) func(*SAMForwarder) error {
 	}
 }
 
+//SetFastRecieve tells clients to use compression
+func SetFastRecieve(b bool) func(*SAMForwarder) error {
+	return func(c *SAMForwarder) error {
+		if b {
+			c.fastRecieve = "true"
+			return nil
+		}
+		c.fastRecieve = "false"
+		return nil
+	}
+}
+
 //SetReduceIdle tells the connection to reduce it's tunnels during extended idle time.
 func SetReduceIdle(b bool) func(*SAMForwarder) error {
 	return func(c *SAMForwarder) error {
