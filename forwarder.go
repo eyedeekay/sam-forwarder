@@ -327,7 +327,7 @@ func NewSAMForwarderFromOptions(opts ...func(*SAMForwarder) error) (*SAMForwarde
 	s.closeIdleTime = "300000"
 	s.clientLock = false
 	s.connLock = false
-    s.messageReliability = "none"
+	s.messageReliability = "none"
 	for _, o := range opts {
 		if err := o(&s); err != nil {
 			return nil, err

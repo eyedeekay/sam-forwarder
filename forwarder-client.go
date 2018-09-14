@@ -230,7 +230,7 @@ func NewSAMClientForwarderFromOptions(opts ...func(*SAMClientForwarder) error) (
 	s.closeIdleTime = "300000"
 	s.dest = "none"
 	s.Type = "client"
-    s.messageReliability = "none"
+	s.messageReliability = "none"
 	for _, o := range opts {
 		if err := o(&s); err != nil {
 			return nil, err
