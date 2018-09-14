@@ -37,27 +37,27 @@ type SAMSSUClientForwarder struct {
 	save     bool
 
 	// I2CP options
-	encryptLeaseSet    string
-    leaseSetKey               string
+	encryptLeaseSet           string
+	leaseSetKey               string
 	leaseSetPrivateKey        string
 	leaseSetPrivateSigningKey string
-	inAllowZeroHop     string
-	outAllowZeroHop    string
-	inLength           string
-	outLength          string
-	inQuantity         string
-	outQuantity        string
-	inVariance         string
-	outVariance        string
-	inBackupQuantity   string
-	outBackupQuantity  string
-	fastRecieve        string
-	useCompression     string
-	closeIdle          string
-	closeIdleTime      string
-	reduceIdle         string
-	reduceIdleTime     string
-	reduceIdleQuantity string
+	inAllowZeroHop            string
+	outAllowZeroHop           string
+	inLength                  string
+	outLength                 string
+	inQuantity                string
+	outQuantity               string
+	inVariance                string
+	outVariance               string
+	inBackupQuantity          string
+	outBackupQuantity         string
+	fastRecieve               string
+	useCompression            string
+	closeIdle                 string
+	closeIdleTime             string
+	reduceIdle                string
+	reduceIdleTime            string
+	reduceIdleQuantity        string
 
 	//Streaming Library options
 	accessListType string
@@ -128,7 +128,7 @@ func (f *SAMSSUClientForwarder) forward(conn net.PacketConn) {
 	var err error
 	//p, _ := strconv.Atoi(f.TargetPort)
 	sp, _ := strconv.Atoi(f.SamPort)
-    lsk, lspk, lspsk := f.leasesetsettings()
+	lsk, lspk, lspsk := f.leasesetsettings()
 	if f.connectStream, err = f.samConn.NewDatagramSession(f.TunName, f.SamKeys,
 		[]string{
 			"inbound.length=" + f.inLength,
@@ -149,8 +149,8 @@ func (f *SAMSSUClientForwarder) forward(conn net.PacketConn) {
 			"i2cp.closeOnIdle=" + f.closeIdle,
 			"i2cp.closeIdleTime=" + f.closeIdleTime,
 			"i2cp.dontPublishLeaseSet=true",
-            "i2cp.encryptLeaseSet=" + f.encryptLeaseSet,
-            lsk, lspk, lspsk,
+			"i2cp.encryptLeaseSet=" + f.encryptLeaseSet,
+			lsk, lspk, lspsk,
 			f.accesslisttype(),
 			f.accesslist(),
 		}, sp); err != nil {

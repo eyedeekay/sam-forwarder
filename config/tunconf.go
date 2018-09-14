@@ -170,9 +170,9 @@ func (c *Conf) I2PINILoad(iniFile string, label ...string) error {
 		c.SetSAMPort(label...)
 		c.SetTunName(label...)
 		c.SetEncryptLease(label...)
-        c.SetLeasesetKey(label...)
-        c.SetLeasesetPrivateKey(label...)
-        c.SetLeasesetPrivateSigningKey(label...)
+		c.SetLeasesetKey(label...)
+		c.SetLeasesetPrivateKey(label...)
+		c.SetLeasesetPrivateSigningKey(label...)
 		c.SetAllowZeroHopIn(label...)
 		c.SetAllowZeroHopOut(label...)
 		c.SetInLength(label...)
@@ -241,9 +241,9 @@ func NewSAMForwarderFromConf(config *Conf) (*samforwarder.SAMForwarder, error) {
 			samforwarder.SetInBackups(config.InBackupQuantity),
 			samforwarder.SetOutBackups(config.OutBackupQuantity),
 			samforwarder.SetEncrypt(config.EncryptLeaseSet),
-            samforwarder.SetLeaseSetKey(config.LeaseSetKey),
-            samforwarder.SetLeaseSetPrivateKey(config.LeaseSetPrivateKey),
-            samforwarder.SetLeaseSetPrivateSigningKey(config.LeaseSetPrivateSigningKey),
+			samforwarder.SetLeaseSetKey(config.LeaseSetKey),
+			samforwarder.SetLeaseSetPrivateKey(config.LeaseSetPrivateKey),
+			samforwarder.SetLeaseSetPrivateSigningKey(config.LeaseSetPrivateSigningKey),
 			samforwarder.SetAllowZeroIn(config.InAllowZeroHop),
 			samforwarder.SetAllowZeroOut(config.OutAllowZeroHop),
 			samforwarder.SetFastRecieve(config.FastRecieve),
@@ -299,9 +299,9 @@ func NewSAMClientForwarderFromConf(config *Conf) (*samforwarder.SAMClientForward
 			samforwarder.SetClientInBackups(config.InBackupQuantity),
 			samforwarder.SetClientOutBackups(config.OutBackupQuantity),
 			samforwarder.SetClientEncrypt(config.EncryptLeaseSet),
-            samforwarder.SetClientLeaseSetKey(config.LeaseSetKey),
-            samforwarder.SetClientLeaseSetPrivateKey(config.LeaseSetPrivateKey),
-            samforwarder.SetClientLeaseSetPrivateSigningKey(config.LeaseSetPrivateSigningKey),
+			samforwarder.SetClientLeaseSetKey(config.LeaseSetKey),
+			samforwarder.SetClientLeaseSetPrivateKey(config.LeaseSetPrivateKey),
+			samforwarder.SetClientLeaseSetPrivateSigningKey(config.LeaseSetPrivateSigningKey),
 			samforwarder.SetClientAllowZeroIn(config.InAllowZeroHop),
 			samforwarder.SetClientAllowZeroOut(config.OutAllowZeroHop),
 			samforwarder.SetClientFastRecieve(config.FastRecieve),
@@ -356,9 +356,9 @@ func NewSAMSSUForwarderFromConf(config *Conf) (*samforwarderudp.SAMSSUForwarder,
 			samforwarderudp.SetInBackups(config.InBackupQuantity),
 			samforwarderudp.SetOutBackups(config.OutBackupQuantity),
 			samforwarderudp.SetEncrypt(config.EncryptLeaseSet),
-            samforwarderudp.SetLeaseSetKey(config.LeaseSetKey),
-            samforwarderudp.SetLeaseSetPrivateKey(config.LeaseSetPrivateKey),
-            samforwarderudp.SetLeaseSetPrivateSigningKey(config.LeaseSetPrivateSigningKey),
+			samforwarderudp.SetLeaseSetKey(config.LeaseSetKey),
+			samforwarderudp.SetLeaseSetPrivateKey(config.LeaseSetPrivateKey),
+			samforwarderudp.SetLeaseSetPrivateSigningKey(config.LeaseSetPrivateSigningKey),
 			samforwarderudp.SetAllowZeroIn(config.InAllowZeroHop),
 			samforwarderudp.SetAllowZeroOut(config.OutAllowZeroHop),
 			samforwarderudp.SetFastRecieve(config.FastRecieve),
@@ -413,9 +413,9 @@ func NewSAMSSUClientForwarderFromConf(config *Conf) (*samforwarderudp.SAMSSUClie
 			samforwarderudp.SetClientInBackups(config.InBackupQuantity),
 			samforwarderudp.SetClientOutBackups(config.OutBackupQuantity),
 			samforwarderudp.SetClientEncrypt(config.EncryptLeaseSet),
-            samforwarderudp.SetClientLeaseSetKey(config.LeaseSetKey),
-            samforwarderudp.SetClientLeaseSetPrivateKey(config.LeaseSetPrivateKey),
-            samforwarderudp.SetClientLeaseSetPrivateSigningKey(config.LeaseSetPrivateSigningKey),
+			samforwarderudp.SetClientLeaseSetKey(config.LeaseSetKey),
+			samforwarderudp.SetClientLeaseSetPrivateKey(config.LeaseSetPrivateKey),
+			samforwarderudp.SetClientLeaseSetPrivateSigningKey(config.LeaseSetPrivateSigningKey),
 			samforwarderudp.SetClientAllowZeroIn(config.InAllowZeroHop),
 			samforwarderudp.SetClientAllowZeroOut(config.OutAllowZeroHop),
 			samforwarderudp.SetClientFastRecieve(config.FastRecieve),
