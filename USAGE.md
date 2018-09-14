@@ -83,8 +83,8 @@ samcatd - Router-independent tunnel management for i2p
 
 samcatd is a daemon which runs a group of forwarding proxies to
 provide services over i2p independent of the router. It also serves
-as a generalized i2p networking utility for power-users. Think of it
-as a Swiss-army knife for the SAM API.
+as a generalized i2p networking utility for power-users. It's
+intended to be a Swiss-army knife for the SAM API.
 
 usage:
 ------

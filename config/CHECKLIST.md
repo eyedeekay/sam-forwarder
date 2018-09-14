@@ -57,8 +57,50 @@ key:
         [*] - i2cp.tcp.host                           127.0.0.1                                      Router hostname. If the client is running in the same JVM as a router, this option is ignored, and the client connects to that router internally.
         [*] - i2cp.tcp.port                           1-65535     7654                               Router I2CP port. If the client is running in the same JVM as a router, this option is ignored, and the client connects to that router internally.
 
+                                                                  Default     Description
+        [C] - i2cp.accessList                                      null       Comma- or space-separated list of Base64 peer Hashes used for either access list or blacklist. As of release 0.7.13.
+        [U] - i2cp.destination.sigType                             DSA_SHA1   Use the access list as a whitelist for incoming connections. The name or number of the signature type for a transient destination. As of release 0.9.12.
+        [C] - i2cp.enableAccessList                                false      Use the access list as a whitelist for incoming connections. As of release 0.7.13.
+        [C] - i2cp.enableBlackList                                 false      Use the access list as a blacklist for incoming connections. As of release 0.7.13.
+        [U] - i2p.streaming.answerPings                            true       Whether to respond to incoming pings
+        [U] - i2p.streaming.blacklist                              null       Comma- or space-separated list of Base64 peer Hashes to be blacklisted for incoming connections to ALL destinations in the context. This option must be set in the context properties, NOT in the createManager() options argument. Note that setting this in the router context will not affect clients outside the router in a separate JVM and context. As of release 0.9.3.
+        [U] - i2p.streaming.bufferSize                             64K        How much transmit data (in bytes) will be accepted that hasn't been written out yet.
+        [U] - i2p.streaming.congestionAvoidanceGrowthRateFactor    1          When we're in congestion avoidance, we grow the window size at the rate of 1/(windowSize*factor). In standard TCP, window sizes are in bytes, while in I2P, window sizes are in messages. A higher number means slower growth.
+        [U] - i2p.streaming.connectDelay                           -1         How long to wait after instantiating a new con before actually attempting to connect. If this is <= 0, connect immediately with no initial data. If greater than 0, wait until the output stream is flushed, the buffer fills, or that many milliseconds pass, and include any initial data with the SYN.
+        [U] - i2p.streaming.connectTimeout                         5*60*1000  How long to block on connect, in milliseconds. Negative means indefinitely. Default is 5 minutes.
+        [U] - i2p.streaming.disableRejectLogging                   false      Whether to disable warnings in the logs when an incoming connection is rejected due to connection limits. As of release 0.9.4.
+        [U] - i2p.streaming.dsalist                                null       Comma- or space-separated list of Base64 peer Hashes or host names to be contacted using an alternate DSA destination. Only applies if multisession is enabled and the primary session is non-DSA (generally for shared clients only). This option must be set in the context properties, NOT in the createManager() options argument. Note that setting this in the router context will not affect clients outside the router in a separate JVM and context. As of release 0.9.21.
+        [U] - i2p.streaming.enforceProtocol                        true       Whether to listen only for the streaming protocol. Setting to true will prohibit communication with Destinations earlier than release 0.7.1 (released March 2009). Set to true if running multiple protocols on this Destination. As of release 0.9.1. Default true as of release 0.9.36.
+        [U] - i2p.streaming.inactivityAction                       2 (send)   (0=noop, 1=disconnect) What to do on an inactivity timeout - do nothing, disconnect, or send a duplicate ack.
+        [U] - i2p.streaming.inactivityTimeout                      90*1000    Idle time before sending a keepalive
+        [U] - i2p.streaming.initialAckDelay                        750        Delay before sending an ack
+        [U] - i2p.streaming.initialResendDelay                     1000       The initial value of the resend delay field in the packet header, times 1000. Not fully implemented; see below.
+        [U] - i2p.streaming.initialRTO                             9000       Initial timeout (if no sharing data available). As of release 0.9.8.
+        [U] - i2p.streaming.initialRTT                             8000       Initial round trip time estimate (if no sharing data available). Disabled as of release 0.9.8; uses actual RTT.
+        [U] - i2p.streaming.initialWindowSize                      6          (if no sharing data available) In standard TCP, window sizes are in bytes, while in I2P, window sizes are in messages.
+        [U] - i2p.streaming.limitAction                            reset      What action to take when an incoming connection exceeds limits. Valid values are: reset (reset the connection); drop (drop the connection); or http (send a hardcoded HTTP 429 response). Any other value is a custom response to be sent. backslash-r and backslash-n will be replaced with CR and LF. As of release 0.9.34.
+        [U] - i2p.streaming.maxConcurrentStreams                   -1         (0 or negative value means unlimited) This is a total limit for incoming and outgoing combined.
+        [U] - i2p.streaming.maxConnsPerMinute                      0          Incoming connection limit (per peer; 0 means disabled) As of release 0.7.14.
+        [U] - i2p.streaming.maxConnsPerHour                        0          (per peer; 0 means disabled) As of release 0.7.14.
+        [U] - i2p.streaming.maxConnsPerDay                         0          (per peer; 0 means disabled) As of release 0.7.14.
+        [U] - i2p.streaming.maxMessageSize                         1730       The MTU in bytes.
+        [U] - i2p.streaming.maxResends                             8          Maximum number of retransmissions before failure.
+        [U] - i2p.streaming.maxTotalConnsPerMinute                 0          Incoming connection limit (all peers; 0 means disabled) As of release 0.7.14.
+        [U] - i2p.streaming.maxTotalConnsPerHour                   0          (all peers; 0 means disabled) Use with caution as exceeding this will disable a server for a long time. As of release 0.7.14.
+        [U] - i2p.streaming.maxTotalConnsPerDay                    0          (all peers; 0 means disabled) Use with caution as exceeding this will disable a server for a long time. As of release 0.7.14.
+        [U] - i2p.streaming.maxWindowSize                          128
+        [U] - i2p.streaming.profile                                1 (bulk)   (2=interactive not supported) This doesn't currently do anything, but setting it to a value other than 1 will cause an error.
+        [U] - i2p.streaming.readTimeout                            -1         How long to block on read, in milliseconds. Negative means indefinitely.
+        [U] - i2p.streaming.slowStartGrowthRateFactor              1          When we're in slow start, we grow the window size at the rate of 1/(factor). In standard TCP, window sizes are in bytes, while in I2P, window sizes are in messages. A higher number means slower growth.
+        [U] - i2p.streaming.tcbcache.rttDampening                  0.75       Ref: RFC 2140. Floating point value. May be set only via context properties, not connection options. As of release 0.9.8.
+        [U] - i2p.streaming.tcbcache.rttdevDampening               0.75       Ref: RFC 2140. Floating point value. May be set only via context properties, not connection options. As of release 0.9.8.
+        [U] - i2p.streaming.tcbcache.wdwDampening                  0.75       Ref: RFC 2140. Floating point value. May be set only via context properties, not connection options. As of release 0.9.8.
+        [U] - i2p.streaming.writeTimeout                          -1          How long to block on write/flush, in milliseconds. Negative means indefinitely.
+
+
 \* : I'd like to have something like this setting internal to samcatd, but it
 might not always be relevant to pass it through to the real i2p router. Right
 now, I'm leaning toward a samcatd specific setting, but maybe just alter the
 behavior of this setting for use with samcatd instead? Probably just give
 samcatd it's own thing.
+
