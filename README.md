@@ -46,7 +46,9 @@ options, the ones I use the most and for no other real reason assume other
 people use the most. They're pretty easy to add, it's just boring. *If you*
 *want an i2cp or tunnel option that isn't available, bring it to my attention*
 *please.* I'm pretty responsive when people actually contact me, it'll probably
-be added within 24 hours.
+be added within 24 hours. I intend to have configuration options for all
+relevant i2cp and tunnel options, which I'm keeping track of
+[here](config/CHECKLIST.md).
 
 Encrypted leasesets are only half-implemented. The option seems to do nothing at
 the moment. Soon it will be configurable.
@@ -69,4 +71,4 @@ in a different repo though. This is looking a little cluttered.
 TLS configuration is experimental.
 
 I'm eventually going to make the manager implement net.Conn. This won't be
-exposed in the default application probably though.
+exposed in the default application probably though, but rather as a library.
