@@ -52,6 +52,7 @@ type Conf struct {
 	CloseIdleTime             int
 	AccessListType            string
 	AccessList                []string
+	MessageReliability        string
 }
 
 // Print returns and prints a formatted list of configured tunnel settings.
@@ -192,6 +193,7 @@ func (c *Conf) I2PINILoad(iniFile string, label ...string) error {
 		c.SetCloseIdleTime(label...)
 		c.SetAccessListType(label...)
 		c.SetTargetPort443(label...)
+		c.SetMessageReliability(label...)
 		if v, ok := c.Get("i2cp.accessList", label...); ok {
 			csv := strings.Split(v, ",")
 			for _, z := range csv {
@@ -255,6 +257,7 @@ func NewSAMForwarderFromConf(config *Conf) (*samforwarder.SAMForwarder, error) {
 			samforwarder.SetCloseIdleTimeMs(config.CloseIdleTime),
 			samforwarder.SetAccessListType(config.AccessListType),
 			samforwarder.SetAccessList(config.AccessList),
+			samforwarder.SetMessageReliability(config.MessageReliability),
 			//samforwarder.SetTargetForPort443(config.TargetForPort443),
 		)
 	}
@@ -313,6 +316,7 @@ func NewSAMClientForwarderFromConf(config *Conf) (*samforwarder.SAMClientForward
 			samforwarder.SetClientCloseIdleTimeMs(config.CloseIdleTime),
 			samforwarder.SetClientAccessListType(config.AccessListType),
 			samforwarder.SetClientAccessList(config.AccessList),
+			samforwarder.SetClientMessageReliability(config.MessageReliability),
 		)
 	}
 	return nil, nil
@@ -370,6 +374,7 @@ func NewSAMSSUForwarderFromConf(config *Conf) (*samforwarderudp.SAMSSUForwarder,
 			samforwarderudp.SetCloseIdleTimeMs(config.CloseIdleTime),
 			samforwarderudp.SetAccessListType(config.AccessListType),
 			samforwarderudp.SetAccessList(config.AccessList),
+			samforwarderudp.SetMessageReliability(config.MessageReliability),
 		)
 	}
 	return nil, nil
@@ -427,6 +432,7 @@ func NewSAMSSUClientForwarderFromConf(config *Conf) (*samforwarderudp.SAMSSUClie
 			samforwarderudp.SetClientCloseIdleTimeMs(config.CloseIdleTime),
 			samforwarderudp.SetClientAccessListType(config.AccessListType),
 			samforwarderudp.SetClientAccessList(config.AccessList),
+			samforwarderudp.SetClientMessageReliability(config.MessageReliability),
 		)
 	}
 	return nil, nil

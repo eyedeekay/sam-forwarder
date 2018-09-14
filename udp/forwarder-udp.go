@@ -51,6 +51,7 @@ type SAMSSUForwarder struct {
 	outBackupQuantity         string
 	fastRecieve               string
 	useCompression            string
+	messageReliability        string
 	closeIdle                 string
 	closeIdleTime             string
 	reduceIdle                string
@@ -173,6 +174,7 @@ func (f *SAMSSUForwarder) Serve() error {
 			"outbound.allowZeroHop=" + f.outAllowZeroHop,
 			"i2cp.fastRecieve=" + f.fastRecieve,
 			"i2cp.gzip=" + f.useCompression,
+			"i2cp.messageReliability" + f.messageReliability,
 			"i2cp.reduceOnIdle=" + f.reduceIdle,
 			"i2cp.reduceIdleTime=" + f.reduceIdleTime,
 			"i2cp.reduceQuantity=" + f.reduceIdleQuantity,

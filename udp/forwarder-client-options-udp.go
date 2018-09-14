@@ -202,6 +202,14 @@ func SetClientLeaseSetPrivateSigningKey(s string) func(*SAMSSUClientForwarder) e
 	}
 }
 
+//SetClientMessageReliability sets
+func SetClientMessageReliability(s string) func(*SAMSSUClientForwarder) error {
+	return func(c *SAMSSUClientForwarder) error {
+		c.messageReliability = s
+		return nil
+	}
+}
+
 //SetClientAllowZeroIn tells the tunnel to accept zero-hop peers
 func SetClientAllowZeroIn(b bool) func(*SAMSSUClientForwarder) error {
 	return func(c *SAMSSUClientForwarder) error {

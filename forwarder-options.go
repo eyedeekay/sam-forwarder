@@ -215,6 +215,14 @@ func SetLeaseSetPrivateSigningKey(s string) func(*SAMForwarder) error {
 	}
 }
 
+//SetMessageReliability sets the host of the SAMForwarder's SAM bridge
+func SetMessageReliability(s string) func(*SAMForwarder) error {
+	return func(c *SAMForwarder) error {
+		c.messageReliability = s
+		return nil
+	}
+}
+
 //SetAllowZeroIn tells the tunnel to accept zero-hop peers
 func SetAllowZeroIn(b bool) func(*SAMForwarder) error {
 	return func(c *SAMForwarder) error {

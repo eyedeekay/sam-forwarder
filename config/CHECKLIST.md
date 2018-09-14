@@ -4,11 +4,11 @@ I2CP/Tunnel Options Implementation Checklist
 This version of this document is valid for sam-forwarder. If you'd like to use
 it, the original is at [CHECKLIST.orig.md](CHECKLIST.orig.md).
 
-28/41 planned options complete.
+32/41 planned options complete.
 
 key:
 
-    - \[U\] - Undone/Unknoqn
+    - \[U\] - Undone/Unknown
     - \[C\] - Confirmed Working
     - \[W\] - Work in progress
     - \[N\] - Not applicable/Won't be implemented without good reason.
@@ -46,12 +46,12 @@ key:
         [U] - shouldBundleReplyInfo           0.9.2   true,false                       true          Set to false to disable ever bundling a reply LeaseSet. For clients that do not publish their LeaseSet, this option must be true for any reply to be possible. "true" is also recommended for multihomed servers with long connection times. Setting to "false" may save significant outbound bandwidth, especially if the client is configured with a large number of inbound tunnels (Leases). If replies are still required, this may shift the bandwidth burden to the far-end client and the floodfill. There are several cases where "false" may be appropriate: Unidirectional communication, no reply required LeaseSet is published and higher reply latency is acceptable LeaseSet is published, client is a "server", all connections are inbound so the connecting far-end destination obviously has the leaseset already. Connections are either short, or it is acceptable for latency on a long-lived connection to temporarily increase while the other end re-fetches the LeaseSet after expiration. HTTP servers may fit these requirements.
         [C] - i2cp.closeIdleTime              0.7.1   1800000     300000 minimum                     (ms) Idle time required (default 30 minutes)
         [C] - i2cp.closeOnIdle                0.7.1   true,false                       false         Close I2P session when idle
-        [W] - i2cp.encryptLeaseSet            0.7.1   true,false                       false         Encrypt the lease
+        [C] - i2cp.encryptLeaseSet            0.7.1   true,false                       false         Encrypt the lease
         [C] - i2cp.fastReceive                0.9.4   true,false                       true          If true, the router just sends the MessagePayload instead of sending a MessageStatus and awaiting a ReceiveMessageBegin.
         [C] - i2cp.gzip                       0.6.5   true,false                       true          Gzip outbound data
-        [W] - i2cp.leaseSetKey                0.7.1                                                  For encrypted leasesets. Base 64 SessionKey (44 characters)
-        [W] - i2cp.leaseSetPrivateKey         0.9.18                                                 Base 64 private key for encryption. Optionally preceded by the key type and ':'. Only "ELGAMAL_2048:" is supported, which is the default. I2CP will generate the public key from the private key. Use for persistent leaseset keys across restarts.
-        [W] - i2cp.leaseSetSigningPrivateKey  0.9.18                                                 Base 64 private key for signatures. Optionally preceded by the key type and ':'. DSA_SHA1 is the default. Key type must match the signature type in the destination. I2CP will generate the public key from the private key. Use for persistent leaseset keys across restarts.
+        [C] - i2cp.leaseSetKey                0.7.1                                                  For encrypted leasesets. Base 64 SessionKey (44 characters)
+        [C] - i2cp.leaseSetPrivateKey         0.9.18                                                 Base 64 private key for encryption. Optionally preceded by the key type and ':'. Only "ELGAMAL_2048:" is supported, which is the default. I2CP will generate the public key from the private key. Use for persistent leaseset keys across restarts.
+        [C] - i2cp.leaseSetSigningPrivateKey  0.9.18                                                 Base 64 private key for signatures. Optionally preceded by the key type and ':'. DSA_SHA1 is the default. Key type must match the signature type in the destination. I2CP will generate the public key from the private key. Use for persistent leaseset keys across restarts.
         [C] - i2cp.reduceIdleTime             0.7.1   1200000     300000 minimum                     (ms) Idle time required (default 20 minutes, minimum 5 minutes)
         [C] - i2cp.reduceOnIdle               0.7.1   true,false                       false         Reduce tunnel quantity when idle
         [C] - i2cp.reduceQuantity             0.7.1   1           1 to 5               1             Tunnel quantity when reduced (applies to both inbound and outbound)

@@ -186,7 +186,7 @@ func SetClientEncrypt(b bool) func(*SAMClientForwarder) error {
 	}
 }
 
-//SetClientLeaseSetKey sets the host of the SAMForwarder's SAM bridge
+//SetClientLeaseSetKey sets
 func SetClientLeaseSetKey(s string) func(*SAMClientForwarder) error {
 	return func(c *SAMClientForwarder) error {
 		c.leaseSetKey = s
@@ -194,7 +194,7 @@ func SetClientLeaseSetKey(s string) func(*SAMClientForwarder) error {
 	}
 }
 
-//SetClientLeaseSetPrivateKey sets the host of the SAMForwarder's SAM bridge
+//SetClientLeaseSetPrivateKey sets
 func SetClientLeaseSetPrivateKey(s string) func(*SAMClientForwarder) error {
 	return func(c *SAMClientForwarder) error {
 		c.leaseSetPrivateKey = s
@@ -202,10 +202,18 @@ func SetClientLeaseSetPrivateKey(s string) func(*SAMClientForwarder) error {
 	}
 }
 
-//SetClientLeaseSetPrivateSigningKey sets the host of the SAMForwarder's SAM bridge
+//SetClientLeaseSetPrivateSigningKey sets
 func SetClientLeaseSetPrivateSigningKey(s string) func(*SAMClientForwarder) error {
 	return func(c *SAMClientForwarder) error {
 		c.leaseSetPrivateSigningKey = s
+		return nil
+	}
+}
+
+//SetClientMessageReliability sets
+func SetClientMessageReliability(s string) func(*SAMClientForwarder) error {
+	return func(c *SAMClientForwarder) error {
+		c.messageReliability = s
 		return nil
 	}
 }

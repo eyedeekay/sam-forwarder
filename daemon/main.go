@@ -57,7 +57,11 @@ var (
 		"Client proxy mode(true or false)")
 	injectHeaders = flag.Bool("ih", false,
 		"Inject X-I2P-DEST headers")
-	encryptedLeasesetKeys = flag.String("k", "none",
+	leaseSetKey = flag.String("k", "none",
+		"path to saved encrypted leaseset keys")
+	leaseSetPrivateKey = flag.String("pk", "none",
+		"path to saved encrypted leaseset keys")
+	leaseSetPrivateSigningKey = flag.String("psk", "none",
 		"path to saved encrypted leaseset keys")
 	targetDir = flag.String("d", "",
 		"Directory to save tunnel configuration file in.")
@@ -133,6 +137,9 @@ func main() {
 	config.InBackupQuantity = config.GetInBackups(*inBackupQuantity, 5)
 	config.OutBackupQuantity = config.GetOutBackups(*outBackupQuantity, 5)
 	config.EncryptLeaseSet = config.GetEncryptLeaseset(*encryptLeaseSet, false)
+	config.LeaseSetKey = config.GetLeasesetKey(*leaseSetKey, "")
+	config.LeaseSetPrivateKey = config.GetLeasesetPrivateKey(*leaseSetPrivateKey, "")
+	config.LeaseSetPrivateSigningKey = config.GetLeasesetPrivateSigningKey(*leaseSetPrivateSigningKey, "")
 	config.InAllowZeroHop = config.GetInAllowZeroHop(*inAllowZeroHop, false)
 	config.OutAllowZeroHop = config.GetOutAllowZeroHop(*outAllowZeroHop, false)
 	config.UseCompression = config.GetUseCompression(*useCompression, true)

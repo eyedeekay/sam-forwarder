@@ -202,6 +202,14 @@ func SetLeaseSetPrivateSigningKey(s string) func(*SAMSSUForwarder) error {
 	}
 }
 
+//SetMessageReliability sets
+func SetMessageReliability(s string) func(*SAMSSUForwarder) error {
+	return func(c *SAMSSUForwarder) error {
+		c.messageReliability = s
+		return nil
+	}
+}
+
 //SetAllowZeroIn tells the tunnel to accept zero-hop peers
 func SetAllowZeroIn(b bool) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {

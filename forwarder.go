@@ -56,6 +56,7 @@ type SAMForwarder struct {
 	outBackupQuantity         string
 	fastRecieve               string
 	useCompression            string
+	messageReliability        string
 	closeIdle                 string
 	closeIdleTime             string
 	reduceIdle                string
@@ -260,6 +261,7 @@ func (f *SAMForwarder) Serve() error {
 			"i2cp.reduceQuantity=" + f.reduceIdleQuantity,
 			"i2cp.closeOnIdle=" + f.closeIdle,
 			"i2cp.closeIdleTime=" + f.closeIdleTime,
+			"i2cp.messageReliability" + f.messageReliability,
 			"i2cp.encryptLeaseSet=" + f.encryptLeaseSet,
 			lsk, lspk, lspsk,
 			f.accesslisttype(),
