@@ -39,25 +39,28 @@ type SAMForwarder struct {
 	Type string
 
 	// I2CP options
-	encryptLeaseSet    string
-	LeaseSetKeys       *sam3.I2PKeys
-	inAllowZeroHop     string
-	outAllowZeroHop    string
-	inLength           string
-	outLength          string
-	inQuantity         string
-	outQuantity        string
-	inVariance         string
-	outVariance        string
-	inBackupQuantity   string
-	outBackupQuantity  string
-	fastRecieve        string
-	useCompression     string
-	closeIdle          string
-	closeIdleTime      string
-	reduceIdle         string
-	reduceIdleTime     string
-	reduceIdleQuantity string
+	encryptLeaseSet           string
+	leaseSetKey               string
+	leaseSetPrivateKey        string
+	leaseSetPrivateSigningKey string
+	LeaseSetKeys              *sam3.I2PKeys
+	inAllowZeroHop            string
+	outAllowZeroHop           string
+	inLength                  string
+	outLength                 string
+	inQuantity                string
+	outQuantity               string
+	inVariance                string
+	outVariance               string
+	inBackupQuantity          string
+	outBackupQuantity         string
+	fastRecieve               string
+	useCompression            string
+	closeIdle                 string
+	closeIdleTime             string
+	reduceIdle                string
+	reduceIdleTime            string
+	reduceIdleQuantity        string
 	//Streaming Library options
 	accessListType string
 	accessList     []string
@@ -98,6 +101,20 @@ func (f *SAMForwarder) accesslist() string {
 		return "i2cp.accessList=" + strings.TrimSuffix(r, ",")
 	}
 	return ""
+}
+
+func (f *SAMForwarder) leasesetsettings() (string, string, string) {
+	var r, s, t string
+	if f.leaseSetKey != "" {
+		r = "i2cp.leaseSetKey=" + f.leaseSetKey
+	}
+	if f.leaseSetPrivateKey != "" {
+		s = "i2cp.leaseSetPrivateKey=" + f.leaseSetPrivateKey
+	}
+	if f.leaseSetPrivateSigningKey != "" {
+		t = "i2cp.leaseSetPrivateSigningKey=" + f.leaseSetPrivateSigningKey
+	}
+	return r, s, t
 }
 
 // Target returns the host:port of the local service you want to forward to i2p
@@ -222,6 +239,7 @@ func (f *SAMForwarder) Base64() string {
 
 //Serve starts the SAM connection and and forwards the local host:port to i2p
 func (f *SAMForwarder) Serve() error {
+	lsk, lspk, lspsk := f.leasesetsettings()
 	if f.publishStream, err = f.samConn.NewStreamSession(f.TunName, f.SamKeys,
 		[]string{
 			//f.targetForPort443(),
@@ -235,7 +253,6 @@ func (f *SAMForwarder) Serve() error {
 			"outbound.quantity=" + f.outQuantity,
 			"inbound.allowZeroHop=" + f.inAllowZeroHop,
 			"outbound.allowZeroHop=" + f.outAllowZeroHop,
-			"i2cp.encryptLeaseSet=" + f.encryptLeaseSet,
 			"i2cp.fastRecieve=" + f.fastRecieve,
 			"i2cp.gzip=" + f.useCompression,
 			"i2cp.reduceOnIdle=" + f.reduceIdle,
@@ -243,6 +260,8 @@ func (f *SAMForwarder) Serve() error {
 			"i2cp.reduceQuantity=" + f.reduceIdleQuantity,
 			"i2cp.closeOnIdle=" + f.closeIdle,
 			"i2cp.closeIdleTime=" + f.closeIdleTime,
+			"i2cp.encryptLeaseSet=" + f.encryptLeaseSet,
+			lsk, lspk, lspsk,
 			f.accesslisttype(),
 			f.accesslist(),
 		}); err != nil {
@@ -294,6 +313,9 @@ func NewSAMForwarderFromOptions(opts ...func(*SAMForwarder) error) (*SAMForwarde
 	s.inAllowZeroHop = "false"
 	s.outAllowZeroHop = "false"
 	s.encryptLeaseSet = "false"
+	s.leaseSetKey = ""
+	s.leaseSetPrivateKey = ""
+	s.leaseSetPrivateSigningKey = ""
 	s.fastRecieve = "false"
 	s.useCompression = "true"
 	s.reduceIdle = "false"

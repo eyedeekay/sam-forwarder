@@ -178,6 +178,30 @@ func SetEncrypt(b bool) func(*SAMSSUForwarder) error {
 	}
 }
 
+//SetLeaseSetKey sets
+func SetLeaseSetKey(s string) func(*SAMSSUForwarder) error {
+	return func(c *SAMSSUForwarder) error {
+		c.leaseSetKey = s
+		return nil
+	}
+}
+
+//SetLeaseSetPrivateKey sets
+func SetLeaseSetPrivateKey(s string) func(*SAMSSUForwarder) error {
+	return func(c *SAMSSUForwarder) error {
+		c.leaseSetPrivateKey = s
+		return nil
+	}
+}
+
+//SetLeaseSetPrivateSigningKey sets
+func SetLeaseSetPrivateSigningKey(s string) func(*SAMSSUForwarder) error {
+	return func(c *SAMSSUForwarder) error {
+		c.leaseSetPrivateSigningKey = s
+		return nil
+	}
+}
+
 //SetAllowZeroIn tells the tunnel to accept zero-hop peers
 func SetAllowZeroIn(b bool) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {

@@ -38,6 +38,9 @@ type SAMSSUClientForwarder struct {
 
 	// I2CP options
 	encryptLeaseSet    string
+    leaseSetKey               string
+	leaseSetPrivateKey        string
+	leaseSetPrivateSigningKey string
 	inAllowZeroHop     string
 	outAllowZeroHop    string
 	inLength           string
@@ -83,6 +86,20 @@ func (f *SAMSSUClientForwarder) accesslist() string {
 	return ""
 }
 
+func (f *SAMSSUClientForwarder) leasesetsettings() (string, string, string) {
+	var r, s, t string
+	if f.leaseSetKey != "" {
+		r = "i2cp.leaseSetKey=" + f.leaseSetKey
+	}
+	if f.leaseSetPrivateKey != "" {
+		s = "i2cp.leaseSetPrivateKey=" + f.leaseSetPrivateKey
+	}
+	if f.leaseSetPrivateSigningKey != "" {
+		t = "i2cp.leaseSetPrivateSigningKey=" + f.leaseSetPrivateSigningKey
+	}
+	return r, s, t
+}
+
 // Destination returns the destination of the i2p service you want to forward locally
 func (f *SAMSSUClientForwarder) Destination() string {
 	return f.addr.Base32()
@@ -111,6 +128,7 @@ func (f *SAMSSUClientForwarder) forward(conn net.PacketConn) {
 	var err error
 	//p, _ := strconv.Atoi(f.TargetPort)
 	sp, _ := strconv.Atoi(f.SamPort)
+    lsk, lspk, lspsk := f.leasesetsettings()
 	if f.connectStream, err = f.samConn.NewDatagramSession(f.TunName, f.SamKeys,
 		[]string{
 			"inbound.length=" + f.inLength,
@@ -123,7 +141,6 @@ func (f *SAMSSUClientForwarder) forward(conn net.PacketConn) {
 			"outbound.quantity=" + f.outQuantity,
 			"inbound.allowZeroHop=" + f.inAllowZeroHop,
 			"outbound.allowZeroHop=" + f.outAllowZeroHop,
-			"i2cp.encryptLeaseSet=" + f.encryptLeaseSet,
 			"i2cp.fastRecieve=" + f.fastRecieve,
 			"i2cp.gzip=" + f.useCompression,
 			"i2cp.reduceOnIdle=" + f.reduceIdle,
@@ -132,6 +149,8 @@ func (f *SAMSSUClientForwarder) forward(conn net.PacketConn) {
 			"i2cp.closeOnIdle=" + f.closeIdle,
 			"i2cp.closeIdleTime=" + f.closeIdleTime,
 			"i2cp.dontPublishLeaseSet=true",
+            "i2cp.encryptLeaseSet=" + f.encryptLeaseSet,
+            lsk, lspk, lspsk,
 			f.accesslisttype(),
 			f.accesslist(),
 		}, sp); err != nil {

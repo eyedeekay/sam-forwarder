@@ -29,7 +29,7 @@ func SetType(s string) func(*SAMForwarder) error {
 	}
 }
 
-//SetSaveFile tells the router to use an encrypted leaseset
+//SetSaveFile tells the router to save the tunnel's keys long-term
 func SetSaveFile(b bool) func(*SAMForwarder) error {
 	return func(c *SAMForwarder) error {
 		c.save = b
@@ -187,6 +187,30 @@ func SetEncrypt(b bool) func(*SAMForwarder) error {
 			return nil
 		}
 		c.encryptLeaseSet = "false"
+		return nil
+	}
+}
+
+//SetLeaseSetKey sets the host of the SAMForwarder's SAM bridge
+func SetLeaseSetKey(s string) func(*SAMForwarder) error {
+	return func(c *SAMForwarder) error {
+		c.leaseSetKey = s
+		return nil
+	}
+}
+
+//SetLeaseSetPrivateKey sets the host of the SAMForwarder's SAM bridge
+func SetLeaseSetPrivateKey(s string) func(*SAMForwarder) error {
+	return func(c *SAMForwarder) error {
+		c.leaseSetPrivateKey = s
+		return nil
+	}
+}
+
+//SetLeaseSetPrivateSigningKey sets the host of the SAMForwarder's SAM bridge
+func SetLeaseSetPrivateSigningKey(s string) func(*SAMForwarder) error {
+	return func(c *SAMForwarder) error {
+		c.leaseSetPrivateSigningKey = s
 		return nil
 	}
 }

@@ -178,6 +178,30 @@ func SetClientEncrypt(b bool) func(*SAMSSUClientForwarder) error {
 	}
 }
 
+//SetClientLeaseSetKey sets the host of the SAMForwarder's SAM bridge
+func SetClientLeaseSetKey(s string) func(*SAMSSUClientForwarder) error {
+	return func(c *SAMSSUClientForwarder) error {
+		c.leaseSetKey = s
+		return nil
+	}
+}
+
+//SetClientLeaseSetPrivateKey sets the host of the SAMForwarder's SAM bridge
+func SetClientLeaseSetPrivateKey(s string) func(*SAMSSUClientForwarder) error {
+	return func(c *SAMSSUClientForwarder) error {
+		c.leaseSetPrivateKey = s
+		return nil
+	}
+}
+
+//SetClientLeaseSetPrivateSigningKey sets the host of the SAMForwarder's SAM bridge
+func SetClientLeaseSetPrivateSigningKey(s string) func(*SAMSSUClientForwarder) error {
+	return func(c *SAMSSUClientForwarder) error {
+		c.leaseSetPrivateSigningKey = s
+		return nil
+	}
+}
+
 //SetClientAllowZeroIn tells the tunnel to accept zero-hop peers
 func SetClientAllowZeroIn(b bool) func(*SAMSSUClientForwarder) error {
 	return func(c *SAMSSUClientForwarder) error {
@@ -202,7 +226,7 @@ func SetClientAllowZeroOut(b bool) func(*SAMSSUClientForwarder) error {
 	}
 }
 
-//SetFastRecieve tells clients to use compression
+//SetFastRecieve tells clients to use i2cp.fastRecieve
 func SetClientFastRecieve(b bool) func(*SAMSSUClientForwarder) error {
 	return func(c *SAMSSUClientForwarder) error {
 		if b {

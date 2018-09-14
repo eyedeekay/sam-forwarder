@@ -36,6 +36,9 @@ type SAMSSUForwarder struct {
 
 	// I2CP options
 	encryptLeaseSet    string
+    leaseSetKey               string
+	leaseSetPrivateKey        string
+	leaseSetPrivateSigningKey string
 	inAllowZeroHop     string
 	outAllowZeroHop    string
 	inLength           string
@@ -81,6 +84,20 @@ func (f *SAMSSUForwarder) accesslist() string {
 		return "i2cp.accessList=" + strings.TrimSuffix(r, ",")
 	}
 	return ""
+}
+
+func (f *SAMSSUForwarder) leasesetsettings() (string, string, string) {
+	var r, s, t string
+	if f.leaseSetKey != "" {
+		r = "i2cp.leaseSetKey=" + f.leaseSetKey
+	}
+	if f.leaseSetPrivateKey != "" {
+		s = "i2cp.leaseSetPrivateKey=" + f.leaseSetPrivateKey
+	}
+	if f.leaseSetPrivateSigningKey != "" {
+		t = "i2cp.leaseSetPrivateSigningKey=" + f.leaseSetPrivateSigningKey
+	}
+	return r, s, t
 }
 
 // Target returns the host:port of the local service you want to forward to i2p
@@ -141,6 +158,7 @@ func (f *SAMSSUForwarder) Base64() string {
 //Serve starts the SAM connection and and forwards the local host:port to i2p
 func (f *SAMSSUForwarder) Serve() error {
 	sp, _ := strconv.Atoi(f.SamPort)
+    lsk, lspk, lspsk := f.leasesetsettings()
 	if f.publishConnection, err = f.samConn.NewDatagramSession(f.TunName, f.SamKeys,
 		[]string{
 			"inbound.length=" + f.inLength,
@@ -153,7 +171,6 @@ func (f *SAMSSUForwarder) Serve() error {
 			"outbound.quantity=" + f.outQuantity,
 			"inbound.allowZeroHop=" + f.inAllowZeroHop,
 			"outbound.allowZeroHop=" + f.outAllowZeroHop,
-			"i2cp.encryptLeaseSet=" + f.encryptLeaseSet,
 			"i2cp.fastRecieve=" + f.fastRecieve,
 			"i2cp.gzip=" + f.useCompression,
 			"i2cp.reduceOnIdle=" + f.reduceIdle,
@@ -161,6 +178,8 @@ func (f *SAMSSUForwarder) Serve() error {
 			"i2cp.reduceQuantity=" + f.reduceIdleQuantity,
 			"i2cp.closeOnIdle=" + f.closeIdle,
 			"i2cp.closeIdleTime=" + f.closeIdleTime,
+            "i2cp.encryptLeaseSet=" + f.encryptLeaseSet,
+            lsk, lspk, lspsk,
 			f.accesslisttype(),
 			f.accesslist(),
 		}, sp); err != nil {
