@@ -4,8 +4,6 @@ I2CP/Tunnel Options Implementation Checklist
 This version of this document is valid for sam-forwarder. If you'd like to use
 it, the original is at [CHECKLIST.orig.md](CHECKLIST.orig.md).
 
-32/41 planned options complete.
-
 key:
 
     - \[U\] - Undone/Unknown
@@ -21,7 +19,7 @@ key:
         [U] - explicitPeers                                                            null          Comma-separated list of Base 64 Hashes of peers to build tunnels through; for debugging only
         [C] - i2cp.dontPublishLeaseSet                true,false                       false         Should generally be set to true for clients and false for servers
         [C] - i2cp.fastReceive                0.9.4   true,false                       false         If true, the router just sends the MessagePayload instead of sending a MessageStatus and awaiting a ReceiveMessageBegin.
-        [U] - i2cp.messageReliability                             BestEffort, None     BestEffort    Guaranteed is disabled; None implemented in 0.8.1; the streaming lib default is None as of 0.8.1, the client side default is None as of 0.9.4
+        [C] - i2cp.messageReliability                             BestEffort, None     BestEffort    Guaranteed is disabled; None implemented in 0.8.1; the streaming lib default is None as of 0.8.1, the client side default is None as of 0.9.4
         [U] - i2cp.password                   0.8.2               string                             For authorization, if required by the router. If the client is running in the same JVM as a router, this option is not required. Warning - username and password are sent in the clear to the router, unless using SSL (i2cp.SSL=true). Authorization is only recommended when using SSL.
         [U] - i2cp.username                   0.8.2               string
         [C] - inbound.allowZeroHop                    true,false                       true          If incoming zero hop tunnel is allowed
@@ -55,9 +53,9 @@ key:
         [C] - i2cp.reduceIdleTime             0.7.1   1200000     300000 minimum                     (ms) Idle time required (default 20 minutes, minimum 5 minutes)
         [C] - i2cp.reduceOnIdle               0.7.1   true,false                       false         Reduce tunnel quantity when idle
         [C] - i2cp.reduceQuantity             0.7.1   1           1 to 5               1             Tunnel quantity when reduced (applies to both inbound and outbound)
-        [U] - i2cp.SSL                        0.8.3   true,false                       false         Connect to the router using SSL. If the client is running in the same JVM as a router, this option is ignored, and the client connects to that router internally.
-        [U] - i2cp.tcp.host                           127.0.0.1                                      Router hostname. If the client is running in the same JVM as a router, this option is ignored, and the client connects to that router internally.
-        [U] - i2cp.tcp.port                           1-65535     7654                               Router I2CP port. If the client is running in the same JVM as a router, this option is ignored, and the client connects to that router internally.
+        [*] - i2cp.SSL                        0.8.3   true,false                       false         Connect to the router using SSL. If the client is running in the same JVM as a router, this option is ignored, and the client connects to that router internally.
+        [*] - i2cp.tcp.host                           127.0.0.1                                      Router hostname. If the client is running in the same JVM as a router, this option is ignored, and the client connects to that router internally.
+        [*] - i2cp.tcp.port                           1-65535     7654                               Router I2CP port. If the client is running in the same JVM as a router, this option is ignored, and the client connects to that router internally.
 
 \* : I'd like to have something like this setting internal to samcatd, but it
 might not always be relevant to pass it through to the real i2p router. Right

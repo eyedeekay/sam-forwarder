@@ -224,6 +224,9 @@ func NewSAMSSUClientForwarderFromOptions(opts ...func(*SAMSSUClientForwarder) er
 	s.fastRecieve = "false"
 	s.useCompression = "true"
 	s.encryptLeaseSet = "false"
+    s.leaseSetKey = ""
+	s.leaseSetPrivateKey = ""
+	s.leaseSetPrivateSigningKey = ""
 	s.reduceIdle = "false"
 	s.reduceIdleTime = "15"
 	s.closeIdle = "false"
@@ -231,6 +234,7 @@ func NewSAMSSUClientForwarderFromOptions(opts ...func(*SAMSSUClientForwarder) er
 	s.reduceIdleQuantity = "4"
 	s.dest = "none"
 	s.Type = "udpclient"
+    s.messageReliability = "none"
 	for _, o := range opts {
 		if err := o(&s); err != nil {
 			return nil, err
