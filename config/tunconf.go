@@ -16,39 +16,42 @@ import (
 // Conf is a tructure containing an ini config, with some functions to help
 // when you use it for in conjunction with command-line flags
 type Conf struct {
-	config             *goini.INI
-	FilePath           string
-	Labels             []string
-	Client             bool
-	Type               string
-	SaveDirectory      string
-	SaveFile           bool
-	TargetHost         string
-	TargetPort         string
-	SamHost            string
-	SamPort            string
-	TargetForPort443   string
-	TunName            string
-	EncryptLeaseSet    bool
-	InAllowZeroHop     bool
-	OutAllowZeroHop    bool
-	InLength           int
-	OutLength          int
-	InQuantity         int
-	OutQuantity        int
-	InVariance         int
-	OutVariance        int
-	InBackupQuantity   int
-	OutBackupQuantity  int
-	UseCompression     bool
-	FastRecieve        bool
-	ReduceIdle         bool
-	ReduceIdleTime     int
-	ReduceIdleQuantity int
-	CloseIdle          bool
-	CloseIdleTime      int
-	AccessListType     string
-	AccessList         []string
+	config                    *goini.INI
+	FilePath                  string
+	Labels                    []string
+	Client                    bool
+	Type                      string
+	SaveDirectory             string
+	SaveFile                  bool
+	TargetHost                string
+	TargetPort                string
+	SamHost                   string
+	SamPort                   string
+	TargetForPort443          string
+	TunName                   string
+	EncryptLeaseSet           bool
+	LeaseSetKey               string
+	LeaseSetPrivateKey        string
+	LeaseSetPrivateSigningKey string
+	InAllowZeroHop            bool
+	OutAllowZeroHop           bool
+	InLength                  int
+	OutLength                 int
+	InQuantity                int
+	OutQuantity               int
+	InVariance                int
+	OutVariance               int
+	InBackupQuantity          int
+	OutBackupQuantity         int
+	UseCompression            bool
+	FastRecieve               bool
+	ReduceIdle                bool
+	ReduceIdleTime            int
+	ReduceIdleQuantity        int
+	CloseIdle                 bool
+	CloseIdleTime             int
+	AccessListType            string
+	AccessList                []string
 }
 
 // Print returns and prints a formatted list of configured tunnel settings.
