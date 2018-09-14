@@ -98,7 +98,8 @@ gendoc:
 	@echo "" >> USAGE.md
 	@echo "$(samcatd) is a daemon which runs a group of forwarding proxies to" >> USAGE.md
 	@echo "provide services over i2p independent of the router. It also serves" >> USAGE.md
-	@echo "as a generalized i2p networking utility for power-users." >> USAGE.md
+	@echo "as a generalized i2p networking utility for power-users. Think of it" >> USAGE.md
+	@echo "as a Swiss-army knife for the SAM API." >> USAGE.md
 	@echo "" >> USAGE.md
 	@echo "usage:" >> USAGE.md
 	@echo "------" >> USAGE.md

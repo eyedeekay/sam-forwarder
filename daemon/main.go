@@ -58,11 +58,11 @@ var (
 	injectHeaders = flag.Bool("ih", false,
 		"Inject X-I2P-DEST headers")
 	leaseSetKey = flag.String("k", "none",
-		"path to saved encrypted leaseset keys")
+		"key for encrypted leaseset")
 	leaseSetPrivateKey = flag.String("pk", "none",
-		"path to saved encrypted leaseset keys")
+		"private key for encrypted leaseset")
 	leaseSetPrivateSigningKey = flag.String("psk", "none",
-		"path to saved encrypted leaseset keys")
+		"private signing key for encrypted leaseset")
 	targetDir = flag.String("d", "",
 		"Directory to save tunnel configuration file in.")
 	iniFile = flag.String("f", "none",

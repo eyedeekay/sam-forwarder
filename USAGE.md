@@ -83,7 +83,8 @@ samcatd - Router-independent tunnel management for i2p
 
 samcatd is a daemon which runs a group of forwarding proxies to
 provide services over i2p independent of the router. It also serves
-as a generalized i2p networking utility for power-users.
+as a generalized i2p networking utility for power-users. Think of it
+as a Swiss-army knife for the SAM API.
 
 usage:
 ------
@@ -117,7 +118,7 @@ Usage of ./bin/samcatd:
   -iv int
     	Set inbound tunnel length variance(-7 to 7)
   -k string
-    	path to saved encrypted leaseset keys (default "none")
+    	key for encrypted leaseset (default "none")
   -l	Use an encrypted leaseset(true or false) (default true)
   -n string
     	Tunnel name, this must be unique but can be anything. (default "forwarder")
@@ -131,6 +132,10 @@ Usage of ./bin/samcatd:
     	Set outbound tunnel length variance(-7 to 7)
   -p string
     	Target port(Port of service to forward to i2p) (default "8081")
+  -pk string
+    	private key for encrypted leaseset (default "none")
+  -psk string
+    	private signing key for encrypted leaseset (default "none")
   -r	Reduce tunnel quantity when idle(true or false)
   -rc int
     	Reduce idle tunnel quantity to X (0 to 5) (default 3)
