@@ -118,6 +118,7 @@ example-config:
 	@echo "" >> USAGE.md
 	@echo "(**ephsite** will only use top-level options, but they can be labeled or" >> USAGE.md
 	@echo "unlabeled)" >> USAGE.md
+	@echo "" >> USAGE.md
 	@echo "(**samcatd** treats the first set of options it sees as the default, and" >> USAGE.md
 	@echo "does not start tunnels based on unlabeled options unless passed the" >> USAGE.md
 	@echo "-s flag.)" >> USAGE.md

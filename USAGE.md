@@ -165,6 +165,7 @@ in. For up-to-the-minute options, see [the checklist](config/CHECKLIST.md)
 
 (**ephsite** will only use top-level options, but they can be labeled or
 unlabeled)
+
 (**samcatd** treats the first set of options it sees as the default, and
 does not start tunnels based on unlabeled options unless passed the
 -s flag.)

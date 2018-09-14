@@ -87,23 +87,23 @@ var (
 		"Set inbound tunnel length(0 to 7)")
 	outLength = flag.Int("ol", 3,
 		"Set outbound tunnel length(0 to 7)")
-	inQuantity = flag.Int("ic", 6,
+	inQuantity = flag.Int("iq", 6,
 		"Set inbound tunnel quantity(0 to 15)")
-	outQuantity = flag.Int("oc", 6,
+	outQuantity = flag.Int("oq", 6,
 		"Set outbound tunnel quantity(0 to 15)")
 	inVariance = flag.Int("iv", 0,
 		"Set inbound tunnel length variance(-7 to 7)")
 	outVariance = flag.Int("ov", 0,
 		"Set outbound tunnel length variance(-7 to 7)")
-	inBackupQuantity = flag.Int("ib", 4,
+	inBackupQuantity = flag.Int("ib", 2,
 		"Set inbound tunnel backup quantity(0 to 5)")
-	outBackupQuantity = flag.Int("ob", 4,
+	outBackupQuantity = flag.Int("ob", 2,
 		"Set outbound tunnel backup quantity(0 to 5)")
 	reduceIdleTime = flag.Int("rt", 600000,
 		"Reduce tunnel quantity after X (milliseconds)")
 	closeIdleTime = flag.Int("ct", 600000,
 		"Reduce tunnel quantity after X (milliseconds)")
-	reduceIdleQuantity = flag.Int("rc", 3,
+	reduceIdleQuantity = flag.Int("rq", 3,
 		"Reduce idle tunnel quantity to X (0 to 5)")
 )
 
