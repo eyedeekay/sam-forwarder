@@ -47,7 +47,7 @@ type SAMClientForwarder struct {
 	outVariance        string
 	inBackupQuantity   string
 	outBackupQuantity  string
-    fastRecieve        string
+	fastRecieve        string
 	useCompression     string
 	closeIdle          string
 	closeIdleTime      string
@@ -145,14 +145,14 @@ func (f *SAMClientForwarder) Serve(dest string) error {
 			"inbound.allowZeroHop=" + f.inAllowZeroHop,
 			"outbound.allowZeroHop=" + f.outAllowZeroHop,
 			"i2cp.encryptLeaseSet=" + f.encryptLeaseSet,
-            "i2cp.fastRecieve=" + f.fastRecieve,
+			"i2cp.fastRecieve=" + f.fastRecieve,
 			"i2cp.gzip=" + f.useCompression,
 			"i2cp.reduceOnIdle=" + f.reduceIdle,
 			"i2cp.reduceIdleTime=" + f.reduceIdleTime,
 			"i2cp.reduceQuantity=" + f.reduceIdleQuantity,
 			"i2cp.closeOnIdle=" + f.closeIdle,
 			"i2cp.closeIdleTime=" + f.closeIdleTime,
-            "i2cp.dontPublishLeaseSet=true",
+			"i2cp.dontPublishLeaseSet=true",
 			f.accesslisttype(),
 			f.accesslist(),
 		}); err != nil {
@@ -197,7 +197,7 @@ func NewSAMClientForwarderFromOptions(opts ...func(*SAMClientForwarder) error) (
 	s.inAllowZeroHop = "false"
 	s.outAllowZeroHop = "false"
 	s.encryptLeaseSet = "false"
-    s.fastRecieve = "false"
+	s.fastRecieve = "false"
 	s.useCompression = "true"
 	s.reduceIdle = "false"
 	s.reduceIdleTime = "300000"

@@ -6,6 +6,8 @@ key:
     - \[U\] - Undone/Unknoqn
     - \[C\] - Confirmed Working
     - \[W\] - Work in progress
+    - \[N\] - Not applicable
+    - \[*\] - See also
 
                                             Version  Recommended Allowable            Default
         [U] - clientMessageTimeout                                8*1000 - 120*1000    60*1000       The timeout (ms) for all sent messages. Unused. See the protocol specification for per-message settings.
@@ -41,12 +43,10 @@ key:
         [U] - i2cp.closeIdleTime              0.7.1   1800000     300000 minimum                     (ms) Idle time required (default 30 minutes)
         [U] - i2cp.closeOnIdle                0.7.1   true,false                       false         Close I2P session when idle
         [U] - i2cp.encryptLeaseSet            0.7.1   true,false                       false         Encrypt the lease
-        [U] - i2cp.fastReceive                0.9.4   true,false                       true          If true, the router just sends the MessagePayload instead of sending a MessageStatus and awaiting a ReceiveMessageBegin.
         [U] - i2cp.gzip                       0.6.5   true,false                       true          Gzip outbound data
         [U] - i2cp.leaseSetKey                0.7.1                                                  For encrypted leasesets. Base 64 SessionKey (44 characters)
         [U] - i2cp.leaseSetPrivateKey         0.9.18                                                 Base 64 private key for encryption. Optionally preceded by the key type and ':'. Only "ELGAMAL_2048:" is supported, which is the default. I2CP will generate the public key from the private key. Use for persistent leaseset keys across restarts.
         [U] - i2cp.leaseSetSigningPrivateKey  0.9.18                                                 Base 64 private key for signatures. Optionally preceded by the key type and ':'. DSA_SHA1 is the default. Key type must match the signature type in the destination. I2CP will generate the public key from the private key. Use for persistent leaseset keys across restarts.
-        [U] - i2cp.messageReliability                             BestEffort, None     None          Guaranteed is disabled; None implemented in 0.8.1; None is the default as of 0.9.4
         [U] - i2cp.reduceIdleTime             0.7.1   1200000     300000 minimum                     (ms) Idle time required (default 20 minutes, minimum 5 minutes)
         [U] - i2cp.reduceOnIdle               0.7.1   true,false                       false         Reduce tunnel quantity when idle
         [U] - i2cp.reduceQuantity             0.7.1   1           1 to 5               1             Tunnel quantity when reduced (applies to both inbound and outbound)
