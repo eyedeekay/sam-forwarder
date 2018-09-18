@@ -27,13 +27,13 @@ func Encrypt(i2pkeypath, aeskeypath string) error {
 		if r, e := ioutil.ReadFile(i2pkeypath); e != nil {
 			return e
 		} else {
-			if _, err := os.Stat(aeskeypath + ".key"); os.IsNotExist(err) {
+			if _, err := os.Stat(aeskeypath); os.IsNotExist(err) {
 				key := cryptopasta.NewEncryptionKey()
 				ioutil.WriteFile(aeskeypath, bytes(*key), 644)
 			} else if err != nil {
 				return err
 			}
-			if ra, re := ioutil.ReadFile(aeskeypath + ".key"); re != nil {
+			if ra, re := ioutil.ReadFile(aeskeypath); re != nil {
 				return e
 			} else {
 				crypted, err := cryptopasta.Encrypt(r, key(ra))
@@ -52,10 +52,10 @@ func Decrypt(i2pkeypath, aeskeypath string) error {
 		if r, e := ioutil.ReadFile(i2pkeypath); e != nil {
 			return e
 		} else {
-			if _, err := os.Stat(aeskeypath + ".key"); os.IsNotExist(err) {
+			if _, err := os.Stat(aeskeypath); os.IsNotExist(err) {
 				return nil
 			}
-			if ra, re := ioutil.ReadFile(aeskeypath + ".key"); re != nil {
+			if ra, re := ioutil.ReadFile(aeskeypath); re != nil {
 				return e
 			} else {
 				crypted, err := cryptopasta.Decrypt(r, key(ra))
