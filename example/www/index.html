@@ -140,68 +140,71 @@ Usage of ./bin/samcatd:
         Allow zero-hop, non-anonymous tunnels in(true or false)
   -zo
         Allow zero-hop, non-anonymous tunnels out(true or false)</code></pre>
+<h1 id="managing-samcatd-save-encryption-keys">managing samcatd save-encryption keys</h1>
+<p>In order to keep from saving the .i2pkeys files in plaintext format, samcatd can optionally generate a key and encrypt the .i2pkeys files securely. Of course, to fully benefit from this arrangement, you need to move those keys away from the machine where the tunnel keys(the .i2pkeys file) are located, or protect them in some other way(sandboxing, etc). If you want to use encrypted .i2pkeys files, you can specify a key file to use with the -cr option on the terminal or with keyfile option in the .ini file.</p>
 <h1 id="example-config---valid-for-both-ephsite-and-samcat">example config - valid for both ephsite and samcat</h1>
 <p>Options are still being added, pretty much as fast as I can put them in. For up-to-the-minute options, see <a href="config/CHECKLIST.md">the checklist</a></p>
 <p>(<strong>ephsite</strong> will only use top-level options, but they can be labeled or unlabeled)</p>
 <p>(<strong>samcatd</strong> treats the first set of options it sees as the default, and does not start tunnels based on unlabeled options unless passed the -s flag.)</p>
-<pre><code>
-## Defaults, these are only invoked with the -start option or if labeled tunnels
-## are not present(samcatd instructions)
+<div class="sourceCode"><pre class="sourceCode ini"><code class="sourceCode ini">
+<span class="co">## Defaults, these are only invoked with the -start option or if labeled tunnels</span>
+<span class="co">## are not present(samcatd instructions)</span>
 
-inbound.length = 3
-outbound.length = 6
-inbound.lengthVariance = 0
-outbound.lengthVariance = 0
-inbound.backupQuantity = 3
-outbound.backupQuantity = 3
-inbound.quantity = 5
-outbound.quantity = 5
-inbound.allowZeroHop = false
-outbound.allowZeroHop = false
-i2cp.encryptLeaseSet = false
-gzip = true
-i2cp.reduceOnIdle = true
-i2cp.reduceIdleTime = 3000000
-i2cp.reduceQuantity = 2
-i2cp.enableWhiteList = false
-i2cp.enableBlackList = false
+<span class="dt">inbound.length </span><span class="ot">=</span><span class="st"> </span><span class="dv">3</span>
+<span class="dt">outbound.length </span><span class="ot">=</span><span class="st"> </span><span class="dv">6</span>
+<span class="dt">inbound.lengthVariance </span><span class="ot">=</span><span class="st"> </span><span class="dv">0</span>
+<span class="dt">outbound.lengthVariance </span><span class="ot">=</span><span class="st"> </span><span class="dv">0</span>
+<span class="dt">inbound.backupQuantity </span><span class="ot">=</span><span class="st"> </span><span class="dv">3</span>
+<span class="dt">outbound.backupQuantity </span><span class="ot">=</span><span class="st"> </span><span class="dv">3</span>
+<span class="dt">inbound.quantity </span><span class="ot">=</span><span class="st"> </span><span class="dv">5</span>
+<span class="dt">outbound.quantity </span><span class="ot">=</span><span class="st"> </span><span class="dv">5</span>
+<span class="dt">inbound.allowZeroHop </span><span class="ot">=</span><span class="st"> </span><span class="kw">false</span>
+<span class="dt">outbound.allowZeroHop </span><span class="ot">=</span><span class="st"> </span><span class="kw">false</span>
+<span class="dt">i2cp.encryptLeaseSet </span><span class="ot">=</span><span class="st"> </span><span class="kw">false</span>
+<span class="dt">gzip </span><span class="ot">=</span><span class="st"> </span><span class="kw">true</span>
+<span class="dt">i2cp.reduceOnIdle </span><span class="ot">=</span><span class="st"> </span><span class="kw">true</span>
+<span class="dt">i2cp.reduceIdleTime </span><span class="ot">=</span><span class="st"> </span><span class="dv">3000000</span>
+<span class="dt">i2cp.reduceQuantity </span><span class="ot">=</span><span class="st"> </span><span class="dv">2</span>
+<span class="dt">i2cp.enableWhiteList </span><span class="ot">=</span><span class="st"> </span><span class="kw">false</span>
+<span class="dt">i2cp.enableBlackList </span><span class="ot">=</span><span class="st"> </span><span class="kw">false</span>
+<span class="dt">keyfile </span><span class="ot">=</span><span class="st"> &quot;/usr/share/samcatd/samcatd&quot;</span>
 
-[sam-forwarder]
-type = server
-host = 127.0.0.1
-port = 8081
-inbound.length = 3
-outbound.length = 6
-keys = forwarder
+<span class="kw">[sam-forwarder]</span>
+<span class="dt">type </span><span class="ot">=</span><span class="st"> server</span>
+<span class="dt">host </span><span class="ot">=</span><span class="st"> </span><span class="fl">127.0.0.1</span>
+<span class="dt">port </span><span class="ot">=</span><span class="st"> </span><span class="dv">8081</span>
+<span class="dt">inbound.length </span><span class="ot">=</span><span class="st"> </span><span class="dv">3</span>
+<span class="dt">outbound.length </span><span class="ot">=</span><span class="st"> </span><span class="dv">6</span>
+<span class="dt">keys </span><span class="ot">=</span><span class="st"> forwarder</span>
 
-[sam-forwarder-two]
-type = client
-host = 127.0.0.1
-port = 8082
-inbound.length = 6
-outbound.length = 3
-keys = forwarder-two
+<span class="kw">[sam-forwarder-two]</span>
+<span class="dt">type </span><span class="ot">=</span><span class="st"> client</span>
+<span class="dt">host </span><span class="ot">=</span><span class="st"> </span><span class="fl">127.0.0.1</span>
+<span class="dt">port </span><span class="ot">=</span><span class="st"> </span><span class="dv">8082</span>
+<span class="dt">inbound.length </span><span class="ot">=</span><span class="st"> </span><span class="dv">6</span>
+<span class="dt">outbound.length </span><span class="ot">=</span><span class="st"> </span><span class="dv">3</span>
+<span class="dt">keys </span><span class="ot">=</span><span class="st"> forwarder-two</span>
 
-[sam-forwarder-three]
-type = udpclient
-host = 127.0.0.1
-port = 8083
-inbound.length = 3
-outbound.length = 6
-keys = forwarder-three
+<span class="kw">[sam-forwarder-three]</span>
+<span class="dt">type </span><span class="ot">=</span><span class="st"> udpclient</span>
+<span class="dt">host </span><span class="ot">=</span><span class="st"> </span><span class="fl">127.0.0.1</span>
+<span class="dt">port </span><span class="ot">=</span><span class="st"> </span><span class="dv">8083</span>
+<span class="dt">inbound.length </span><span class="ot">=</span><span class="st"> </span><span class="dv">3</span>
+<span class="dt">outbound.length </span><span class="ot">=</span><span class="st"> </span><span class="dv">6</span>
+<span class="dt">keys </span><span class="ot">=</span><span class="st"> forwarder-three</span>
 
-[sam-forwarder-four]
-type = udpserver
-host = 127.0.0.1
-port = 8084
-inbound.length = 6
-outbound.length = 3
-keys = forwarder-four
+<span class="kw">[sam-forwarder-four]</span>
+<span class="dt">type </span><span class="ot">=</span><span class="st"> udpserver</span>
+<span class="dt">host </span><span class="ot">=</span><span class="st"> </span><span class="fl">127.0.0.1</span>
+<span class="dt">port </span><span class="ot">=</span><span class="st"> </span><span class="dv">8084</span>
+<span class="dt">inbound.length </span><span class="ot">=</span><span class="st"> </span><span class="dv">6</span>
+<span class="dt">outbound.length </span><span class="ot">=</span><span class="st"> </span><span class="dv">3</span>
+<span class="dt">keys </span><span class="ot">=</span><span class="st"> forwarder-four</span>
 
-[sam-forwarder-five]
-type = http
-host = 127.0.0.1
-port = 8085
-inbound.length = 3
-outbound.length = 6
-keys = forwarder-five</code></pre>
+<span class="kw">[sam-forwarder-five]</span>
+<span class="dt">type </span><span class="ot">=</span><span class="st"> http</span>
+<span class="dt">host </span><span class="ot">=</span><span class="st"> </span><span class="fl">127.0.0.1</span>
+<span class="dt">port </span><span class="ot">=</span><span class="st"> </span><span class="dv">8085</span>
+<span class="dt">inbound.length </span><span class="ot">=</span><span class="st"> </span><span class="dv">3</span>
+<span class="dt">outbound.length </span><span class="ot">=</span><span class="st"> </span><span class="dv">6</span>
+<span class="dt">keys </span><span class="ot">=</span><span class="st"> forwarder-five</span></code></pre></div>

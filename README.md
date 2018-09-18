@@ -31,10 +31,11 @@ I need to document it better.
 [Besides fixing up the comments, this should help for now.](USAGE.md). I also
 need to control output verbosity better.
 
-It doesn't encrypt the .i2pkeys file, so if someone can steal them, then they
-can use them to construct tunnels to impersonate you. Experimental support for
-encrypted saves has been added. The idea is that only the person with the key
-will be able to decrypt and start the tunnels.
+It doesn't encrypt the .i2pkeys file by default, so if someone can steal them,
+then they can use them to construct tunnels to impersonate you. Experimental
+support for encrypted saves has been added. The idea is that only the person
+with the key will be able to decrypt and start the tunnels. It is up to the user
+to determine how to go about managing these keys.
 
 TCP is working very well. HTTP mode also exists, which just adds the X-I2P-DEST
 headers in. It does this both ways, for applying the dest headers inbound to

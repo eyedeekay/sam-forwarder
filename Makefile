@@ -115,7 +115,21 @@ gendoc:
 	./bin/$(samcatd) -h  2>> USAGE.md; true
 	@echo '```' >> USAGE.md
 	@echo "" >> USAGE.md
+	make key-management
 	make example-config
+
+key-management:
+	@echo "managing $(samcatd) save-encryption keys" >> USAGE.md
+	@echo "=====================================" >> USAGE.md
+	@echo "" >> USAGE.md
+	@echo "In order to keep from saving the .i2pkeys files in plaintext format, samcatd" >> USAGE.md
+	@echo "can optionally generate a key and encrypt the .i2pkeys files securely. Of" >> USAGE.md
+	@echo "course, to fully benefit from this arrangement, you need to move those keys" >> USAGE.md
+	@echo "away from the machine where the tunnel keys(the .i2pkeys file) are located," >> USAGE.md
+	@echo "or protect them in some other way(sandboxing, etc). If you want to use" >> USAGE.md
+	@echo "encrypted .i2pkeys files, you can specify a key file to use with the -cr" >> USAGE.md
+	@echo "option on the terminal or with keyfile option in the .ini file." >> USAGE.md
+	@echo "" >> USAGE.md
 
 example-config:
 	@echo "example config - valid for both ephsite and samcat" >> USAGE.md
@@ -130,7 +144,7 @@ example-config:
 	@echo "does not start tunnels based on unlabeled options unless passed the" >> USAGE.md
 	@echo "-s flag.)" >> USAGE.md
 	@echo "" >> USAGE.md
-	@echo '```' >> USAGE.md
+	@echo '``` ini' >> USAGE.md
 	cat etc/sam-forwarder/tunnels.ini >> USAGE.md
 	@echo '```' >> USAGE.md
 	@echo "" >> USAGE.md

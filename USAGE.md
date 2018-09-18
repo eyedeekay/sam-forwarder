@@ -161,6 +161,17 @@ Usage of ./bin/samcatd:
     	Allow zero-hop, non-anonymous tunnels out(true or false)
 ```
 
+managing samcatd save-encryption keys
+=====================================
+
+In order to keep from saving the .i2pkeys files in plaintext format, samcatd
+can optionally generate a key and encrypt the .i2pkeys files securely. Of
+course, to fully benefit from this arrangement, you need to move those keys
+away from the machine where the tunnel keys(the .i2pkeys file) are located,
+or protect them in some other way(sandboxing, etc). If you want to use
+encrypted .i2pkeys files, you can specify a key file to use with the -cr
+option on the terminal or with keyfile option in the .ini file.
+
 example config - valid for both ephsite and samcat
 ==================================================
 Options are still being added, pretty much as fast as I can put them
@@ -173,7 +184,7 @@ unlabeled)
 does not start tunnels based on unlabeled options unless passed the
 -s flag.)
 
-```
+``` ini
 
 ## Defaults, these are only invoked with the -start option or if labeled tunnels
 ## are not present(samcatd instructions)
@@ -195,6 +206,7 @@ i2cp.reduceIdleTime = 3000000
 i2cp.reduceQuantity = 2
 i2cp.enableWhiteList = false
 i2cp.enableBlackList = false
+keyfile = "/usr/share/samcatd/samcatd"
 
 [sam-forwarder]
 type = server
