@@ -120,11 +120,11 @@ func (f *SAMForwarder) Print() string {
 	r += "type=" + f.Type + "\n"
 	r += "base32=" + f.Base32() + "\n"
 	r += "base64=" + f.Base64() + "\n"
-    if f.Type == "http" {
-        r += "httpserver\n"
-    }else{
-        r += "ntcpserver\n"
-    }
+	if f.Type == "http" {
+		r += "httpserver\n"
+	} else {
+		r += "ntcpserver\n"
+	}
 	for _, s := range f.print() {
 		r += s + "\n"
 	}
