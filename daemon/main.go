@@ -62,6 +62,8 @@ var (
 		"Inject X-I2P-DEST headers")
 	webAdmin = flag.Bool("w", false,
 		"Start web administration interface")
+	webPort = flag.String("wp", "7957",
+		"Web port")
 	leaseSetKey = flag.String("k", "none",
 		"key for encrypted leaseset")
 	leaseSetPrivateKey = flag.String("pk", "none",
