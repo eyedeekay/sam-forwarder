@@ -116,6 +116,10 @@ func (f *SAMForwarder) print() []string {
 
 func (f *SAMForwarder) Print() string {
 	var r string
+	r += "name=" + f.TunName + "\n"
+	r += "type=" + f.Type + "\n"
+	r += "base32=" + f.Base32() + "\n"
+	r += "base64=" + f.Base64() + "\n"
 	for _, s := range f.print() {
 		r += s + "\n"
 	}

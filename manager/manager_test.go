@@ -16,5 +16,5 @@ func TestOptionSAMHost(t *testing.T) {
 	if err != nil {
 		t.Fatalf("NewSAMManager() Error: %q\n", err)
 	}
-	log.Println(client.config.Type)
+	log.Println(client.List())
 }
