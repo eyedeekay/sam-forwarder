@@ -134,6 +134,7 @@ example-config:
 	cat etc/sam-forwarder/tunnels.ini >> USAGE.md
 	@echo '```' >> USAGE.md
 	@echo "" >> USAGE.md
+	cp USAGE.md docs/USAGE.md
 
 
 docker-build:
@@ -171,7 +172,8 @@ follow:
 docker: docker-build docker-volume docker-run
 
 index:
-	pandoc USAGE.md -o example/www/index.html
+	pandoc USAGE.md -o example/www/index.html && cp example/www/index.html docs/index.html
+	cp config/CHECKLIST.md docs/config
 
 visit:
 	http_proxy=http://127.0.0.1:4444 surf http://566niximlxdzpanmn4qouucvua3k7neniwss47li5r6ugoertzuq.b32.i2p
