@@ -290,33 +290,8 @@ func (f *SAMForwarder) Base64() string {
 
 //Serve starts the SAM connection and and forwards the local host:port to i2p
 func (f *SAMForwarder) Serve() error {
-	lsk, lspk, lspsk := f.leasesetsettings()
-	if f.publishStream, err = f.samConn.NewStreamSession(f.TunName, f.SamKeys,
-		[]string{
-			//f.targetForPort443(),
-			"inbound.length=" + f.inLength,
-			"outbound.length=" + f.outLength,
-			"inbound.lengthVariance=" + f.inVariance,
-			"outbound.lengthVariance=" + f.outVariance,
-			"inbound.backupQuantity=" + f.inBackupQuantity,
-			"outbound.backupQuantity=" + f.outBackupQuantity,
-			"inbound.quantity=" + f.inQuantity,
-			"outbound.quantity=" + f.outQuantity,
-			"inbound.allowZeroHop=" + f.inAllowZeroHop,
-			"outbound.allowZeroHop=" + f.outAllowZeroHop,
-			"i2cp.fastRecieve=" + f.fastRecieve,
-			"i2cp.gzip=" + f.useCompression,
-			"i2cp.reduceOnIdle=" + f.reduceIdle,
-			"i2cp.reduceIdleTime=" + f.reduceIdleTime,
-			"i2cp.reduceQuantity=" + f.reduceIdleQuantity,
-			"i2cp.closeOnIdle=" + f.closeIdle,
-			"i2cp.closeIdleTime=" + f.closeIdleTime,
-			"i2cp.messageReliability" + f.messageReliability,
-			"i2cp.encryptLeaseSet=" + f.encryptLeaseSet,
-			lsk, lspk, lspsk,
-			f.accesslisttype(),
-			f.accesslist(),
-		}); err != nil {
+	//lsk, lspk, lspsk := f.leasesetsettings()
+	if f.publishStream, err = f.samConn.NewStreamSession(f.TunName, f.SamKeys, f.print()); err != nil {
 		log.Println("Stream Creation error:", err.Error())
 		return err
 	}

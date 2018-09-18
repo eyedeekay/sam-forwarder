@@ -179,33 +179,8 @@ func (f *SAMSSUClientForwarder) forward(conn net.PacketConn) {
 	var err error
 	//p, _ := strconv.Atoi(f.TargetPort)
 	sp, _ := strconv.Atoi(f.SamPort)
-	lsk, lspk, lspsk := f.leasesetsettings()
 	if f.connectStream, err = f.samConn.NewDatagramSession(f.TunName, f.SamKeys,
-		[]string{
-			"inbound.length=" + f.inLength,
-			"outbound.length=" + f.outLength,
-			"inbound.lengthVariance=" + f.inVariance,
-			"outbound.lengthVariance=" + f.outVariance,
-			"inbound.backupQuantity=" + f.inBackupQuantity,
-			"outbound.backupQuantity=" + f.outBackupQuantity,
-			"inbound.quantity=" + f.inQuantity,
-			"outbound.quantity=" + f.outQuantity,
-			"inbound.allowZeroHop=" + f.inAllowZeroHop,
-			"outbound.allowZeroHop=" + f.outAllowZeroHop,
-			"i2cp.fastRecieve=" + f.fastRecieve,
-			"i2cp.gzip=" + f.useCompression,
-			"i2cp.messageReliability" + f.messageReliability,
-			"i2cp.reduceOnIdle=" + f.reduceIdle,
-			"i2cp.reduceIdleTime=" + f.reduceIdleTime,
-			"i2cp.reduceQuantity=" + f.reduceIdleQuantity,
-			"i2cp.closeOnIdle=" + f.closeIdle,
-			"i2cp.closeIdleTime=" + f.closeIdleTime,
-			"i2cp.dontPublishLeaseSet=true",
-			"i2cp.encryptLeaseSet=" + f.encryptLeaseSet,
-			lsk, lspk, lspsk,
-			f.accesslisttype(),
-			f.accesslist(),
-		}, sp); err != nil {
+		f.print(), sp); err != nil {
 		log.Fatal("Stream Creation error:", err.Error())
 	}
 	log.Println("SAM stream session established.")
