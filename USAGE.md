@@ -97,6 +97,8 @@ Usage of ./bin/samcatd:
   -accesslist value
     	Specify an access list member(can be used multiple times)
   -c	Client proxy mode(true or false)
+  -cr string
+    	Encrypt/decrypt the key files with a passfile
   -ct int
     	Reduce tunnel quantity after X (milliseconds) (default 600000)
   -d string
@@ -108,13 +110,13 @@ Usage of ./bin/samcatd:
   -i string
     	Destination for client tunnels. Ignored for service tunnels. (default "none")
   -ib int
-    	Set inbound tunnel backup quantity(0 to 5) (default 4)
-  -ic int
-    	Set inbound tunnel quantity(0 to 15) (default 6)
+    	Set inbound tunnel backup quantity(0 to 5) (default 2)
   -ih
     	Inject X-I2P-DEST headers
   -il int
     	Set inbound tunnel length(0 to 7) (default 3)
+  -iq int
+    	Set inbound tunnel quantity(0 to 15) (default 6)
   -iv int
     	Set inbound tunnel length variance(-7 to 7)
   -k string
@@ -123,11 +125,11 @@ Usage of ./bin/samcatd:
   -n string
     	Tunnel name, this must be unique but can be anything. (default "forwarder")
   -ob int
-    	Set outbound tunnel backup quantity(0 to 5) (default 4)
-  -oc int
-    	Set outbound tunnel quantity(0 to 15) (default 6)
+    	Set outbound tunnel backup quantity(0 to 5) (default 2)
   -ol int
     	Set outbound tunnel length(0 to 7) (default 3)
+  -oq int
+    	Set outbound tunnel quantity(0 to 15) (default 6)
   -ov int
     	Set outbound tunnel length variance(-7 to 7)
   -p string
@@ -137,7 +139,7 @@ Usage of ./bin/samcatd:
   -psk string
     	private signing key for encrypted leaseset (default "none")
   -r	Reduce tunnel quantity when idle(true or false)
-  -rc int
+  -rq int
     	Reduce idle tunnel quantity to X (0 to 5) (default 3)
   -rt int
     	Reduce tunnel quantity after X (milliseconds) (default 600000)
@@ -150,6 +152,7 @@ Usage of ./bin/samcatd:
   -tls string
     	(Currently inoperative. Target TLS port(HTTPS Port of service to forward to i2p)
   -u	UDP mode(true or false)
+  -w	Start web administration interface
   -x	Close tunnel idle(true or false)
   -z	Uze gzip(true or false)
   -zi

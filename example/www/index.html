@@ -68,74 +68,140 @@
         Allow zero-hop, non-anonymous tunnels in(true or false)
   -zeroout
         Allow zero-hop, non-anonymous tunnels out(true or false)</code></pre>
-<h1 id="eephttpd---static-file-server-automatically-forwarded-to-i2p">eephttpd - Static file server automatically forwarded to i2p</h1>
+<h1 id="samcatd---router-independent-tunnel-management-for-i2p">samcatd - Router-independent tunnel management for i2p</h1>
+<p>samcatd is a daemon which runs a group of forwarding proxies to provide services over i2p independent of the router. It also serves as a generalized i2p networking utility for power-users. It's intended to be a Swiss-army knife for the SAM API.</p>
 <h2 id="usage-1">usage:</h2>
-<p>eephttpd is a static http server which automatically runs on i2p with the help of the SAM bridge. By default it will only be available from the localhost and it's i2p tunnel. It can be masked from the localhost using a container.</p>
-<pre><code>Usage of ./bin/eephttpd:
+<pre><code>flag needs an argument: -h
+Usage of ./bin/samcatd:
   -a string
-        hostname to serve on (default &quot;127.0.0.1&quot;)
-  -c    Use an encrypted leaseset(true or false)
+        Type of access list to use, can be &quot;whitelist&quot; &quot;blacklist&quot; or &quot;none&quot;. (default &quot;none&quot;)
+  -accesslist value
+        Specify an access list member(can be used multiple times)
+  -c    Client proxy mode(true or false)
+  -cr string
+        Encrypt/decrypt the key files with a passfile
+  -ct int
+        Reduce tunnel quantity after X (milliseconds) (default 600000)
   -d string
-        the directory of static files to host(default ./www) (default &quot;./www&quot;)
+        Directory to save tunnel configuration file in.
   -f string
-        Use an ini file for configuration (default &quot;none&quot;)
-  -g    Uze gzip(true or false) (default true)
-  -i    save i2p keys(and thus destinations) across reboots (default true)
+        Use an ini file for configuration(config file options override passed arguments for now.) (default &quot;none&quot;)
+  -h string
+        Target host(Host of service to forward to i2p) (default &quot;127.0.0.1&quot;)
+  -i string
+        Destination for client tunnels. Ignored for service tunnels. (default &quot;none&quot;)
   -ib int
-        Set inbound tunnel backup quantity(0 to 5) (default 4)
+        Set inbound tunnel backup quantity(0 to 5) (default 2)
+  -ih
+        Inject X-I2P-DEST headers
   -il int
         Set inbound tunnel length(0 to 7) (default 3)
   -iq int
-        Set inbound tunnel quantity(0 to 15) (default 8)
+        Set inbound tunnel quantity(0 to 15) (default 6)
   -iv int
         Set inbound tunnel length variance(-7 to 7)
-  -l string
-        Type of access list to use, can be &quot;whitelist&quot; &quot;blacklist&quot; or &quot;none&quot;. (default &quot;none&quot;)
-  -m string
-        Certificate name to use (default &quot;cert&quot;)
+  -k string
+        key for encrypted leaseset (default &quot;none&quot;)
+  -l    Use an encrypted leaseset(true or false) (default true)
   -n string
-        name to give the tunnel(default static-eepSite) (default &quot;static-eepSite&quot;)
+        Tunnel name, this must be unique but can be anything. (default &quot;forwarder&quot;)
   -ob int
-        Set outbound tunnel backup quantity(0 to 5) (default 4)
+        Set outbound tunnel backup quantity(0 to 5) (default 2)
   -ol int
         Set outbound tunnel length(0 to 7) (default 3)
   -oq int
-        Set outbound tunnel quantity(0 to 15) (default 8)
+        Set outbound tunnel quantity(0 to 15) (default 6)
   -ov int
         Set outbound tunnel length variance(-7 to 7)
   -p string
-        port to serve locally on (default &quot;7880&quot;)
+        Target port(Port of service to forward to i2p) (default &quot;8081&quot;)
+  -pk string
+        private key for encrypted leaseset (default &quot;none&quot;)
+  -psk string
+        private signing key for encrypted leaseset (default &quot;none&quot;)
   -r    Reduce tunnel quantity when idle(true or false)
-  -rc int
+  -rq int
         Reduce idle tunnel quantity to X (0 to 5) (default 3)
   -rt int
         Reduce tunnel quantity after X (milliseconds) (default 600000)
-  -s string
-        the directory to save the keys in(default ./) (default &quot;.&quot;)
+  -s    Start a tunnel with the passed parameters(Otherwise, they will be treated as default values.)
   -sh string
-        sam host to connect to (default &quot;127.0.0.1&quot;)
+        SAM host (default &quot;127.0.0.1&quot;)
   -sp string
-        sam port to connect to (default &quot;7656&quot;)
-  -t    Generate or use an existing TLS certificate
-  -x    Inject X-I2P-DEST headers (default true)
-  -z    Allow zero-hop, non-anonymous tunnels(true or false)</code></pre>
-<h3 id="build-in-docker">build in docker</h3>
-<pre><code>docker build --build-arg user=eephttpd  --build-arg path=example/www -f Dockerfile -t eyedeekay/eephttpd .</code></pre>
-<h3 id="run-in-docker">Run in docker</h3>
-<pre><code>docker run -i -t -d \
-    --name eephttpd-volume \
-    --volume eephttpd:/home/eephttpd/ \
-    eyedeekay/eephttpd</code></pre>
-<pre><code>docker run -i -t -d \
-    --network si \
-    --env samhost=sam-host \
-    --env samport=7656 \
-    --env args=-r # Additional arguments to pass to eephttpd\
-    --network-alias eephttpd \
-    --hostname eephttpd \
-    --name eephttpd \
-    --restart always \
-    --volumes-from eephttpd-volume \
-    eyedeekay/eephttpd</code></pre>
-<h2 id="instance">instance</h2>
-<p>a running instance of eephttpd with the example index file is availble on</p>
+        SAM port (default &quot;7656&quot;)
+  -t    Use saved file and persist tunnel(If false, tunnel will not persist after program is stopped.
+  -tls string
+        (Currently inoperative. Target TLS port(HTTPS Port of service to forward to i2p)
+  -u    UDP mode(true or false)
+  -w    Start web administration interface
+  -x    Close tunnel idle(true or false)
+  -z    Uze gzip(true or false)
+  -zi
+        Allow zero-hop, non-anonymous tunnels in(true or false)
+  -zo
+        Allow zero-hop, non-anonymous tunnels out(true or false)</code></pre>
+<h1 id="example-config---valid-for-both-ephsite-and-samcat">example config - valid for both ephsite and samcat</h1>
+<p>Options are still being added, pretty much as fast as I can put them in. For up-to-the-minute options, see <a href="config/CHECKLIST.md">the checklist</a></p>
+<p>(<strong>ephsite</strong> will only use top-level options, but they can be labeled or unlabeled)</p>
+<p>(<strong>samcatd</strong> treats the first set of options it sees as the default, and does not start tunnels based on unlabeled options unless passed the -s flag.)</p>
+<pre><code>
+## Defaults, these are only invoked with the -start option or if labeled tunnels
+## are not present(samcatd instructions)
+
+inbound.length = 3
+outbound.length = 6
+inbound.lengthVariance = 0
+outbound.lengthVariance = 0
+inbound.backupQuantity = 3
+outbound.backupQuantity = 3
+inbound.quantity = 5
+outbound.quantity = 5
+inbound.allowZeroHop = false
+outbound.allowZeroHop = false
+i2cp.encryptLeaseSet = false
+gzip = true
+i2cp.reduceOnIdle = true
+i2cp.reduceIdleTime = 3000000
+i2cp.reduceQuantity = 2
+i2cp.enableWhiteList = false
+i2cp.enableBlackList = false
+
+[sam-forwarder]
+type = server
+host = 127.0.0.1
+port = 8081
+inbound.length = 3
+outbound.length = 6
+keys = forwarder
+
+[sam-forwarder-two]
+type = client
+host = 127.0.0.1
+port = 8082
+inbound.length = 6
+outbound.length = 3
+keys = forwarder-two
+
+[sam-forwarder-three]
+type = udpclient
+host = 127.0.0.1
+port = 8083
+inbound.length = 3
+outbound.length = 6
+keys = forwarder-three
+
+[sam-forwarder-four]
+type = udpserver
+host = 127.0.0.1
+port = 8084
+inbound.length = 6
+outbound.length = 3
+keys = forwarder-four
+
+[sam-forwarder-five]
+type = http
+host = 127.0.0.1
+port = 8085
+inbound.length = 3
+outbound.length = 6
+keys = forwarder-five</code></pre>
