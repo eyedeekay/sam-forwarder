@@ -62,16 +62,16 @@ func (s *SAMManager) List(search ...string) *[]string {
 		switch search[0] {
 		case "":
 			for index, element := range s.forwarders {
-				r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
+				r = append(r, fmt.Sprintf("  %v. %s", index, element.Print()))
 			}
 			for index, element := range s.clientforwarders {
-				r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
+				r = append(r, fmt.Sprintf("  %v. %s", index, element.Print()))
 			}
 			for index, element := range s.udpforwarders {
-				r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
+				r = append(r, fmt.Sprintf("  %v. %s", index, element.Print()))
 			}
 			for index, element := range s.udpclientforwarders {
-				r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
+				r = append(r, fmt.Sprintf("  %v. %s", index, element.Print()))
 			}
 			return &r
 		case "ntcpserver":
@@ -98,7 +98,7 @@ func (s *SAMManager) List(search ...string) *[]string {
 			return &r
 		case "ssuclient":
 			for index, element := range s.udpclientforwarders {
-                r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
+				r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
 			}
 			return &r
 		default:
@@ -126,30 +126,6 @@ func (s *SAMManager) List(search ...string) *[]string {
 		}
 	}
 	return &r
-}
-
-func (s *SAMManager) FindForwarder(lookup string) (bool, int, string) {
-	for index, element := range s.forwarders {
-		if element.TunName == lookup {
-			return true, index, element.Type
-		}
-	}
-	for index, element := range s.clientforwarders {
-		if element.TunName == lookup {
-			return true, index, "client"
-		}
-	}
-	for index, element := range s.udpforwarders {
-		if element.TunName == lookup {
-			return true, index, "udpserver"
-		}
-	}
-	for index, element := range s.udpclientforwarders {
-		if element.TunName == lookup {
-			return true, index, "udpclient"
-		}
-	}
-	return false, -1, ""
 }
 
 func (s *SAMManager) Serve() bool {

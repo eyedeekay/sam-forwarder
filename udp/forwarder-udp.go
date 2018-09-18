@@ -103,6 +103,7 @@ func (f *SAMSSUForwarder) Print() string {
 	r += "type=" + f.Type + "\n"
 	r += "base32=" + f.Base32() + "\n"
 	r += "base64=" + f.Base64() + "\n"
+    r += "ssuserver\n"
 	for _, s := range f.print() {
 		r += s + "\n"
 	}
