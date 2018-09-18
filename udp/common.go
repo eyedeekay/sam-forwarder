@@ -27,18 +27,21 @@ func Encrypt(i2pkeypath, aeskeypath string) error {
 		if r, e := ioutil.ReadFile(i2pkeypath); e != nil {
 			return e
 		} else {
-			var key *[32]byte
 			if _, err := os.Stat(aeskeypath); os.IsNotExist(err) {
-				key = cryptopasta.NewEncryptionKey()
+				key := cryptopasta.NewEncryptionKey()
 				ioutil.WriteFile(aeskeypath, bytes(*key), 644)
 			} else if err != nil {
 				return err
 			}
-			crypted, err := cryptopasta.Encrypt(r, key)
-			if err != nil {
-				return err
-			}
-			ioutil.WriteFile(i2pkeypath, crypted, 644)
+            if ra, re := ioutil.ReadFile(aeskeypath); re != nil {
+				return e
+			} else {
+                crypted, err := cryptopasta.Encrypt(r, key(ra))
+                if err != nil {
+                    return err
+                }
+                ioutil.WriteFile(i2pkeypath, crypted, 644)
+            }
 		}
 	}
 	return nil
