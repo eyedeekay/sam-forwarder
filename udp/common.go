@@ -61,7 +61,6 @@ func Decrypt(i2pkeypath, aeskeypath string) error {
 				}
 				ioutil.WriteFile(i2pkeypath, crypted, 644)
 			}
-			//crypted
 		}
 	}
 	return nil

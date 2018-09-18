@@ -260,7 +260,7 @@ func NewSAMForwarderFromConf(config *Conf) (*samforwarder.SAMForwarder, error) {
 			samforwarder.SetAccessListType(config.AccessListType),
 			samforwarder.SetAccessList(config.AccessList),
 			samforwarder.SetMessageReliability(config.MessageReliability),
-			samforwarder.SetPassword(config.KeyFilePath),
+			samforwarder.SetKeyFile(config.KeyFilePath),
 			//samforwarder.SetTargetForPort443(config.TargetForPort443),
 		)
 	}
@@ -379,7 +379,7 @@ func NewSAMSSUForwarderFromConf(config *Conf) (*samforwarderudp.SAMSSUForwarder,
 			samforwarderudp.SetAccessListType(config.AccessListType),
 			samforwarderudp.SetAccessList(config.AccessList),
 			samforwarderudp.SetMessageReliability(config.MessageReliability),
-			samforwarderudp.SetPassword(config.KeyFilePath),
+			samforwarderudp.SetKeyFile(config.KeyFilePath),
 		)
 	}
 	return nil, nil
