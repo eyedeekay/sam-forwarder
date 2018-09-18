@@ -30,6 +30,84 @@ type SAMManager struct {
 	udpclientforwarders []*samforwarderudp.SAMSSUClientForwarder
 }
 
+func (s *SAMManager) List(search ...string) *[]string {
+	var r []string
+	if search == nil {
+		for index, element := range s.forwarders {
+			r = append(r, "  "+fmt.Sprintf("%v", index)+". "+element.Print())
+		}
+		for index, element := range s.clientforwarders {
+			r = append(r, "  "+fmt.Sprintf("%v", index)+". "+element.Print())
+		}
+		for index, element := range s.udpforwarders {
+			r = append(r, "  "+fmt.Sprintf("%v", index)+". "+element.Print())
+		}
+		for index, element := range s.udpclientforwarders {
+			r = append(r, "  "+fmt.Sprintf("%v", index)+". "+element.Print())
+		}
+		return &r
+	} else if len(search) > 0 {
+		switch search[0] {
+		case "":
+			for index, element := range s.forwarders {
+				r = append(r, "  "+fmt.Sprintf("%v", index)+". "+element.Print())
+			}
+			for index, element := range s.clientforwarders {
+				r = append(r, "  "+fmt.Sprintf("%v", index)+". "+element.Print())
+			}
+			for index, element := range s.udpforwarders {
+				r = append(r, "  "+fmt.Sprintf("%v", index)+". "+element.Print())
+			}
+			for index, element := range s.udpclientforwarders {
+				r = append(r, "  "+fmt.Sprintf("%v", index)+". "+element.Print())
+			}
+			return &r
+		case "ntcpserver":
+			for index, element := range s.forwarders {
+				r = append(r, "  "+fmt.Sprintf("%v", index)+". "+element.Print())
+			}
+			return &r
+		case "httpserver":
+			for index, element := range s.forwarders {
+				if element.Type == "http" {
+					r = append(r, "  "+fmt.Sprintf("%v", index)+". "+element.Print())
+				}
+			}
+			return &r
+		case "ntcpclient":
+			for index, element := range s.clientforwarders {
+				r = append(r, "  "+fmt.Sprintf("%v", index)+". "+element.Print())
+			}
+			return &r
+		case "ssuserver":
+			for index, element := range s.udpforwarders {
+				r = append(r, "  "+fmt.Sprintf("%v", index)+". "+element.Print())
+			}
+			return &r
+		case "ssuclient":
+			for index, element := range s.udpclientforwarders {
+				r = append(r, "  "+fmt.Sprintf("%v", index)+". "+element.Print())
+			}
+			return &r
+		default:
+			for index, element := range s.forwarders {
+				r = append(r, "  "+fmt.Sprintf("%v", index)+". "+element.Search(search[0]))
+			}
+			for index, element := range s.clientforwarders {
+				r = append(r, "  "+fmt.Sprintf("%v", index)+". "+element.Search(search[0]))
+			}
+			for index, element := range s.udpforwarders {
+				r = append(r, "  "+fmt.Sprintf("%v", index)+". "+element.Search(search[0]))
+			}
+			for index, element := range s.udpclientforwarders {
+				r = append(r, "  "+fmt.Sprintf("%v", index)+". "+element.Search(search[0]))
+			}
+			return &r
+		}
+	}
+	return &r
+}
+
 func (s *SAMManager) FindForwarder(lookup string) (bool, int, string) {
 	for index, element := range s.forwarders {
 		if element.TunName == lookup {

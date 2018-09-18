@@ -68,6 +68,53 @@ type SAMSSUForwarder struct {
 
 var err error
 
+func (f *SAMSSUForwarder) print() []string {
+	lsk, lspk, lspsk := f.leasesetsettings()
+	return []string{
+		//f.targetForPort443(),
+		"inbound.length=" + f.inLength,
+		"outbound.length=" + f.outLength,
+		"inbound.lengthVariance=" + f.inVariance,
+		"outbound.lengthVariance=" + f.outVariance,
+		"inbound.backupQuantity=" + f.inBackupQuantity,
+		"outbound.backupQuantity=" + f.outBackupQuantity,
+		"inbound.quantity=" + f.inQuantity,
+		"outbound.quantity=" + f.outQuantity,
+		"inbound.allowZeroHop=" + f.inAllowZeroHop,
+		"outbound.allowZeroHop=" + f.outAllowZeroHop,
+		"i2cp.fastRecieve=" + f.fastRecieve,
+		"i2cp.gzip=" + f.useCompression,
+		"i2cp.reduceOnIdle=" + f.reduceIdle,
+		"i2cp.reduceIdleTime=" + f.reduceIdleTime,
+		"i2cp.reduceQuantity=" + f.reduceIdleQuantity,
+		"i2cp.closeOnIdle=" + f.closeIdle,
+		"i2cp.closeIdleTime=" + f.closeIdleTime,
+		"i2cp.messageReliability" + f.messageReliability,
+		"i2cp.encryptLeaseSet=" + f.encryptLeaseSet,
+		lsk, lspk, lspsk,
+		f.accesslisttype(),
+		f.accesslist(),
+	}
+}
+
+func (f *SAMSSUForwarder) Print() string {
+	var r string
+	for _, s := range f.print() {
+		r += s + "\n"
+	}
+	return r
+}
+
+func (f *SAMSSUForwarder) Search(search string) string {
+	terms := strings.Split(search, ",")
+	for _, value := range terms {
+		if !strings.Contains(f.Print(), value) {
+			return ""
+		}
+	}
+	return f.Print()
+}
+
 func (f *SAMSSUForwarder) accesslisttype() string {
 	if f.accessListType == "whitelist" {
 		return "i2cp.enableAccessList=true"
