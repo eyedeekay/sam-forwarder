@@ -171,7 +171,7 @@ func main() {
 		*startUp,
 	); err == nil {
 		if *webAdmin {
-			samcatweb.Serve()
+			samcatweb.Serve() //manager)
 		}
 		manager.Serve()
 	} else {

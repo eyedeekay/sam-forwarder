@@ -27,7 +27,6 @@ test:
 
 deps:
 	go get -u github.com/gtank/cryptopasta
-	go get -u golang.org/x/crypto/openpgp
 	go get -u github.com/zieckey/goini
 	go get -u github.com/eyedeekay/sam-forwarder
 	go get -u github.com/eyedeekay/sam-forwarder/udp

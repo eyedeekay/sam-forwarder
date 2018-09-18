@@ -53,7 +53,7 @@ func Decrypt(i2pkeypath, aeskeypath string) error {
 			return e
 		} else {
 			if _, err := os.Stat(aeskeypath + ".key"); os.IsNotExist(err) {
-				return err
+				return nil
 			}
 			if ra, re := ioutil.ReadFile(aeskeypath + ".key"); re != nil {
 				return e
