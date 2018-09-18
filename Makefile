@@ -9,6 +9,8 @@ samhost = sam-host
 samport = 7656
 args = -r
 
+#WEB_INTERFACE = -tags webface
+
 echo:
 	@echo "$(GOPATH)"
 	find . -name "*.go" -exec gofmt -w {} \;
@@ -24,6 +26,8 @@ test:
 	cd manager && go test
 
 deps:
+	go get -u github.com/gtank/cryptopasta
+	go get -u golang.org/x/crypto/openpgp
 	go get -u github.com/zieckey/goini
 	go get -u github.com/eyedeekay/sam-forwarder
 	go get -u github.com/eyedeekay/sam-forwarder/udp
@@ -31,6 +35,7 @@ deps:
 	go get -u github.com/eyedeekay/sam-forwarder/manager
 	go get -u github.com/kpetku/sam3
 	go get -u github.com/eyedeekay/sam3
+	go get -u github.com/eyedeekay/samcatd-web
 
 build: clean bin/$(appname)
 
@@ -48,7 +53,10 @@ daemon: clean-daemon bin/$(samcatd)
 
 bin/$(samcatd):
 	mkdir -p bin
-	go build -a -tags netgo -ldflags '-w -extldflags "-static"' -o ./bin/$(samcatd) ./daemon/main.go
+	go build -a -tags netgo $(WEB_INTERFACE) \
+		-ldflags '-w -extldflags "-static"' \
+		-o ./bin/$(samcatd) \
+		./daemon/*.go
 
 all: daemon build server
 

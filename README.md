@@ -2,7 +2,7 @@
 Forward a local port to i2p over the SAM API, or proxy a destination to a port
 on the local host. This is a work-in-progress, but the basic functionality is,
 there and it's already pretty useful. Everything TCP works, but UDP forwarding
-is still not well tested, and UDP clients aren't enabled yet. I'm out of excuses
+is still not well tested(I'm pretty sure it works though). I'm out of excuses
 not to finish it now, too.
 
 ## building
@@ -30,6 +30,11 @@ Current limitations:
 I need to document it better.
 [Besides fixing up the comments, this should help for now.](USAGE.md). I also
 need to control output verbosity better.
+
+It doesn't encrypt the .i2pkeys file, so if someone can steal them, then they
+can use them to construct tunnels to impersonate you. Experimental support for
+encrypted saves has been added. The idea is that only the person with the key
+will be able to decrypt and start the tunnels.
 
 TCP is working very well. HTTP mode also exists, which just adds the X-I2P-DEST
 headers in. It does this both ways, for applying the dest headers inbound to

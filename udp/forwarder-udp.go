@@ -34,6 +34,9 @@ type SAMSSUForwarder struct {
 	file     io.ReadWriter
 	save     bool
 
+	// samcatd options
+	passfile string
+
 	// I2CP options
 	encryptLeaseSet           string
 	leaseSetKey               string
@@ -236,6 +239,7 @@ func NewSAMSSUForwarderFromOptions(opts ...func(*SAMSSUForwarder) error) (*SAMSS
 	s.reduceIdleQuantity = "4"
 	s.Type = "udpserver"
 	s.messageReliability = "none"
+	s.passfile = ""
 	for _, o := range opts {
 		if err := o(&s); err != nil {
 			return nil, err
@@ -259,12 +263,24 @@ func NewSAMSSUForwarderFromOptions(opts ...func(*SAMSSUForwarder) error) (*SAMSS
 			if err != nil {
 				return nil, err
 			}
+			err = Encrypt(filepath.Join(s.FilePath, s.TunName+".i2pkeys"), s.passfile)
+			if err != nil {
+				return nil, err
+			}
 		}
 		s.file, err = os.Open(filepath.Join(s.FilePath, s.TunName+".i2pkeys"))
 		if err != nil {
 			return nil, err
 		}
+		err = Decrypt(filepath.Join(s.FilePath, s.TunName+".i2pkeys"), s.passfile)
+		if err != nil {
+			return nil, err
+		}
 		s.SamKeys, err = sam3.LoadKeysIncompat(s.file)
+		if err != nil {
+			return nil, err
+		}
+		err = Encrypt(filepath.Join(s.FilePath, s.TunName+".i2pkeys"), s.passfile)
 		if err != nil {
 			return nil, err
 		}

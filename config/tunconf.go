@@ -18,6 +18,7 @@ import (
 type Conf struct {
 	config                    *goini.INI
 	FilePath                  string
+	KeyFilePath               string
 	Labels                    []string
 	Client                    bool
 	Type                      string
@@ -194,6 +195,7 @@ func (c *Conf) I2PINILoad(iniFile string, label ...string) error {
 		c.SetAccessListType(label...)
 		c.SetTargetPort443(label...)
 		c.SetMessageReliability(label...)
+		c.SetKeyFile(label...)
 		if v, ok := c.Get("i2cp.accessList", label...); ok {
 			csv := strings.Split(v, ",")
 			for _, z := range csv {
@@ -258,6 +260,7 @@ func NewSAMForwarderFromConf(config *Conf) (*samforwarder.SAMForwarder, error) {
 			samforwarder.SetAccessListType(config.AccessListType),
 			samforwarder.SetAccessList(config.AccessList),
 			samforwarder.SetMessageReliability(config.MessageReliability),
+			samforwarder.SetPassword(config.KeyFilePath),
 			//samforwarder.SetTargetForPort443(config.TargetForPort443),
 		)
 	}
@@ -317,6 +320,7 @@ func NewSAMClientForwarderFromConf(config *Conf) (*samforwarder.SAMClientForward
 			samforwarder.SetClientAccessListType(config.AccessListType),
 			samforwarder.SetClientAccessList(config.AccessList),
 			samforwarder.SetClientMessageReliability(config.MessageReliability),
+			samforwarder.SetClientPassword(config.KeyFilePath),
 		)
 	}
 	return nil, nil
@@ -375,6 +379,7 @@ func NewSAMSSUForwarderFromConf(config *Conf) (*samforwarderudp.SAMSSUForwarder,
 			samforwarderudp.SetAccessListType(config.AccessListType),
 			samforwarderudp.SetAccessList(config.AccessList),
 			samforwarderudp.SetMessageReliability(config.MessageReliability),
+			samforwarderudp.SetPassword(config.KeyFilePath),
 		)
 	}
 	return nil, nil
@@ -433,6 +438,7 @@ func NewSAMSSUClientForwarderFromConf(config *Conf) (*samforwarderudp.SAMSSUClie
 			samforwarderudp.SetClientAccessListType(config.AccessListType),
 			samforwarderudp.SetClientAccessList(config.AccessList),
 			samforwarderudp.SetClientMessageReliability(config.MessageReliability),
+			samforwarderudp.SetClientPassword(config.KeyFilePath),
 		)
 	}
 	return nil, nil

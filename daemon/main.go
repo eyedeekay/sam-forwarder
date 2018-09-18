@@ -9,6 +9,7 @@ import (
 import (
 	"github.com/eyedeekay/sam-forwarder/config"
 	"github.com/eyedeekay/sam-forwarder/manager"
+	"github.com/eyedeekay/samcatd-web"
 )
 
 type flagOpts []string
@@ -41,6 +42,8 @@ var (
 		"Start a tunnel with the passed parameters(Otherwise, they will be treated as default values.)")
 	encryptLeaseSet = flag.Bool("l", true,
 		"Use an encrypted leaseset(true or false)")
+	encryptKeyFiles = flag.String("cr", "",
+		"Encrypt/decrypt the key files with a passfile")
 	inAllowZeroHop = flag.Bool("zi", false,
 		"Allow zero-hop, non-anonymous tunnels in(true or false)")
 	outAllowZeroHop = flag.Bool("zo", false,
@@ -57,6 +60,8 @@ var (
 		"Client proxy mode(true or false)")
 	injectHeaders = flag.Bool("ih", false,
 		"Inject X-I2P-DEST headers")
+	webAdmin = flag.Bool("w", false,
+		"Start web administration interface")
 	leaseSetKey = flag.String("k", "none",
 		"key for encrypted leaseset")
 	leaseSetPrivateKey = flag.String("pk", "none",
@@ -107,9 +112,13 @@ var (
 		"Reduce idle tunnel quantity to X (0 to 5)")
 )
 
-var err error
-var accessList flagOpts
-var config *i2ptunconf.Conf
+var (
+	webinterface    *samcatweb.SAMWebConfig
+	webinterfaceerr error
+	err             error
+	accessList      flagOpts
+	config          *i2ptunconf.Conf
+)
 
 func main() {
 	flag.Var(&accessList, "accesslist", "Specify an access list member(can be used multiple times)")
@@ -151,6 +160,7 @@ func main() {
 	config.CloseIdleTime = config.GetCloseIdleTime(*closeIdleTime, 600000)
 	config.Type = config.GetType(*client, *udpMode, *injectHeaders, "server")
 	config.TargetForPort443 = config.GetPort443(*targetPort443, "")
+	config.KeyFilePath = config.GetKeyFile(*encryptKeyFiles, "")
 
 	if manager, err := sammanager.NewSAMManagerFromConf(
 		config,
@@ -160,6 +170,9 @@ func main() {
 		config.SamPort,
 		*startUp,
 	); err == nil {
+		if *webAdmin {
+			samcatweb.Serve()
+		}
 		manager.Serve()
 	} else {
 		log.Fatal(err)

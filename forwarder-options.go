@@ -401,3 +401,11 @@ func SetAccessList(s []string) func(*SAMForwarder) error {
 	}
 }
 */
+
+//SetPassword sets
+func SetPassword(s string) func(*SAMForwarder) error {
+	return func(c *SAMForwarder) error {
+		c.passfile = s
+		return nil
+	}
+}

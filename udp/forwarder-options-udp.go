@@ -372,3 +372,11 @@ func SetAccessList(s []string) func(*SAMSSUForwarder) error {
 		return nil
 	}
 }
+
+//SetPassword sets
+func SetPassword(s string) func(*SAMSSUForwarder) error {
+	return func(c *SAMSSUForwarder) error {
+		c.passfile = s
+		return nil
+	}
+}

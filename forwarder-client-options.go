@@ -380,3 +380,11 @@ func SetClientAccessList(s []string) func(*SAMClientForwarder) error {
 		return nil
 	}
 }
+
+//SetPassword sets
+func SetClientPassword(s string) func(*SAMClientForwarder) error {
+	return func(c *SAMClientForwarder) error {
+		c.passfile = s
+		return nil
+	}
+}
