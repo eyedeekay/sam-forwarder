@@ -33,15 +33,15 @@ func Encrypt(i2pkeypath, aeskeypath string) error {
 			} else if err != nil {
 				return err
 			}
-            if ra, re := ioutil.ReadFile(aeskeypath + ".key"); re != nil {
+			if ra, re := ioutil.ReadFile(aeskeypath + ".key"); re != nil {
 				return e
 			} else {
-                crypted, err := cryptopasta.Encrypt(r, key(ra))
-                if err != nil {
-                    return err
-                }
-                ioutil.WriteFile(i2pkeypath, crypted, 644)
-            }
+				crypted, err := cryptopasta.Encrypt(r, key(ra))
+				if err != nil {
+					return err
+				}
+				ioutil.WriteFile(i2pkeypath, crypted, 644)
+			}
 		}
 	}
 	return nil
