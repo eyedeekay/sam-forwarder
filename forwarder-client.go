@@ -105,11 +105,15 @@ func (f *SAMClientForwarder) Print() string {
 	for _, s := range f.print() {
 		r += s + "\n"
 	}
+	return strings.Replace(r, "\n\n", "\n", -1)
 	return r
 }
 
 func (f *SAMClientForwarder) Search(search string) string {
 	terms := strings.Split(search, ",")
+	if search == "" {
+		return f.Print()
+	}
 	for _, value := range terms {
 		if !strings.Contains(f.Print(), value) {
 			return ""

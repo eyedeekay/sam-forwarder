@@ -34,7 +34,9 @@ type SAMManager struct {
 func stringify(s []string) string {
 	var p string
 	for _, x := range s {
-		p += x + ","
+		if x != "ntcpserver" && x != "httpserver" && x != "ssuserver" && x != "ntcpclient" && x != "ssuclient" {
+			p += x + ","
+		}
 	}
 	r := strings.Replace(p, ",,", ",", -1)
 	return r
@@ -60,64 +62,64 @@ func (s *SAMManager) List(search ...string) *[]string {
 		switch search[0] {
 		case "":
 			for index, element := range s.forwarders {
-				r = append(r, fmt.Sprintf("  %v. %s", index, element.Print()))
+				r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
 			}
 			for index, element := range s.clientforwarders {
-				r = append(r, fmt.Sprintf("  %v. %s", index, element.Print()))
+				r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
 			}
 			for index, element := range s.udpforwarders {
-				r = append(r, fmt.Sprintf("  %v. %s", index, element.Print()))
+				r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
 			}
 			for index, element := range s.udpclientforwarders {
-				r = append(r, fmt.Sprintf("  %v. %s", index, element.Print()))
+				r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
 			}
 			return &r
 		case "ntcpserver":
 			for index, element := range s.forwarders {
-				r = append(r, fmt.Sprintf("  %v. %s", index, element.Print()))
+				r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
 			}
 			return &r
 		case "httpserver":
 			for index, element := range s.forwarders {
 				if element.Type == "http" {
-					r = append(r, fmt.Sprintf("  %v. %s", index, element.Print()))
+					r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
 				}
 			}
 			return &r
 		case "ntcpclient":
 			for index, element := range s.clientforwarders {
-				r = append(r, fmt.Sprintf("  %v. %s", index, element.Print()))
+				r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
 			}
 			return &r
 		case "ssuserver":
 			for index, element := range s.udpforwarders {
-				r = append(r, fmt.Sprintf("  %v. %s", index, element.Print()))
+				r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
 			}
 			return &r
 		case "ssuclient":
 			for index, element := range s.udpclientforwarders {
-				r = append(r, fmt.Sprintf("  %v. %s", index, element.Print()))
+                r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
 			}
 			return &r
 		default:
 			for index, element := range s.forwarders {
 				if element.Search(stringify(search)) != "" {
-					r = append(r, "  "+fmt.Sprintf("%v", index)+". "+element.Search(stringify(search)))
+					r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
 				}
 			}
 			for index, element := range s.clientforwarders {
 				if element.Search(stringify(search)) != "" {
-					r = append(r, "  "+fmt.Sprintf("%v", index)+". "+element.Search(stringify(search)))
+					r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
 				}
 			}
 			for index, element := range s.udpforwarders {
 				if element.Search(stringify(search)) != "" {
-					r = append(r, "  "+fmt.Sprintf("%v", index)+". "+element.Search(stringify(search)))
+					r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
 				}
 			}
 			for index, element := range s.udpclientforwarders {
 				if element.Search(stringify(search)) != "" {
-					r = append(r, "  "+fmt.Sprintf("%v", index)+". "+element.Search(stringify(search)))
+					r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
 				}
 			}
 			return &r
