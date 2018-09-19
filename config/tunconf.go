@@ -168,9 +168,9 @@ func (c *Conf) Set(label ...string) {
 // I2PINILoad loads variables from an ini file into the Conf data structure.
 func (c *Conf) I2PINILoad(iniFile string, label ...string) error {
 	var err error
+	c.config = goini.New()
 	if iniFile != "none" && iniFile != "" {
 		c.FilePath = iniFile
-		c.config = goini.New()
 		err = c.config.ParseFile(iniFile)
 		if err != nil {
 			return err
