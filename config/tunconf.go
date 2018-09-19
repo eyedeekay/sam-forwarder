@@ -93,7 +93,11 @@ func (c *Conf) Get(key string, label ...string) (string, bool) {
 		}
 		return c.config.SectionGet(c.Labels[0], key)
 	} else {
-		return c.config.Get(key)
+        if c.config != nil {
+            return c.config.Get(key)
+        }else{
+            return "", false
+        }
 	}
 	return "", false
 }
@@ -106,7 +110,11 @@ func (c *Conf) GetBool(key string, label ...string) (bool, bool) {
 		}
 		return c.config.SectionGetBool(c.Labels[0], key)
 	} else {
-		return c.config.GetBool(key)
+        if c.config != nil {
+            return c.config.GetBool(key)
+        }else{
+            return false, false
+        }
 	}
 	return false, false
 }
@@ -119,7 +127,11 @@ func (c *Conf) GetInt(key string, label ...string) (int, bool) {
 		}
 		return c.config.SectionGetInt(c.Labels[0], key)
 	} else {
-		return c.config.GetInt(key)
+        if c.config != nil {
+            return c.config.GetInt(key)
+        }else{
+            return -1, false
+        }
 	}
 	return -1, false
 }
