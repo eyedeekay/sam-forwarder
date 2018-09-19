@@ -230,6 +230,13 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 				} else {
 					return nil, fmt.Errorf(e.Error())
 				}
+            default:
+				if f, e := i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label); e == nil {
+					log.Println("found server under", label)
+					s.forwarders = append(s.forwarders, f)
+				} else {
+					return nil, fmt.Errorf(e.Error())
+				}
 			}
 		} else {
 			if f, e := i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label); e == nil {
