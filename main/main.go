@@ -105,6 +105,7 @@ func main() {
 	config.CloseIdleTime = config.GetCloseIdleTime(*closeIdleTime, 600000)
 	config.Type = config.GetType(*client, *udpMode, *injectHeaders, "server")
 	config.TargetForPort443 = config.GetPort443(*targetPort443, "")
+	config.ClientDest = config.GetClientDest(*targetDestination, "", "")
 
 	if config.Client {
 		if *targetDestination == "none" {

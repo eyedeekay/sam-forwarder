@@ -185,7 +185,7 @@ func (f *SAMClientForwarder) Base64() string {
 }
 
 func (f *SAMClientForwarder) forward(conn net.Conn) {
-	client, err := f.connectStream.DialI2P(f.addr + ".b32.i2p")
+	client, err := f.connectStream.DialI2P(f.addr)
 	if err != nil {
 		log.Fatalf("Dial failed: %v", err)
 	}
@@ -263,7 +263,7 @@ func NewSAMClientForwarderFromOptions(opts ...func(*SAMClientForwarder) error) (
 	s.Type = "client"
 	s.messageReliability = "none"
 	s.passfile = ""
-    s.dest = "i2p-projekt.i2p"
+	s.dest = "i2p-projekt.i2p"
 	for _, o := range opts {
 		if err := o(&s); err != nil {
 			return nil, err

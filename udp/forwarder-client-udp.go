@@ -103,7 +103,7 @@ func (f *SAMSSUClientForwarder) Print() string {
 	r += "type=" + f.Type + "\n"
 	r += "base32=" + f.Base32() + "\n"
 	r += "base64=" + f.Base64() + "\n"
-	r += "destbase32=" + f.dest + ".b32.i2p\n"
+	r += "dest=" + f.dest + "\n"
 	r += "ssuclient\n"
 	for _, s := range f.print() {
 		r += s + "\n"
@@ -220,7 +220,7 @@ func (f *SAMSSUClientForwarder) forward(conn net.PacketConn) {
 
 //Serve starts the SAM connection and and forwards the local host:port to i2p
 func (f *SAMSSUClientForwarder) Serve() error {
-	if f.addr, err = f.samConn.Lookup(f.dest + ".b32.i2p"); err != nil {
+	if f.addr, err = f.samConn.Lookup(f.dest); err != nil {
 		return err
 	}
 
@@ -273,7 +273,7 @@ func NewSAMSSUClientForwarderFromOptions(opts ...func(*SAMSSUClientForwarder) er
 	s.Type = "udpclient"
 	s.messageReliability = "none"
 	s.passfile = ""
-    s.dest = "i2p-projekt.i2p"
+	s.dest = "i2p-projekt.i2p"
 	for _, o := range opts {
 		if err := o(&s); err != nil {
 			return nil, err

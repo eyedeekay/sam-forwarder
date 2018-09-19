@@ -9,7 +9,7 @@ func clientMode() {
 		log.Println("Proxying udp", *targetHost+":"+*targetPort, "to", *targetDestination)
 		forwarder, err := i2ptunconf.NewSAMSSUClientForwarderFromConf(config)
 		if err == nil {
-			forwarder.Serve(*targetDestination)
+			forwarder.Serve()
 		} else {
 			log.Println(err.Error())
 		}
@@ -17,7 +17,7 @@ func clientMode() {
 		log.Println("Proxying tcp", *targetHost+":"+*targetPort, "to", *targetDestination)
 		forwarder, err := i2ptunconf.NewSAMClientForwarderFromConf(config)
 		if err == nil {
-			forwarder.Serve(*targetDestination)
+			forwarder.Serve()
 		} else {
 			log.Println(err.Error())
 		}
