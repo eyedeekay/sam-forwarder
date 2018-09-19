@@ -225,6 +225,7 @@ func (c *Conf) I2PINILoad(iniFile string, label ...string) error {
 func NewI2PBlankTunConf() *Conf {
 	var c Conf
 	c.exists = true
+	c.config = goini.New()
 	return &c
 }
 
