@@ -54,7 +54,7 @@ type Conf struct {
 	AccessListType            string
 	AccessList                []string
 	MessageReliability        string
-    exists bool
+	exists                    bool
 }
 
 // Print returns and prints a formatted list of configured tunnel settings.
@@ -223,19 +223,18 @@ func (c *Conf) I2PINILoad(iniFile string, label ...string) error {
 // NewI2PBlankTunConf returns an empty but intialized tunconf
 func NewI2PBlankTunConf() *Conf {
 	var c Conf
-    c.exists = true
+	c.exists = true
 	return &c
 }
 
 // NewI2PTunConf returns a Conf structure from an ini file, for modification
 // before starting the tunnel
 func NewI2PTunConf(iniFile string, label ...string) (*Conf, error) {
-	var err error
-	var c := NewI2PBlankTunConf()
-	if err = c.I2PINILoad(iniFile, label...); err != nil {
+	c := NewI2PBlankTunConf()
+	if err := c.I2PINILoad(iniFile, label...); err != nil {
 		return nil, err
 	}
-	return &c, nil
+	return c, nil
 }
 
 // NewSAMForwarderFromConf generates a SAMforwarder from *i2ptunconf.Conf

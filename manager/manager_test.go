@@ -21,6 +21,7 @@ func TestOption0(t *testing.T) {
 	}
 	log.Println(client.List())
 }
+
 /*
 func TestOption1(t *testing.T) {
 	client, err := NewSAMManagerFromOptions(
