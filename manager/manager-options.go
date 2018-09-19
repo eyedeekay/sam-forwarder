@@ -110,3 +110,11 @@ func SetManagerStart(s bool) func(*SAMManager) error {
 		return nil
 	}
 }
+
+//SetTunName sets the host of the SAMManager's SAM bridge
+func SetTunName(s string) func(*SAMManager) error {
+	return func(c *SAMManager) error {
+		c.tunName = s
+		return nil
+	}
+}

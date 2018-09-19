@@ -20,6 +20,8 @@ type SAMManager struct {
 	start    bool
 	config   *i2ptunconf.Conf
 
+	tunName string
+
 	ServerHost string
 	ServerPort string
 	SamHost    string
@@ -169,6 +171,7 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 	s.SamPort = "7656"
 	s.WebHost = "localhost"
 	s.WebPort = "7957"
+	s.tunName = "samcatd-"
 	for _, o := range opts {
 		if err := o(&s); err != nil {
 			return nil, err
@@ -228,12 +231,19 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 					return nil, fmt.Errorf(e.Error())
 				}
 			}
+		} else {
+			if f, e := i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label); e == nil {
+				log.Println("found server under", label)
+				s.forwarders = append(s.forwarders, f)
+			} else {
+				return nil, fmt.Errorf(e.Error())
+			}
 		}
 	}
 	if len(s.config.Labels) == 0 || s.start {
 		t, b := s.config.Get("type")
 		if !b {
-			s.config.GetType(false, false, false, "server")
+			return nil, fmt.Errorf("samcat was instructed to start a tunnel with insufficient default settings information.")
 		}
 		switch t {
 		case "http":
