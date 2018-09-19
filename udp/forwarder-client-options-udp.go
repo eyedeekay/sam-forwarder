@@ -70,6 +70,14 @@ func SetClientSAMPort(s string) func(*SAMSSUClientForwarder) error {
 	}
 }
 
+//SetClientDestination sets the destination to forwarder SAMClientForwarder's to
+func SetClientDestination(s string) func(*SAMSSUClientForwarder) error {
+	return func(c *SAMSSUClientForwarder) error {
+		c.dest = s
+		return nil
+	}
+}
+
 //SetClientName sets the host of the SAMSSUForwarder's SAM bridge
 func SetClientName(s string) func(*SAMSSUClientForwarder) error {
 	return func(c *SAMSSUClientForwarder) error {

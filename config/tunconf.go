@@ -21,6 +21,7 @@ type Conf struct {
 	KeyFilePath               string
 	Labels                    []string
 	Client                    bool
+	ClientDest                string
 	Type                      string
 	SaveDirectory             string
 	SaveFile                  bool
@@ -212,6 +213,7 @@ func (c *Conf) I2PINILoad(iniFile string, label ...string) error {
 		c.SetAccessListType(label...)
 		c.SetTargetPort443(label...)
 		c.SetMessageReliability(label...)
+		c.SetClientDest(label...)
 		c.SetKeyFile(label...)
 		if v, ok := c.Get("i2cp.accessList", label...); ok {
 			csv := strings.Split(v, ",")
@@ -337,6 +339,7 @@ func NewSAMClientForwarderFromConf(config *Conf) (*samforwarder.SAMClientForward
 			samforwarder.SetClientAccessList(config.AccessList),
 			samforwarder.SetClientMessageReliability(config.MessageReliability),
 			samforwarder.SetClientPassword(config.KeyFilePath),
+			samforwarder.SetClientDestination(config.ClientDest),
 		)
 	}
 	return nil, nil
@@ -455,6 +458,7 @@ func NewSAMSSUClientForwarderFromConf(config *Conf) (*samforwarderudp.SAMSSUClie
 			samforwarderudp.SetClientAccessList(config.AccessList),
 			samforwarderudp.SetClientMessageReliability(config.MessageReliability),
 			samforwarderudp.SetClientPassword(config.KeyFilePath),
+			samforwarderudp.SetClientDestination(config.ClientDest),
 		)
 	}
 	return nil, nil
