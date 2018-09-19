@@ -233,7 +233,7 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 	if len(s.config.Labels) == 0 || s.start {
 		t, b := s.config.Get("type")
 		if !b {
-			return nil, fmt.Errorf("samcat was instructed to start a tunnel with insufficient default settings information.")
+			s.config.GetType(false, false, false, "server")
 		}
 		switch t {
 		case "http":

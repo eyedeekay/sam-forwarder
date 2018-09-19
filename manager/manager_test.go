@@ -65,7 +65,7 @@ func TestOption3(t *testing.T) {
 		SetManagerWebHost("127.0.0.1"),
 		SetManagerWebPort("7961"),
 		SetManagerFilePath("none"),
-		SetManagerFilePath("../etc/sam-forwarder/tunnels.ini"),
+		//SetManagerFilePath("../etc/sam-forwarder/tunnels.ini"),
 	)
 	if err != nil {
 		t.Fatalf("NewSAMManager() Error: %q\n", err)
