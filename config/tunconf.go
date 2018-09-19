@@ -93,11 +93,11 @@ func (c *Conf) Get(key string, label ...string) (string, bool) {
 		}
 		return c.config.SectionGet(c.Labels[0], key)
 	} else {
-        if c.config != nil {
-            return c.config.Get(key)
-        }else{
-            return "", false
-        }
+		if c.config != nil {
+			return c.config.Get(key)
+		} else {
+			return "", false
+		}
 	}
 	return "", false
 }
@@ -110,11 +110,11 @@ func (c *Conf) GetBool(key string, label ...string) (bool, bool) {
 		}
 		return c.config.SectionGetBool(c.Labels[0], key)
 	} else {
-        if c.config != nil {
-            return c.config.GetBool(key)
-        }else{
-            return false, false
-        }
+		if c.config != nil {
+			return c.config.GetBool(key)
+		} else {
+			return false, false
+		}
 	}
 	return false, false
 }
@@ -127,11 +127,11 @@ func (c *Conf) GetInt(key string, label ...string) (int, bool) {
 		}
 		return c.config.SectionGetInt(c.Labels[0], key)
 	} else {
-        if c.config != nil {
-            return c.config.GetInt(key)
-        }else{
-            return -1, false
-        }
+		if c.config != nil {
+			return c.config.GetInt(key)
+		} else {
+			return -1, false
+		}
 	}
 	return -1, false
 }
@@ -172,7 +172,7 @@ func (c *Conf) Set(label ...string) {
 func (c *Conf) I2PINILoad(iniFile string, label ...string) error {
 	var err error
 	c.exists = true
-    c.config = goini.New()
+	c.config = goini.New()
 	if iniFile != "none" && iniFile != "" {
 		c.FilePath = iniFile
 		err = c.config.ParseFile(iniFile)
@@ -226,7 +226,7 @@ func (c *Conf) I2PINILoad(iniFile string, label ...string) error {
 // NewI2PBlankTunConf returns an empty but intialized tunconf
 func NewI2PBlankTunConf() *Conf {
 	var c Conf
-    c.config = goini.New()
+	c.config = goini.New()
 	return &c
 }
 
