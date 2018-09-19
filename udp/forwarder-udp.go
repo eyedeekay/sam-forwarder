@@ -172,10 +172,10 @@ func (f *SAMSSUForwarder) sam() string {
 func (f *SAMSSUForwarder) forward() {
 	var err error
 	p, _ := strconv.Atoi(f.TargetPort)
-	f.clientConnection, err = net.DialUDP("udp", &net.UDPAddr{
+	f.clientConnection, err = net.DialUDP("udp", nil, &net.UDPAddr{
 		Port: p,
 		IP:   net.ParseIP(f.TargetHost),
-	}, nil)
+	})
 	if err != nil {
 		log.Fatalf("Dial failed: %v", err)
 	}

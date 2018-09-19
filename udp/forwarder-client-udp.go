@@ -226,10 +226,10 @@ func (f *SAMSSUClientForwarder) Serve(dest string) error {
 
 	for {
         p, _ := strconv.Atoi(f.TargetPort)
-        f.publishConnection, err = net.DialUDP("udp", nil, &net.UDPAddr{
+        f.publishConnection, err = net.DialUDP("udp", &net.UDPAddr{
             Port: p,
             IP:   net.ParseIP(f.TargetHost),
-        })
+        }, nil)
 		if err != nil {
 			return err
 		}
