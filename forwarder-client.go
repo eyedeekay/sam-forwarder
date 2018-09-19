@@ -102,7 +102,7 @@ func (f *SAMClientForwarder) Print() string {
 	r += "type=" + f.Type + "\n"
 	r += "base32=" + f.Base32() + "\n"
 	r += "base64=" + f.Base64() + "\n"
-    r += "destbase32=" + dest + ".b32.i2p\n"
+    r += "destbase32=" + f.dest + ".b32.i2p\n"
 	r += "ntcpclient\n"
 	for _, s := range f.print() {
 		r += s + "\n"
@@ -185,7 +185,7 @@ func (f *SAMClientForwarder) Base64() string {
 }
 
 func (f *SAMClientForwarder) forward(conn net.Conn) {
-	client, err := f.connectStream.DialI2P(f.addr)
+	client, err := f.connectStream.DialI2P(f.addr+".b32.i2p")
 	if err != nil {
 		log.Fatalf("Dial failed: %v", err)
 	}
