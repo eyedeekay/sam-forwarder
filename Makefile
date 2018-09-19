@@ -31,7 +31,6 @@ test-manager:
 	cd manager && go test
 
 try-web:
-	make webdep daemon-web
 	cd bin && \
 		./samcatd-web -w -f ../etc/samcatd/tunnels.ini
 
