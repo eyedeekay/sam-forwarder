@@ -172,9 +172,9 @@ func (c *Conf) Set(label ...string) {
 func (c *Conf) I2PINILoad(iniFile string, label ...string) error {
 	var err error
 	c.exists = true
+    c.config = goini.New()
 	if iniFile != "none" && iniFile != "" {
 		c.FilePath = iniFile
-		c.config = goini.New()
 		err = c.config.ParseFile(iniFile)
 		if err != nil {
 			return err
@@ -226,6 +226,7 @@ func (c *Conf) I2PINILoad(iniFile string, label ...string) error {
 // NewI2PBlankTunConf returns an empty but intialized tunconf
 func NewI2PBlankTunConf() *Conf {
 	var c Conf
+    c.config = goini.New()
 	return &c
 }
 

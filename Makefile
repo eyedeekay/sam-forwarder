@@ -19,10 +19,18 @@ echo:
 mng:
 	cd manager && go test
 
-test:
+test: test-ntcp test-ssu test-config test-manager
+
+test-ntcp:
 	go test
+
+test-ssu:
 	cd udp && go test
+
+test-config:
 	cd config && go test
+
+test-manager:
 	cd manager && go test
 
 deps:
