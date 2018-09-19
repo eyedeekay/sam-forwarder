@@ -13,8 +13,8 @@ WEB_INTERFACE = -tags webface
 
 echo:
 	@echo "$(GOPATH)"
-	find . -name "*.go" -exec gofmt -w {} \;
-	find . -name "*.i2pkeys" -exec rm {} \;
+	find . -path ./.go -prune -o -name "*.go" -exec gofmt -w {} \;
+	find . -path ./.go -prune -o -name "*.i2pkeys" -exec rm {} \;
 
 test: test-ntcp test-ssu test-config test-manager
 
@@ -33,6 +33,8 @@ test-manager:
 try-web:
 	cd bin && \
 		./samcatd-web -w -f ../etc/samcatd/tunnels.ini
+
+refresh:
 
 deps:
 	go get -u github.com/gtank/cryptopasta
