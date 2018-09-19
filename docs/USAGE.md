@@ -153,6 +153,8 @@ Usage of ./bin/samcatd:
     	(Currently inoperative. Target TLS port(HTTPS Port of service to forward to i2p)
   -u	UDP mode(true or false)
   -w	Start web administration interface
+  -wp string
+    	Web port (default "7957")
   -x	Close tunnel idle(true or false)
   -z	Uze gzip(true or false)
   -zi

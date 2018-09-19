@@ -157,7 +157,7 @@ example-config:
 	@echo "-s flag.)" >> USAGE.md
 	@echo "" >> USAGE.md
 	@echo '``` ini' >> USAGE.md
-	cat etc/sam-forwarder/tunnels.ini >> USAGE.md
+	cat etc/samcatd/tunnels.ini >> USAGE.md
 	@echo '```' >> USAGE.md
 	@echo "" >> USAGE.md
 	cp USAGE.md docs/USAGE.md

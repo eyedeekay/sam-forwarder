@@ -241,10 +241,10 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 		}
 	}
 	if len(s.config.Labels) == 0 || s.start {
-		t, b := s.config.Get("type")
+/*		t, b := s.config.Get("type")
 		if !b {
 			return nil, fmt.Errorf("samcat was instructed to start a tunnel with insufficient default settings information.")
-		}
+		}*/
 		switch t {
 		case "http":
 			if f, e := i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort); e == nil {
