@@ -87,41 +87,41 @@ func (c *Conf) Print() []string {
 
 // Get passes directly through to goini.Get
 func (c *Conf) Get(key string, label ...string) (string, bool) {
-		if len(c.Labels) > 0 {
-			if len(label) > 0 {
-				return c.config.SectionGet(label[0], key)
-			}
-			return c.config.SectionGet(c.Labels[0], key)
-		} else {
-			return c.config.Get(key)
+	if len(c.Labels) > 0 {
+		if len(label) > 0 {
+			return c.config.SectionGet(label[0], key)
 		}
-		return "", false
+		return c.config.SectionGet(c.Labels[0], key)
+	} else {
+		return c.config.Get(key)
+	}
+	return "", false
 }
 
 // GetBool passes directly through to goini.GetBool
 func (c *Conf) GetBool(key string, label ...string) (bool, bool) {
-		if len(c.Labels) > 0 {
-			if len(label) > 0 {
-				return c.config.SectionGetBool(label[0], key)
-			}
-			return c.config.SectionGetBool(c.Labels[0], key)
-		} else {
-			return c.config.GetBool(key)
+	if len(c.Labels) > 0 {
+		if len(label) > 0 {
+			return c.config.SectionGetBool(label[0], key)
 		}
-		return false, false
+		return c.config.SectionGetBool(c.Labels[0], key)
+	} else {
+		return c.config.GetBool(key)
+	}
+	return false, false
 }
 
 // GetInt passes directly through to goini.GetInt
 func (c *Conf) GetInt(key string, label ...string) (int, bool) {
-		if len(c.Labels) > 0 {
-			if len(label) > 0 {
-				return c.config.SectionGetInt(label[0], key)
-			}
-			return c.config.SectionGetInt(c.Labels[0], key)
-		} else {
-			return c.config.GetInt(key)
+	if len(c.Labels) > 0 {
+		if len(label) > 0 {
+			return c.config.SectionGetInt(label[0], key)
 		}
-		return -1, false
+		return c.config.SectionGetInt(c.Labels[0], key)
+	} else {
+		return c.config.GetInt(key)
+	}
+	return -1, false
 }
 
 /*
