@@ -102,7 +102,7 @@ func (f *SAMClientForwarder) Print() string {
 	r += "type=" + f.Type + "\n"
 	r += "base32=" + f.Base32() + "\n"
 	r += "base64=" + f.Base64() + "\n"
-	r += "destbase32=" + f.dest + ".b32.i2p\n"
+	r += "dest=" + f.dest + "\n"
 	r += "ntcpclient\n"
 	for _, s := range f.print() {
 		r += s + "\n"
@@ -203,8 +203,7 @@ func (f *SAMClientForwarder) forward(conn net.Conn) {
 }
 
 //Serve starts the SAM connection and and forwards the local host:port to i2p
-func (f *SAMClientForwarder) Serve(dest string) error {
-	f.dest = dest
+func (f *SAMClientForwarder) Serve() error {
 	if f.addr, err = f.samConn.Lookup(f.dest); err != nil {
 		return err
 	}
@@ -264,6 +263,7 @@ func NewSAMClientForwarderFromOptions(opts ...func(*SAMClientForwarder) error) (
 	s.Type = "client"
 	s.messageReliability = "none"
 	s.passfile = ""
+    s.dest = "i2p-projekt.i2p"
 	for _, o := range opts {
 		if err := o(&s); err != nil {
 			return nil, err

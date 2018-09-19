@@ -140,7 +140,7 @@ func (s *SAMManager) Serve() bool {
 	}
 	for _, element := range s.clientforwarders {
 		log.Println("Starting NTCP client tunnel", element.TunName)
-		go element.Serve(element.Destination())
+		go element.Serve()
 	}
 	for _, element := range s.udpforwarders {
 		log.Println("Starting SSU service tunnel", element.TunName)
@@ -148,7 +148,7 @@ func (s *SAMManager) Serve() bool {
 	}
 	for _, element := range s.udpclientforwarders {
 		log.Println("Starting SSU client tunnel", element.TunName)
-		go element.Serve(element.Destination())
+		go element.Serve()
 	}
 	for true {
 	}

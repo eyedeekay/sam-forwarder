@@ -72,6 +72,8 @@ var (
 		"private signing key for encrypted leaseset")
 	targetDir = flag.String("d", "",
 		"Directory to save tunnel configuration file in.")
+    targetDest = flag.String("de", "",
+		"Destination to connect client's to by default.")
 	iniFile = flag.String("f", "none",
 		"Use an ini file for configuration(config file options override passed arguments for now.)")
 	targetDestination = flag.String("i", "none",
@@ -163,6 +165,7 @@ func main() {
 	config.Type = config.GetType(*client, *udpMode, *injectHeaders, "server")
 	config.TargetForPort443 = config.GetPort443(*targetPort443, "")
 	config.KeyFilePath = config.GetKeyFile(*encryptKeyFiles, "")
+    config.ClientDest = config.GetClientDest(*targetDest,"","")
 
 	if manager, err := sammanager.NewSAMManagerFromConf(
 		config,

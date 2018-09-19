@@ -219,8 +219,7 @@ func (f *SAMSSUClientForwarder) forward(conn net.PacketConn) {
 }
 
 //Serve starts the SAM connection and and forwards the local host:port to i2p
-func (f *SAMSSUClientForwarder) Serve(dest string) error {
-	f.dest = dest
+func (f *SAMSSUClientForwarder) Serve() error {
 	if f.addr, err = f.samConn.Lookup(f.dest + ".b32.i2p"); err != nil {
 		return err
 	}
@@ -274,6 +273,7 @@ func NewSAMSSUClientForwarderFromOptions(opts ...func(*SAMSSUClientForwarder) er
 	s.Type = "udpclient"
 	s.messageReliability = "none"
 	s.passfile = ""
+    s.dest = "i2p-projekt.i2p"
 	for _, o := range opts {
 		if err := o(&s); err != nil {
 			return nil, err
