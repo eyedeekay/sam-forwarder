@@ -164,7 +164,7 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 	s.start = false
 	s.config = i2ptunconf.NewI2PBlankTunConf()
 	s.ServerHost = "localhost"
-	s.ServerPort = "7957"
+	s.ServerPort = "8081"
 	s.SamHost = "localhost"
 	s.SamPort = "7656"
 	s.WebHost = "localhost"
@@ -178,6 +178,8 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 	var err error
 	if s.FilePath != "" {
 		s.config, err = i2ptunconf.NewI2PTunConf(s.FilePath)
+		s.config.TargetHost = s.config.GetHost(s.ServerHost, "127.0.0.1")
+		s.config.TargetPort = s.config.GetPort(s.ServerPort, "8081")
 		if err != nil {
 			return nil, err
 		}

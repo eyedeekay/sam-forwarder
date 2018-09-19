@@ -9,12 +9,12 @@ func TestOption0(t *testing.T) {
 	client, err := NewSAMManagerFromOptions(
 		SetManagerHost("127.0.0.1"),
 		SetManagerSAMHost("127.0.0.1"),
-		SetManagerPort("7957"),
+		SetManagerPort("8082"),
 		SetManagerSAMPort("7656"),
 		SetManagerWebHost("127.0.0.1"),
 		SetManagerWebPort("7958"),
 		SetManagerFilePath("none"),
-		SetManagerFilePath("../etc/sam-forwarder/tunnels.ini"),
+		SetManagerFilePath("../etc/samcatd/tunnels.ini"),
 	)
 	if err != nil {
 		t.Fatalf("NewSAMManager() Error: %q\n", err)
