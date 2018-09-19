@@ -9,7 +9,7 @@ samhost = sam-host
 samport = 7656
 args = -r
 
-#WEB_INTERFACE = -tags webface
+WEB_INTERFACE = -tags webface
 
 echo:
 	@echo "$(GOPATH)"
@@ -52,9 +52,18 @@ daemon: clean-daemon bin/$(samcatd)
 
 bin/$(samcatd):
 	mkdir -p bin
-	go build -a -tags netgo $(WEB_INTERFACE) \
+	go build -a -tags netgo \
 		-ldflags '-w -extldflags "-static"' \
 		-o ./bin/$(samcatd) \
+		./daemon/*.go
+
+daemon-web: clean-daemon-web bin/$(samcatd)-web
+
+bin/$(samcatd)-web:
+	mkdir -p bin
+	go build -a -tags netgo $(WEB_INTERFACE) \
+		-ldflags '-w -extldflags "-static"' \
+		-o ./bin/$(samcatd)-web \
 		./daemon/*.go
 
 all: daemon build server
@@ -69,6 +78,9 @@ clean-server:
 
 clean-daemon:
 	rm -f bin/$(samcatd)
+
+clean-daemon-web:
+	rm -f bin/$(samcatd)-web
 
 noopts: clean
 	mkdir -p bin

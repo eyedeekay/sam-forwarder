@@ -24,6 +24,8 @@ type SAMManager struct {
 	ServerPort string
 	SamHost    string
 	SamPort    string
+	WebHost    string
+	WebPort    string
 
 	forwarders          []*samforwarder.SAMForwarder
 	clientforwarders    []*samforwarder.SAMClientForwarder
@@ -38,7 +40,7 @@ func stringify(s []string) string {
 			p += x + ","
 		}
 	}
-	r := strings.Replace(p, ",,", ",", -1)
+	r := strings.Trim(strings.Trim(strings.Replace(p, ",,", ",", -1), " "), "\n")
 	return r
 }
 
@@ -165,6 +167,8 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 	s.ServerPort = "7957"
 	s.SamHost = "localhost"
 	s.SamPort = "7656"
+	s.WebHost = "localhost"
+	s.WebPort = "7957"
 	for _, o := range opts {
 		if err := o(&s); err != nil {
 			return nil, err
@@ -270,7 +274,7 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 	return &s, nil
 }
 
-func NewSAMManager(inifile, servhost, servport, samhost, samport string, start bool) (*SAMManager, error) {
+func NewSAMManager(inifile, servhost, servport, samhost, samport, webhost, webport string, start bool) (*SAMManager, error) {
 	log.Println("tunnel settings", servhost, servport, samhost, samport)
 	return NewSAMManagerFromOptions(
 		SetManagerFilePath(inifile),
@@ -278,11 +282,13 @@ func NewSAMManager(inifile, servhost, servport, samhost, samport string, start b
 		SetManagerPort(servport),
 		SetManagerSAMHost(samhost),
 		SetManagerSAMPort(samport),
+		SetManagerWebHost(webhost),
+		SetManagerWebPort(webport),
 		SetManagerStart(start),
 	)
 }
 
-func NewSAMManagerFromConf(conf *i2ptunconf.Conf, servhost, servport, samhost, samport string, start bool) (*SAMManager, error) {
+func NewSAMManagerFromConf(conf *i2ptunconf.Conf, servhost, servport, samhost, samport, webhost, webport string, start bool) (*SAMManager, error) {
 	log.Println("tunnel settings", servhost, servport, samhost, samport)
 	return NewSAMManagerFromOptions(
 		SetManagerConf(conf),
@@ -290,6 +296,8 @@ func NewSAMManagerFromConf(conf *i2ptunconf.Conf, servhost, servport, samhost, s
 		SetManagerPort(servport),
 		SetManagerSAMHost(samhost),
 		SetManagerSAMPort(samport),
+		SetManagerWebHost(webhost),
+		SetManagerWebPort(webport),
 		SetManagerStart(start),
 	)
 }

@@ -72,6 +72,29 @@ func SetManagerSAMPort(s string) func(*SAMManager) error {
 	}
 }
 
+//SetManagerWebHost sets the host of the SAMManager's SAM bridge
+func SetManagerWebHost(s string) func(*SAMManager) error {
+	return func(c *SAMManager) error {
+		c.WebHost = s
+		return nil
+	}
+}
+
+//SetManagerWebPort sets the port of the SAMManager's SAM bridge using a string
+func SetManagerWebPort(s string) func(*SAMManager) error {
+	return func(c *SAMManager) error {
+		port, err := strconv.Atoi(s)
+		if err != nil {
+			return fmt.Errorf("Invalid Manager SAM Port %s; non-number", s)
+		}
+		if port < 65536 && port > -1 {
+			c.WebPort = s
+			return nil
+		}
+		return fmt.Errorf("Invalid port")
+	}
+}
+
 //SetManagerConf sets the host of the SAMManager's SAM bridge
 func SetManagerConf(s *i2ptunconf.Conf) func(*SAMManager) error {
 	return func(c *SAMManager) error {

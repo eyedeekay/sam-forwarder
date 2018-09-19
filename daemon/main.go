@@ -170,10 +170,12 @@ func main() {
 		config.TargetPort,
 		config.SamHost,
 		config.SamPort,
+		"localhost",
+		*webPort,
 		*startUp,
 	); err == nil {
 		if *webAdmin {
-			samcatweb.Serve() //manager)
+			samcatweb.Serve(manager, manager.WebHost, WebPort)
 		}
 		manager.Serve()
 	} else {
