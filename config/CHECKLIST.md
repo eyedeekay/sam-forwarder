@@ -97,6 +97,7 @@ key:
         [U] - i2p.streaming.tcbcache.wdwDampening                  0.75       Ref: RFC 2140. Floating point value. May be set only via context properties, not connection options. As of release 0.9.8.
         [U] - i2p.streaming.writeTimeout                          -1          How long to block on write/flush, in milliseconds. Negative means indefinitely.
 
+        [C] - destination                                                     useful to consider adding to custom applications for client ocnfiguration
 
 \* : I'd like to have something like this setting internal to samcatd, but it
 might not always be relevant to pass it through to the real i2p router. Right

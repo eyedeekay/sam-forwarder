@@ -93,3 +93,5 @@ key:
         [U] - i2p.streaming.tcbcache.rttdevDampening               0.75       Ref: RFC 2140. Floating point value. May be set only via context properties, not connection options. As of release 0.9.8.
         [U] - i2p.streaming.tcbcache.wdwDampening                  0.75       Ref: RFC 2140. Floating point value. May be set only via context properties, not connection options. As of release 0.9.8.
         [U] - i2p.streaming.writeTimeout                          -1          How long to block on write/flush, in milliseconds. Negative means indefinitely.
+
+        [U] - destination                                                     useful to consider adding to custom applications for client ocnfiguration
