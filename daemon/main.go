@@ -64,6 +64,10 @@ var (
 		"Start web administration interface")
 	webPort = flag.String("wp", "7957",
 		"Web port")
+	webCSS = flag.String("css", "css/styles.css",
+		"custom CSS for web interface")
+	webJS = flag.String("js", "js/scripts.js",
+		"custom JS for web interface")
 	leaseSetKey = flag.String("k", "none",
 		"key for encrypted leaseset")
 	leaseSetPrivateKey = flag.String("pk", "none",
@@ -178,7 +182,7 @@ func main() {
 		*startUp,
 	); err == nil {
 		if *webAdmin {
-			go samcatweb.Serve(manager, manager.WebHost, manager.WebPort)
+			go samcatweb.Serve(manager, "", "", manager.WebHost, manager.WebPort)
 		}
 		manager.Serve()
 	} else {

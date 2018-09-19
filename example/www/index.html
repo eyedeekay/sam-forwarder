@@ -84,6 +84,8 @@ Usage of ./bin/samcatd:
         Reduce tunnel quantity after X (milliseconds) (default 600000)
   -d string
         Directory to save tunnel configuration file in.
+  -de string
+        Destination to connect client&#39;s to by default.
   -f string
         Use an ini file for configuration(config file options override passed arguments for now.) (default &quot;none&quot;)
   -h string
@@ -150,10 +152,12 @@ Usage of ./bin/samcatd:
 <p>(<strong>samcatd</strong> treats the first set of options it sees as the default, and does not start tunnels based on unlabeled options unless passed the -s flag.)</p>
 <div class="sourceCode"><pre class="sourceCode ini"><code class="sourceCode ini">
 <span class="co">## Defaults, these are only invoked with the -start option or if labeled tunnels</span>
-<span class="co">## are not present(samcatd instructions)</span>
+<span class="co">## are not present(samcatd instructions). **THESE** are the correct config files</span>
+<span class="co">## to use as defaults, and not the ones in ../sam-forwarder/tunnels.ini, which</span>
+<span class="co">## are used for testing settings availability only.</span>
 
 <span class="dt">inbound.length </span><span class="ot">=</span><span class="st"> </span><span class="dv">3</span>
-<span class="dt">outbound.length </span><span class="ot">=</span><span class="st"> </span><span class="dv">6</span>
+<span class="dt">outbound.length </span><span class="ot">=</span><span class="st"> </span><span class="dv">3</span>
 <span class="dt">inbound.lengthVariance </span><span class="ot">=</span><span class="st"> </span><span class="dv">0</span>
 <span class="dt">outbound.lengthVariance </span><span class="ot">=</span><span class="st"> </span><span class="dv">0</span>
 <span class="dt">inbound.backupQuantity </span><span class="ot">=</span><span class="st"> </span><span class="dv">3</span>
@@ -171,42 +175,44 @@ Usage of ./bin/samcatd:
 <span class="dt">i2cp.enableBlackList </span><span class="ot">=</span><span class="st"> </span><span class="kw">false</span>
 <span class="dt">keyfile </span><span class="ot">=</span><span class="st"> &quot;/usr/share/samcatd/samcatd&quot;</span>
 
-<span class="kw">[sam-forwarder]</span>
-<span class="dt">type </span><span class="ot">=</span><span class="st"> server</span>
-<span class="dt">host </span><span class="ot">=</span><span class="st"> </span><span class="fl">127.0.0.1</span>
-<span class="dt">port </span><span class="ot">=</span><span class="st"> </span><span class="dv">8081</span>
-<span class="dt">inbound.length </span><span class="ot">=</span><span class="st"> </span><span class="dv">3</span>
-<span class="dt">outbound.length </span><span class="ot">=</span><span class="st"> </span><span class="dv">6</span>
-<span class="dt">keys </span><span class="ot">=</span><span class="st"> forwarder</span>
+<span class="co">#[sam-forwarder]</span>
+<span class="co">#type = server</span>
+<span class="co">#host = 127.0.0.1</span>
+<span class="co">#port = 8081</span>
+<span class="co">#inbound.length = 3</span>
+<span class="co">#outbound.length = 3</span>
+<span class="co">#keys = forwarder</span>
 
 <span class="kw">[sam-forwarder-two]</span>
 <span class="dt">type </span><span class="ot">=</span><span class="st"> client</span>
 <span class="dt">host </span><span class="ot">=</span><span class="st"> </span><span class="fl">127.0.0.1</span>
 <span class="dt">port </span><span class="ot">=</span><span class="st"> </span><span class="dv">8082</span>
-<span class="dt">inbound.length </span><span class="ot">=</span><span class="st"> </span><span class="dv">6</span>
+<span class="dt">inbound.length </span><span class="ot">=</span><span class="st"> </span><span class="dv">3</span>
 <span class="dt">outbound.length </span><span class="ot">=</span><span class="st"> </span><span class="dv">3</span>
+<span class="dt">destination </span><span class="ot">=</span><span class="st"> i2p-projekt.i2p</span>
 <span class="dt">keys </span><span class="ot">=</span><span class="st"> forwarder-two</span>
 
-<span class="kw">[sam-forwarder-three]</span>
-<span class="dt">type </span><span class="ot">=</span><span class="st"> udpclient</span>
-<span class="dt">host </span><span class="ot">=</span><span class="st"> </span><span class="fl">127.0.0.1</span>
-<span class="dt">port </span><span class="ot">=</span><span class="st"> </span><span class="dv">8083</span>
-<span class="dt">inbound.length </span><span class="ot">=</span><span class="st"> </span><span class="dv">3</span>
-<span class="dt">outbound.length </span><span class="ot">=</span><span class="st"> </span><span class="dv">6</span>
-<span class="dt">keys </span><span class="ot">=</span><span class="st"> forwarder-three</span>
+<span class="co">#[sam-forwarder-three]</span>
+<span class="co">#type = udpclient</span>
+<span class="co">#host = 127.0.0.1</span>
+<span class="co">#port = 8083</span>
+<span class="co">#inbound.length = 3</span>
+<span class="co">#outbound.length = 3</span>
+<span class="co">#destination = i2p-projekt.i2p</span>
+<span class="co">#keys = forwarder-three</span>
 
-<span class="kw">[sam-forwarder-four]</span>
-<span class="dt">type </span><span class="ot">=</span><span class="st"> udpserver</span>
-<span class="dt">host </span><span class="ot">=</span><span class="st"> </span><span class="fl">127.0.0.1</span>
-<span class="dt">port </span><span class="ot">=</span><span class="st"> </span><span class="dv">8084</span>
-<span class="dt">inbound.length </span><span class="ot">=</span><span class="st"> </span><span class="dv">6</span>
-<span class="dt">outbound.length </span><span class="ot">=</span><span class="st"> </span><span class="dv">3</span>
-<span class="dt">keys </span><span class="ot">=</span><span class="st"> forwarder-four</span>
+<span class="co">#[sam-forwarder-four]</span>
+<span class="co">#type = udpserver</span>
+<span class="co">#host = 127.0.0.1</span>
+<span class="co">#port = 8084</span>
+<span class="co">#inbound.length = 6</span>
+<span class="co">#outbound.length = 3</span>
+<span class="co">#keys = forwarder-four</span>
 
-<span class="kw">[sam-forwarder-five]</span>
-<span class="dt">type </span><span class="ot">=</span><span class="st"> http</span>
-<span class="dt">host </span><span class="ot">=</span><span class="st"> </span><span class="fl">127.0.0.1</span>
-<span class="dt">port </span><span class="ot">=</span><span class="st"> </span><span class="dv">8085</span>
-<span class="dt">inbound.length </span><span class="ot">=</span><span class="st"> </span><span class="dv">3</span>
-<span class="dt">outbound.length </span><span class="ot">=</span><span class="st"> </span><span class="dv">6</span>
-<span class="dt">keys </span><span class="ot">=</span><span class="st"> forwarder-five</span></code></pre></div>
+<span class="co">#[sam-forwarder-five]</span>
+<span class="co">#type = http</span>
+<span class="co">#host = 127.0.0.1</span>
+<span class="co">#port = 8085</span>
+<span class="co">#inbound.length = 3</span>
+<span class="co">#outbound.length = 3</span>
+<span class="co">#keys = forwarder-five</span></code></pre></div>

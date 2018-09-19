@@ -103,6 +103,8 @@ Usage of ./bin/samcatd:
     	Reduce tunnel quantity after X (milliseconds) (default 600000)
   -d string
     	Directory to save tunnel configuration file in.
+  -de string
+    	Destination to connect client's to by default.
   -f string
     	Use an ini file for configuration(config file options override passed arguments for now.) (default "none")
   -h string
@@ -189,10 +191,12 @@ does not start tunnels based on unlabeled options unless passed the
 ``` ini
 
 ## Defaults, these are only invoked with the -start option or if labeled tunnels
-## are not present(samcatd instructions)
+## are not present(samcatd instructions). **THESE** are the correct config files
+## to use as defaults, and not the ones in ../sam-forwarder/tunnels.ini, which
+## are used for testing settings availability only.
 
 inbound.length = 3
-outbound.length = 6
+outbound.length = 3
 inbound.lengthVariance = 0
 outbound.lengthVariance = 0
 inbound.backupQuantity = 3
@@ -210,44 +214,46 @@ i2cp.enableWhiteList = false
 i2cp.enableBlackList = false
 keyfile = "/usr/share/samcatd/samcatd"
 
-[sam-forwarder]
-type = server
-host = 127.0.0.1
-port = 8081
-inbound.length = 3
-outbound.length = 6
-keys = forwarder
+#[sam-forwarder]
+#type = server
+#host = 127.0.0.1
+#port = 8081
+#inbound.length = 3
+#outbound.length = 3
+#keys = forwarder
 
 [sam-forwarder-two]
 type = client
 host = 127.0.0.1
 port = 8082
-inbound.length = 6
+inbound.length = 3
 outbound.length = 3
+destination = i2p-projekt.i2p
 keys = forwarder-two
 
-[sam-forwarder-three]
-type = udpclient
-host = 127.0.0.1
-port = 8083
-inbound.length = 3
-outbound.length = 6
-keys = forwarder-three
+#[sam-forwarder-three]
+#type = udpclient
+#host = 127.0.0.1
+#port = 8083
+#inbound.length = 3
+#outbound.length = 3
+#destination = i2p-projekt.i2p
+#keys = forwarder-three
 
-[sam-forwarder-four]
-type = udpserver
-host = 127.0.0.1
-port = 8084
-inbound.length = 6
-outbound.length = 3
-keys = forwarder-four
+#[sam-forwarder-four]
+#type = udpserver
+#host = 127.0.0.1
+#port = 8084
+#inbound.length = 6
+#outbound.length = 3
+#keys = forwarder-four
 
-[sam-forwarder-five]
-type = http
-host = 127.0.0.1
-port = 8085
-inbound.length = 3
-outbound.length = 6
-keys = forwarder-five
+#[sam-forwarder-five]
+#type = http
+#host = 127.0.0.1
+#port = 8085
+#inbound.length = 3
+#outbound.length = 3
+#keys = forwarder-five
 ```
 
