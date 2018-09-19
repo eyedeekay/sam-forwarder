@@ -169,6 +169,7 @@ func (c *Conf) Set(label ...string) {
 func (c *Conf) I2PINILoad(iniFile string, label ...string) error {
 	var err error
 	c.config = goini.New()
+	c.exists = true
 	if iniFile != "none" && iniFile != "" {
 		c.FilePath = iniFile
 		err = c.config.ParseFile(iniFile)
