@@ -1,5 +1,5 @@
 
-#GOPATH = $(PWD)/.go
+GOPATH = $(PWD)/.go
 
 appname = ephsite
 eephttpd = eephttpd
