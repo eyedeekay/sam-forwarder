@@ -21,7 +21,7 @@ func TestOption0(t *testing.T) {
 	}
 	log.Println(client.List())
 }
-
+/*
 func TestOption1(t *testing.T) {
 	client, err := NewSAMManagerFromOptions(
 		SetManagerHost("127.0.0.1"),
@@ -72,3 +72,4 @@ func TestOption3(t *testing.T) {
 	}
 	log.Println(client.List("http"))
 }
+*/
