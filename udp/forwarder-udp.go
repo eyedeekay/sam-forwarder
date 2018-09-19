@@ -11,7 +11,7 @@ import (
 )
 
 import (
-	"github.com/kpetku/sam3"
+	"github.com/eyedeekay/sam3"
 )
 
 //SAMSSUForwarder is a structure which automatically configured the forwarding of
@@ -219,10 +219,10 @@ func (f *SAMSSUForwarder) Serve() error {
 	sp, _ := strconv.Atoi(f.SamPort)
 	if f.publishConnection, err = f.samConn.NewDatagramSession(f.TunName, f.SamKeys,
 		f.print(), sp); err != nil {
-		log.Println("Stream Creation error:", err.Error())
+		log.Println("Session Creation error:", err.Error())
 		return err
 	}
-	log.Println("SAM stream session established.")
+	log.Println("SAM datagram session established.")
 	log.Println("Starting Listener.")
 	b := string(f.SamKeys.Addr().Base32())
 	log.Println("SAM Keys created,", b)

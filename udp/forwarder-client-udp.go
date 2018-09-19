@@ -11,7 +11,7 @@ import (
 )
 
 import (
-	"github.com/kpetku/sam3"
+	"github.com/eyedeekay/sam3"
 )
 
 //SAMSSUClientForwarder is a structure which automatically configured the forwarding of
@@ -225,7 +225,11 @@ func (f *SAMSSUClientForwarder) Serve(dest string) error {
 	}
 
 	for {
-		//f.packetConn, err := f.publishConnection.Accept()
+        p, _ := strconv.Atoi(f.TargetPort)
+        f.publishConnection, err = net.DialUDP("udp", nil, &net.UDPAddr{
+            Port: p,
+            IP:   net.ParseIP(f.TargetHost),
+        })
 		if err != nil {
 			return err
 		}

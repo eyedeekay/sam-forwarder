@@ -16,9 +16,6 @@ echo:
 	find . -name "*.go" -exec gofmt -w {} \;
 	find . -name "*.i2pkeys" -exec rm {} \;
 
-mng:
-	cd manager && go test
-
 test: test-ntcp test-ssu test-config test-manager
 
 test-ntcp:
@@ -33,6 +30,11 @@ test-config:
 test-manager:
 	cd manager && go test
 
+try-web:
+	make webdep daemon-web
+	cd bin && \
+		./samcatd-web -w -f ../etc/samcatd/tunnels.ini
+
 deps:
 	go get -u github.com/gtank/cryptopasta
 	go get -u github.com/zieckey/goini
@@ -42,6 +44,12 @@ deps:
 	go get -u github.com/eyedeekay/sam-forwarder/manager
 	go get -u github.com/kpetku/sam3
 	go get -u github.com/eyedeekay/sam3
+	go get -u github.com/eyedeekay/samcatd-web
+
+mine:
+	go get -u github.com/kpetku/sam3
+
+webdep:
 	go get -u github.com/eyedeekay/samcatd-web
 
 build: clean bin/$(appname)
