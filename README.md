@@ -2,8 +2,10 @@
 Forward a local port to i2p over the SAM API, or proxy a destination to a port
 on the local host. This is a work-in-progress, but the basic functionality is,
 there and it's already pretty useful. Everything TCP works, but UDP forwarding
-is still not well tested(I'm pretty sure it works though). I'm out of excuses
-not to finish it now, too.
+is still not well tested(I'm pretty sure it works though). I've forgotten how
+I originally tried it(UDP) out and so I'm re-doing alot of it. Expect
+improvements that change behavior in significant ways there. That and adding the
+web control interface are what I'm doing right now.
 
 ## building
 Just:

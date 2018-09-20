@@ -99,6 +99,8 @@ Usage of ./bin/samcatd:
   -c	Client proxy mode(true or false)
   -cr string
     	Encrypt/decrypt the key files with a passfile
+  -css string
+    	custom CSS for web interface (default "css/styles.css")
   -ct int
     	Reduce tunnel quantity after X (milliseconds) (default 600000)
   -d string
@@ -121,6 +123,8 @@ Usage of ./bin/samcatd:
     	Set inbound tunnel quantity(0 to 15) (default 6)
   -iv int
     	Set inbound tunnel length variance(-7 to 7)
+  -js string
+    	custom JS for web interface (default "js/scripts.js")
   -k string
     	key for encrypted leaseset (default "none")
   -l	Use an encrypted leaseset(true or false) (default true)
