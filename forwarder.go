@@ -237,7 +237,7 @@ func (f *SAMForwarder) clientUnlockAndClose(cli, conn bool, client net.Conn) {
 	}
 }
 
-func (f *SAMForwarder) connUnlockAndClose(cli, conn bool, conn *sam3.SAMConn) {
+func (f *SAMForwarder) connUnlockAndClose(cli, conn bool, connection *sam3.SAMConn) {
 	if cli {
 		f.connClientLock = cli
 	}
@@ -245,7 +245,7 @@ func (f *SAMForwarder) connUnlockAndClose(cli, conn bool, conn *sam3.SAMConn) {
 		f.connConnLock = conn
 	}
 	if f.connClientLock && f.connConnLock {
-		conn.Close()
+		connection.Close()
 		f.connClientLock = false
 		f.connConnLock = false
 	}
