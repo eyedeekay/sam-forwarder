@@ -232,10 +232,12 @@ func (f *SAMForwarder) clientUnlockAndClose(cli, conn bool, client net.Conn) {
 	}
 	if f.clientLock && f.connLock {
 		client.Close()
+		f.clientLock = false
+		f.connLock = false
 	}
 }
 
-func (f *SAMForwarder) connUnlockAndClose(cli, conn bool, client *sam3.SAMConn) {
+func (f *SAMForwarder) connUnlockAndClose(cli, conn bool, conn *sam3.SAMConn) {
 	if cli {
 		f.connClientLock = cli
 	}
@@ -243,7 +245,9 @@ func (f *SAMForwarder) connUnlockAndClose(cli, conn bool, client *sam3.SAMConn) 
 		f.connConnLock = conn
 	}
 	if f.connClientLock && f.connConnLock {
-		client.Close()
+		conn.Close()
+		f.connClientLock = false
+		f.connConnLock = false
 	}
 }
 
@@ -258,14 +262,16 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 	}
 	go func() {
 		if f.Type == "http" {
-			defer f.clientUnlockAndClose(true, false, client)
-			defer f.connUnlockAndClose(false, true, conn)
+			//defer f.clientUnlockAndClose(true, false, client)
+			//defer f.connUnlockAndClose(false, true, conn)
 			if requestbytes, request, err = f.HTTPRequestBytes(conn); err == nil {
 				log.Printf("Forwarding modified request: \n\t %s", string(requestbytes))
 				client.Write(requestbytes)
 			} else {
 				log.Println("Error: ", requestbytes, err)
 			}
+			f.clientUnlockAndClose(true, false, client)
+			f.connUnlockAndClose(false, true, conn)
 		} else {
 			defer client.Close()
 			defer conn.Close()
@@ -274,14 +280,16 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 	}()
 	go func() {
 		if f.Type == "http" {
-			defer f.clientUnlockAndClose(false, true, client)
-			defer f.connUnlockAndClose(true, false, conn)
+			//defer f.clientUnlockAndClose(false, true, client)
+			//defer f.connUnlockAndClose(true, false, conn)
 			if responsebytes, err = f.HTTPResponseBytes(client, request); err == nil {
 				log.Printf("Forwarding modified response: \n\t%s", string(responsebytes))
 				conn.Write(responsebytes)
 			} else {
 				log.Println("Response Error: ", responsebytes, err)
 			}
+			f.clientUnlockAndClose(false, true, client)
+			f.connUnlockAndClose(true, false, conn)
 		} else {
 			defer client.Close()
 			defer conn.Close()

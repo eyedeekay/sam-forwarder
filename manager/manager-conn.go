@@ -1,10 +1,10 @@
 package sammanager
 
 import (
+	"context"
 	"net"
 	"os"
-    "time"
-    "context"
+	"time"
 )
 
 func (s *SAMManager) Dial(network, address string) (net.Conn, error) {
