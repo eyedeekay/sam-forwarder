@@ -258,11 +258,14 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 	}
 	go func() {
 		if f.Type == "http" {
-			defer f.clientUnlockAndClose(true, false, client)
-			defer f.connUnlockAndClose(false, true, conn)
+			//defer f.clientUnlockAndClose(true, false, client)
+			//defer f.connUnlockAndClose(false, true, conn)
+
 			if requestbytes, request, err = f.HTTPRequestBytes(conn); err == nil {
 				log.Printf("Forwarding modified request: \n\t %s", string(requestbytes))
 				client.Write(requestbytes)
+                defer client.Close()
+                defer conn.Close()
 			} else {
 				log.Println("Error: ", requestbytes, err)
 			}
@@ -274,11 +277,14 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 	}()
 	go func() {
 		if f.Type == "http" {
-			defer f.clientUnlockAndClose(false, true, client)
-			defer f.connUnlockAndClose(true, false, conn)
+			//defer f.clientUnlockAndClose(false, true, client)
+			//defer f.connUnlockAndClose(true, false, conn)
+
 			if responsebytes, err = f.HTTPResponseBytes(client, request); err == nil {
 				log.Printf("Forwarding modified response: \n\t%s", string(responsebytes))
 				conn.Write(responsebytes)
+                defer client.Close()
+                defer conn.Close()
 			} else {
 				log.Println("Response Error: ", responsebytes, err)
 			}

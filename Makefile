@@ -34,6 +34,10 @@ try-web:
 	cd bin && \
 		./samcatd-web -w -f ../etc/samcatd/tunnels.ini
 
+gdb-web:
+	cd bin && \
+		gdb ./samcatd-web -w -f ../etc/samcatd/tunnels.ini
+
 refresh:
 
 deps:
@@ -78,7 +82,7 @@ daemon-web: clean-daemon-web bin/$(samcatd)-web
 
 bin/$(samcatd)-web:
 	mkdir -p bin
-	go build -a -tags netgo $(WEB_INTERFACE) \
+	go build -a $(WEB_INTERFACE) \
 		-ldflags '-w -extldflags "-static"' \
 		-o ./bin/$(samcatd)-web \
 		./daemon/*.go

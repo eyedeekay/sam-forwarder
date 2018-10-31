@@ -155,10 +155,6 @@ func (s *SAMManager) Serve() bool {
 	return false
 }
 
-func (s *SAMManager) Dial(ctx context.Context, network, address string) (*net.Conn, error) {
-	return nil, nil
-}
-
 func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, error) {
 	var s SAMManager
 	s.FilePath = ""
