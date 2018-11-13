@@ -171,6 +171,9 @@ func main() {
 	config.KeyFilePath = config.GetKeyFile(*encryptKeyFiles, "")
 	config.ClientDest = config.GetClientDest(*targetDest, "", "")
 
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt)
+
 	if manager, err := sammanager.NewSAMManagerFromConf(
 		config,
 		config.TargetHost,
@@ -181,6 +184,13 @@ func main() {
 		*webPort,
 		*startUp,
 	); err == nil {
+		go func() {
+			for sig := range c {
+				if sig == os.Interrupt {
+					manager.Cleanup()
+				}
+			}
+		}()
 		if *webAdmin {
 			go samcatweb.Serve(manager, "", "", manager.WebHost, manager.WebPort)
 		}

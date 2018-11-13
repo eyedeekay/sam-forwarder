@@ -96,6 +96,12 @@ func (f *SAMClientForwarder) print() []string {
 	}
 }
 
+func (f *SAMClientForwarder) Cleanup() {
+	f.connectStream.Close()
+	f.publishConnection.Close()
+	f.samConn.Close()
+}
+
 func (f *SAMClientForwarder) Print() string {
 	var r string
 	r += "name=" + f.TunName + "\n"

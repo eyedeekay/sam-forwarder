@@ -68,6 +68,12 @@ type SAMSSUForwarder struct {
 
 var err error
 
+func (f *SAMSSUForwarder) Cleanup() {
+	f.publishConnection.Close()
+	f.clientConnection.Close()
+	f.samConn.Close()
+}
+
 func (f *SAMSSUForwarder) print() []string {
 	lsk, lspk, lspsk := f.leasesetsettings()
 	return []string{
@@ -170,16 +176,6 @@ func (f *SAMSSUForwarder) sam() string {
 
 //func (f *SAMSSUForwarder) forward(conn net.Conn) {
 func (f *SAMSSUForwarder) forward() {
-	var err error
-	p, _ := strconv.Atoi(f.TargetPort)
-	f.clientConnection, err = net.DialUDP("udp", nil, &net.UDPAddr{
-		Port: p,
-		IP:   net.ParseIP(f.TargetHost),
-	})
-	if err != nil {
-		log.Fatalf("Dial failed: %v", err)
-	}
-	log.Printf("Connected to localhost %v\n", f.publishConnection)
 	go func() {
 		defer f.clientConnection.Close()
 		defer f.publishConnection.Close()
@@ -216,6 +212,8 @@ func (f *SAMSSUForwarder) Base64() string {
 
 //Serve starts the SAM connection and and forwards the local host:port to i2p
 func (f *SAMSSUForwarder) Serve() error {
+	var err error
+
 	sp, _ := strconv.Atoi(f.SamPort)
 	if f.publishConnection, err = f.samConn.NewDatagramSession(f.TunName, f.SamKeys,
 		f.print(), sp); err != nil {
@@ -226,6 +224,17 @@ func (f *SAMSSUForwarder) Serve() error {
 	log.Println("Starting Listener.")
 	b := string(f.SamKeys.Addr().Base32())
 	log.Println("SAM Keys created,", b)
+
+	p, _ := strconv.Atoi(f.TargetPort)
+	f.clientConnection, err = net.DialUDP("udp", nil, &net.UDPAddr{
+		Port: p,
+		IP:   net.ParseIP(f.TargetHost),
+	})
+	if err != nil {
+		log.Fatalf("Dial failed: %v", err)
+	}
+	log.Printf("Connected to localhost %v\n", f.publishConnection)
+
 	for {
 		log.Printf("Accepted connection %v\n", f.publishConnection)
 		go f.forward()

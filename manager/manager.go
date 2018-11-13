@@ -130,6 +130,21 @@ func (s *SAMManager) List(search ...string) *[]string {
 	return &r
 }
 
+func (s *SAMManager) Cleanup() {
+	for _, k := range s.forwarders {
+		k.Cleanup()
+	}
+	for _, k := range s.clientforwarders {
+		k.Cleanup()
+	}
+	for _, k := range s.udpforwarders {
+		k.Cleanup()
+	}
+	for _, k := range s.udpclientforwarders {
+		k.Cleanup()
+	}
+}
+
 func (s *SAMManager) Serve() bool {
 	log.Println("Starting tunnels")
 	for _, element := range s.forwarders {

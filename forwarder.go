@@ -78,6 +78,13 @@ type SAMForwarder struct {
 
 var err error
 
+func (f *SAMForwarder) Cleanup() {
+	f.publishStream.Close()
+	f.publishListen.Close()
+	f.publishConnection.Close()
+	f.samConn.Close()
+}
+
 /*func (f *SAMForwarder) targetForPort443() string {
 	if f.TargetForPort443 != "" {
 		return "targetForPort.4443=" + f.TargetHost + ":" + f.TargetForPort443
@@ -262,16 +269,16 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 	}
 	go func() {
 		if f.Type == "http" {
-			//defer f.clientUnlockAndClose(true, false, client)
-			//defer f.connUnlockAndClose(false, true, conn)
+			defer f.clientUnlockAndClose(true, false, client)
+			defer f.connUnlockAndClose(false, true, conn)
 			if requestbytes, request, err = f.HTTPRequestBytes(conn); err == nil {
 				log.Printf("Forwarding modified request: \n\t %s", string(requestbytes))
 				client.Write(requestbytes)
 			} else {
 				log.Println("Error: ", requestbytes, err)
 			}
-			f.clientUnlockAndClose(true, false, client)
-			f.connUnlockAndClose(false, true, conn)
+			//f.clientUnlockAndClose(true, false, client)
+			//f.connUnlockAndClose(false, true, conn)
 		} else {
 			defer client.Close()
 			defer conn.Close()
@@ -280,16 +287,16 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 	}()
 	go func() {
 		if f.Type == "http" {
-			//defer f.clientUnlockAndClose(false, true, client)
-			//defer f.connUnlockAndClose(true, false, conn)
+			defer f.clientUnlockAndClose(false, true, client)
+			defer f.connUnlockAndClose(true, false, conn)
 			if responsebytes, err = f.HTTPResponseBytes(client, request); err == nil {
 				log.Printf("Forwarding modified response: \n\t%s", string(responsebytes))
 				conn.Write(responsebytes)
 			} else {
 				log.Println("Response Error: ", responsebytes, err)
 			}
-			f.clientUnlockAndClose(false, true, client)
-			f.connUnlockAndClose(true, false, conn)
+			//f.clientUnlockAndClose(false, true, client)
+			//f.connUnlockAndClose(true, false, conn)
 		} else {
 			defer client.Close()
 			defer conn.Close()

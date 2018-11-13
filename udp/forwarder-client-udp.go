@@ -68,6 +68,12 @@ type SAMSSUClientForwarder struct {
 	accessList     []string
 }
 
+func (f *SAMSSUClientForwarder) Cleanup() {
+	f.publishConnection.Close()
+	f.connectStream.Close()
+	f.samConn.Close()
+}
+
 func (f *SAMSSUClientForwarder) print() []string {
 	lsk, lspk, lspsk := f.leasesetsettings()
 	return []string{
