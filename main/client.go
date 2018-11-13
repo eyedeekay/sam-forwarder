@@ -1,6 +1,10 @@
 package main
 
-import "log"
+import (
+	"log"
+	"os"
+	"os/signal"
+)
 
 import "github.com/eyedeekay/sam-forwarder/config"
 
@@ -13,7 +17,13 @@ func clientMode() {
 		} else {
 			log.Println(err.Error())
 		}
-		forwarder.Cleanup()
+		go func() {
+			for sig := range c {
+				if sig == os.Interrupt {
+					forwarder.Cleanup()
+				}
+			}
+		}()
 	} else {
 		log.Println("Proxying tcp", *targetHost+":"+*targetPort, "to", *targetDestination)
 		forwarder, err := i2ptunconf.NewSAMClientForwarderFromConf(config)
@@ -22,6 +32,12 @@ func clientMode() {
 		} else {
 			log.Println(err.Error())
 		}
-		forwarder.Cleanup()
+		go func() {
+			for sig := range c {
+				if sig == os.Interrupt {
+					forwarder.Cleanup()
+				}
+			}
+		}()
 	}
 }
