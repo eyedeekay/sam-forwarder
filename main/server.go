@@ -13,7 +13,7 @@ func serveMode() {
 		} else {
 			log.Println(err.Error())
 		}
-        forwarder.Cleanup()
+		forwarder.Cleanup()
 	} else {
 		log.Println("Redirecting tcp", *targetHost+":"+*targetPort, "to i2p")
 		forwarder, err := i2ptunconf.NewSAMForwarderFromConf(config)
@@ -22,6 +22,6 @@ func serveMode() {
 		} else {
 			log.Println(err.Error())
 		}
-        forwarder.Cleanup()
+		forwarder.Cleanup()
 	}
 }
