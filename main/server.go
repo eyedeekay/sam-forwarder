@@ -9,6 +9,8 @@ import (
 import "github.com/eyedeekay/sam-forwarder/config"
 
 func serveMode() {
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt)
 	if *udpMode {
 		log.Println("Redirecting udp", *targetHost+":"+*targetPort, "to i2p")
 		forwarder, err := i2ptunconf.NewSAMSSUForwarderFromConf(config)
