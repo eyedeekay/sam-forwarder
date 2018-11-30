@@ -8,7 +8,7 @@ func (c *Conf) GetInLength(arg, def int, label ...string) int {
 	if arg != def {
 		return arg
 	}
-	if c.config == nil {
+	if c.Config == nil {
 		return arg
 	}
 	if x, o := c.GetInt("inbound.length", label...); o {
@@ -25,7 +25,7 @@ func (c *Conf) GetOutLength(arg, def int, label ...string) int {
 	if arg != def {
 		return arg
 	}
-	if c.config == nil {
+	if c.Config == nil {
 		return arg
 	}
 	if x, o := c.GetInt("outbound.length", label...); o {

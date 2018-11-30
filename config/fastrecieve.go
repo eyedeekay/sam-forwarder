@@ -8,7 +8,7 @@ func (c *Conf) GetFastRecieve(arg, def bool, label ...string) bool {
 	if arg != def {
 		return arg
 	}
-	if c.config == nil {
+	if c.Config == nil {
 		return arg
 	}
 	if x, o := c.GetBool("i2cp.fastRecieve", label...); o {

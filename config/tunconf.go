@@ -18,7 +18,7 @@ import (
 // Conf is a tructure containing an ini config, with some functions to help
 // when you use it for in conjunction with command-line flags
 type Conf struct {
-	config                    *goini.INI
+	Config                    *goini.INI
 	FilePath                  string
 	KeyFilePath               string
 	Labels                    []string
@@ -92,12 +92,12 @@ func (c *Conf) Print() []string {
 func (c *Conf) Get(key string, label ...string) (string, bool) {
 	if len(c.Labels) > 0 {
 		if len(label) > 0 {
-			return c.config.SectionGet(label[0], key)
+			return c.Config.SectionGet(label[0], key)
 		}
-		return c.config.SectionGet(c.Labels[0], key)
+		return c.Config.SectionGet(c.Labels[0], key)
 	} else {
-		if c.config != nil {
-			return c.config.Get(key)
+		if c.Config != nil {
+			return c.Config.Get(key)
 		} else {
 			return "", false
 		}
@@ -109,12 +109,12 @@ func (c *Conf) Get(key string, label ...string) (string, bool) {
 func (c *Conf) GetBool(key string, label ...string) (bool, bool) {
 	if len(c.Labels) > 0 {
 		if len(label) > 0 {
-			return c.config.SectionGetBool(label[0], key)
+			return c.Config.SectionGetBool(label[0], key)
 		}
-		return c.config.SectionGetBool(c.Labels[0], key)
+		return c.Config.SectionGetBool(c.Labels[0], key)
 	} else {
-		if c.config != nil {
-			return c.config.GetBool(key)
+		if c.Config != nil {
+			return c.Config.GetBool(key)
 		} else {
 			return false, false
 		}
@@ -126,12 +126,12 @@ func (c *Conf) GetBool(key string, label ...string) (bool, bool) {
 func (c *Conf) GetInt(key string, label ...string) (int, bool) {
 	if len(c.Labels) > 0 {
 		if len(label) > 0 {
-			return c.config.SectionGetInt(label[0], key)
+			return c.Config.SectionGetInt(label[0], key)
 		}
-		return c.config.SectionGetInt(c.Labels[0], key)
+		return c.Config.SectionGetInt(c.Labels[0], key)
 	} else {
-		if c.config != nil {
-			return c.config.GetInt(key)
+		if c.Config != nil {
+			return c.Config.GetInt(key)
 		} else {
 			return -1, false
 		}
@@ -145,7 +145,7 @@ func (c *Conf) Write() error {
 		return err
 	} else {
 		defer file.Close()
-		return c.config.Write(file)
+		return c.Config.Write(file)
 	}
 }
 
@@ -185,10 +185,10 @@ func (c *Conf) Set(label ...string) {
 func (c *Conf) I2PINILoad(iniFile string, label ...string) error {
 	var err error
 	c.exists = true
-	c.config = goini.New()
+	c.Config = goini.New()
 	if iniFile != "none" && iniFile != "" {
 		c.FilePath = iniFile
-		err = c.config.ParseFile(iniFile)
+		err = c.Config.ParseFile(iniFile)
 		if err != nil {
 			return err
 		}
@@ -240,7 +240,7 @@ func (c *Conf) I2PINILoad(iniFile string, label ...string) error {
 // NewI2PBlankTunConf returns an empty but intialized tunconf
 func NewI2PBlankTunConf() *Conf {
 	var c Conf
-	c.config = goini.New()
+	c.Config = goini.New()
 	return &c
 }
 

@@ -98,7 +98,7 @@ func SetManagerWebPort(s string) func(*SAMManager) error {
 //SetManagerConf sets the host of the SAMManager's SAM bridge
 func SetManagerConf(s *i2ptunconf.Conf) func(*SAMManager) error {
 	return func(c *SAMManager) error {
-		c.config = s
+		c.Config = s
 		return nil
 	}
 }

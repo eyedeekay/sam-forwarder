@@ -8,7 +8,7 @@ func (c *Conf) GetInQuantity(arg, def int, label ...string) int {
 	if arg != def {
 		return arg
 	}
-	if c.config == nil {
+	if c.Config == nil {
 		return arg
 	}
 	if x, o := c.GetInt("inbound.quantity", label...); o {
@@ -25,7 +25,7 @@ func (c *Conf) GetOutQuantity(arg, def int, label ...string) int {
 	if arg != def {
 		return arg
 	}
-	if c.config == nil {
+	if c.Config == nil {
 		return arg
 	}
 	if x, o := c.GetInt("outbound.quantity", label...); o {

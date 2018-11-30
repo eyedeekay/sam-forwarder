@@ -8,7 +8,7 @@ func (c *Conf) GetInVariance(arg, def int, label ...string) int {
 	if arg != def {
 		return arg
 	}
-	if c.config == nil {
+	if c.Config == nil {
 		return arg
 	}
 	if x, o := c.GetInt("inbound.variance", label...); o {
@@ -25,7 +25,7 @@ func (c *Conf) GetOutVariance(arg, def int, label ...string) int {
 	if arg != def {
 		return arg
 	}
-	if c.config == nil {
+	if c.Config == nil {
 		return arg
 	}
 	if x, o := c.GetInt("outbound.variance", label...); o {

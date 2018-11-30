@@ -24,7 +24,7 @@ func (c *Conf) GetType(argc, argu, argh bool, def string, label ...string) strin
 	if typ != def {
 		return typ
 	}
-	if c.config == nil {
+	if c.Config == nil {
 		return typ
 	}
 	if x, o := c.Get("type", label...); o {
