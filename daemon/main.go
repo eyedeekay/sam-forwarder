@@ -120,6 +120,7 @@ var (
 		"Reduce tunnel quantity after X (milliseconds)")
 	reduceIdleQuantity = flag.Int("rq", 3,
 		"Reduce idle tunnel quantity to X (0 to 5)")
+	readKeys = flag.String("conv", "", "Display the base32 and base64 values of a specified .i2pkeys file")
 )
 
 var (
@@ -133,6 +134,10 @@ var (
 func main() {
 	flag.Var(&accessList, "accesslist", "Specify an access list member(can be used multiple times)")
 	flag.Parse()
+
+	if *readKeys != "" {
+
+	}
 
 	config = i2ptunconf.NewI2PBlankTunConf()
 	if *iniFile != "none" && *iniFile != "" {

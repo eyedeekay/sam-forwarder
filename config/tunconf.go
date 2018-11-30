@@ -3,6 +3,8 @@ package i2ptunconf
 import (
 	"io/ioutil"
 	"log"
+	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 )
@@ -135,6 +137,16 @@ func (c *Conf) GetInt(key string, label ...string) (int, bool) {
 		}
 	}
 	return -1, false
+}
+
+func (c *Conf) Write() error {
+	if file, err := os.Open(filepath.Join(c.FilePath, c.TunName+".ini")); err != nil {
+		defer file.Close()
+		return err
+	} else {
+		defer file.Close()
+		return c.config.Write(file)
+	}
 }
 
 /*
