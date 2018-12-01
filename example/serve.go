@@ -3,7 +3,7 @@ package main
 /*
    WARNING: This is not the official version of eephttpd. It is an older
    verion I use to test new sam-forwarder features. It is not intended for
-   use in production.
+   use.
 */
 
 import (

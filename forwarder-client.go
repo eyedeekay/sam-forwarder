@@ -229,6 +229,15 @@ func (f *SAMClientForwarder) Serve() error {
 	}
 }
 
+//Close shuts the whole thing down.
+func (f *SAMClientForwarder) Close() error {
+    var err error
+    err = f.samConn.Close()
+	err = f.connectStream.Close()
+	err = f.publishConnection.Close()
+    return err
+}
+
 //NewSAMClientForwarder makes a new SAM forwarder with default options, accepts host:port arguments
 func NewSAMClientForwarder(host, port string) (*SAMClientForwarder, error) {
 	return NewSAMClientForwarderFromOptions(SetClientHost(host), SetClientPort(port))

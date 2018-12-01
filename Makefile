@@ -16,13 +16,21 @@ echo:
 	find . -path ./.go -prune -o -name "*.go" -exec gofmt -w {} \;
 	find . -path ./.go -prune -o -name "*.i2pkeys" -exec rm {} \;
 
-test: test-ntcp test-ssu test-config test-manager
+test: test-ntcp test-ssu test-vpn test-config test-manager
+
+full-test: test-serve test
+
+test-serve:
+	cd serve_test && go test
 
 test-ntcp:
 	go test
 
 test-ssu:
 	cd udp && go test
+
+test-vpn:
+	cd csvpn && go test
 
 test-config:
 	cd config && go test
@@ -41,8 +49,10 @@ gdb-web:
 refresh:
 
 deps:
+	go get -u github.com/songgao/water
 	go get -u github.com/gtank/cryptopasta
 	go get -u github.com/zieckey/goini
+	go get -u github.com/eyedeekay/udptunnel
 	go get -u github.com/eyedeekay/sam-forwarder
 	go get -u github.com/eyedeekay/sam-forwarder/udp
 	go get -u github.com/eyedeekay/sam-forwarder/config
