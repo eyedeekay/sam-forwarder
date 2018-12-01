@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/eyedeekay/sam-forwarder/i2pkeys"
 	"github.com/eyedeekay/sam-forwarder/udp"
 	"github.com/eyedeekay/sam3"
 	"github.com/eyedeekay/udptunnel/tunnel"
@@ -131,7 +132,7 @@ func NewSAMClientServerVPNFromOptions(opts ...func(*SAMClientServerVPN) error) (
 			if err != nil {
 				return nil, err
 			}
-			err = Encrypt(filepath.Join(s.FilePath, s.TunName+".i2pkeys"), s.passfile)
+			err = i2pkeys.Encrypt(filepath.Join(s.FilePath, s.TunName+".i2pkeys"), s.passfile)
 			if err != nil {
 				return nil, err
 			}
@@ -140,7 +141,7 @@ func NewSAMClientServerVPNFromOptions(opts ...func(*SAMClientServerVPN) error) (
 		if err != nil {
 			return nil, err
 		}
-		err = Decrypt(filepath.Join(s.FilePath, s.TunName+".i2pkeys"), s.passfile)
+		err = i2pkeys.Decrypt(filepath.Join(s.FilePath, s.TunName+".i2pkeys"), s.passfile)
 		if err != nil {
 			return nil, err
 		}
@@ -148,13 +149,13 @@ func NewSAMClientServerVPNFromOptions(opts ...func(*SAMClientServerVPN) error) (
 		if err != nil {
 			return nil, err
 		}
-		err = Encrypt(filepath.Join(s.FilePath, s.TunName+".i2pkeys"), s.passfile)
+		err = i2pkeys.Encrypt(filepath.Join(s.FilePath, s.TunName+".i2pkeys"), s.passfile)
 		if err != nil {
 			return nil, err
 		}
 	}
 	var logBuf bytes.Buffer
-	Logger = log.New(io.MultiWriter(os.Stderr, &logBuf), "", log.Ldate|log.Ltime|log.Lshortfile)
+	Logger := log.New(io.MultiWriter(os.Stderr, &logBuf), "", log.Ldate|log.Ltime|log.Lshortfile)
 	s.VPNTunnel = udptunnel.NewTunnel(s.ServerMode, s.TunName, "10.76.0.2", s.Target(), "", []uint16{},
 		"i2pvpn", time.Duration(time.Second*300), Logger)
 	return &s, nil

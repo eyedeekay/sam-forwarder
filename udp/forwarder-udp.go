@@ -11,6 +11,7 @@ import (
 )
 
 import (
+	"github.com/eyedeekay/sam-forwarder/i2pkeys"
 	"github.com/eyedeekay/sam3"
 )
 
@@ -303,7 +304,7 @@ func NewSAMSSUForwarderFromOptions(opts ...func(*SAMSSUForwarder) error) (*SAMSS
 			if err != nil {
 				return nil, err
 			}
-			err = Encrypt(filepath.Join(s.FilePath, s.TunName+".i2pkeys"), s.passfile)
+			err = i2pkeys.Encrypt(filepath.Join(s.FilePath, s.TunName+".i2pkeys"), s.passfile)
 			if err != nil {
 				return nil, err
 			}
@@ -312,7 +313,7 @@ func NewSAMSSUForwarderFromOptions(opts ...func(*SAMSSUForwarder) error) (*SAMSS
 		if err != nil {
 			return nil, err
 		}
-		err = Decrypt(filepath.Join(s.FilePath, s.TunName+".i2pkeys"), s.passfile)
+		err = i2pkeys.Decrypt(filepath.Join(s.FilePath, s.TunName+".i2pkeys"), s.passfile)
 		if err != nil {
 			return nil, err
 		}
@@ -320,7 +321,7 @@ func NewSAMSSUForwarderFromOptions(opts ...func(*SAMSSUForwarder) error) (*SAMSS
 		if err != nil {
 			return nil, err
 		}
-		err = Encrypt(filepath.Join(s.FilePath, s.TunName+".i2pkeys"), s.passfile)
+		err = i2pkeys.Encrypt(filepath.Join(s.FilePath, s.TunName+".i2pkeys"), s.passfile)
 		if err != nil {
 			return nil, err
 		}
