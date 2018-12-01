@@ -10,14 +10,14 @@ import "github.com/eyedeekay/sam-forwarder"
 import "github.com/eyedeekay/sam-forwarder/udp"
 
 var (
-    port = "8100"
-    cport = "8101"
-    directory = "./www"
-    err error
-    forwarder *samforwarder.SAMForwarder
-    forwarderclient *samforwarder.SAMClientForwarder
-    ssuforwarder *samforwarderudp.SAMSSUForwarder
-    ssuforwarderclient *samforwarderudp.SAMSSUClientForwarder
+	port               = "8100"
+	cport              = "8101"
+	directory          = "./www"
+	err                error
+	forwarder          *samforwarder.SAMForwarder
+	forwarderclient    *samforwarder.SAMClientForwarder
+	ssuforwarder       *samforwarderudp.SAMSSUForwarder
+	ssuforwarderclient *samforwarderudp.SAMSSUClientForwarder
 )
 
 func serve() {
@@ -51,15 +51,13 @@ func client() {
 		samforwarder.SetClientSAMHost("127.0.0.1"),
 		samforwarder.SetClientSAMPort("7656"),
 		samforwarder.SetClientName("testclient"),
-        samforwarder.SetClientDestination(forwarder.Base32()),
+		samforwarder.SetClientDestination(forwarder.Base32()),
 	)
-    if err != nil {
+	if err != nil {
 		log.Fatal(err.Error())
 	}
-    go forwarderclient.Serve()
+	go forwarderclient.Serve()
 }
-
-
 
 func serveudp() {
 	flag.Parse()
@@ -92,12 +90,10 @@ func clientudp() {
 		samforwarderudp.SetClientSAMHost("127.0.0.1"),
 		samforwarderudp.SetClientSAMPort("7656"),
 		samforwarderudp.SetClientName("testclient"),
-        samforwarderudp.SetClientDestination(forwarder.Base32()),
+		samforwarderudp.SetClientDestination(forwarder.Base32()),
 	)
-    if err != nil {
+	if err != nil {
 		log.Fatal(err.Error())
 	}
-    go forwarderclient.Serve()
+	go forwarderclient.Serve()
 }
-
-
