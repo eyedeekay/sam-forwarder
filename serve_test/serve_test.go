@@ -23,14 +23,18 @@ func TestTCP(t *testing.T) {
 func TestUDP(t *testing.T) {
 	go echo()
 	time.Sleep(time.Duration(60 * time.Second))
+	defer udpserverconn.Close()
 	go serveudp()
 	time.Sleep(time.Duration(60 * time.Second))
 	go clientudp()
 	time.Sleep(time.Duration(60 * time.Second))
-	//conn, err := net.DialUDP("udp", udpserveraddr, "127.0.0.1:"+uport)
-	_, err := net.DialUDP("udp", udpserveraddr, udplocaladdr)
+	conn, err := net.DialUDP("udp", udpserveraddr, udplocaladdr)
+	defer conn.Close()
 	if err != nil {
 		t.Fatal(err)
 	}
-	//log.Println(resp)
+	_, err = conn.Write([]byte("Hello SSU"))
+	if err != nil {
+		t.Fatal("SSU error", err)
+	}
 }

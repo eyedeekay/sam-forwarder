@@ -224,6 +224,9 @@ docker-run: docker-volume
 		eyedeekay/$(eephttpd)
 	make follow
 
+c:
+	go build ./i2pkeys
+
 follow:
 	docker logs -f $(eephttpd)
 

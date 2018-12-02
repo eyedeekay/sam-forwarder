@@ -237,8 +237,7 @@ func (f *SAMSSUForwarder) Serve() error {
 	log.Printf("Connected to localhost %v\n", f.publishConnection)
 
 	for {
-		log.Printf("Accepted connection %v\n", f.publishConnection)
-		go f.forward()
+		f.forward()
 	}
 }
 

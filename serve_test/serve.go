@@ -6,6 +6,7 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"time"
 )
 
 import "github.com/eyedeekay/sam-forwarder"
@@ -18,6 +19,7 @@ var (
 	ucport             = "8103"
 	udpserveraddr      *net.UDPAddr
 	udplocaladdr       *net.UDPAddr
+	udpserverconn      *net.UDPConn
 	directory          = "./www"
 	err                error
 	forwarder          *samforwarder.SAMForwarder
@@ -79,23 +81,23 @@ func echo() {
 		log.Fatal(err)
 	}
 	/* Now listen at selected port */
-	ServerConn, err := net.ListenUDP("udp", udpserveraddr)
+	udpserverconn, err = net.ListenUDP("udp", udpserveraddr)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer ServerConn.Close()
 
 	buf := make([]byte, 1024)
 
 	for {
-		n, addr, err := ServerConn.ReadFromUDP(buf)
+		n, addr, err := udpserverconn.ReadFromUDP(buf)
 		fmt.Printf("received: %s from: %s\n", string(buf[0:n]), addr)
 
 		if err != nil {
 			fmt.Println("error: ", err)
 		}
 
-		ServerConn.WriteTo(buf[0:n], addr)
+		udpserverconn.WriteTo(buf[0:n], addr)
+		time.Sleep(time.Duration(1 * time.Second))
 	}
 }
 
@@ -112,10 +114,10 @@ func serveudp() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	go forwarder.Serve()
+	go ssuforwarder.Serve()
 
 	log.Printf("Serving %s on UDP port: %s %s\n", uport, "and on",
-		forwarder.Base32())
+		ssuforwarder.Base32())
 	log.Fatal(http.ListenAndServe("127.0.0.1:"+uport, nil))
 }
 
@@ -135,5 +137,5 @@ func clientudp() {
 	}
 	log.Printf("Connecting %s UDP port: %s %s\n", ucport, "to",
 		forwarder.Base32())
-	go forwarderclient.Serve()
+	go ssuforwarderclient.Serve()
 }
