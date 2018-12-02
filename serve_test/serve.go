@@ -17,9 +17,10 @@ var (
 	cport              = "8101"
 	uport              = "8102"
 	ucport             = "8103"
-    ssuport            = "8104"
+	ssuport            = "8104"
 	udpserveraddr      *net.UDPAddr
 	udplocaladdr       *net.UDPAddr
+	ssulocaladdr       *net.UDPAddr
 	udpserverconn      *net.UDPConn
 	directory          = "./www"
 	err                error
@@ -77,10 +78,7 @@ func echo() {
 		log.Fatal(err)
 	}
 	fmt.Println("listening on :", uport)
-	udplocaladdr, err = net.ResolveUDPAddr("udp", "127.0.0.1:"+ucport)
-	if err != nil {
-		log.Fatal(err)
-	}
+
 	/* Now listen at selected port */
 	udpserverconn, err = net.ListenUDP("udp", udpserveraddr)
 	if err != nil {
@@ -91,8 +89,7 @@ func echo() {
 
 	for {
 		n, addr, err := udpserverconn.ReadFromUDP(buf)
-		fmt.Printf("received: %s from: %s\n", string(buf[0:n]), addr)
-
+		log.Println("received:", string(buf[0:n]), "from: ", addr)
 		if err != nil {
 			fmt.Println("error: ", err)
 		}
@@ -133,6 +130,18 @@ func clientudp() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-    go ssuforwarderclient.Serve()
-	log.Printf("Connecting UDP port: %s to %s\n", ucport, ssuforwarder.Base32())
+	go ssuforwarderclient.Serve()
+	log.Printf("Connecting UDP port: %s to %s\n", ssuport, ssuforwarder.Base32())
+}
+
+func setupudp() {
+	ssulocaladdr, err = net.ResolveUDPAddr("udp", "127.0.0.1:"+ssuport)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	udplocaladdr, err = net.ResolveUDPAddr("udp", "127.0.0.1:"+ucport)
+	if err != nil {
+		log.Fatal(err)
+	}
 }

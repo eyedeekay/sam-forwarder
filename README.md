@@ -2,10 +2,8 @@
 Forward a local port to i2p over the SAM API, or proxy a destination to a port
 on the local host. This is a work-in-progress, but the basic functionality is,
 there and it's already pretty useful. Everything TCP works, but UDP forwarding
-is still not well tested(I'm pretty sure it works though). I've forgotten how
-I originally tried it(UDP) out and so I'm re-doing alot of it. Expect
-improvements that change behavior in significant ways there. That and adding the
-web control interface are what I'm doing right now.
+has much less real use than TCP. Turns out UDP was less broken than I thought
+though. Yay.
 
 ## building
 Just:
@@ -33,22 +31,19 @@ I need to document it better.
 [Besides fixing up the comments, this should help for now.](USAGE.md). I also
 need to control output verbosity better.
 
+I need samcatd to accept a configuration folder identical to
+/etc/i2pd/tunnels.conf.d, since part of the point of this is to be compatible
+with i2pd's tunnels configuration.
+
 It doesn't encrypt the .i2pkeys file by default, so if someone can steal them,
 then they can use them to construct tunnels to impersonate you. Experimental
 support for encrypted saves has been added. The idea is that only the person
 with the key will be able to decrypt and start the tunnels. It is up to the user
 to determine how to go about managing these keys.
 
-TCP is working very well. HTTP mode also exists, which just adds the X-I2P-DEST
-headers in. It does this both ways, for applying the dest headers inbound to
-identify clients to the server and outbound to identify servers to clients.
-DestHash's don't get added correctly due to a bug in sam3 I think? I'm working
-on making sure that's what it is. Datagrams are still a work-in-progress.
-They're enabled, but I don't know for sure how well they'll work yet.
-
-I'm in the process of adding client proxying to a specific i2p destination by
-base32 or (pre-added)jump address. TCP works well. UDP exists, but is not
-thoroughly tested.
+TCP and UDP are both working now. Additional functionality might be added by
+adding other kinds of protocols overtop the TCP and UDP tunnels as a primitive.
+A very basic UDP based VPN will be added soon.
 
 I've only enabled the use of a subset of the i2cp and tunnel configuration
 options, the ones I use the most and for no other real reason assume other
@@ -64,7 +59,10 @@ utilities. I've started to do this with samcatd.
 
 I want it to be able to save ini files based on the settings used for a running
 forwarder. Should be easy, I just need to decide how I want to do it. Also to
-focus a bit more.
+focus a bit more. I've got more of a plan here now. tunconf has the loaded ini
+file inside it, and variables to track the state of the config options while
+running, and they can be switched to save options that might be changed via some
+interface or another.
 
 Example tools built using this are being broken off into their own repos. Use
 the other repos where appropriate, so I can leave the examples un-messed with.
