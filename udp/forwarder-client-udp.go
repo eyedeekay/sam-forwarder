@@ -241,7 +241,7 @@ func (f *SAMSSUClientForwarder) Serve() error {
 			return err
 		}
 		log.Println("Forwarding client to i2p address:", f.addr.Base32())
-		go f.forward(f.publishConnection)
+		f.forward(f.publishConnection)
 	}
 }
 

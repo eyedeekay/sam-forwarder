@@ -222,9 +222,9 @@ func (f *SAMSSUForwarder) Serve() error {
 		return err
 	}
 	log.Println("SAM datagram session established.")
-	log.Println("Starting Listener.")
+	log.Println("Starting Forwarder.")
 	b := string(f.SamKeys.Addr().Base32())
-	log.Println("SAM Keys created,", b)
+	log.Println("SAM Keys loaded,", b)
 
 	p, _ := strconv.Atoi(f.TargetPort)
 	f.clientConnection, err = net.DialUDP("udp", nil, &net.UDPAddr{
@@ -237,6 +237,7 @@ func (f *SAMSSUForwarder) Serve() error {
 	log.Printf("Connected to localhost %v\n", f.publishConnection)
 
 	for {
+        log.Println("Accepting connections on:", b)
 		f.forward()
 	}
 }
