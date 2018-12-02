@@ -9,14 +9,15 @@ import (
 	"time"
 )
 
-import "github.com/eyedeekay/sam-forwarder"
-import "github.com/eyedeekay/sam-forwarder/udp"
+import ".."
+import "../udp"
 
 var (
 	port               = "8100"
 	cport              = "8101"
 	uport              = "8102"
 	ucport             = "8103"
+    ssuport            = "8104"
 	udpserveraddr      *net.UDPAddr
 	udplocaladdr       *net.UDPAddr
 	udpserverconn      *net.UDPConn
@@ -115,10 +116,7 @@ func serveudp() {
 		log.Fatal(err.Error())
 	}
 	go ssuforwarder.Serve()
-
-	log.Printf("Serving %s on UDP port: %s %s\n", uport, "and on",
-		ssuforwarder.Base32())
-	log.Fatal(http.ListenAndServe("127.0.0.1:"+uport, nil))
+	log.Printf("Serving on UDP port: %s  and on %s\n", uport, ssuforwarder.Base32())
 }
 
 func clientudp() {
@@ -126,7 +124,7 @@ func clientudp() {
 
 	ssuforwarderclient, err = samforwarderudp.NewSAMSSUClientForwarderFromOptions(
 		samforwarderudp.SetClientHost("127.0.0.1"),
-		samforwarderudp.SetClientPort(ucport),
+		samforwarderudp.SetClientPort(ssuport),
 		samforwarderudp.SetClientSAMHost("127.0.0.1"),
 		samforwarderudp.SetClientSAMPort("7656"),
 		samforwarderudp.SetClientName("testudpclient"),
@@ -135,7 +133,6 @@ func clientudp() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	log.Printf("Connecting %s UDP port: %s %s\n", ucport, "to",
-		forwarder.Base32())
-	go ssuforwarderclient.Serve()
+    go ssuforwarderclient.Serve()
+	log.Printf("Connecting UDP port: %s to %s\n", ucport, ssuforwarder.Base32())
 }

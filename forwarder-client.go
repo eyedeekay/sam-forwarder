@@ -4,8 +4,8 @@ import (
 	"io"
 	"log"
 	"net"
-	"os"
-	"path/filepath"
+	//"os"
+	//"path/filepath"
 	"strings"
 )
 
@@ -68,7 +68,7 @@ type SAMClientForwarder struct {
 	accessList     []string
 }
 
-func (f *SAMClientForwarder) print() []string {
+func (f SAMClientForwarder) print() []string {
 	lsk, lspk, lspsk := f.leasesetsettings()
 	return []string{
 		//f.targetForPort443(),
@@ -97,13 +97,13 @@ func (f *SAMClientForwarder) print() []string {
 	}
 }
 
-func (f *SAMClientForwarder) Cleanup() {
+func (f SAMClientForwarder) Cleanup() {
 	f.connectStream.Close()
 	f.publishConnection.Close()
 	f.samConn.Close()
 }
 
-func (f *SAMClientForwarder) Print() string {
+func (f SAMClientForwarder) Print() string {
 	var r string
 	r += "name=" + f.TunName + "\n"
 	r += "type=" + f.Type + "\n"
@@ -118,7 +118,7 @@ func (f *SAMClientForwarder) Print() string {
 	return r
 }
 
-func (f *SAMClientForwarder) Search(search string) string {
+func (f SAMClientForwarder) Search(search string) string {
 	terms := strings.Split(search, ",")
 	if search == "" {
 		return f.Print()
@@ -131,7 +131,7 @@ func (f *SAMClientForwarder) Search(search string) string {
 	return f.Print()
 }
 
-func (f *SAMClientForwarder) accesslisttype() string {
+func (f SAMClientForwarder) accesslisttype() string {
 	if f.accessListType == "whitelist" {
 		return "i2cp.enableAccessList=true"
 	} else if f.accessListType == "blacklist" {
@@ -142,7 +142,7 @@ func (f *SAMClientForwarder) accesslisttype() string {
 	return ""
 }
 
-func (f *SAMClientForwarder) accesslist() string {
+func (f SAMClientForwarder) accesslist() string {
 	if f.accessListType != "" && len(f.accessList) > 0 {
 		r := ""
 		for _, s := range f.accessList {
@@ -153,7 +153,7 @@ func (f *SAMClientForwarder) accesslist() string {
 	return ""
 }
 
-func (f *SAMClientForwarder) leasesetsettings() (string, string, string) {
+func (f SAMClientForwarder) leasesetsettings() (string, string, string) {
 	var r, s, t string
 	if f.leaseSetKey != "" {
 		r = "i2cp.leaseSetKey=" + f.leaseSetKey
@@ -168,30 +168,30 @@ func (f *SAMClientForwarder) leasesetsettings() (string, string, string) {
 }
 
 // Target returns the host:port of the local service you want to forward to i2p
-func (f *SAMClientForwarder) Target() string {
+func (f SAMClientForwarder) Target() string {
 	return f.TargetHost + ":" + f.TargetPort
 }
 
 // Destination returns the destination of the i2p service you want to forward locally
-func (f *SAMClientForwarder) Destination() string {
+func (f SAMClientForwarder) Destination() string {
 	return f.addr.Base32()
 }
 
-func (f *SAMClientForwarder) sam() string {
+func (f SAMClientForwarder) sam() string {
 	return f.SamHost + ":" + f.SamPort
 }
 
 //Base32 returns the base32 address of the local destination
-func (f *SAMClientForwarder) Base32() string {
+func (f SAMClientForwarder) Base32() string {
 	return f.SamKeys.Addr().Base32()
 }
 
 //Base64 returns the base64 address of the local destiantion
-func (f *SAMClientForwarder) Base64() string {
+func (f SAMClientForwarder) Base64() string {
 	return f.SamKeys.Addr().Base64()
 }
 
-func (f *SAMClientForwarder) forward(conn net.Conn) {
+func (f SAMClientForwarder) forward(conn net.Conn) {
 	client, err := f.connectStream.DialI2P(f.addr)
 	if err != nil {
 		log.Fatalf("Dial failed: %v", err)
@@ -210,7 +210,7 @@ func (f *SAMClientForwarder) forward(conn net.Conn) {
 }
 
 //Serve starts the SAM connection and and forwards the local host:port to i2p
-func (f *SAMClientForwarder) Serve() error {
+func (f SAMClientForwarder) Serve() error {
 	if f.addr, err = f.samConn.Lookup(f.dest); err != nil {
 		return err
 	}
@@ -231,7 +231,7 @@ func (f *SAMClientForwarder) Serve() error {
 }
 
 //Close shuts the whole thing down.
-func (f *SAMClientForwarder) Close() error {
+func (f SAMClientForwarder) Close() error {
 	var err error
 	err = f.samConn.Close()
 	err = f.connectStream.Close()
@@ -297,34 +297,7 @@ func NewSAMClientForwarderFromOptions(opts ...func(*SAMClientForwarder) error) (
 	}
 	log.Println("Destination keys generated, tunnel name:", s.TunName)
 	if s.save {
-		if _, err := os.Stat(filepath.Join(s.FilePath, s.TunName+".i2pkeys")); os.IsNotExist(err) {
-			s.file, err = os.Create(filepath.Join(s.FilePath, s.TunName+".i2pkeys"))
-			if err != nil {
-				return nil, err
-			}
-			err = sam3.StoreKeysIncompat(s.SamKeys, s.file)
-			if err != nil {
-				return nil, err
-			}
-			err = i2pkeys.Encrypt(filepath.Join(s.FilePath, s.TunName+".i2pkeys"), s.passfile)
-			if err != nil {
-				return nil, err
-			}
-		}
-		s.file, err = os.Open(filepath.Join(s.FilePath, s.TunName+".i2pkeys"))
-		if err != nil {
-			return nil, err
-		}
-		err = i2pkeys.Decrypt(filepath.Join(s.FilePath, s.TunName+".i2pkeys"), s.passfile)
-		if err != nil {
-			return nil, err
-		}
-		s.SamKeys, err = sam3.LoadKeysIncompat(s.file)
-		if err != nil {
-			return nil, err
-		}
-		err = i2pkeys.Encrypt(filepath.Join(s.FilePath, s.TunName+".i2pkeys"), s.passfile)
-		if err != nil {
+		if err := i2pkeys.Save(s.FilePath, s.TunName, s.passfile, &s.SamKeys); err != nil {
 			return nil, err
 		}
 	}
