@@ -9,7 +9,7 @@ samhost = sam-host
 samport = 7656
 args = -r
 
-WEB_INTERFACE = -tags webface
+WEB_INTERFACE = -tags "webface netgo"
 
 echo:
 	@echo "$(GOPATH)"
