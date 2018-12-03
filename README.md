@@ -1,4 +1,8 @@
 # sam-forwarder
+
+*think of it as a shell-scriptable re-implementation of i2ptunnel. That's*
+*pretty much it.*
+
 Forward a local port to i2p over the SAM API, or proxy a destination to a port
 on the local host. This is a work-in-progress, but the basic functionality is,
 there and it's already pretty useful. Everything TCP works, but UDP forwarding
@@ -43,7 +47,9 @@ to determine how to go about managing these keys.
 
 TCP and UDP are both working now. Additional functionality might be added by
 adding other kinds of protocols overtop the TCP and UDP tunnels as a primitive.
-A very basic UDP based VPN will be added soon.
+A very basic UDP based VPN will be added soon. Obviously these won't be i2pd
+compatible. Not sure what to do about that, except maybe make a "convert" tool
+that will cull samcatd-specific options.
 
 I've only enabled the use of a subset of the i2cp and tunnel configuration
 options, the ones I use the most and for no other real reason assume other
