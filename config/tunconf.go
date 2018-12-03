@@ -477,3 +477,19 @@ func NewSAMSSUClientForwarderFromConf(config *Conf) (*samforwarderudp.SAMSSUClie
 	return nil, nil
 }
 
+func NewSAMSSUClientForwarderFromConfig(iniFile, SamHost, SamPort string, label ...string) (*samforwarderudp.SAMSSUClientForwarder, error) {
+    if iniFile != "none" {
+		config, err := NewI2PTunConf(iniFile, label...)
+		if err != nil {
+			return nil, err
+		}
+		if SamHost != "" && SamHost != "127.0.0.1" && SamHost != "localhost" {
+			config.SamHost = config.GetSAMHost(SamHost, config.SamHost)
+		}
+		if SamPort != "" && SamPort != "7656" {
+			config.SamPort = config.GetSAMPort(SamPort, config.SamPort)
+		}
+		return NewSAMSSUClientForwarderFromConf(config)
+	}
+	return nil, nil
+}
