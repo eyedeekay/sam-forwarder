@@ -11,6 +11,7 @@ import (
 
 import (
 	"github.com/eyedeekay/sam-forwarder"
+    "github.com/eyedeekay/sam-forwarder/csvpn"
 	"github.com/eyedeekay/sam-forwarder/udp"
 	"github.com/zieckey/goini"
 )
@@ -490,7 +491,7 @@ func NewSAMVPNClientForwarderFromConfig(iniFile, SamHost, SamPort string, label 
 		if SamPort != "" && SamPort != "7656" {
 			config.SamPort = config.GetSAMPort(SamPort, config.SamPort)
 		}
-		return NewSAMClientServerVPN(config)
+		return samforwardervpn.NewSAMClientServerVPN(config)
 	}
 	return nil, nil
 }
@@ -508,7 +509,7 @@ func NewSAMVPNForwarderFromConfig(iniFile, SamHost, SamPort string, label ...str
 		if SamPort != "" && SamPort != "7656" {
 			config.SamPort = config.GetSAMPort(SamPort, config.SamPort)
 		}
-		return NewSAMClientVPN(config)
+		return samforwardervpn.NewSAMClientVPN(config)
 	}
 	return nil, nil
 }
