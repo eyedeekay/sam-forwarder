@@ -58,6 +58,7 @@ type Conf struct {
 	AccessList                []string
 	MessageReliability        string
 	exists                    bool
+	VPN                       bool
 }
 
 // Print returns and prints a formatted list of configured tunnel settings.

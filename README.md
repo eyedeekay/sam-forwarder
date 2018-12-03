@@ -9,6 +9,10 @@ there and it's already pretty useful. Everything TCP works, but UDP forwarding
 has much less real use than TCP. Turns out UDP was less broken than I thought
 though. Yay.
 
+Since it seems to be doing UDP now, if you'd like to donate to further
+development there are some wallet addresses at the bottom of this readme for
+now.
+
 ## building
 Just:
 
@@ -82,3 +86,14 @@ TLS configuration is experimental.
 
 I'm eventually going to make the manager implement net.Conn. This won't be
 exposed in the default application probably though, but rather as a library.
+
+Donate
+------
+
+### Monero Wallet Address
+
+  XMR:43V6cTZrUfAb9JD6Dmn3vjdT9XxLbiE27D1kaoehb359ACaHs8191mR4RsJH7hGjRTiAoSwFQAVdsCBToXXPAqTMDdP2bZB
+
+### Bitcoin Wallet Address
+
+  BTC:159M8MEUwhTzE9RXmcZxtigKaEjgfwRbHt
