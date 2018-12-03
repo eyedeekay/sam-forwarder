@@ -1,4 +1,4 @@
-package i2pvpn
+package samforwardervpn
 
 import (
 	"github.com/eyedeekay/sam-forwarder/config"

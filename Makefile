@@ -16,9 +16,9 @@ echo:
 	find . -path ./.go -prune -o -name "*.go" -exec gofmt -w {} \;
 	find . -path ./.go -prune -o -name "*.i2pkeys" -exec rm {} \;
 
-test: test-ntcp test-ssu test-vpn test-config test-manager
+test: test-ntcp test-ssu test-config test-manager
 
-full-test: test-serve test
+full-test: test-serve test-vpn test
 
 test-serve:
 	cd serve_test && go test

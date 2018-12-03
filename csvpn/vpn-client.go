@@ -1,11 +1,14 @@
-package i2pvpn
+package samforwardervpn
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"io"
 	"log"
 	"os"
+	"os/signal"
+	"syscall"
 	"time"
 
 	"github.com/eyedeekay/sam-forwarder/config"
@@ -85,7 +88,15 @@ func NewSAMClientVPNFromOptions(opts ...func(*SAMClientVPN) error) (*SAMClientVP
 	}
 	var logBuf bytes.Buffer
 	Logger := log.New(io.MultiWriter(os.Stderr, &logBuf), "", log.Ldate|log.Ltime|log.Lshortfile)
-	s.VPNTunnel = udptunnel.NewTunnel(!s.Config.Client, s.Config.TunName, "10.76.0.2", s.Target(), "", []uint16{},
+	ctx, cancel := context.WithCancel(context.Background())
+	go func() {
+		sigc := make(chan os.Signal, 1)
+		signal.Notify(sigc, syscall.SIGINT, syscall.SIGTERM)
+		Logger.Printf("received %v - initiating shutdown", <-sigc)
+		cancel()
+	}()
+	s.VPNTunnel = udptunnel.NewTunnel(!s.Config.Client, s.Config.TunName, "10.76.0.3", s.Target(), "", []uint16{},
 		"i2pvpn", time.Duration(time.Second*300), Logger)
+	go s.VPNTunnel.Run(ctx)
 	return &s, nil
 }

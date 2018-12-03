@@ -477,8 +477,8 @@ func NewSAMSSUClientForwarderFromConf(config *Conf) (*samforwarderudp.SAMSSUClie
 	return nil, nil
 }
 
-// NewSAMSSUClientForwarderFromConfig generates a new SAMSSUForwarder from a config file
-func NewSAMSSUClientForwarderFromConfig(iniFile, SamHost, SamPort string, label ...string) (*samforwarderudp.SAMSSUClientForwarder, error) {
+// NewSAMVPNClientForwarderFromConfig generates a new SAMVPNForwarder from a config file
+func NewSAMVPNClientForwarderFromConfig(iniFile, SamHost, SamPort string, label ...string) (*samforwardervpn.SAMClientServerVPN, error) {
 	if iniFile != "none" {
 		config, err := NewI2PTunConf(iniFile, label...)
 		if err != nil {
@@ -490,7 +490,25 @@ func NewSAMSSUClientForwarderFromConfig(iniFile, SamHost, SamPort string, label 
 		if SamPort != "" && SamPort != "7656" {
 			config.SamPort = config.GetSAMPort(SamPort, config.SamPort)
 		}
-		return NewSAMSSUClientForwarderFromConf(config)
+		return NewSAMClientServerVPN(config)
+	}
+	return nil, nil
+}
+
+// NewSAMVPNForwarderFromConfig generates a new SAMVPNForwarder from a config file
+func NewSAMVPNForwarderFromConfig(iniFile, SamHost, SamPort string, label ...string) (*samforwardervpn.SAMClientVPN, error) {
+	if iniFile != "none" {
+		config, err := NewI2PTunConf(iniFile, label...)
+		if err != nil {
+			return nil, err
+		}
+		if SamHost != "" && SamHost != "127.0.0.1" && SamHost != "localhost" {
+			config.SamHost = config.GetSAMHost(SamHost, config.SamHost)
+		}
+		if SamPort != "" && SamPort != "7656" {
+			config.SamPort = config.GetSAMPort(SamPort, config.SamPort)
+		}
+		return NewSAMClientVPN(config)
 	}
 	return nil, nil
 }

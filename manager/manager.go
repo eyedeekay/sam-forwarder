@@ -9,6 +9,7 @@ import (
 import (
 	"github.com/eyedeekay/sam-forwarder"
 	"github.com/eyedeekay/sam-forwarder/config"
+	"github.com/eyedeekay/sam-forwarder/csvpn"
 	"github.com/eyedeekay/sam-forwarder/udp"
 )
 
@@ -31,6 +32,8 @@ type SAMManager struct {
 	clientforwarders    []*samforwarder.SAMClientForwarder
 	udpforwarders       []*samforwarderudp.SAMSSUForwarder
 	udpclientforwarders []*samforwarderudp.SAMSSUClientForwarder
+	vpnforwarders       []*samforwardervpn.SAMClientServerVPN
+	vpnclientforwarders []*samforwardervpn.SAMClientVPN
 }
 
 func stringify(s []string) string {
@@ -239,6 +242,22 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 				} else {
 					return nil, fmt.Errorf(e.Error())
 				}
+            /*
+            case "vpnserver":
+				if f, e := i2ptunconf.NewSAMSSUForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label); e == nil {
+					log.Println("found udpserver under", label)
+					s.udpforwarders = append(s.udpforwarders, f)
+				} else {
+					return nil, fmt.Errorf(e.Error())
+				}
+			case "vpnclient":
+				if f, e := i2ptunconf.NewSAMSSUClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label); e == nil {
+					log.Println("found udpclient under", label)
+					s.udpclientforwarders = append(s.udpclientforwarders, f)
+				} else {
+					return nil, fmt.Errorf(e.Error())
+				}
+            */
 			default:
 				if f, e := i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label); e == nil {
 					log.Println("found server under", label)
@@ -291,6 +310,22 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 			} else {
 				return nil, fmt.Errorf(e.Error())
 			}
+        /*
+        case "vpnserver":
+			if f, e := i2ptunconf.NewSAMSSUForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort); e == nil {
+				log.Println("found default udpserver")
+				s.udpforwarders = append(s.udpforwarders, f)
+			} else {
+				return nil, fmt.Errorf(e.Error())
+			}
+		case "vpnclient":
+			if f, e := i2ptunconf.NewSAMSSUClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort); e == nil {
+				log.Println("found default udpclient")
+				s.udpclientforwarders = append(s.udpclientforwarders, f)
+			} else {
+				return nil, fmt.Errorf(e.Error())
+			}
+        */
 		default:
 			if f, e := i2ptunconf.NewSAMClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort); e == nil {
 				log.Println("found default client")
