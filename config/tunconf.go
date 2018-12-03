@@ -478,7 +478,7 @@ func NewSAMSSUClientForwarderFromConf(config *Conf) (*samforwarderudp.SAMSSUClie
 }
 
 func NewSAMSSUClientForwarderFromConfig(iniFile, SamHost, SamPort string, label ...string) (*samforwarderudp.SAMSSUClientForwarder, error) {
-    if iniFile != "none" {
+	if iniFile != "none" {
 		config, err := NewI2PTunConf(iniFile, label...)
 		if err != nil {
 			return nil, err
