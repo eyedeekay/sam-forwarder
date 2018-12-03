@@ -85,3 +85,21 @@ func NewSAMClientServerVPNFromOptions(opts ...func(*SAMClientServerVPN) error) (
 	go s.VPNTunnel.Run(ctx)
 	return &s, nil
 }
+
+// NewSAMVPNClientForwarderFromConfig generates a new SAMVPNForwarder from a config file
+func NewSAMVPNForwarderFromConfig(iniFile, SamHost, SamPort string, label ...string) (*SAMClientServerVPN, error) {
+	if iniFile != "none" {
+		config, err := i2ptunconf.NewI2PTunConf(iniFile, label...)
+		if err != nil {
+			return nil, err
+		}
+		if SamHost != "" && SamHost != "127.0.0.1" && SamHost != "localhost" {
+			config.SamHost = config.GetSAMHost(SamHost, config.SamHost)
+		}
+		if SamPort != "" && SamPort != "7656" {
+			config.SamPort = config.GetSAMPort(SamPort, config.SamPort)
+		}
+		return NewSAMClientServerVPN(config)
+	}
+	return nil, nil
+}
