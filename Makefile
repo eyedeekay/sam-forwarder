@@ -196,17 +196,17 @@ example-config:
 
 docker-build:
 	docker build --no-cache \
-		--build-arg user=$(eephttpd) \
+		--build-arg user=$(samcatd) \
 		--build-arg path=example/www \
 		-f Dockerfile \
-		-t eyedeekay/$(eephttpd) .
+		-t eyedeekay/$(samcatd) .
 
 docker-volume:
 	docker run -i -t -d \
-		--name $(eephttpd)-volume \
-		--volume $(eephttpd):/home/$(eephttpd)/ \
-		eyedeekay/$(eephttpd); true
-	docker stop $(eephttpd)-volume; true
+		--name $(samcatd)-volume \
+		--volume $(samcatd):/home/$(samcatd)/ \
+		eyedeekay/$(samcatd); true
+	docker stop $(samcatd)-volume; true
 
 docker-run: docker-volume
 	docker rm -f eephttpd; true
@@ -215,19 +215,19 @@ docker-run: docker-volume
 		--env samhost=$(samhost) \
 		--env samport=$(samport) \
 		--env args=$(args) \
-		--network-alias $(eephttpd) \
-		--hostname $(eephttpd) \
-		--name $(eephttpd) \
+		--network-alias $(samcatd) \
+		--hostname $(samcatd) \
+		--name $(samcatd) \
 		--restart always \
-		--volumes-from $(eephttpd)-volume \
-		eyedeekay/$(eephttpd)
+		--volumes-from $(samcatd)-volume \
+		eyedeekay/$(samcatd)
 	make follow
 
 c:
 	go build ./i2pkeys
 
 follow:
-	docker logs -f $(eephttpd)
+	docker logs -f $(samcatd)
 
 docker: docker-build docker-volume docker-run
 
