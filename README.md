@@ -7,7 +7,8 @@ Forward a local port to i2p over the SAM API, or proxy a destination to a port
 on the local host. This is a work-in-progress, but the basic functionality is,
 there and it's already pretty useful. Everything TCP works, but UDP forwarding
 has much less real use than TCP. Turns out UDP was less broken than I thought
-though. Yay.
+though. Yay. There's also a simple client-server VPN built on top of it,
+eventually, it will be replaced with a peer-to-peer version.
 
 Since it seems to be doing UDP now, if you'd like to donate to further
 development there are some wallet addresses at the bottom of this readme for
@@ -67,7 +68,11 @@ TCP and UDP are both working now. Additional functionality might be added by
 adding other kinds of protocols overtop the TCP and UDP tunnels as a primitive.
 There's a very basic UDP-based VPN available in samcatd by configuration-file
 only for now. Also it requires root. Probably need to split the VPN part into
-it's own application.
+it's own application. The package will need to give the application
+CAP\_NET\_BIND\_SERVICE or something. This might work:
+
+        sudo setcap cap_net_bind_service=epi ./bin/samcatd
+        sudo setcap cap_net_bind_service=epi ./bin/samcatd-web
 
 I've only enabled the use of a subset of the i2cp and tunnel configuration
 options, the ones I use the most and for no other real reason assume other
@@ -100,6 +105,14 @@ TLS configuration is experimental.
 
 I'm eventually going to make the manager implement net.Conn. This won't be
 exposed in the default application probably though, but rather as a library.
+
+## Stuff that's using it:
+
+Mostly mine, but this is all Free-as-in-Freedom for anyone to use:
+
+  * [eephttpd](https://github.com/eyedeekay/eephttpd)
+  * [my fork of wikigopher](https://github.com/eyedeekay/wikigopher)
+  * [orangeforum](https://github.com/s-gv/orangeforum)
 
 Donate
 ------
