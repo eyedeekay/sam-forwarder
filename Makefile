@@ -211,6 +211,7 @@ docker-volume:
 docker-run: docker-volume
 	docker rm -f eephttpd; true
 	docker run -i -t -d \
+		--cap-add "net_bind_service" \
 		--network $(network) \
 		--env samhost=$(samhost) \
 		--env samport=$(samport) \
