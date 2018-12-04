@@ -22,7 +22,7 @@ and it will be in the folder ./bin/
 
 [![Build Status](https://travis-ci.org/eyedeekay/sam-forwarder.svg?branch=master)](https://travis-ci.org/eyedeekay/sam-forwarder)
 
-## [usage/configuration](USAGE.md)
+## [usage/configuration](docs/USAGE.md)
 
 ## binaries
 
@@ -36,12 +36,13 @@ Current limitations:
 ====================
 
 I need to document it better.
-[Besides fixing up the comments, this should help for now.](USAGE.md). I also
-need to control output verbosity better.
+[Besides fixing up the comments, this should help for now.](docs/USAGE.md). I
+also need to control output verbosity better.
 
 I need samcatd to accept a configuration folder identical to
 /etc/i2pd/tunnels.conf.d, since part of the point of this is to be compatible
-with i2pd's tunnels configuration.
+with i2pd's tunnels configuration. Once this is done, I'll resume turning it
+into a .deb package.
 
 It doesn't encrypt the .i2pkeys file by default, so if someone can steal them,
 then they can use them to construct tunnels to impersonate you. Experimental
@@ -51,9 +52,9 @@ to determine how to go about managing these keys.
 
 TCP and UDP are both working now. Additional functionality might be added by
 adding other kinds of protocols overtop the TCP and UDP tunnels as a primitive.
-A very basic UDP based VPN will be added soon. Obviously these won't be i2pd
-compatible. Not sure what to do about that, except maybe make a "convert" tool
-that will cull samcatd-specific options.
+There's a very basic UDP-based VPN available in samcatd by configuration-file
+only for now. Also it requires root. Probably need to split the VPN part into
+it's own application.
 
 I've only enabled the use of a subset of the i2cp and tunnel configuration
 options, the ones I use the most and for no other real reason assume other

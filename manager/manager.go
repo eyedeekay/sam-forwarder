@@ -308,7 +308,6 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 			} else {
 				return nil, fmt.Errorf(e.Error())
 			}
-
 		case "vpnserver":
 			if f, e := samforwardervpn.NewSAMVPNForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort); e == nil {
 				log.Println("found default vpnserver")

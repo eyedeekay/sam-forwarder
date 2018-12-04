@@ -191,7 +191,7 @@ example-config:
 	cat etc/samcatd/tunnels.ini >> USAGE.md
 	@echo '```' >> USAGE.md
 	@echo "" >> USAGE.md
-	cp USAGE.md docs/USAGE.md
+	mv USAGE.md docs/USAGE.md
 
 
 docker-build:

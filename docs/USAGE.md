@@ -97,6 +97,8 @@ Usage of ./bin/samcatd:
   -accesslist value
     	Specify an access list member(can be used multiple times)
   -c	Client proxy mode(true or false)
+  -conv string
+    	Display the base32 and base64 values of a specified .i2pkeys file
   -cr string
     	Encrypt/decrypt the key files with a passfile
   -css string

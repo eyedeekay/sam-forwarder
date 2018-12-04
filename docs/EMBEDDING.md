@@ -7,11 +7,11 @@ with this process, the samforwarder/config/ file has a bunch of helper
 functions and a class for parsing configuration files directly. You can import
 it, add a few flags(or however you configure your service) and fire off the
 forwarder as a goroutne, all you have to do is configure it to forward the port
-used by your service. This makes it extremely easy to do, but in my opinion, it
-should only be used in this way for applications that would already be safe to
-host as services in i2p or other overlay networks. That means avoiding the risk
-of out-of-band communication accidentally, such as by making the server retrieve
-a resource from a clearnet service.
+used by your service. This makes it extremely easy to do, but it should only be
+used in this way for applications that would already be safe to host as services
+in i2p or other overlay networks. In particular, it should only be used for
+applications that don't require extensive login information and do not leak
+information at the application layer.
 
 So without further ado, a blatant copy-paste of information that shouldn't have
 been in the README.md.
@@ -74,3 +74,5 @@ func main() {																			func main() {
 ```
 
 [This tiny file server taken from here and used for this example](https://gist.github.com/paulmach/7271283)
+
+## Integrating your Go web application with i2p using sam-forwarder
