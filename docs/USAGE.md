@@ -220,7 +220,7 @@ i2cp.enableWhiteList = false
 i2cp.enableBlackList = false
 keyfile = "/usr/share/samcatd/samcatd"
 
-#[sam-forwarder]
+#[sam-forwarder-tcp-server]
 #type = server
 #host = 127.0.0.1
 #port = 8081
@@ -228,7 +228,7 @@ keyfile = "/usr/share/samcatd/samcatd"
 #outbound.length = 3
 #keys = forwarder
 
-[sam-forwarder-two]
+[sam-forwarder-tcp-client]
 type = client
 host = 127.0.0.1
 port = 8082
@@ -237,7 +237,15 @@ outbound.length = 3
 destination = i2p-projekt.i2p
 keys = forwarder-two
 
-#[sam-forwarder-three]
+#[sam-forwarder-udp-server]
+#type = udpserver
+#host = 127.0.0.1
+#port = 8084
+#inbound.length = 6
+#outbound.length = 3
+#keys = forwarder-four
+
+#[sam-forwarder-udp-client]
 #type = udpclient
 #host = 127.0.0.1
 #port = 8083
@@ -246,20 +254,44 @@ keys = forwarder-two
 #destination = i2p-projekt.i2p
 #keys = forwarder-three
 
-#[sam-forwarder-four]
-#type = udpserver
-#host = 127.0.0.1
-#port = 8084
-#inbound.length = 6
-#outbound.length = 3
-#keys = forwarder-four
-
-#[sam-forwarder-five]
+#[sam-forwarder-tcp-http-server]
 #type = http
 #host = 127.0.0.1
 #port = 8085
 #inbound.length = 3
 #outbound.length = 3
 #keys = forwarder-five
+
+#[sam-forwarder-vpn-server]
+#type = udpserver
+#host = 127.0.0.1
+#port = 8084
+#inbound.length = 2
+#outbound.length = 2
+#inbound.backupQuantity = 3
+#outbound.backupQuantity = 3
+#inbound.quantity = 5
+#outbound.quantity = 5
+#i2cp.reduceOnIdle = true
+#i2cp.reduceIdleTime = 3000000
+#i2cp.reduceQuantity = 2
+#i2cp.closeOnIdle = false
+#keys = i2pvpnserver
+
+#[sam-forwarder-vpn-client]
+#type = udpclient
+#host = 127.0.0.1
+#port = 8085
+#inbound.length = 2
+#outbound.length = 2
+#inbound.backupQuantity = 3
+#outbound.backupQuantity = 3
+#inbound.quantity = 5
+#outbound.quantity = 5
+#i2cp.reduceOnIdle = true
+#i2cp.reduceIdleTime = 3000000
+#i2cp.reduceQuantity = 2
+#destination = adestinationisrequiredorbespecifiedatruntime.i2p
+#keys = i2pvpnclient
 ```
 
