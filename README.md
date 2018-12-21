@@ -74,6 +74,9 @@ CAP\_NET\_BIND\_SERVICE or something. This might work:
         sudo setcap cap_net_bind_service=epi ./bin/samcatd
         sudo setcap cap_net_bind_service=epi ./bin/samcatd-web
 
+But I need to learn more about capabilities before I make that part of the
+thing.
+
 I've only enabled the use of a subset of the i2cp and tunnel configuration
 options, the ones I use the most and for no other real reason assume other
 people use the most. They're pretty easy to add, it's just boring. *If you*

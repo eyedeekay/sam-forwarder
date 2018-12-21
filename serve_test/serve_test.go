@@ -8,12 +8,23 @@ import (
 	"time"
 )
 
+var longcount = 60
+
+func countdown(i int) {
+    for i > 0 {
+        time.Sleep(1*time.Second)
+        i--
+        log.Println("waiting", i, "more seconds.")
+    }
+}
+
 func TestTCP(t *testing.T) {
 	go serve()
-	time.Sleep(time.Duration(30 * time.Second))
+    countdown(longcount)
 	go client()
-	time.Sleep(time.Duration(30 * time.Second))
+	countdown(longcount)
 	resp, err := http.Get("http://127.0.0.1:" + cport + "/test.html")
+    log.Println("requesting http://127.0.0.1:" + cport + "/test.html")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -22,11 +33,11 @@ func TestTCP(t *testing.T) {
 
 func TestUDP(t *testing.T) {
 	go echo()
-	time.Sleep(time.Duration(3 * time.Second))
+	countdown(3)
 	go serveudp()
-	time.Sleep(time.Duration(30 * time.Second))
+	countdown(longcount)
 	go clientudp()
-	time.Sleep(time.Duration(30 * time.Second))
+	countdown(longcount)
 	setupudp()
 
 	conn, err := net.DialUDP("udp", udplocaladdr, ssulocaladdr)

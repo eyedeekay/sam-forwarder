@@ -18,6 +18,8 @@ echo:
 
 test: test-ntcp test-ssu test-config test-manager
 
+long-test: test-serve test
+
 full-test: test-serve test-vpn test
 
 test-serve:
