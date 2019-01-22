@@ -11,20 +11,20 @@ import (
 var longcount = 60
 
 func countdown(i int) {
-    for i > 0 {
-        time.Sleep(1*time.Second)
-        i--
-        log.Println("waiting", i, "more seconds.")
-    }
+	for i > 0 {
+		time.Sleep(1 * time.Second)
+		i--
+		log.Println("waiting", i, "more seconds.")
+	}
 }
 
 func TestTCP(t *testing.T) {
 	go serve()
-    countdown(longcount)
+	countdown(longcount)
 	go client()
 	countdown(longcount)
 	resp, err := http.Get("http://127.0.0.1:" + cport + "/test.html")
-    log.Println("requesting http://127.0.0.1:" + cport + "/test.html")
+	log.Println("requesting http://127.0.0.1:" + cport + "/test.html")
 	if err != nil {
 		t.Fatal(err)
 	}

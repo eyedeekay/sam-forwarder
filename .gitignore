@@ -3,3 +3,4 @@ bin/*
 .go
 *.i2pkeys
 */*.i2pkeys
+README.md.asc

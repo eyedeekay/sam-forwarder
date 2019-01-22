@@ -1,8 +1,5 @@
 # sam-forwarder
 
-*think of it as a shell-scriptable re-implementation of i2ptunnel. That's*
-*pretty much it.*
-
 Forward a local port to i2p over the SAM API, or proxy a destination to a port
 on the local host. This is a work-in-progress, but the basic functionality is,
 there and it's already pretty useful. Everything TCP works, but UDP forwarding
@@ -62,7 +59,8 @@ It doesn't encrypt the .i2pkeys file by default, so if someone can steal them,
 then they can use them to construct tunnels to impersonate you. Experimental
 support for encrypted saves has been added. The idea is that only the person
 with the key will be able to decrypt and start the tunnels. It is up to the user
-to determine how to go about managing these keys.
+to determine how to go about managing these keys. Right now this system is
+pretty bad. I'll be addressing that soon too.
 
 TCP and UDP are both working now. Additional functionality might be added by
 adding other kinds of protocols overtop the TCP and UDP tunnels as a primitive.
@@ -105,9 +103,6 @@ figure I give it a web interface to configure stuff with. I'll probably put that
 in a different repo though. This is looking a little cluttered.
 
 TLS configuration is experimental.
-
-I'm eventually going to make the manager implement net.Conn. This won't be
-exposed in the default application probably though, but rather as a library.
 
 ## Stuff that's using it:
 
