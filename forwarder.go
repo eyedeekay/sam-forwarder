@@ -278,8 +278,6 @@ func (f SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 			} else {
 				log.Println("Error: ", requestbytes, err)
 			}
-			//f.clientUnlockAndClose(true, false, client)
-			//f.connUnlockAndClose(false, true, conn)
 		} else {
 			defer client.Close()
 			defer conn.Close()
@@ -296,8 +294,6 @@ func (f SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 			} else {
 				log.Println("Response Error: ", responsebytes, err)
 			}
-			//f.clientUnlockAndClose(false, true, client)
-			//f.connUnlockAndClose(true, false, conn)
 		} else {
 			defer client.Close()
 			defer conn.Close()

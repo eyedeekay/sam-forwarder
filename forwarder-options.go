@@ -8,7 +8,7 @@ import (
 //Option is a SAMForwarder Option
 type Option func(*SAMForwarder) error
 
-//SetFilePath sets the host of the SAMForwarder's SAM bridge
+//SetFilePath sets the path to save the config file at.
 func SetFilePath(s string) func(*SAMForwarder) error {
 	return func(c *SAMForwarder) error {
 		c.FilePath = s
@@ -37,7 +37,7 @@ func SetSaveFile(b bool) func(*SAMForwarder) error {
 	}
 }
 
-//SetHost sets the host of the SAMForwarder's SAM bridge
+//SetHost sets the host of the service to forward
 func SetHost(s string) func(*SAMForwarder) error {
 	return func(c *SAMForwarder) error {
 		c.TargetHost = s
@@ -45,7 +45,7 @@ func SetHost(s string) func(*SAMForwarder) error {
 	}
 }
 
-//SetPort sets the port of the SAMForwarder's SAM bridge using a string
+//SetPort sets the port of the service to forward
 func SetPort(s string) func(*SAMForwarder) error {
 	return func(c *SAMForwarder) error {
 		port, err := strconv.Atoi(s)

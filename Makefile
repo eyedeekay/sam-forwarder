@@ -15,6 +15,7 @@ echo:
 	@echo "$(GOPATH)"
 	find . -path ./.go -prune -o -name "*.go" -exec gofmt -w {} \;
 	find . -path ./.go -prune -o -name "*.i2pkeys" -exec rm {} \;
+	find . -path ./.go -prune -o -name "*.go" -exec cat {} \; | nl
 
 test: test-ntcp test-ssu test-config test-manager
 
@@ -243,3 +244,14 @@ visit:
 
 forward:
 	./bin/ephsite -client -dest i2p-projekt.i2p
+
+gojs:
+	go get -u github.com/gopherjs/gopherjs
+
+GOPHERJS=$(GOPATH)/bin/gopherjs
+
+js:
+	mkdir -p bin
+	$(GOPHERJS) build -v --tags netgo \
+		-o ./bin/$(samcatd).js \
+		./daemon/*.go
