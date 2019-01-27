@@ -1,13 +1,24 @@
 
-GOPATH = $(PWD)/.go
+GOPATH=$(HOME)/go
 
 appname = ephsite
+packagename = sam-forwarder
 eephttpd = eephttpd
 samcatd = samcatd
 network = si
 samhost = sam-host
 samport = 7656
 args = -r
+
+PREFIX := /
+VAR := var/
+RUN := run/
+LIB := lib/
+LOG := log/
+ETC := etc/
+USR := usr/
+LOCAL := local/
+VERSION := 0.1
 
 WEB_INTERFACE = -tags "webface netgo"
 
@@ -16,6 +27,8 @@ echo:
 	find . -path ./.go -prune -o -name "*.go" -exec gofmt -w {} \;
 	find . -path ./.go -prune -o -name "*.i2pkeys" -exec rm {} \;
 	find . -path ./.go -prune -o -name "*.go" -exec cat {} \; | nl
+	find ./debian -type f -exec sed -i 's|lair repo key|eyedeekay|g' {} \;
+	find ./debian -type f -exec sed -i 's|eyedeekay@safe-mail.net|hankhill19580@gmail.com|g' {} \;
 
 test: test-ntcp test-ssu test-config test-manager
 
@@ -72,6 +85,16 @@ webdep:
 
 build: clean bin/$(appname)
 
+install: bin/$(appname) bin/$(samcatd) bin/$(samcatd)-web
+	install -m755 ./bin/$(appname) $(PREFIX)$(USR)$(LOCAL)/bin/
+	install -m755 ./bin/$(samcatd) $(PREFIX)$(USR)$(LOCAL)/bin/
+	install -m755 ./bin/$(samcatd)-web $(PREFIX)$(USR)$(LOCAL)/bin/
+	install -m644 ./etc/init.d/samcatd $(PREFIX)$(ETC)/init.d
+	install -m644 ./etc/samcatd/tunnels.ini $(PREFIX)$(ETC)/samcatd/
+	install -m644 ./etc/sam-forwarder/tunnels.ini $(PREFIX)$(ETC)/sam-forwarder/
+	install -m644 ./etc/i2pvpn/i2pvpn.ini $(PREFIX)$(ETC)/i2pvpn/
+	install -m644 ./etc/i2pvpn/i2pvpnclient.ini $(PREFIX)$(ETC)/i2pvpn/
+
 bin/$(appname):
 	mkdir -p bin
 	cd main && go build -a -tags netgo -ldflags '-w -extldflags "-static"' -o ../bin/$(appname)
@@ -102,7 +125,7 @@ bin/$(samcatd)-web:
 
 all: daemon build server
 
-clean-all: clean clean-server
+clean-all: clean clean-server clean-daemon clean-daemon-web
 
 clean:
 	rm -f bin/$(appname)
@@ -120,7 +143,7 @@ noopts: clean
 	mkdir -p bin
 	cd main && go build -o ../bin/$(appname)
 
-install:
+install-forwarder:
 	install -m755 bin/ephsite /usr/local/bin/ephsite
 
 install-server:
@@ -253,5 +276,14 @@ GOPHERJS=$(GOPATH)/bin/gopherjs
 js:
 	mkdir -p bin
 	$(GOPHERJS) build -v --tags netgo \
-		-o ./bin/$(samcatd).js \
+		-o ./javascript/$(samcatd).js \
 		./daemon/*.go
+
+cleantar:
+	rm -f ../$(packagename)_$(VERSION).orig.tar.xz
+
+tar:
+	tar --exclude .git \
+		--exclude .go \
+		--exclude bin \
+		-cJvf ../$(packagename)_$(VERSION).orig.tar.xz .
