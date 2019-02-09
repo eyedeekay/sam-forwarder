@@ -19,7 +19,7 @@ func TestKeysGenLoad(t *testing.T) {
     if err != nil {
 		t.Fatal(err)
 	}
-    err = Save("./", "test", "", sk)
+    err = Save("./", "test", "", &sk)
 	if err != nil {
 		t.Fatal(err)
 	}

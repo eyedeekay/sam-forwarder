@@ -108,25 +108,21 @@ func Save(FilePath, TunName, passfile string, SamKeys *sam3.I2PKeys) error {
 	return nil
 }
 
-func Load(FilePath, TunName, passfile string, samConn *sam3.SAM) (*sam3.I2PKeys, error) {
+func Load(FilePath, TunName, passfile string, samConn *sam3.SAM) (sam3.I2PKeys, error) {
     if _, err := os.Stat(filepath.Join(FilePath, TunName+".i2pkeys")); os.IsNotExist(err) {
         SamKeys, err := samConn.NewKeys()
         if err != nil {
-            return nil, err
+            return sam3.I2PKeys{}, err
         }
-		return &SamKeys, nil
+		return SamKeys, nil
 	}
 	file, err := os.Open(filepath.Join(FilePath, TunName+".i2pkeys"))
 	if err != nil {
-		return nil, err
+		return sam3.I2PKeys{}, err
 	}
 	err = Decrypt(filepath.Join(FilePath, TunName+".i2pkeys"), passfile)
 	if err != nil {
-		return nil, err
+		return sam3.I2PKeys{}, err
 	}
-	SamKeys, err := sam3.LoadKeysIncompat(file)
-    if err != nil {
-		return nil, err
-	}
-	return &SamKeys, nil
+	return sam3.LoadKeysIncompat(file)
 }
