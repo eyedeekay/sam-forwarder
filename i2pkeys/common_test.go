@@ -24,13 +24,20 @@ func TestKeysGenLoad(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+}
+
+func TestKeysGenLoadAgain(t *testing.T) {
+	sc, err := sam3.NewSAM("127.0.0.1:7656")
+	if err != nil {
+		t.Fatal(err)
+	}
 	log.Println("Saved tunnel keys")
-	sk, err = Load("./", "test", "", sc)
+	sk, err := Load("./", "test", "", sc)
 	if err != nil {
 		t.Fatal(err)
 	}
 	log.Println("Loaded tunnel keys 2")
-	err = Save("./", "test", "", sk)
+	err = Save("./", "test2", "", sk)
 	if err != nil {
 		t.Fatal(err)
 	}
