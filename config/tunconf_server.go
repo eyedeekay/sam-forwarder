@@ -124,4 +124,3 @@ func NewSAMSSUForwarderFromConfig(iniFile, SamHost, SamPort string, label ...str
 	}
 	return nil, nil
 }
-

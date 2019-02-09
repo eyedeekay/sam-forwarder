@@ -402,7 +402,7 @@ func NewSAMForwarderFromOptions(opts ...func(*SAMForwarder) error) (*SAMForwarde
 	}
 	log.Println("Destination keys generated, tunnel name:", s.TunName)
 	if s.save {
-		if err := i2pkeys.Save(s.FilePath, s.TunName, s.passfile, &s.SamKeys); err != nil {
+		if err := i2pkeys.Save(s.FilePath, s.TunName, s.passfile, s.SamKeys); err != nil {
 			return nil, err
 		}
 	}

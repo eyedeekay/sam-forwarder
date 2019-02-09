@@ -18,21 +18,21 @@ func Decrypt(i2pkeypath, aeskeypath string) error {
 	return i2pkeyscrypt.DecryptKey(i2pkeypath, aeskeypath)
 }
 
-func Save(FilePath, TunName, passfile string, SamKeys *sam3.I2PKeys) error {
+func Save(FilePath, TunName, passfile string, SamKeys sam3.I2PKeys) error {
 	if _, err := os.Stat(filepath.Join(FilePath, TunName+".i2pkeys")); os.IsNotExist(err) {
 		file, err := os.Create(filepath.Join(FilePath, TunName+".i2pkeys"))
 		if err != nil {
 			return err
 		}
-		err = sam3.StoreKeysIncompat(*SamKeys, file)
+		err = sam3.StoreKeysIncompat(SamKeys, file)
 		if err != nil {
 			return err
 		}
 		//err = Encrypt(filepath.Join(FilePath, TunName+".i2pkeys"), passfile)
 		//if err != nil {
-			//return err
+		//return err
 		//}
-        return nil
+		return nil
 	}
 	file, err := os.Open(filepath.Join(FilePath, TunName+".i2pkeys"))
 	if err != nil {
@@ -40,18 +40,18 @@ func Save(FilePath, TunName, passfile string, SamKeys *sam3.I2PKeys) error {
 	}
 	//err = Decrypt(filepath.Join(FilePath, TunName+".i2pkeys"), passfile)
 	//if err != nil {
-		//return err
+	//return err
 	//}
-	tempkeys, err := sam3.LoadKeysIncompat(file)
+	SamKeys, err = sam3.LoadKeysIncompat(file)
 	if err != nil {
 		return err
 	}
-	SamKeys = &tempkeys
-    //err = Encrypt(filepath.Join(FilePath, TunName+".i2pkeys"), passfile)
-		//if err != nil {
-        //return err
-    //}
-    return nil
+	//SamKeys = &tempkeys
+	//err = Encrypt(filepath.Join(FilePath, TunName+".i2pkeys"), passfile)
+	//if err != nil {
+	//return err
+	//}
+	return nil
 }
 
 func Load(FilePath, TunName, passfile string, samConn *sam3.SAM) (sam3.I2PKeys, error) {
@@ -70,7 +70,7 @@ func Load(FilePath, TunName, passfile string, samConn *sam3.SAM) (sam3.I2PKeys, 
 	}
 	//err = Decrypt(filepath.Join(FilePath, TunName+".i2pkeys"), passfile)
 	//if err != nil {
-		//return sam3.I2PKeys{}, err
+	//return sam3.I2PKeys{}, err
 	//}
 	return sam3.LoadKeysIncompat(file)
 }
