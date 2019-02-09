@@ -1,4 +1,4 @@
-package i2pkeysaes
+package i2pkeyspass
 
 import (
 //"io/ioutil"
