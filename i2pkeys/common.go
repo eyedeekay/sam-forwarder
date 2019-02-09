@@ -1,7 +1,6 @@
 package i2pkeys
 
 import (
-	//"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -9,7 +8,6 @@ import (
 	"github.com/eyedeekay/sam-forwarder/i2pkeys/keys"
 	//"github.com/eyedeekay/sam-forwarder/i2pkeys/password"
 	"github.com/eyedeekay/sam3"
-	//"github.com/gtank/cryptopasta"
 )
 
 func Encrypt(i2pkeypath, aeskeypath string) error {
@@ -30,10 +28,11 @@ func Save(FilePath, TunName, passfile string, SamKeys *sam3.I2PKeys) error {
 		if err != nil {
 			return err
 		}
-		err = Encrypt(filepath.Join(FilePath, TunName+".i2pkeys"), passfile)
-		if err != nil {
-			return err
-		}
+		//err = Encrypt(filepath.Join(FilePath, TunName+".i2pkeys"), passfile)
+		//if err != nil {
+			//return err
+		//}
+        return nil
 	}
 	file, err := os.Open(filepath.Join(FilePath, TunName+".i2pkeys"))
 	if err != nil {
@@ -48,11 +47,11 @@ func Save(FilePath, TunName, passfile string, SamKeys *sam3.I2PKeys) error {
 		return err
 	}
 	SamKeys = &tempkeys
-	err = Encrypt(filepath.Join(FilePath, TunName+".i2pkeys"), passfile)
-	if err != nil {
-		return err
-	}
-	return nil
+    //err = Encrypt(filepath.Join(FilePath, TunName+".i2pkeys"), passfile)
+		//if err != nil {
+        //return err
+    //}
+    return nil
 }
 
 func Load(FilePath, TunName, passfile string, samConn *sam3.SAM) (sam3.I2PKeys, error) {
@@ -69,9 +68,9 @@ func Load(FilePath, TunName, passfile string, samConn *sam3.SAM) (sam3.I2PKeys, 
 	if err != nil {
 		return sam3.I2PKeys{}, err
 	}
-	err = Decrypt(filepath.Join(FilePath, TunName+".i2pkeys"), passfile)
-	if err != nil {
-		return sam3.I2PKeys{}, err
-	}
+	//err = Decrypt(filepath.Join(FilePath, TunName+".i2pkeys"), passfile)
+	//if err != nil {
+		//return sam3.I2PKeys{}, err
+	//}
 	return sam3.LoadKeysIncompat(file)
 }
