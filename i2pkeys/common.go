@@ -1,7 +1,7 @@
 package i2pkeys
 
 import (
-	"io/ioutil"
+	//"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -9,7 +9,7 @@ import (
 	"github.com/eyedeekay/sam-forwarder/i2pkeys/keys"
 	//"github.com/eyedeekay/sam-forwarder/i2pkeys/password"
 	"github.com/eyedeekay/sam3"
-	"github.com/gtank/cryptopasta"
+	//"github.com/gtank/cryptopasta"
 )
 
 func Encrypt(i2pkeypath, aeskeypath string) error {
