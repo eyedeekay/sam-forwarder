@@ -1,19 +1,19 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"log"
 	"os"
 	"os/signal"
 	"strings"
-    "context"
 )
 
 import (
+	"github.com/eyedeekay/littleboss"
 	"github.com/eyedeekay/sam-forwarder/config"
 	"github.com/eyedeekay/sam-forwarder/manager"
 	"github.com/eyedeekay/samcatd-web"
-    "github.com/eyedeekay/littleboss"
 )
 
 type flagOpts []string
@@ -140,7 +140,6 @@ func main() {
 	})
 }
 
-
 func lbMain(ctx context.Context) {
 	flag.Var(&accessList, "accesslist", "Specify an access list member(can be used multiple times)")
 	flag.Parse()
@@ -215,5 +214,5 @@ func lbMain(ctx context.Context) {
 	} else {
 		log.Fatal(err)
 	}
-    ctx.Done()
+	ctx.Done()
 }

@@ -293,7 +293,7 @@ func NewSAMSSUClientForwarderFromOptions(opts ...func(*SAMSSUClientForwarder) er
 		return nil, err
 	}
 	log.Println("SAM Bridge connection established.")
-	if s.SamKeys, err = s.samConn.NewKeys(); err != nil {
+	if s.SamKeys, err = i2pkeys.Load(s.FilePath, s.TunName, s.passfile, s.samConn); err != nil {
 		return nil, err
 	}
 	log.Println("Destination keys generated, tunnel name:", s.TunName)

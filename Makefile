@@ -27,10 +27,13 @@ echo:
 	find . -path ./.go -prune -o -name "*.go" -exec gofmt -w {} \;
 	find . -path ./.go -prune -o -name "*.i2pkeys" -exec rm {} \;
 	find . -path ./.go -prune -o -name "*.go" -exec cat {} \; | nl
+
+## TODO: Remove this, replace with something right
+fix-debian:
 	find ./debian -type f -exec sed -i 's|lair repo key|eyedeekay|g' {} \;
 	find ./debian -type f -exec sed -i 's|eyedeekay@safe-mail.net|hankhill19580@gmail.com|g' {} \;
 
-test: test-ntcp test-ssu test-config test-manager
+test: test-keys test-ntcp test-ssu test-config test-manager
 
 long-test: test-serve test
 
@@ -53,6 +56,9 @@ test-config:
 
 test-manager:
 	cd manager && go test
+
+test-keys:
+	cd i2pkeys && go test
 
 try-web:
 	cd bin && \

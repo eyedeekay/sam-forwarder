@@ -1,7 +1,7 @@
 package i2pkeys
 
 import (
-    "io/ioutil"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 
@@ -109,11 +109,11 @@ func Save(FilePath, TunName, passfile string, SamKeys *sam3.I2PKeys) error {
 }
 
 func Load(FilePath, TunName, passfile string, samConn *sam3.SAM) (sam3.I2PKeys, error) {
-    if _, err := os.Stat(filepath.Join(FilePath, TunName+".i2pkeys")); os.IsNotExist(err) {
-        SamKeys, err := samConn.NewKeys()
-        if err != nil {
-            return sam3.I2PKeys{}, err
-        }
+	if _, err := os.Stat(filepath.Join(FilePath, TunName+".i2pkeys")); os.IsNotExist(err) {
+		SamKeys, err := samConn.NewKeys()
+		if err != nil {
+			return sam3.I2PKeys{}, err
+		}
 		return SamKeys, nil
 	}
 	file, err := os.Open(filepath.Join(FilePath, TunName+".i2pkeys"))
