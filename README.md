@@ -75,6 +75,8 @@ CAP\_NET\_BIND\_SERVICE or something. This might work:
 But I need to learn more about capabilities before I make that part of the
 thing.
 
+Some kind of reverse-proxy or filter is also an obvious choice.
+
 I've only enabled the use of a subset of the i2cp and tunnel configuration
 options, the ones I use the most and for no other real reason assume other
 people use the most. They're pretty easy to add, it's just boring. *If you*
@@ -103,6 +105,8 @@ figure I give it a web interface to configure stuff with. I'll probably put that
 in a different repo though. This is looking a little cluttered.
 
 TLS configuration is experimental.
+
+I've made it self-supervising, but I need to make better use of contexts.
 
 ## Stuff that's using it:
 

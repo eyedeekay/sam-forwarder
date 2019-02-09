@@ -1,11 +1,12 @@
 package i2pkeys
 
 import (
-	"github.com/eyedeekay/sam3"
-	"github.com/gtank/cryptopasta"
-	"io/ioutil"
+    "io/ioutil"
 	"os"
 	"path/filepath"
+
+	"github.com/eyedeekay/sam3"
+	"github.com/gtank/cryptopasta"
 )
 
 func bytes(k [32]byte) []byte {
@@ -105,4 +106,27 @@ func Save(FilePath, TunName, passfile string, SamKeys *sam3.I2PKeys) error {
 		return err
 	}
 	return nil
+}
+
+func Load(FilePath, TunName, passfile string, samConn *sam3.SAM) (*sam3.I2PKeys, error) {
+    if _, err := os.Stat(filepath.Join(FilePath, TunName+".i2pkeys")); os.IsNotExist(err) {
+        SamKeys, err := samConn.NewKeys()
+        if err != nil {
+            return nil, err
+        }
+		return &SamKeys, nil
+	}
+	file, err := os.Open(filepath.Join(FilePath, TunName+".i2pkeys"))
+	if err != nil {
+		return nil, err
+	}
+	err = Decrypt(filepath.Join(FilePath, TunName+".i2pkeys"), passfile)
+	if err != nil {
+		return nil, err
+	}
+	SamKeys, err := sam3.LoadKeysIncompat(file)
+    if err != nil {
+		return nil, err
+	}
+	return &SamKeys, nil
 }

@@ -75,6 +75,7 @@ deps:
 	go get -u github.com/eyedeekay/sam-forwarder/config
 	go get -u github.com/eyedeekay/sam-forwarder/manager
 	go get -u github.com/eyedeekay/sam3
+	go get -u github.com/eyedeekay/littleboss
 	go get -u github.com/eyedeekay/samcatd-web
 
 mine:
@@ -85,11 +86,12 @@ webdep:
 
 build: clean bin/$(appname)
 
-install: bin/$(appname) bin/$(samcatd) bin/$(samcatd)-web
+install:
 	install -m755 ./bin/$(appname) $(PREFIX)$(USR)$(LOCAL)/bin/
 	install -m755 ./bin/$(samcatd) $(PREFIX)$(USR)$(LOCAL)/bin/
 	install -m755 ./bin/$(samcatd)-web $(PREFIX)$(USR)$(LOCAL)/bin/
 	install -m644 ./etc/init.d/samcatd $(PREFIX)$(ETC)/init.d
+	mkdir -p $(PREFIX)$(ETC)/samcatd/ $(PREFIX)$(ETC)/sam-forwarder/ $(PREFIX)$(ETC)/i2pvpn/
 	install -m644 ./etc/samcatd/tunnels.ini $(PREFIX)$(ETC)/samcatd/
 	install -m644 ./etc/sam-forwarder/tunnels.ini $(PREFIX)$(ETC)/sam-forwarder/
 	install -m644 ./etc/i2pvpn/i2pvpn.ini $(PREFIX)$(ETC)/i2pvpn/
@@ -123,7 +125,7 @@ bin/$(samcatd)-web:
 		-o ./bin/$(samcatd)-web \
 		./daemon/*.go
 
-all: daemon build server
+all: daemon daemon-web build server
 
 clean-all: clean clean-server clean-daemon clean-daemon-web
 
