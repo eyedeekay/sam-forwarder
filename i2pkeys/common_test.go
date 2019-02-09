@@ -19,8 +19,10 @@ func TestKeysGenLoad(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+    log.Println("Loaded tunnel keys")
 	err = Save("./", "test", "", &sk)
 	if err != nil {
 		t.Fatal(err)
 	}
+    log.Println("Saved tunnel keys")
 }
