@@ -38,10 +38,10 @@ func Save(FilePath, TunName, passfile string, SamKeys *sam3.I2PKeys) error {
 	if err != nil {
 		return err
 	}
-	err = Decrypt(filepath.Join(FilePath, TunName+".i2pkeys"), passfile)
-	if err != nil {
-		return err
-	}
+	//err = Decrypt(filepath.Join(FilePath, TunName+".i2pkeys"), passfile)
+	//if err != nil {
+		//return err
+	//}
 	tempkeys, err := sam3.LoadKeysIncompat(file)
 	if err != nil {
 		return err
