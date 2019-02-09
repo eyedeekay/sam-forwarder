@@ -397,6 +397,9 @@ func NewSAMForwarderFromOptions(opts ...func(*SAMForwarder) error) (*SAMForwarde
 		return nil, err
 	}
 	log.Println("SAM Bridge connection established.")
+	if s.save {
+		log.Println("Saving i2p keys")
+	}
 	if s.SamKeys, err = i2pkeys.Load(s.FilePath, s.TunName, s.passfile, s.samConn); err != nil {
 		return nil, err
 	}
