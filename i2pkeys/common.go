@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/eyedeekay/sam-forwarder/i2pkeys/aes"
+	"github.com/eyedeekay/sam-forwarder/i2pkeys/keys"
 	"github.com/eyedeekay/sam-forwarder/i2pkeys/password"
 	"github.com/eyedeekay/sam3"
 	"github.com/gtank/cryptopasta"
