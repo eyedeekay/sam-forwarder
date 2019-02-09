@@ -300,6 +300,7 @@ func NewSAMClientForwarderFromOptions(opts ...func(*SAMClientForwarder) error) (
 		if err := i2pkeys.Save(s.FilePath, s.TunName, s.passfile, s.SamKeys); err != nil {
 			return nil, err
 		}
+		log.Println("Saved tunnel keys for", s.TunName)
 	}
 	return &s, nil
 }
