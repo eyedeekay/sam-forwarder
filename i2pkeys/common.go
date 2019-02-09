@@ -2,13 +2,13 @@ package i2pkeys
 
 import (
 	"io/ioutil"
+	"log"
 	"os"
-    "log"
 	"path/filepath"
 
+	"github.com/eyedeekay/sam-forwarder/i2pkeys/aes"
+	"github.com/eyedeekay/sam-forwarder/i2pkeys/password"
 	"github.com/eyedeekay/sam3"
-    "github.com/eyedeekay/sam-forwarder/i2pkeys/aes"
-    "github.com/eyedeekay/sam-forwarder/i2pkeys/password"
 	"github.com/gtank/cryptopasta"
 )
 
@@ -57,14 +57,14 @@ func Save(FilePath, TunName, passfile string, SamKeys *sam3.I2PKeys) error {
 
 func Load(FilePath, TunName, passfile string, samConn *sam3.SAM) (sam3.I2PKeys, error) {
 	if _, err := os.Stat(filepath.Join(FilePath, TunName+".i2pkeys")); os.IsNotExist(err) {
-        log.Println("Generating keys from SAM bridge")
+		log.Println("Generating keys from SAM bridge")
 		SamKeys, err := samConn.NewKeys()
 		if err != nil {
 			return sam3.I2PKeys{}, err
 		}
 		return SamKeys, nil
 	}
-    log.Println("Generating keys from disk")
+	log.Println("Generating keys from disk")
 	file, err := os.Open(filepath.Join(FilePath, TunName+".i2pkeys"))
 	if err != nil {
 		return sam3.I2PKeys{}, err

@@ -1,13 +1,13 @@
 package i2pkeysaes
 
 import (
-	//"io/ioutil"
-	//"os"
-    //"log"
-	//"path/filepath"
+//"io/ioutil"
+//"os"
+//"log"
+//"path/filepath"
 
-	//"github.com/eyedeekay/sam3"
-	//"github.com/gtank/cryptopasta"
+//"github.com/eyedeekay/sam3"
+//"github.com/gtank/cryptopasta"
 )
 
 func bytes(k [32]byte) []byte {
@@ -26,11 +26,10 @@ func key(k []byte) *[32]byte {
 	return &r
 }
 
-
 func EncryptPassword(i2pkeypath, password string) error {
-    return nil
+	return nil
 }
 
 func DecryptPassword(i2pkeypath, password string) error {
-    return nil
+	return nil
 }
