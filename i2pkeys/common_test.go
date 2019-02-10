@@ -15,7 +15,7 @@ func TestKeysGenLoad(t *testing.T) {
 		t.Fatal(err)
 	}
 	log.Println("Initialized SAM connection")
-	sk, err := Load("./", "test", "", sc)
+	sk, err := Load("./", "test", "", sc, true)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -32,7 +32,7 @@ func TestKeysGenLoadAgain(t *testing.T) {
 		t.Fatal(err)
 	}
 	log.Println("Saved tunnel keys")
-	sk, err := Load("./", "test", "", sc)
+	sk, err := Load("./", "test", "", sc, true)
 	if err != nil {
 		t.Fatal(err)
 	}

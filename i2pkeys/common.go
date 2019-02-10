@@ -54,7 +54,10 @@ func Save(FilePath, TunName, passfile string, SamKeys sam3.I2PKeys) error {
 	return nil
 }
 
-func Load(FilePath, TunName, passfile string, samConn *sam3.SAM) (sam3.I2PKeys, error) {
+func Load(FilePath, TunName, passfile string, samConn *sam3.SAM, save bool) (sam3.I2PKeys, error) {
+    if ! save {
+        return samConn.NewKeys()
+    }
 	if _, err := os.Stat(filepath.Join(FilePath, TunName+".i2pkeys")); os.IsNotExist(err) {
 		log.Println("Generating keys from SAM bridge")
 		SamKeys, err := samConn.NewKeys()
