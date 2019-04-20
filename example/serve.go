@@ -15,8 +15,8 @@ import (
 )
 
 import (
-	"github.com/eyedeekay/sam-forwarder"
 	"github.com/eyedeekay/sam-forwarder/config"
+	"github.com/eyedeekay/sam-forwarder/tcp"
 )
 
 var cfg = &tls.Config{

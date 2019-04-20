@@ -1,4 +1,3 @@
-//AUTO-GENERATED FOR BACKWARD COMPATIBILITY, USE ./tcp in the future
 package samforwarder
 
 import (

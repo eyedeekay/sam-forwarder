@@ -13,6 +13,7 @@ import (
 import (
 	"github.com/eyedeekay/sam-forwarder/i2pkeys"
 	"github.com/eyedeekay/sam3"
+	"github.com/eyedeekay/sam3/i2pkeys"
 )
 
 //SAMSSUForwarder is a structure which automatically configured the forwarding of
@@ -27,7 +28,7 @@ type SAMSSUForwarder struct {
 	TargetPort string
 
 	samConn           *sam3.SAM
-	SamKeys           sam3.I2PKeys
+	SamKeys           i2pkeys.I2PKeys
 	publishConnection *sam3.DatagramSession
 	clientConnection  net.PacketConn
 
@@ -69,13 +70,21 @@ type SAMSSUForwarder struct {
 
 var err error
 
-func (f SAMSSUForwarder) Cleanup() {
+func (f *SAMSSUForwarder) ID() string {
+	return f.TunName
+}
+
+func (f *SAMSSUForwarder) Cleanup() {
 	f.publishConnection.Close()
 	f.clientConnection.Close()
 	f.samConn.Close()
 }
 
-func (f SAMSSUForwarder) print() []string {
+func (f *SAMSSUForwarder) Close() error {
+	return nil
+}
+
+func (f *SAMSSUForwarder) print() []string {
 	lsk, lspk, lspsk := f.leasesetsettings()
 	return []string{
 		//f.targetForPort443(),
@@ -104,7 +113,7 @@ func (f SAMSSUForwarder) print() []string {
 	}
 }
 
-func (f SAMSSUForwarder) Print() string {
+func (f *SAMSSUForwarder) Print() string {
 	var r string
 	r += "name=" + f.TunName + "\n"
 	r += "type=" + f.Type + "\n"
@@ -117,7 +126,7 @@ func (f SAMSSUForwarder) Print() string {
 	return strings.Replace(r, "\n\n", "\n", -1)
 }
 
-func (f SAMSSUForwarder) Search(search string) string {
+func (f *SAMSSUForwarder) Search(search string) string {
 	terms := strings.Split(search, ",")
 	if search == "" {
 		return f.Print()
@@ -130,7 +139,7 @@ func (f SAMSSUForwarder) Search(search string) string {
 	return f.Print()
 }
 
-func (f SAMSSUForwarder) accesslisttype() string {
+func (f *SAMSSUForwarder) accesslisttype() string {
 	if f.accessListType == "whitelist" {
 		return "i2cp.enableAccessList=true"
 	} else if f.accessListType == "blacklist" {
@@ -141,7 +150,7 @@ func (f SAMSSUForwarder) accesslisttype() string {
 	return ""
 }
 
-func (f SAMSSUForwarder) accesslist() string {
+func (f *SAMSSUForwarder) accesslist() string {
 	if f.accessListType != "" && len(f.accessList) > 0 {
 		r := ""
 		for _, s := range f.accessList {
@@ -152,7 +161,7 @@ func (f SAMSSUForwarder) accesslist() string {
 	return ""
 }
 
-func (f SAMSSUForwarder) leasesetsettings() (string, string, string) {
+func (f *SAMSSUForwarder) leasesetsettings() (string, string, string) {
 	var r, s, t string
 	if f.leaseSetKey != "" {
 		r = "i2cp.leaseSetKey=" + f.leaseSetKey
@@ -167,16 +176,16 @@ func (f SAMSSUForwarder) leasesetsettings() (string, string, string) {
 }
 
 // Target returns the host:port of the local service you want to forward to i2p
-func (f SAMSSUForwarder) Target() string {
+func (f *SAMSSUForwarder) Target() string {
 	return f.TargetHost + ":" + f.TargetPort
 }
 
-func (f SAMSSUForwarder) sam() string {
+func (f *SAMSSUForwarder) sam() string {
 	return f.SamHost + ":" + f.SamPort
 }
 
-//func (f SAMSSUForwarder) forward(conn net.Conn) {
-func (f SAMSSUForwarder) forward() {
+//func (f *SAMSSUForwarder) forward(conn net.Conn) {
+func (f *SAMSSUForwarder) forward() {
 	go func() {
 		defer f.clientConnection.Close()
 		defer f.publishConnection.Close()
@@ -202,17 +211,17 @@ func (f SAMSSUForwarder) forward() {
 }
 
 //Base32 returns the base32 address where the local service is being forwarded
-func (f SAMSSUForwarder) Base32() string {
+func (f *SAMSSUForwarder) Base32() string {
 	return f.SamKeys.Addr().Base32()
 }
 
 //Base64 returns the base64 address where the local service is being forwarded
-func (f SAMSSUForwarder) Base64() string {
+func (f *SAMSSUForwarder) Base64() string {
 	return f.SamKeys.Addr().Base64()
 }
 
 //Serve starts the SAM connection and and forwards the local host:port to i2p
-func (f SAMSSUForwarder) Serve() error {
+func (f *SAMSSUForwarder) Serve() error {
 	var err error
 
 	sp, _ := strconv.Atoi(f.SamPort)
@@ -292,12 +301,12 @@ func NewSAMSSUForwarderFromOptions(opts ...func(*SAMSSUForwarder) error) (*SAMSS
 	if s.save {
 		log.Println("Saving i2p keys")
 	}
-	if s.SamKeys, err = i2pkeys.Load(s.FilePath, s.TunName, s.passfile, s.samConn, s.save); err != nil {
+	if s.SamKeys, err = sfi2pkeys.Load(s.FilePath, s.TunName, s.passfile, s.samConn, s.save); err != nil {
 		return nil, err
 	}
 	log.Println("Destination keys generated, tunnel name:", s.TunName)
 	if s.save {
-		if err := i2pkeys.Save(s.FilePath, s.TunName, s.passfile, s.SamKeys); err != nil {
+		if err := sfi2pkeys.Save(s.FilePath, s.TunName, s.passfile, s.SamKeys); err != nil {
 			return nil, err
 		}
 		log.Println("Saved tunnel keys for", s.TunName)

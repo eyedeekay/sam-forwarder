@@ -1,4 +1,4 @@
-package i2pkeys
+package sfi2pkeys
 
 import (
 	//"os"
