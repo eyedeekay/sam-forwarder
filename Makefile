@@ -73,6 +73,7 @@ gdb-web:
 refresh:
 
 deps:
+	go get -u github.com/eyedeekay/ramp/emit
 	go get -u github.com/songgao/water
 	go get -u github.com/gtank/cryptopasta
 	go get -u github.com/zieckey/goini
@@ -84,7 +85,7 @@ deps:
 	go get -u github.com/eyedeekay/sam-forwarder/config
 	go get -u github.com/eyedeekay/sam-forwarder/manager
 	go get -u github.com/eyedeekay/sam3
-	go get -u github.com/eyedeekay/littleboss
+	go get -u crawshaw.io/littleboss
 	go get -u github.com/eyedeekay/samcatd-web
 
 mine:
