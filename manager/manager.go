@@ -8,6 +8,7 @@ import (
 
 import (
 	"github.com/eyedeekay/sam-forwarder/config"
+	"github.com/eyedeekay/sam-forwarder/interface"
 	"github.com/eyedeekay/sam-forwarder/tcp"
 	"github.com/eyedeekay/sam-forwarder/udp"
 )
@@ -27,10 +28,13 @@ type SAMManager struct {
 	WebHost    string
 	WebPort    string
 
+	tunnels []*samtunnel.SAMTunnel
+	///*
 	forwarders          []*samforwarder.SAMForwarder
 	clientforwarders    []*samforwarder.SAMClientForwarder
 	udpforwarders       []*samforwarderudp.SAMSSUForwarder
 	udpclientforwarders []*samforwarderudp.SAMSSUClientForwarder
+	//*/
 }
 
 func stringify(s []string) string {
