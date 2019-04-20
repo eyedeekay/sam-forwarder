@@ -27,6 +27,8 @@ echo:
 	find . -path ./.go -prune -o -name "*.go" -exec gofmt -w {} \;
 	find . -path ./.go -prune -o -name "*.i2pkeys" -exec rm {} \;
 	find . -path ./.go -prune -o -name "*.go" -exec cat {} \; | nl
+
+recopy:
 	find ./tcp/ -name '*.go' -exec cp -rv {} . \;
 	sed -i '1s|^|//AUTO-GENERATED FOR BACKWARD COMPATIBILITY, USE ./tcp in the future\n|' *.go
 
