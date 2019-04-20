@@ -1,3 +1,4 @@
+//AUTO-GENERATED FOR BACKWARD COMPATIBILITY, USE ./tcp in the future
 package samforwarder
 
 import (
@@ -12,6 +13,7 @@ import (
 import (
 	"github.com/eyedeekay/sam-forwarder/i2pkeys"
 	"github.com/eyedeekay/sam3"
+	"github.com/eyedeekay/sam3/i2pkeys"
 )
 
 // SAMClientForwarder is a tcp proxy that automatically forwards ports to i2p
@@ -25,10 +27,10 @@ type SAMClientForwarder struct {
 	TargetPort string
 
 	samConn           *sam3.SAM
-	SamKeys           sam3.I2PKeys
+	SamKeys           i2pkeys.I2PKeys
 	connectStream     *sam3.StreamSession
 	dest              string
-	addr              sam3.I2PAddr
+	addr              i2pkeys.I2PAddr
 	publishConnection net.Listener
 
 	FilePath string
@@ -43,7 +45,7 @@ type SAMClientForwarder struct {
 	leaseSetKey               string
 	leaseSetPrivateKey        string
 	leaseSetPrivateSigningKey string
-	LeaseSetKeys              *sam3.I2PKeys
+	LeaseSetKeys              *i2pkeys.I2PKeys
 	inAllowZeroHop            string
 	outAllowZeroHop           string
 	inLength                  string
@@ -295,12 +297,12 @@ func NewSAMClientForwarderFromOptions(opts ...func(*SAMClientForwarder) error) (
 	if s.save {
 		log.Println("Saving i2p keys")
 	}
-	if s.SamKeys, err = i2pkeys.Load(s.FilePath, s.TunName, s.passfile, s.samConn, s.save); err != nil {
+	if s.SamKeys, err = sfi2pkeys.Load(s.FilePath, s.TunName, s.passfile, s.samConn, s.save); err != nil {
 		return nil, err
 	}
 	log.Println("Destination keys generated, tunnel name:", s.TunName)
 	if s.save {
-		if err := i2pkeys.Save(s.FilePath, s.TunName, s.passfile, s.SamKeys); err != nil {
+		if err := sfi2pkeys.Save(s.FilePath, s.TunName, s.passfile, s.SamKeys); err != nil {
 			return nil, err
 		}
 		log.Println("Saved tunnel keys for", s.TunName)

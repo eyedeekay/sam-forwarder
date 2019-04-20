@@ -1,7 +1,7 @@
 package i2ptunconf
 
 import (
-	"github.com/eyedeekay/sam-forwarder"
+	"github.com/eyedeekay/sam-forwarder/tcp"
 	"github.com/eyedeekay/sam-forwarder/udp"
 )
 

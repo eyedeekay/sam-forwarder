@@ -13,6 +13,7 @@ import (
 import (
 	"github.com/eyedeekay/sam-forwarder/i2pkeys"
 	"github.com/eyedeekay/sam3"
+	"github.com/eyedeekay/sam3/i2pkeys"
 )
 
 //SAMSSUForwarder is a structure which automatically configured the forwarding of
@@ -27,7 +28,7 @@ type SAMSSUForwarder struct {
 	TargetPort string
 
 	samConn           *sam3.SAM
-	SamKeys           sam3.I2PKeys
+	SamKeys           i2pkeys.I2PKeys
 	publishConnection *sam3.DatagramSession
 	clientConnection  net.PacketConn
 
@@ -292,12 +293,12 @@ func NewSAMSSUForwarderFromOptions(opts ...func(*SAMSSUForwarder) error) (*SAMSS
 	if s.save {
 		log.Println("Saving i2p keys")
 	}
-	if s.SamKeys, err = i2pkeys.Load(s.FilePath, s.TunName, s.passfile, s.samConn, s.save); err != nil {
+	if s.SamKeys, err = sfi2pkeys.Load(s.FilePath, s.TunName, s.passfile, s.samConn, s.save); err != nil {
 		return nil, err
 	}
 	log.Println("Destination keys generated, tunnel name:", s.TunName)
 	if s.save {
-		if err := i2pkeys.Save(s.FilePath, s.TunName, s.passfile, s.SamKeys); err != nil {
+		if err := sfi2pkeys.Save(s.FilePath, s.TunName, s.passfile, s.SamKeys); err != nil {
 			return nil, err
 		}
 		log.Println("Saved tunnel keys for", s.TunName)

@@ -1,5 +1,5 @@
 
-GOPATH=$(HOME)/go
+#GOPATH=$(HOME)/go
 
 appname = ephsite
 packagename = sam-forwarder
@@ -27,6 +27,8 @@ echo:
 	find . -path ./.go -prune -o -name "*.go" -exec gofmt -w {} \;
 	find . -path ./.go -prune -o -name "*.i2pkeys" -exec rm {} \;
 	find . -path ./.go -prune -o -name "*.go" -exec cat {} \; | nl
+	find ./tcp/ -name '*.go' -exec cp -rv {} . \;
+	sed -i '1s|^|//AUTO-GENERATED FOR BACKWARD COMPATIBILITY, USE ./tcp in the future\n|' *.go
 
 ## TODO: Remove this, replace with something right
 fix-debian:
@@ -75,9 +77,9 @@ deps:
 	go get -u github.com/gtank/cryptopasta
 	go get -u github.com/zieckey/goini
 	go get -u github.com/eyedeekay/udptunnel
-	go get -u github.com/eyedeekay/sam-forwarder
 	go get -u github.com/eyedeekay/sam-forwarder/i2pkeys
 	go get -u github.com/eyedeekay/sam-forwarder/i2pkeys/keys
+	go get -u github.com/eyedeekay/sam-forwarder/tcp
 	go get -u github.com/eyedeekay/sam-forwarder/udp
 	go get -u github.com/eyedeekay/sam-forwarder/config
 	go get -u github.com/eyedeekay/sam-forwarder/manager

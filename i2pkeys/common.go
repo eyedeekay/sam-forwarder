@@ -1,4 +1,4 @@
-package i2pkeys
+package sfi2pkeys
 
 import (
 	"log"
@@ -8,6 +8,7 @@ import (
 	"github.com/eyedeekay/sam-forwarder/i2pkeys/keys"
 	//"github.com/eyedeekay/sam-forwarder/i2pkeys/password"
 	"github.com/eyedeekay/sam3"
+	"github.com/eyedeekay/sam3/i2pkeys"
 )
 
 func Encrypt(i2pkeypath, aeskeypath string) error {
@@ -18,13 +19,13 @@ func Decrypt(i2pkeypath, aeskeypath string) error {
 	return i2pkeyscrypt.DecryptKey(i2pkeypath, aeskeypath)
 }
 
-func Save(FilePath, TunName, passfile string, SamKeys sam3.I2PKeys) error {
+func Save(FilePath, TunName, passfile string, SamKeys i2pkeys.I2PKeys) error {
 	if _, err := os.Stat(filepath.Join(FilePath, TunName+".i2pkeys")); os.IsNotExist(err) {
 		file, err := os.Create(filepath.Join(FilePath, TunName+".i2pkeys"))
 		if err != nil {
 			return err
 		}
-		err = sam3.StoreKeysIncompat(SamKeys, file)
+		err = i2pkeys.StoreKeysIncompat(SamKeys, file)
 		if err != nil {
 			return err
 		}
@@ -42,7 +43,7 @@ func Save(FilePath, TunName, passfile string, SamKeys sam3.I2PKeys) error {
 	//if err != nil {
 	//return err
 	//}
-	SamKeys, err = sam3.LoadKeysIncompat(file)
+	SamKeys, err = i2pkeys.LoadKeysIncompat(file)
 	if err != nil {
 		return err
 	}
@@ -54,26 +55,26 @@ func Save(FilePath, TunName, passfile string, SamKeys sam3.I2PKeys) error {
 	return nil
 }
 
-func Load(FilePath, TunName, passfile string, samConn *sam3.SAM, save bool) (sam3.I2PKeys, error) {
-    if ! save {
-        return samConn.NewKeys()
-    }
+func Load(FilePath, TunName, passfile string, samConn *sam3.SAM, save bool) (i2pkeys.I2PKeys, error) {
+	if !save {
+		return samConn.NewKeys()
+	}
 	if _, err := os.Stat(filepath.Join(FilePath, TunName+".i2pkeys")); os.IsNotExist(err) {
 		log.Println("Generating keys from SAM bridge")
 		SamKeys, err := samConn.NewKeys()
 		if err != nil {
-			return sam3.I2PKeys{}, err
+			return i2pkeys.I2PKeys{}, err
 		}
 		return SamKeys, nil
 	}
 	log.Println("Generating keys from disk")
 	file, err := os.Open(filepath.Join(FilePath, TunName+".i2pkeys"))
 	if err != nil {
-		return sam3.I2PKeys{}, err
+		return i2pkeys.I2PKeys{}, err
 	}
 	//err = Decrypt(filepath.Join(FilePath, TunName+".i2pkeys"), passfile)
 	//if err != nil {
-	//return sam3.I2PKeys{}, err
+	//return i2pkeys.I2PKeys{}, err
 	//}
-	return sam3.LoadKeysIncompat(file)
+	return i2pkeys.LoadKeysIncompat(file)
 }

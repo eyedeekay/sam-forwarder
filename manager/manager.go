@@ -7,9 +7,8 @@ import (
 )
 
 import (
-	"github.com/eyedeekay/sam-forwarder"
 	"github.com/eyedeekay/sam-forwarder/config"
-	"github.com/eyedeekay/sam-forwarder/csvpn"
+	"github.com/eyedeekay/sam-forwarder/tcp"
 	"github.com/eyedeekay/sam-forwarder/udp"
 )
 
@@ -32,8 +31,6 @@ type SAMManager struct {
 	clientforwarders    []*samforwarder.SAMClientForwarder
 	udpforwarders       []*samforwarderudp.SAMSSUForwarder
 	udpclientforwarders []*samforwarderudp.SAMSSUClientForwarder
-	vpnforwarders       []*samforwardervpn.SAMClientServerVPN
-	vpnclientforwarders []*samforwardervpn.SAMClientVPN
 }
 
 func stringify(s []string) string {
@@ -242,20 +239,6 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 				} else {
 					return nil, fmt.Errorf(e.Error())
 				}
-			case "vpnserver":
-				if f, e := samforwardervpn.NewSAMVPNForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label); e == nil {
-					log.Println("found vpnclient under", label)
-					s.vpnforwarders = append(s.vpnforwarders, f)
-				} else {
-					return nil, fmt.Errorf(e.Error())
-				}
-			case "vpnclient":
-				if f, e := samforwardervpn.NewSAMVPNClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label); e == nil {
-					log.Println("found vpnclient under", label)
-					s.vpnclientforwarders = append(s.vpnclientforwarders, f)
-				} else {
-					return nil, fmt.Errorf(e.Error())
-				}
 			default:
 				if f, e := i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label); e == nil {
 					log.Println("found server under", label)
@@ -305,20 +288,6 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 			if f, e := i2ptunconf.NewSAMSSUClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort); e == nil {
 				log.Println("found default udpclient")
 				s.udpclientforwarders = append(s.udpclientforwarders, f)
-			} else {
-				return nil, fmt.Errorf(e.Error())
-			}
-		case "vpnserver":
-			if f, e := samforwardervpn.NewSAMVPNForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort); e == nil {
-				log.Println("found default vpnserver")
-				s.vpnforwarders = append(s.vpnforwarders, f)
-			} else {
-				return nil, fmt.Errorf(e.Error())
-			}
-		case "vpnclient":
-			if f, e := samforwardervpn.NewSAMVPNClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort); e == nil {
-				log.Println("found default vpnclient")
-				s.vpnclientforwarders = append(s.vpnclientforwarders, f)
 			} else {
 				return nil, fmt.Errorf(e.Error())
 			}
