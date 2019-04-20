@@ -81,21 +81,25 @@ type SAMForwarder struct {
 
 var err error
 
-func (f SAMForwarder) Cleanup() {
+func (f *SAMForwarder) ID() string {
+	return f.TunName
+}
+
+func (f *SAMForwarder) Cleanup() {
 	f.publishStream.Close()
 	f.publishListen.Close()
 	f.publishConnection.Close()
 	f.samConn.Close()
 }
 
-/*func (f SAMForwarder) targetForPort443() string {
+/*func (f *SAMForwarder) targetForPort443() string {
 	if f.TargetForPort443 != "" {
 		return "targetForPort.4443=" + f.TargetHost + ":" + f.TargetForPort443
 	}
 	return ""
 }*/
 
-func (f SAMForwarder) print() []string {
+func (f *SAMForwarder) print() []string {
 	lsk, lspk, lspsk := f.leasesetsettings()
 	return []string{
 		//f.targetForPort443(),
@@ -124,7 +128,7 @@ func (f SAMForwarder) print() []string {
 	}
 }
 
-func (f SAMForwarder) Print() string {
+func (f *SAMForwarder) Print() string {
 	var r string
 	r += "name=" + f.TunName + "\n"
 	r += "type=" + f.Type + "\n"
@@ -141,7 +145,7 @@ func (f SAMForwarder) Print() string {
 	return strings.Replace(r, "\n\n", "\n", -1)
 }
 
-func (f SAMForwarder) Search(search string) string {
+func (f *SAMForwarder) Search(search string) string {
 	terms := strings.Split(search, ",")
 	if search == "" {
 		return f.Print()
@@ -154,7 +158,7 @@ func (f SAMForwarder) Search(search string) string {
 	return f.Print()
 }
 
-func (f SAMForwarder) accesslisttype() string {
+func (f *SAMForwarder) accesslisttype() string {
 	if f.accessListType == "whitelist" {
 		return "i2cp.enableAccessList=true"
 	} else if f.accessListType == "blacklist" {
@@ -165,7 +169,7 @@ func (f SAMForwarder) accesslisttype() string {
 	return ""
 }
 
-func (f SAMForwarder) accesslist() string {
+func (f *SAMForwarder) accesslist() string {
 	if f.accessListType != "" && len(f.accessList) > 0 {
 		r := ""
 		for _, s := range f.accessList {
@@ -176,7 +180,7 @@ func (f SAMForwarder) accesslist() string {
 	return ""
 }
 
-func (f SAMForwarder) leasesetsettings() (string, string, string) {
+func (f *SAMForwarder) leasesetsettings() (string, string, string) {
 	var r, s, t string
 	if f.leaseSetKey != "" {
 		r = "i2cp.leaseSetKey=" + f.leaseSetKey
@@ -191,15 +195,15 @@ func (f SAMForwarder) leasesetsettings() (string, string, string) {
 }
 
 // Target returns the host:port of the local service you want to forward to i2p
-func (f SAMForwarder) Target() string {
+func (f *SAMForwarder) Target() string {
 	return f.TargetHost + ":" + f.TargetPort
 }
 
-func (f SAMForwarder) sam() string {
+func (f *SAMForwarder) sam() string {
 	return f.SamHost + ":" + f.SamPort
 }
 
-func (f SAMForwarder) HTTPRequestBytes(conn *sam3.SAMConn) ([]byte, *http.Request, error) {
+func (f *SAMForwarder) HTTPRequestBytes(conn *sam3.SAMConn) ([]byte, *http.Request, error) {
 	var request *http.Request
 	var retrequest []byte
 	var err error
@@ -217,7 +221,7 @@ func (f SAMForwarder) HTTPRequestBytes(conn *sam3.SAMConn) ([]byte, *http.Reques
 	return retrequest, request, nil
 }
 
-func (f SAMForwarder) HTTPResponseBytes(conn net.Conn, req *http.Request) ([]byte, error) {
+func (f *SAMForwarder) HTTPResponseBytes(conn net.Conn, req *http.Request) ([]byte, error) {
 	var response *http.Response
 	var retresponse []byte
 	var err error
@@ -233,7 +237,7 @@ func (f SAMForwarder) HTTPResponseBytes(conn net.Conn, req *http.Request) ([]byt
 	return retresponse, nil
 }
 
-func (f SAMForwarder) clientUnlockAndClose(cli, conn bool, client net.Conn) {
+func (f *SAMForwarder) clientUnlockAndClose(cli, conn bool, client net.Conn) {
 	if cli {
 		f.clientLock = cli
 	}
@@ -247,7 +251,7 @@ func (f SAMForwarder) clientUnlockAndClose(cli, conn bool, client net.Conn) {
 	}
 }
 
-func (f SAMForwarder) connUnlockAndClose(cli, conn bool, connection *sam3.SAMConn) {
+func (f *SAMForwarder) connUnlockAndClose(cli, conn bool, connection *sam3.SAMConn) {
 	if cli {
 		f.connClientLock = cli
 	}
@@ -261,7 +265,7 @@ func (f SAMForwarder) connUnlockAndClose(cli, conn bool, connection *sam3.SAMCon
 	}
 }
 
-func (f SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
+func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 	var request *http.Request
 	var requestbytes []byte
 	var responsebytes []byte
@@ -305,17 +309,17 @@ func (f SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 }
 
 //Base32 returns the base32 address where the local service is being forwarded
-func (f SAMForwarder) Base32() string {
+func (f *SAMForwarder) Base32() string {
 	return f.SamKeys.Addr().Base32()
 }
 
 //Base64 returns the base64 address where the local service is being forwarded
-func (f SAMForwarder) Base64() string {
+func (f *SAMForwarder) Base64() string {
 	return f.SamKeys.Addr().Base64()
 }
 
 //Serve starts the SAM connection and and forwards the local host:port to i2p
-func (f SAMForwarder) Serve() error {
+func (f *SAMForwarder) Serve() error {
 	//lsk, lspk, lspsk := f.leasesetsettings()
 	if f.publishStream, err = f.samConn.NewStreamSession(f.TunName, f.SamKeys, f.print()); err != nil {
 		log.Println("Stream Creation error:", err.Error())
@@ -340,7 +344,7 @@ func (f SAMForwarder) Serve() error {
 }
 
 //Close shuts the whole thing down.
-func (f SAMForwarder) Close() error {
+func (f *SAMForwarder) Close() error {
 	var err error
 	err = f.samConn.Close()
 	err = f.publishStream.Close()

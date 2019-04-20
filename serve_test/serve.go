@@ -9,8 +9,11 @@ import (
 	"time"
 )
 
-import ".."
-import "../udp"
+import (
+	"github.com/eyedeekay/sam-forwarder/interface"
+	"github.com/eyedeekay/sam-forwarder/tcp"
+	"github.com/eyedeekay/sam-forwarder/udp"
+)
 
 var (
 	port               = "8100"
@@ -24,10 +27,10 @@ var (
 	udpserverconn      *net.UDPConn
 	directory          = "./www"
 	err                error
-	forwarder          *samforwarder.SAMForwarder
-	forwarderclient    *samforwarder.SAMClientForwarder
-	ssuforwarder       *samforwarderudp.SAMSSUForwarder
-	ssuforwarderclient *samforwarderudp.SAMSSUClientForwarder
+	forwarder          samtunnel.SAMTunnel
+	forwarderclient    samtunnel.SAMTunnel
+	ssuforwarder       samtunnel.SAMTunnel
+	ssuforwarderclient samtunnel.SAMTunnel
 )
 
 func serve() {
