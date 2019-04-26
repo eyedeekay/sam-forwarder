@@ -15,6 +15,9 @@ func (c *Conf) GetType(argc, argu, argh bool, def string, label ...string) strin
 		typ += "udp"
 	}
 	if argc {
+		if argh == true {
+			typ += "http"
+		}
 		typ += "client"
 		c.Client = true
 	} else {
@@ -45,7 +48,7 @@ func (c *Conf) SetType(label ...string) {
 		if strings.Contains(v, "vpn") {
 			c.VPN = true
 		}
-		if c.Type == "server" || c.Type == "http" || c.Type == "client" || c.Type == "udpserver" || c.Type == "udpclient" {
+		if c.Type == "server" || c.Type == "http" || c.Type == "client" || c.Type == "httpclient" || c.Type == "udpserver" || c.Type == "udpclient" {
 			c.Type = v
 		}
 	} else {

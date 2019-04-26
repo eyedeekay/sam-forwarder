@@ -1,9 +1,58 @@
 package i2ptunconf
 
 import (
+	"github.com/eyedeekay/httptunnel"
 	"github.com/eyedeekay/sam-forwarder/tcp"
 	"github.com/eyedeekay/sam-forwarder/udp"
 )
+
+func NewSAMHTTPClientFromConf(config *Conf) (*i2phttpproxy.SAMHTTPProxy, error) {
+	if config != nil {
+		return i2phttpproxy.NewHttpProxy(
+			i2phttpproxy.SetKeysPath(config.KeyFilePath),
+			/*i2phttpproxy.SetHost(*samHostString),
+			  i2phttpproxy.SetPort(*samPortString),
+			  i2phttpproxy.SetProxyAddr(ln.Addr().String()),
+			  i2phttpproxy.SetControlAddr(cln.Addr().String()),
+			  i2phttpproxy.SetDebug(*debugConnection),
+			  i2phttpproxy.SetInLength(uint(*inboundTunnelLength)),
+			  i2phttpproxy.SetOutLength(uint(*outboundTunnelLength)),
+			  i2phttpproxy.SetInQuantity(uint(*inboundTunnels)),
+			  i2phttpproxy.SetOutQuantity(uint(*outboundTunnels)),
+			  i2phttpproxy.SetInBackups(uint(*inboundBackups)),
+			  i2phttpproxy.SetOutBackups(uint(*outboundBackups)),
+			  i2phttpproxy.SetInVariance(*inboundVariance),
+			  i2phttpproxy.SetOutVariance(*outboundVariance),
+			  i2phttpproxy.SetUnpublished(*dontPublishLease),
+			  i2phttpproxy.SetReduceIdle(*reduceIdle),
+			  i2phttpproxy.SetCompression(*useCompression),
+			  i2phttpproxy.SetReduceIdleTime(uint(*reduceIdleTime)),
+			  i2phttpproxy.SetReduceIdleQuantity(uint(*reduceIdleQuantity)),
+			  i2phttpproxy.SetCloseIdle(*closeIdle),
+			  i2phttpproxy.SetCloseIdleTime(uint(*closeIdleTime)),
+			*/
+		)
+	}
+	return nil, nil
+}
+
+// NewSAMClientForwarderFromConfig generates a new SAMForwarder from a config file
+func NewSAMHTTPClientFromConfig(iniFile, SamHost, SamPort string, label ...string) (*i2phttpproxy.SAMHTTPProxy, error) {
+	if iniFile != "none" {
+		config, err := NewI2PTunConf(iniFile, label...)
+		if err != nil {
+			return nil, err
+		}
+		if SamHost != "" && SamHost != "127.0.0.1" && SamHost != "localhost" {
+			config.SamHost = config.GetSAMHost(SamHost, config.SamHost)
+		}
+		if SamPort != "" && SamPort != "7656" {
+			config.SamPort = config.GetSAMPort(SamPort, config.SamPort)
+		}
+		return NewSAMHTTPClientFromConf(config)
+	}
+	return nil, nil
+}
 
 // NewSAMClientForwarderFromConf generates a SAMforwarder from *i2ptunconf.Conf
 func NewSAMClientForwarderFromConf(config *Conf) (*samforwarder.SAMClientForwarder, error) {
@@ -15,6 +64,7 @@ func NewSAMClientForwarderFromConf(config *Conf) (*samforwarder.SAMClientForward
 			samforwarder.SetClientPort(config.TargetPort),
 			samforwarder.SetClientSAMHost(config.SamHost),
 			samforwarder.SetClientSAMPort(config.SamPort),
+			samforwarder.SetClientSigType(config.SigType),
 			samforwarder.SetClientName(config.TunName),
 			samforwarder.SetClientInLength(config.InLength),
 			samforwarder.SetClientOutLength(config.OutLength),
@@ -75,6 +125,7 @@ func NewSAMSSUClientForwarderFromConf(config *Conf) (*samforwarderudp.SAMSSUClie
 			samforwarderudp.SetClientPort(config.TargetPort),
 			samforwarderudp.SetClientSAMHost(config.SamHost),
 			samforwarderudp.SetClientSAMPort(config.SamPort),
+			samforwarderudp.SetClientSigType(config.SigType),
 			samforwarderudp.SetClientName(config.TunName),
 			samforwarderudp.SetClientInLength(config.InLength),
 			samforwarderudp.SetClientOutLength(config.OutLength),

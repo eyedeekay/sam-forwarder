@@ -86,6 +86,28 @@ func SetClientName(s string) func(*SAMClientForwarder) error {
 	}
 }
 
+//SetSigType sets the type of the forwarder server
+func SetClientSigType(s string) func(*SAMClientForwarder) error {
+	return func(c *SAMClientForwarder) error {
+		if s == "" {
+			c.sigType = ""
+		} else if s == "DSA_SHA1" {
+			c.sigType = "DSA_SHA1"
+		} else if s == "ECDSA_SHA256_P256" {
+			c.sigType = "ECDSA_SHA256_P256"
+		} else if s == "ECDSA_SHA384_P384" {
+			c.sigType = "ECDSA_SHA384_P384"
+		} else if s == "ECDSA_SHA512_P521" {
+			c.sigType = "ECDSA_SHA512_P521"
+		} else if s == "EdDSA_SHA512_Ed25519" {
+			c.sigType = "EdDSA_SHA512_Ed25519"
+		} else {
+			c.sigType = "EdDSA_SHA512_Ed25519"
+		}
+		return nil
+	}
+}
+
 //SetClientInLength sets the number of hops inbound
 func SetClientInLength(u int) func(*SAMClientForwarder) error {
 	return func(c *SAMClientForwarder) error {

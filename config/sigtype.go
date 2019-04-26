@@ -7,7 +7,7 @@ package i2ptunconf
 func (c *Conf) GetSigType(argt, def string, label ...string) string {
 	var typ string
 	if argt == "" {
-		typ += ""
+		typ = ""
 	} else if argt == "DSA_SHA1" {
 		typ = "DSA_SHA1"
 	} else if argt == "ECDSA_SHA256_P256" {

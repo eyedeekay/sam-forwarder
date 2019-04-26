@@ -43,6 +43,8 @@ type SAMForwarder struct {
 	// samcatd options
 	passfile string
 
+	sigType string
+
 	// I2CP options
 	encryptLeaseSet           string
 	leaseSetKey               string
