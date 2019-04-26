@@ -73,13 +73,7 @@ gdb-web:
 refresh:
 
 deps:
-	go get -u github.com/eyedeekay/sam-forwarder/manager
-
-mine:
-	go get -u github.com/kpetku/sam3
-
-webdep:
-	go get -u github.com/eyedeekay/samcatd-web
+	go get -u github.com/eyedeekay/sam-forwarder/daemon
 
 install:
 	install -m755 ./bin/$(samcatd) $(PREFIX)$(USR)$(LOCAL)/bin/
