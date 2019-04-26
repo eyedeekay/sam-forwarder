@@ -201,6 +201,7 @@ func (c *Conf) I2PINILoad(iniFile string, label ...string) error {
 		c.SetSAMHost(label...)
 		c.SetSAMPort(label...)
 		c.SetTunName(label...)
+        c.SetSigType(label...)
 		c.SetEncryptLease(label...)
 		c.SetLeasesetKey(label...)
 		c.SetLeasesetPrivateKey(label...)
