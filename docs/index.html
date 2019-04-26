@@ -1,222 +1,53 @@
-<h1 id="ephsite---easy-forwarding-of-local-services-to-i2p">ephsite - Easy forwarding of local services to i2p</h1>
-<p>ephsite is a forwarding proxy designed to configure a tunnel for use with i2p. It can be used to easily forward a local service to the i2p network using i2p's SAM API instead of the tunnel interface.</p>
-<h2 id="usage">usage:</h2>
-<pre><code>Usage of ./bin/ephsite:
-  -access string
-        Type of access list to use, can be &quot;whitelist&quot; &quot;blacklist&quot; or &quot;none&quot;. (default &quot;none&quot;)
-  -accesslist value
-        Specify an access list member(can be used multiple times)
-  -client
-        Client proxy mode(true or false)
-  -close
-        Close tunnel idle(true or false)
-  -closetime int
-        Reduce tunnel quantity after X (milliseconds) (default 600000)
-  -dest string
-        Destination for client tunnels. Ignored for service tunnels. (default &quot;none&quot;)
-  -dir string
-        Directory to save tunnel configuration file in.
-  -encryptlease
-        Use an encrypted leaseset(true or false) (default true)
-  -gzip
-        Uze gzip(true or false)
-  -headers
-        Inject X-I2P-DEST headers
-  -host string
-        Target host(Host of service to forward to i2p) (default &quot;127.0.0.1&quot;)
-  -inback int
-        Set inbound tunnel backup quantity(0 to 5) (default 4)
-  -incount int
-        Set inbound tunnel quantity(0 to 15) (default 6)
-  -ini string
-        Use an ini file for configuration(config file options override passed arguments for now.) (default &quot;none&quot;)
-  -inlen int
-        Set inbound tunnel length(0 to 7) (default 3)
-  -invar int
-        Set inbound tunnel length variance(-7 to 7)
-  -lsk string
-        path to saved encrypted leaseset keys (default &quot;none&quot;)
-  -name string
-        Tunnel name, this must be unique but can be anything. (default &quot;forwarder&quot;)
-  -outback int
-        Set outbound tunnel backup quantity(0 to 5) (default 4)
-  -outcount int
-        Set outbound tunnel quantity(0 to 15) (default 6)
-  -outlen int
-        Set outbound tunnel length(0 to 7) (default 3)
-  -outvar int
-        Set outbound tunnel length variance(-7 to 7)
-  -port string
-        Target port(Port of service to forward to i2p) (default &quot;8081&quot;)
-  -reduce
-        Reduce tunnel quantity when idle(true or false)
-  -reducecount int
-        Reduce idle tunnel quantity to X (0 to 5) (default 3)
-  -reducetime int
-        Reduce tunnel quantity after X (milliseconds) (default 600000)
-  -samhost string
-        SAM host (default &quot;127.0.0.1&quot;)
-  -samport string
-        SAM port (default &quot;7656&quot;)
-  -save
-        Use saved file and persist tunnel(If false, tunnel will not persist after program is stopped.
-  -tlsport string
-        (Currently inoperative. Target TLS port(HTTPS Port of service to forward to i2p)
-  -udp
-        UDP mode(true or false)
-  -zeroin
-        Allow zero-hop, non-anonymous tunnels in(true or false)
-  -zeroout
-        Allow zero-hop, non-anonymous tunnels out(true or false)</code></pre>
-<h1 id="samcatd---router-independent-tunnel-management-for-i2p">samcatd - Router-independent tunnel management for i2p</h1>
-<p>samcatd is a daemon which runs a group of forwarding proxies to provide services over i2p independent of the router. It also serves as a generalized i2p networking utility for power-users. It's intended to be a Swiss-army knife for the SAM API.</p>
-<h2 id="usage-1">usage:</h2>
-<pre><code>flag needs an argument: -h
-Usage of ./bin/samcatd:
-  -a string
-        Type of access list to use, can be &quot;whitelist&quot; &quot;blacklist&quot; or &quot;none&quot;. (default &quot;none&quot;)
-  -accesslist value
-        Specify an access list member(can be used multiple times)
-  -c    Client proxy mode(true or false)
-  -cr string
-        Encrypt/decrypt the key files with a passfile
-  -css string
-        custom CSS for web interface (default &quot;css/styles.css&quot;)
-  -ct int
-        Reduce tunnel quantity after X (milliseconds) (default 600000)
-  -d string
-        Directory to save tunnel configuration file in.
-  -de string
-        Destination to connect client&#39;s to by default.
-  -f string
-        Use an ini file for configuration(config file options override passed arguments for now.) (default &quot;none&quot;)
-  -h string
-        Target host(Host of service to forward to i2p) (default &quot;127.0.0.1&quot;)
-  -i string
-        Destination for client tunnels. Ignored for service tunnels. (default &quot;none&quot;)
-  -ib int
-        Set inbound tunnel backup quantity(0 to 5) (default 2)
-  -ih
-        Inject X-I2P-DEST headers
-  -il int
-        Set inbound tunnel length(0 to 7) (default 3)
-  -iq int
-        Set inbound tunnel quantity(0 to 15) (default 6)
-  -iv int
-        Set inbound tunnel length variance(-7 to 7)
-  -js string
-        custom JS for web interface (default &quot;js/scripts.js&quot;)
-  -k string
-        key for encrypted leaseset (default &quot;none&quot;)
-  -l    Use an encrypted leaseset(true or false) (default true)
-  -n string
-        Tunnel name, this must be unique but can be anything. (default &quot;forwarder&quot;)
-  -ob int
-        Set outbound tunnel backup quantity(0 to 5) (default 2)
-  -ol int
-        Set outbound tunnel length(0 to 7) (default 3)
-  -oq int
-        Set outbound tunnel quantity(0 to 15) (default 6)
-  -ov int
-        Set outbound tunnel length variance(-7 to 7)
-  -p string
-        Target port(Port of service to forward to i2p) (default &quot;8081&quot;)
-  -pk string
-        private key for encrypted leaseset (default &quot;none&quot;)
-  -psk string
-        private signing key for encrypted leaseset (default &quot;none&quot;)
-  -r    Reduce tunnel quantity when idle(true or false)
-  -rq int
-        Reduce idle tunnel quantity to X (0 to 5) (default 3)
-  -rt int
-        Reduce tunnel quantity after X (milliseconds) (default 600000)
-  -s    Start a tunnel with the passed parameters(Otherwise, they will be treated as default values.)
-  -sh string
-        SAM host (default &quot;127.0.0.1&quot;)
-  -sp string
-        SAM port (default &quot;7656&quot;)
-  -t    Use saved file and persist tunnel(If false, tunnel will not persist after program is stopped.
-  -tls string
-        (Currently inoperative. Target TLS port(HTTPS Port of service to forward to i2p)
-  -u    UDP mode(true or false)
-  -w    Start web administration interface
-  -wp string
-        Web port (default &quot;7957&quot;)
-  -x    Close tunnel idle(true or false)
-  -z    Uze gzip(true or false)
-  -zi
-        Allow zero-hop, non-anonymous tunnels in(true or false)
-  -zo
-        Allow zero-hop, non-anonymous tunnels out(true or false)</code></pre>
-<h1 id="managing-samcatd-save-encryption-keys">managing samcatd save-encryption keys</h1>
-<p>In order to keep from saving the .i2pkeys files in plaintext format, samcatd can optionally generate a key and encrypt the .i2pkeys files securely. Of course, to fully benefit from this arrangement, you need to move those keys away from the machine where the tunnel keys(the .i2pkeys file) are located, or protect them in some other way(sandboxing, etc). If you want to use encrypted .i2pkeys files, you can specify a key file to use with the -cr option on the terminal or with keyfile option in the .ini file.</p>
-<h1 id="example-config---valid-for-both-ephsite-and-samcat">example config - valid for both ephsite and samcat</h1>
-<p>Options are still being added, pretty much as fast as I can put them in. For up-to-the-minute options, see <a href="config/CHECKLIST.md">the checklist</a></p>
-<p>(<strong>ephsite</strong> will only use top-level options, but they can be labeled or unlabeled)</p>
-<p>(<strong>samcatd</strong> treats the first set of options it sees as the default, and does not start tunnels based on unlabeled options unless passed the -s flag.)</p>
-<div class="sourceCode"><pre class="sourceCode ini"><code class="sourceCode ini">
-<span class="co">## Defaults, these are only invoked with the -start option or if labeled tunnels</span>
-<span class="co">## are not present(samcatd instructions). **THESE** are the correct config files</span>
-<span class="co">## to use as defaults, and not the ones in ../sam-forwarder/tunnels.ini, which</span>
-<span class="co">## are used for testing settings availability only.</span>
-
-<span class="dt">inbound.length </span><span class="ot">=</span><span class="st"> </span><span class="dv">3</span>
-<span class="dt">outbound.length </span><span class="ot">=</span><span class="st"> </span><span class="dv">3</span>
-<span class="dt">inbound.lengthVariance </span><span class="ot">=</span><span class="st"> </span><span class="dv">0</span>
-<span class="dt">outbound.lengthVariance </span><span class="ot">=</span><span class="st"> </span><span class="dv">0</span>
-<span class="dt">inbound.backupQuantity </span><span class="ot">=</span><span class="st"> </span><span class="dv">3</span>
-<span class="dt">outbound.backupQuantity </span><span class="ot">=</span><span class="st"> </span><span class="dv">3</span>
-<span class="dt">inbound.quantity </span><span class="ot">=</span><span class="st"> </span><span class="dv">5</span>
-<span class="dt">outbound.quantity </span><span class="ot">=</span><span class="st"> </span><span class="dv">5</span>
-<span class="dt">inbound.allowZeroHop </span><span class="ot">=</span><span class="st"> </span><span class="kw">false</span>
-<span class="dt">outbound.allowZeroHop </span><span class="ot">=</span><span class="st"> </span><span class="kw">false</span>
-<span class="dt">i2cp.encryptLeaseSet </span><span class="ot">=</span><span class="st"> </span><span class="kw">false</span>
-<span class="dt">gzip </span><span class="ot">=</span><span class="st"> </span><span class="kw">true</span>
-<span class="dt">i2cp.reduceOnIdle </span><span class="ot">=</span><span class="st"> </span><span class="kw">true</span>
-<span class="dt">i2cp.reduceIdleTime </span><span class="ot">=</span><span class="st"> </span><span class="dv">3000000</span>
-<span class="dt">i2cp.reduceQuantity </span><span class="ot">=</span><span class="st"> </span><span class="dv">2</span>
-<span class="dt">i2cp.enableWhiteList </span><span class="ot">=</span><span class="st"> </span><span class="kw">false</span>
-<span class="dt">i2cp.enableBlackList </span><span class="ot">=</span><span class="st"> </span><span class="kw">false</span>
-<span class="dt">keyfile </span><span class="ot">=</span><span class="st"> &quot;/usr/share/samcatd/samcatd&quot;</span>
-
-<span class="co">#[sam-forwarder]</span>
-<span class="co">#type = server</span>
-<span class="co">#host = 127.0.0.1</span>
-<span class="co">#port = 8081</span>
-<span class="co">#inbound.length = 3</span>
-<span class="co">#outbound.length = 3</span>
-<span class="co">#keys = forwarder</span>
-
-<span class="kw">[sam-forwarder-two]</span>
-<span class="dt">type </span><span class="ot">=</span><span class="st"> client</span>
-<span class="dt">host </span><span class="ot">=</span><span class="st"> </span><span class="fl">127.0.0.1</span>
-<span class="dt">port </span><span class="ot">=</span><span class="st"> </span><span class="dv">8082</span>
-<span class="dt">inbound.length </span><span class="ot">=</span><span class="st"> </span><span class="dv">3</span>
-<span class="dt">outbound.length </span><span class="ot">=</span><span class="st"> </span><span class="dv">3</span>
-<span class="dt">destination </span><span class="ot">=</span><span class="st"> i2p-projekt.i2p</span>
-<span class="dt">keys </span><span class="ot">=</span><span class="st"> forwarder-two</span>
-
-<span class="co">#[sam-forwarder-three]</span>
-<span class="co">#type = udpclient</span>
-<span class="co">#host = 127.0.0.1</span>
-<span class="co">#port = 8083</span>
-<span class="co">#inbound.length = 3</span>
-<span class="co">#outbound.length = 3</span>
-<span class="co">#destination = i2p-projekt.i2p</span>
-<span class="co">#keys = forwarder-three</span>
-
-<span class="co">#[sam-forwarder-four]</span>
-<span class="co">#type = udpserver</span>
-<span class="co">#host = 127.0.0.1</span>
-<span class="co">#port = 8084</span>
-<span class="co">#inbound.length = 6</span>
-<span class="co">#outbound.length = 3</span>
-<span class="co">#keys = forwarder-four</span>
-
-<span class="co">#[sam-forwarder-five]</span>
-<span class="co">#type = http</span>
-<span class="co">#host = 127.0.0.1</span>
-<span class="co">#port = 8085</span>
-<span class="co">#inbound.length = 3</span>
-<span class="co">#outbound.length = 3</span>
-<span class="co">#keys = forwarder-five</span></code></pre></div>
+<h1 id="sam-forwarder">sam-forwarder</h1>
+<p>Forward a local port to i2p over the SAM API, or proxy a destination to a port on the local host. This is a work-in-progress, but the basic functionality is, there and it’s already pretty useful. Everything TCP works, but UDP forwarding has much less real use than TCP. Turns out UDP was less broken than I thought though. Yay. There’s also a simple client-server VPN built on top of it, eventually, it will be replaced with a peer-to-peer version.</p>
+<p>Since it seems to be doing UDP now, if you’d like to donate to further development there are some wallet addresses at the bottom of this readme for now.</p>
+<h2 id="building">building</h2>
+<p>Just:</p>
+<pre><code>    make deps build</code></pre>
+<p>and it will be in the folder ./bin/</p>
+<p><a href="https://travis-ci.org/eyedeekay/sam-forwarder"><img src="https://travis-ci.org/eyedeekay/sam-forwarder.svg?branch=master" alt="Build Status" /></a></p>
+<h2 id="usage">Usage:</h2>
+<p>There are a number of ways to use sam-forwarder:</p>
+<h3 id="usageconfiguration-as-an-applicationstart-here-for-samcatd"><a href="docs/USAGE.md">usage/configuration</a> as an application(Start here for samcatd)</h3>
+<h3 id="embedding-in-other-applications"><a href="docs/EMBEDDING.md">embedding</a> in other applications</h3>
+<h3 id="encapsulate-configuration-for-i2p-enabled-packages"><a href="docs/PACKAGECONF.md">encapsulate</a> configuration for i2p-enabled packages</h3>
+<h3 id="implement-the-interface-for-fine-grained-control-over-sam-connections"><a href="interface/README.md">implement</a> the interface for fine-grained control over SAM connections</h3>
+<h2 id="binaries">binaries</h2>
+<p>Two binaries are produced by this repo. The first, ephsite, is only capable of running one tunnel at a time and doesn’t have VPN support. I’m only updating it to make sure that the embeddable interface in existing applications doesn’t change. It will go away and be replaced with a wrapper to translate it to ‘samcatd -s’ commands whenever I complete <a href="docs/CHECKLIST.md" class="uri">docs/CHECKLIST.md</a>.</p>
+<p>The second, samcatd, is more advanced. It can start multiple tunnels with their own settings, or be used to start tunnels on the fly like ephsite by passing the -s option. Eventually I’m probably just going to use this to configure all of my tunnels.</p>
+<h1 id="current-limitations">Current limitations:</h1>
+<p>I need to document it better. <a href="docs/USAGE.md">Besides fixing up the comments, this should help for now.</a>. I also need to control output verbosity better.</p>
+<p>I need samcatd to accept a configuration folder identical to /etc/i2pd/tunnels.conf.d, since part of the point of this is to be compatible with i2pd’s tunnels configuration. Once this is done, I’ll resume turning it into a .deb package.</p>
+<p>It doesn’t encrypt the .i2pkeys file by default, so if someone can steal them, then they can use them to construct tunnels to impersonate you. Experimental support for encrypted saves has been added. The idea is that only the person with the key will be able to decrypt and start the tunnels. It is up to the user to determine how to go about managing these keys. Right now this system is pretty bad. I’ll be addressing that soon too.</p>
+<p>TCP and UDP are both working now. Additional functionality might be added by adding other kinds of protocols overtop the TCP and UDP tunnels as a primitive. There’s a very basic UDP-based VPN available in samcatd by configuration-file only for now. Also it requires root. Probably need to split the VPN part into it’s own application. The package will need to give the application CAP_NET_BIND_SERVICE or something. This might work:</p>
+<pre><code>    sudo setcap cap_net_bind_service=epi ./bin/samcatd
+    sudo setcap cap_net_bind_service=epi ./bin/samcatd-web</code></pre>
+<p>But I need to learn more about capabilities before I make that part of the thing.</p>
+<p>Some kind of reverse-proxy or filter is also an obvious choice.</p>
+<p>I’ve only enabled the use of a subset of the i2cp and tunnel configuration options, the ones I use the most and for no other real reason assume other people use the most. They’re pretty easy to add, it’s just boring. <em>If you</em> <em>want an i2cp or tunnel option that isn’t available, bring it to my attention</em> <em>please.</em> I’m pretty responsive when people actually contact me, it’ll probably be added within 24 hours. I intend to have configuration options for all relevant i2cp and tunnel options, which I’m keeping track of <a href="config/CHECKLIST.md">here</a>.</p>
+<p>I should probably have some options that are available in other general network utilities. I’ve started to do this with samcatd.</p>
+<p>I want it to be able to save ini files based on the settings used for a running forwarder. Should be easy, I just need to decide how I want to do it. Also to focus a bit more. I’ve got more of a plan here now. tunconf has the loaded ini file inside it, and variables to track the state of the config options while running, and they can be switched to save options that might be changed via some interface or another.</p>
+<p>Example tools built using this are being broken off into their own repos. Use the other repos where appropriate, so I can leave the examples un-messed with.</p>
+<p>It would be really awesome if I could make this run on Android. So I’ll make that happen eventually. I started a daemon for managing multiple tunnels and I figure I give it a web interface to configure stuff with. I’ll probably put that in a different repo though. This is looking a little cluttered.</p>
+<p>TLS configuration is experimental.</p>
+<p>I’ve made it self-supervising, but I need to make better use of contexts.</p>
+<h2 id="stuff-thats-using-it">Stuff that’s using it:</h2>
+<p>Mostly mine, but this is all Free-as-in-Freedom for anyone to use:</p>
+<ul>
+<li><a href="https://github.com/eyedeekay/eephttpd">eephttpd</a></li>
+<li><a href="https://github.com/eyedeekay/wikigopher">my fork of wikigopher</a></li>
+<li><a href="https://github.com/s-gv/orangeforum">orangeforum</a></li>
+</ul>
+<h2 id="donate">Donate</h2>
+<h3 id="monero-wallet-address">Monero Wallet Address</h3>
+<p>XMR:43V6cTZrUfAb9JD6Dmn3vjdT9XxLbiE27D1kaoehb359ACaHs8191mR4RsJH7hGjRTiAoSwFQAVdsCBToXXPAqTMDdP2bZB</p>
+<h3 id="bitcoin-wallet-address">Bitcoin Wallet Address</h3>
+<p>BTC:159M8MEUwhTzE9RXmcZxtigKaEjgfwRbHt</p>
+<h2 id="index">Index</h2>
+<ul>
+<li><a href="index.html">readme</a></li>
+<li><a href="usage.html">usage</a></li>
+<li><a href="packageconf.html">configuration</a></li>
+<li><a href="embedding.html">embedding</a></li>
+<li><a href="interface.htnl">interface</a></li>
+</ul>

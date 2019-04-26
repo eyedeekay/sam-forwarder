@@ -30,6 +30,8 @@ There are a number of ways to use sam-forwarder:
 
 ### [encapsulate](docs/PACKAGECONF.md) configuration for i2p-enabled packages
 
+### [implement](interface/README.md) the interface for fine-grained control over SAM connections
+
 ## binaries
 
 Two binaries are produced by this repo. The first, ephsite, is only capable
@@ -126,3 +128,12 @@ Donate
 ### Bitcoin Wallet Address
 
   BTC:159M8MEUwhTzE9RXmcZxtigKaEjgfwRbHt
+
+Index
+-----
+
+ * [readme](index.html)
+ * [usage](usage.html)
+ * [configuration](packageconf.html)
+ * [embedding](embedding.html)
+ * [interface](interface.htnl)

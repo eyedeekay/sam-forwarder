@@ -4,6 +4,7 @@ type SAMTunnel interface {
 	//GetType() string
 	Cleanup()
 	Print() string
+	Props() map[string]string
 	Search(search string) string
 	Target() string
 	ID() string

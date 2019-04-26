@@ -22,6 +22,7 @@ type Conf struct {
 	Labels                    []string
 	Client                    bool
 	ClientDest                string
+	SigType                   string
 	Type                      string
 	SaveDirectory             string
 	SaveFile                  bool

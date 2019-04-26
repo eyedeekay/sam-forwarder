@@ -103,6 +103,15 @@ func (f *SAMClientForwarder) print() []string {
 	}
 }
 
+func (f *SAMClientForwarder) Props() map[string]string {
+	var r map[string]string
+	for _, prop := range f.print() {
+		k, v := sfi2pkeys.Prop(prop)
+		r[k] = v
+	}
+	return r
+}
+
 func (f *SAMClientForwarder) Cleanup() {
 	f.connectStream.Close()
 	f.publishConnection.Close()

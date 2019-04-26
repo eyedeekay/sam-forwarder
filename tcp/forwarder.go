@@ -127,6 +127,15 @@ func (f *SAMForwarder) print() []string {
 	}
 }
 
+func (f *SAMForwarder) Props() map[string]string {
+	var r map[string]string
+	for _, prop := range f.print() {
+		k, v := sfi2pkeys.Prop(prop)
+		r[k] = v
+	}
+	return r
+}
+
 func (f *SAMForwarder) Print() string {
 	var r string
 	r += "name=" + f.TunName + "\n"

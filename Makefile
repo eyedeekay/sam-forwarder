@@ -1,9 +1,7 @@
 
 #GOPATH=$(HOME)/go
 
-appname = ephsite
 packagename = sam-forwarder
-eephttpd = eephttpd
 samcatd = samcatd
 network = si
 samhost = sam-host
@@ -75,20 +73,7 @@ gdb-web:
 refresh:
 
 deps:
-	go get -u github.com/eyedeekay/ramp/emit
-	go get -u github.com/songgao/water
-	go get -u github.com/gtank/cryptopasta
-	go get -u github.com/zieckey/goini
-	go get -u github.com/eyedeekay/udptunnel
-	go get -u github.com/eyedeekay/sam-forwarder/i2pkeys
-	go get -u github.com/eyedeekay/sam-forwarder/i2pkeys/keys
-	go get -u github.com/eyedeekay/sam-forwarder/tcp
-	go get -u github.com/eyedeekay/sam-forwarder/udp
-	go get -u github.com/eyedeekay/sam-forwarder/config
 	go get -u github.com/eyedeekay/sam-forwarder/manager
-	go get -u github.com/eyedeekay/sam3
-	go get -u crawshaw.io/littleboss
-	go get -u github.com/eyedeekay/samcatd-web
 
 mine:
 	go get -u github.com/kpetku/sam3
@@ -96,28 +81,13 @@ mine:
 webdep:
 	go get -u github.com/eyedeekay/samcatd-web
 
-build: clean bin/$(appname)
-
 install:
-	install -m755 ./bin/$(appname) $(PREFIX)$(USR)$(LOCAL)/bin/
 	install -m755 ./bin/$(samcatd) $(PREFIX)$(USR)$(LOCAL)/bin/
 	install -m755 ./bin/$(samcatd)-web $(PREFIX)$(USR)$(LOCAL)/bin/
 	install -m644 ./etc/init.d/samcatd $(PREFIX)$(ETC)/init.d
 	mkdir -p $(PREFIX)$(ETC)/samcatd/ $(PREFIX)$(ETC)/sam-forwarder/ $(PREFIX)$(ETC)/i2pvpn/
 	install -m644 ./etc/samcatd/tunnels.ini $(PREFIX)$(ETC)/samcatd/
 	install -m644 ./etc/sam-forwarder/tunnels.ini $(PREFIX)$(ETC)/sam-forwarder/
-	install -m644 ./etc/i2pvpn/i2pvpn.ini $(PREFIX)$(ETC)/i2pvpn/
-	install -m644 ./etc/i2pvpn/i2pvpnclient.ini $(PREFIX)$(ETC)/i2pvpn/
-
-bin/$(appname):
-	mkdir -p bin
-	cd main && go build -a -tags netgo -ldflags '-w -extldflags "-static"' -o ../bin/$(appname)
-
-server: clean-server bin/$(eephttpd)
-
-bin/$(eephttpd):
-	mkdir -p bin
-	go build -a -tags netgo -ldflags '-w -extldflags "-static"' -o ./bin/$(eephttpd) ./example/serve.go
 
 daemon: clean-daemon bin/$(samcatd)
 
@@ -137,15 +107,9 @@ bin/$(samcatd)-web:
 		-o ./bin/$(samcatd)-web \
 		./daemon/*.go
 
-all: daemon daemon-web build server
+all: daemon daemon-web
 
-clean-all: clean clean-server clean-daemon clean-daemon-web
-
-clean:
-	rm -f bin/$(appname)
-
-clean-server:
-	rm -f bin/$(eephttpd)
+clean-all: clean-daemon clean-daemon-web
 
 clean-daemon:
 	rm -f bin/$(samcatd)
@@ -153,37 +117,13 @@ clean-daemon:
 clean-daemon-web:
 	rm -f bin/$(samcatd)-web
 
-noopts: clean
-	mkdir -p bin
-	cd main && go build -o ../bin/$(appname)
-
 install-forwarder:
-	install -m755 bin/ephsite /usr/local/bin/ephsite
+	install -m755 bin/$(samcatd) /usr/local/bin/$(samcatd)
 
-install-server:
-	install -m755 bin/eephttpd /usr/local/bin/eephttpd
-
-install-all: install install-server
-
-remove:
-	rm -rf /usr/local/bin/ephsite /usr/local/bin/eephttpd
+install-all: install
 
 gendoc:
-	@echo "$(appname) - Easy forwarding of local services to i2p" > USAGE.md
-	@echo "==================================================" >> USAGE.md
-	@echo "" >> USAGE.md
-	@echo "$(appname) is a forwarding proxy designed to configure a tunnel for use" >> USAGE.md
-	@echo "with i2p. It can be used to easily forward a local service to the" >> USAGE.md
-	@echo "i2p network using i2p's SAM API instead of the tunnel interface." >> USAGE.md
-	@echo "" >> USAGE.md
-	@echo "usage:" >> USAGE.md
-	@echo "------" >> USAGE.md
-	@echo "" >> USAGE.md
-	@echo '```' >> USAGE.md
-	./bin/$(appname) -help  2>> USAGE.md; true
-	@echo '```' >> USAGE.md
-	@echo "" >> USAGE.md
-	@echo "$(samcatd) - Router-independent tunnel management for i2p" >> USAGE.md
+	@echo "$(samcatd) - Router-independent tunnel management for i2p" > USAGE.md
 	@echo "=========================================================" >> USAGE.md
 	@echo "" >> USAGE.md
 	@echo "$(samcatd) is a daemon which runs a group of forwarding proxies to" >> USAGE.md
@@ -273,14 +213,16 @@ follow:
 docker: docker-build docker-volume docker-run
 
 index:
-	pandoc USAGE.md -o example/www/index.html && cp example/www/index.html docs/index.html
+	pandoc README.md -o docs/index.html
+	pandoc docs/USAGE.md -o example/www/index.html && cp example/www/index.html docs/usage.html
+	pandoc docs/EMBEDDING.md -o docs/embedding.html
+	pandoc docs/PACKAGECONF.md -o docs/packageconf.html
+	pandoc interface/README.md -o docs/interface.html
 	cp config/CHECKLIST.md docs/config
+	pandoc docs/config/CHECKLIST.md -o docs/checklist.html
 
 visit:
 	http_proxy=http://127.0.0.1:4444 surf http://566niximlxdzpanmn4qouucvua3k7neniwss47li5r6ugoertzuq.b32.i2p
-
-forward:
-	./bin/ephsite -client -dest i2p-projekt.i2p
 
 gojs:
 	go get -u github.com/gopherjs/gopherjs

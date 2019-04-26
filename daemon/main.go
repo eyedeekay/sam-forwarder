@@ -66,6 +66,8 @@ var (
 		"Inject X-I2P-DEST headers")
 	webAdmin = flag.Bool("w", false,
 		"Start web administration interface")
+	sigType = flag.String("st", "",
+		"Signature type")
 	webPort = flag.String("wp", "7957",
 		"Web port")
 	webCSS = flag.String("css", "css/styles.css",
@@ -161,6 +163,7 @@ func lbMain(ctx context.Context) {
 	config.SamHost = config.GetSAMHost(*samHost, "127.0.0.1")
 	config.SamPort = config.GetSAMPort(*samPort, "7656")
 	config.TunName = config.GetKeys(*tunName, "forwarder")
+	config.SigType = config.GetSigType(*sigType, "EdDSA_SHA512_Ed25519")
 	config.InLength = config.GetInLength(*inLength, 3)
 	config.OutLength = config.GetOutLength(*outLength, 3)
 	config.InVariance = config.GetInVariance(*inVariance, 0)
