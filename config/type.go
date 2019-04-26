@@ -1,7 +1,6 @@
 package i2ptunconf
 
 import (
-	"fmt"
 	"strings"
 )
 
@@ -45,20 +44,10 @@ func (c *Conf) SetType(label ...string) {
 		if strings.Contains(v, "client") {
 			c.Client = true
 		}
-		if strings.Contains(v, "vpn") {
-			c.VPN = true
-		}
 		if c.Type == "server" || c.Type == "http" || c.Type == "client" || c.Type == "httpclient" || c.Type == "udpserver" || c.Type == "udpclient" {
 			c.Type = v
 		}
 	} else {
 		c.Type = "server"
 	}
-}
-
-func (c *Conf) VPNServerMode() (bool, error) {
-	if c.VPN == true {
-		return !c.Client, nil
-	}
-	return false, fmt.Errorf("VPN mode not detected.")
 }

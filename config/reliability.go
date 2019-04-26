@@ -26,5 +26,8 @@ func (c *Conf) SetMessageReliability(label ...string) {
 }
 
 func (c *Conf) reliability() string {
-	return "i2cp.messageReliability" + c.MessageReliability
+	if c.MessageReliability != "" {
+		return "i2cp.messageReliability=" + c.MessageReliability
+	}
+	return ""
 }

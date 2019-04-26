@@ -57,13 +57,12 @@ type Conf struct {
 	AccessList                []string
 	MessageReliability        string
 	exists                    bool
-	VPN                       bool
 }
 
 // Print returns and prints a formatted list of configured tunnel settings.
 func (c *Conf) Print() []string {
 	confstring := []string{
-        c.sigType()
+		c.SignatureType(),
 		"inbound.length=" + strconv.Itoa(c.InLength),
 		"outbound.length=" + strconv.Itoa(c.OutLength),
 		"inbound.lengthVariance=" + strconv.Itoa(c.InVariance),
@@ -81,19 +80,45 @@ func (c *Conf) Print() []string {
 		"i2cp.reduceQuantity=" + strconv.Itoa(c.ReduceIdleQuantity),
 		"i2cp.closeOnIdle=" + strconv.FormatBool(c.CloseIdle),
 		"i2cp.closeIdleTime=" + strconv.Itoa(c.CloseIdleTime),
+		"i2cp.fastRecieve=" + strconv.FormatBool(c.FastRecieve),
+		c.reliability(),
 		c.accesslisttype(),
 		c.accesslist(),
+		c.lsk(),
+		c.lspk(),
+		c.lsspk(),
 	}
 
 	log.Println(confstring)
 	return confstring
 }
 
+func (c *Conf) lsk() string {
+	if c.LeaseSetKey != "" {
+		return "i2cp.leaseSetKey=" + c.LeaseSetKey
+	}
+	return ""
+}
+
+func (c *Conf) lspk() string {
+	if c.LeaseSetPrivateKey != "" {
+		return "i2cp.leaseSetPrivateKey=" + c.LeaseSetPrivateKey
+	}
+	return ""
+}
+
+func (c *Conf) lsspk() string {
+	if c.LeaseSetPrivateSigningKey != "" {
+		return "i2cp.leaseSetSigningPrivateKey=" + c.LeaseSetPrivateSigningKey
+	}
+	return ""
+}
+
 func (c *Conf) SignatureType() string {
-    if c.SigType == "" {
-        return ""
-    }
-    return "SIGNATURE_TYPE=" + c.SigType
+	if c.SigType == "" {
+		return ""
+	}
+	return "SIGNATURE_TYPE=" + c.SigType
 }
 
 // Get passes directly through to goini.Get
@@ -209,7 +234,7 @@ func (c *Conf) I2PINILoad(iniFile string, label ...string) error {
 		c.SetSAMHost(label...)
 		c.SetSAMPort(label...)
 		c.SetTunName(label...)
-        c.SetSigType(label...)
+		c.SetSigType(label...)
 		c.SetEncryptLease(label...)
 		c.SetLeasesetKey(label...)
 		c.SetLeasesetPrivateKey(label...)
