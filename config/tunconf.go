@@ -63,6 +63,7 @@ type Conf struct {
 // Print returns and prints a formatted list of configured tunnel settings.
 func (c *Conf) Print() []string {
 	confstring := []string{
+        c.sigType()
 		"inbound.length=" + strconv.Itoa(c.InLength),
 		"outbound.length=" + strconv.Itoa(c.OutLength),
 		"inbound.lengthVariance=" + strconv.Itoa(c.InVariance),
@@ -86,6 +87,13 @@ func (c *Conf) Print() []string {
 
 	log.Println(confstring)
 	return confstring
+}
+
+func (c *Conf) SignatureType() string {
+    if c.SigType == "" {
+        return ""
+    }
+    return "SIGNATURE_TYPE=" + c.SigType
 }
 
 // Get passes directly through to goini.Get
