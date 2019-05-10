@@ -1,9 +1,90 @@
 package sammanager
 
 import (
+	"fmt"
 	"log"
+	"strings"
 	"testing"
 )
+
+func stringify(s []string) string {
+	var p string
+	for _, x := range s {
+		if x != "ntcpserver" && x != "httpserver" && x != "ssuserver" && x != "ntcpclient" && x != "ssuclient" {
+			p += x + ","
+		}
+	}
+	r := strings.Trim(strings.Trim(strings.Replace(p, ",,", ",", -1), " "), "\n")
+	return r
+}
+
+func (s *SAMManager) List(search ...string) *[]string {
+	var r []string
+	if search == nil {
+		for index, element := range s.tunnels {
+			r = append(r, fmt.Sprintf("  %v. %s", index, element.Print()))
+		}
+		return &r
+	} else if len(search) > 0 {
+		switch search[0] {
+		case "":
+			for index, element := range s.tunnels {
+				r = append(r, fmt.Sprintf("  %v. %s", index, element.Print()))
+			}
+			return &r
+		case "ntcpserver":
+			for index, element := range s.tunnels {
+				r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
+			}
+			return &r
+		case "httpserver":
+			for index, element := range s.tunnels {
+				if element.GetType() == "http" {
+					r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
+				}
+			}
+			return &r
+		case "ntcpclient":
+			for index, element := range s.tunnels {
+				r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
+			}
+			return &r
+		case "ssuserver":
+			for index, element := range s.tunnels {
+				r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
+			}
+			return &r
+		case "ssuclient":
+			for index, element := range s.tunnels {
+				r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
+			}
+			return &r
+		default:
+			for index, element := range s.tunnels {
+				if element.Search(stringify(search)) != "" {
+					r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
+				}
+			}
+			for index, element := range s.tunnels {
+				if element.Search(stringify(search)) != "" {
+					r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
+				}
+			}
+			for index, element := range s.tunnels {
+				if element.Search(stringify(search)) != "" {
+					r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
+				}
+			}
+			for index, element := range s.tunnels {
+				if element.Search(stringify(search)) != "" {
+					r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
+				}
+			}
+			return &r
+		}
+	}
+	return &r
+}
 
 func TestOption0(t *testing.T) {
 	client, err := NewSAMManagerFromOptions(

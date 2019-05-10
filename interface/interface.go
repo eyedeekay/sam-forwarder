@@ -1,7 +1,7 @@
 package samtunnel
 
 type SAMTunnel interface {
-	//GetType() string
+	GetType() string
 	Cleanup()
 	Print() string
 	Props() map[string]string

@@ -3,14 +3,12 @@ package sammanager
 import (
 	"fmt"
 	"log"
-	"strings"
 )
 
 import (
 	"github.com/eyedeekay/sam-forwarder/config"
+	"github.com/eyedeekay/sam-forwarder/handler"
 	"github.com/eyedeekay/sam-forwarder/interface"
-	"github.com/eyedeekay/sam-forwarder/tcp"
-	//"github.com/eyedeekay/sam-forwarder/udp"
 )
 
 type SAMManager struct {
@@ -29,85 +27,6 @@ type SAMManager struct {
 	WebPort    string
 
 	tunnels []samtunnel.SAMTunnel
-}
-
-func stringify(s []string) string {
-	var p string
-	for _, x := range s {
-		if x != "ntcpserver" && x != "httpserver" && x != "ssuserver" && x != "ntcpclient" && x != "ssuclient" {
-			p += x + ","
-		}
-	}
-	r := strings.Trim(strings.Trim(strings.Replace(p, ",,", ",", -1), " "), "\n")
-	return r
-}
-
-func (s *SAMManager) List(search ...string) *[]string {
-	var r []string
-	if search == nil {
-		for index, element := range s.tunnels {
-			r = append(r, fmt.Sprintf("  %v. %s", index, element.Print()))
-		}
-		return &r
-	} else if len(search) > 0 {
-		switch search[0] {
-		case "":
-			for index, element := range s.tunnels {
-				r = append(r, fmt.Sprintf("  %v. %s", index, element.Print()))
-			}
-			return &r
-		case "ntcpserver":
-			for index, element := range s.tunnels {
-				r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
-			}
-			return &r
-		case "httpserver":
-			for index, element := range s.tunnels {
-				if element.(*samforwarder.SAMForwarder).Type == "http" {
-					r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
-				}
-			}
-			return &r
-		case "ntcpclient":
-			for index, element := range s.tunnels {
-				r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
-			}
-			return &r
-		case "ssuserver":
-			for index, element := range s.tunnels {
-				r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
-			}
-			return &r
-		case "ssuclient":
-			for index, element := range s.tunnels {
-				r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
-			}
-			return &r
-		default:
-			for index, element := range s.tunnels {
-				if element.Search(stringify(search)) != "" {
-					r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
-				}
-			}
-			for index, element := range s.tunnels {
-				if element.Search(stringify(search)) != "" {
-					r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
-				}
-			}
-			for index, element := range s.tunnels {
-				if element.Search(stringify(search)) != "" {
-					r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
-				}
-			}
-			for index, element := range s.tunnels {
-				if element.Search(stringify(search)) != "" {
-					r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
-				}
-			}
-			return &r
-		}
-	}
-	return &r
 }
 
 func (s *SAMManager) Cleanup() {
@@ -164,46 +83,46 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 		if t, e := s.config.Get("type", label); e {
 			switch t {
 			case "http":
-				if f, e := i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label); e == nil {
+				if f, e := i2ptunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
 					log.Println("found http under", label)
 					s.tunnels = append(s.tunnels, f)
 				} else {
-					return nil, fmt.Errorf(e.Error())
+					return nil, e
 				}
 			case "server":
-				if f, e := i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label); e == nil {
+				if f, e := i2ptunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
 					log.Println("found server under", label)
 					s.tunnels = append(s.tunnels, f)
 				} else {
-					return nil, fmt.Errorf(e.Error())
+					return nil, e
 				}
 			case "client":
-				if f, e := i2ptunconf.NewSAMClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label); e == nil {
+				if f, e := i2ptunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
 					log.Println("found client under", label)
 					s.tunnels = append(s.tunnels, f)
 				} else {
-					return nil, fmt.Errorf(e.Error())
+					return nil, e
 				}
 			case "udpserver":
-				if f, e := i2ptunconf.NewSAMSSUForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label); e == nil {
+				if f, e := i2ptunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMSSUForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
 					log.Println("found udpserver under", label)
 					s.tunnels = append(s.tunnels, f)
 				} else {
-					return nil, fmt.Errorf(e.Error())
+					return nil, e
 				}
 			case "udpclient":
-				if f, e := i2ptunconf.NewSAMSSUClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label); e == nil {
+				if f, e := i2ptunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMSSUClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
 					log.Println("found udpclient under", label)
 					s.tunnels = append(s.tunnels, f)
 				} else {
-					return nil, fmt.Errorf(e.Error())
+					return nil, e
 				}
 			default:
-				if f, e := i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label); e == nil {
+				if f, e := i2ptunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
 					log.Println("found server under", label)
 					s.tunnels = append(s.tunnels, f)
 				} else {
-					return nil, fmt.Errorf(e.Error())
+					return nil, e
 				}
 			}
 		}
@@ -216,46 +135,46 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 		}
 		switch t {
 		case "http":
-			if f, e := i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort); e == nil {
+			if f, e := i2ptunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort)); e == nil {
 				log.Println("found default http")
 				s.tunnels = append(s.tunnels, f)
 			} else {
-				return nil, fmt.Errorf(e.Error())
+				return nil, e
 			}
 		case "server":
-			if f, e := i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort); e == nil {
+			if f, e := i2ptunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort)); e == nil {
 				log.Println("found default server")
 				s.tunnels = append(s.tunnels, f)
 			} else {
-				return nil, fmt.Errorf(e.Error())
+				return nil, e
 			}
 		case "client":
-			if f, e := i2ptunconf.NewSAMClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort); e == nil {
+			if f, e := i2ptunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort)); e == nil {
 				log.Println("found default client")
 				s.tunnels = append(s.tunnels, f)
 			} else {
-				return nil, fmt.Errorf(e.Error())
+				return nil, e
 			}
 		case "udpserver":
-			if f, e := i2ptunconf.NewSAMSSUForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort); e == nil {
+			if f, e := i2ptunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMSSUForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort)); e == nil {
 				log.Println("found default udpserver")
 				s.tunnels = append(s.tunnels, f)
 			} else {
-				return nil, fmt.Errorf(e.Error())
+				return nil, e
 			}
 		case "udpclient":
-			if f, e := i2ptunconf.NewSAMSSUClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort); e == nil {
+			if f, e := i2ptunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMSSUClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort)); e == nil {
 				log.Println("found default udpclient")
 				s.tunnels = append(s.tunnels, f)
 			} else {
-				return nil, fmt.Errorf(e.Error())
+				return nil, e
 			}
 		default:
-			if f, e := i2ptunconf.NewSAMClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort); e == nil {
+			if f, e := i2ptunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort)); e == nil {
 				log.Println("found default client")
 				s.tunnels = append(s.tunnels, f)
 			} else {
-				return nil, fmt.Errorf(e.Error())
+				return nil, e
 			}
 		}
 	}

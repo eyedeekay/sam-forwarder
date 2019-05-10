@@ -71,6 +71,10 @@ type SAMSSUForwarder struct {
 
 var err error
 
+func (f *SAMSSUForwarder) GetType() string {
+	return f.Type
+}
+
 func (f *SAMSSUForwarder) ID() string {
 	return f.TunName
 }

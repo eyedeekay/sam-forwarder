@@ -71,6 +71,10 @@ type SAMSSUClientForwarder struct {
 	accessList     []string
 }
 
+func (f *SAMSSUClientForwarder) GetType() string {
+	return f.Type
+}
+
 func (f *SAMSSUClientForwarder) ID() string {
 	return f.TunName
 }

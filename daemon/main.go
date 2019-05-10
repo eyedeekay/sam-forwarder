@@ -57,7 +57,7 @@ var (
 	reduceIdle = flag.Bool("r", false,
 		"Reduce tunnel quantity when idle(true or false)")
 	closeIdle = flag.Bool("x", false,
-		"Close tunnel idle(true or false)")
+		"Close tunnel group after idle(true or false)")
 	udpMode = flag.Bool("u", false,
 		"UDP mode(true or false)")
 	client = flag.Bool("c", false,
@@ -86,8 +86,8 @@ var (
 		"Destination to connect client's to by default.")
 	iniFile = flag.String("f", "none",
 		"Use an ini file for configuration(config file options override passed arguments for now.)")
-	targetDestination = flag.String("i", "none",
-		"Destination for client tunnels. Ignored for service tunnels.")
+	/*targetDestination = flag.String("i", "none",
+	"Destination for client tunnels. Ignored for service tunnels.")*/
 	targetHost = flag.String("h", "127.0.0.1",
 		"Target host(Host of service to forward to i2p)")
 	targetPort = flag.String("p", "8081",
@@ -121,7 +121,7 @@ var (
 	reduceIdleTime = flag.Int("rt", 600000,
 		"Reduce tunnel quantity after X (milliseconds)")
 	closeIdleTime = flag.Int("ct", 600000,
-		"Reduce tunnel quantity after X (milliseconds)")
+		"Close tunnel group after X (milliseconds)")
 	reduceIdleQuantity = flag.Int("rq", 3,
 		"Reduce idle tunnel quantity to X (0 to 5)")
 	readKeys = flag.String("conv", "", "Display the base32 and base64 values of a specified .i2pkeys file")
