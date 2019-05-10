@@ -94,6 +94,10 @@ func (f *SAMForwarder) Cleanup() {
 	f.samConn.Close()
 }
 
+func (f *SAMForwarder) GetType() string {
+	return f.Type
+}
+
 /*func (f *SAMForwarder) targetForPort443() string {
 	if f.TargetForPort443 != "" {
 		return "targetForPort.4443=" + f.TargetHost + ":" + f.TargetForPort443
