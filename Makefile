@@ -18,8 +18,6 @@ USR := usr/
 LOCAL := local/
 VERSION := 0.1
 
-WEB_INTERFACE = -tags "webface netgo"
-
 echo:
 	@echo "$(GOPATH)"
 	find . -path ./.go -prune -o -name "*.go" -exec gofmt -w {} \;
@@ -62,14 +60,6 @@ test-manager:
 test-keys:
 	cd i2pkeys && go test
 
-try-web:
-	cd bin && \
-		./samcatd-web -w -f ../etc/samcatd/tunnels.ini
-
-gdb-web:
-	cd bin && \
-		gdb ./samcatd-web -w -f ../etc/samcatd/tunnels.ini
-
 refresh:
 
 deps:
@@ -77,7 +67,6 @@ deps:
 
 install:
 	install -m755 ./bin/$(samcatd) $(PREFIX)$(USR)$(LOCAL)/bin/
-	install -m755 ./bin/$(samcatd)-web $(PREFIX)$(USR)$(LOCAL)/bin/
 	install -m644 ./etc/init.d/samcatd $(PREFIX)$(ETC)/init.d
 	mkdir -p $(PREFIX)$(ETC)/samcatd/ $(PREFIX)$(ETC)/sam-forwarder/ $(PREFIX)$(ETC)/i2pvpn/
 	install -m644 ./etc/samcatd/tunnels.ini $(PREFIX)$(ETC)/samcatd/
@@ -92,24 +81,14 @@ bin/$(samcatd):
 		-o ./bin/$(samcatd) \
 		./daemon/*.go
 
-daemon-web: clean-daemon-web bin/$(samcatd)-web
+all: daemon
 
-bin/$(samcatd)-web:
-	mkdir -p bin
-	go build -a $(WEB_INTERFACE) \
-		-ldflags '-w -extldflags "-static"' \
-		-o ./bin/$(samcatd)-web \
-		./daemon/*.go
+clean: clean-all
 
-all: daemon daemon-web
-
-clean-all: clean-daemon clean-daemon-web
+clean-all: clean-daemon
 
 clean-daemon:
 	rm -f bin/$(samcatd)
-
-clean-daemon-web:
-	rm -f bin/$(samcatd)-web
 
 install-forwarder:
 	install -m755 bin/$(samcatd) /usr/local/bin/$(samcatd)
