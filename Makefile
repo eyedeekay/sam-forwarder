@@ -37,7 +37,7 @@ test: test-keys test-ntcp test-ssu test-config test-manager
 
 long-test: test-serve test
 
-full-test: test-serve test-vpn test
+full-test: test-serve test
 
 test-serve:
 	cd serve_test && go test
@@ -47,9 +47,6 @@ test-ntcp:
 
 test-ssu:
 	cd udp && go test
-
-test-vpn:
-	cd csvpn && go test
 
 test-config:
 	cd config && go test
@@ -63,7 +60,7 @@ test-keys:
 refresh:
 
 deps:
-	go get -u github.com/eyedeekay/sam-forwarder/samcatd
+	go get -u -d github.com/eyedeekay/sam-forwarder/samcatd
 
 install:
 	install -m755 ./bin/$(samcatd) $(PREFIX)$(USR)$(LOCAL)/bin/

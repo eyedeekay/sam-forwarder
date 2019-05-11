@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM alpine:edge
 ARG user=samcatd
 ARG path=example/path
 ENV samhost=sam-host
@@ -11,9 +11,8 @@ RUN mkdir -p /opt/$user
 RUN adduser -h /opt/$user -D -g "$user,,,," $user
 COPY . /usr/src/samcatd
 WORKDIR /usr/src/samcatd
-RUN make deps full-test samcatd
+RUN make deps samcatd
 RUN install -m755 bin/samcatd /usr/bin/samcatd
 USER $user
 WORKDIR /opt/$user/
-CMD samcatd-web -f /usr/src/eephttpd/etc/eephttpd/eephttpd.conf #\
-    #-s /opt/$user/ -sh=$samhost -sp=$samport $args
+CMD samcatd -f /usr/src/eephttpd/etc/samcatd/eephttpd.conf
