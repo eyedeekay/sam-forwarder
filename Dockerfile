@@ -11,8 +11,8 @@ RUN mkdir -p /opt/$user
 RUN adduser -h /opt/$user -D -g "$user,,,," $user
 COPY . /usr/src/samcatd
 WORKDIR /usr/src/samcatd
-RUN make deps full-test samcatd-web
-RUN install -m755 bin/samcatd-web /usr/bin/samcatd-web
+RUN make deps full-test samcatd
+RUN install -m755 bin/samcatd /usr/bin/samcatd
 USER $user
 WORKDIR /opt/$user/
 CMD samcatd-web -f /usr/src/eephttpd/etc/eephttpd/eephttpd.conf #\

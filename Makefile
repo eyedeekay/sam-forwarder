@@ -162,7 +162,7 @@ docker-volume:
 	docker stop $(samcatd)-volume; true
 
 docker-run: docker-volume
-	docker rm -f eephttpd; true
+	docker rm -f $(samcatd); true
 	docker run -i -t -d \
 		--cap-add "net_bind_service" \
 		--network $(network) \
