@@ -41,14 +41,24 @@ func (t *TunnelHandler) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 		fmt.Fprintf(rw, "  <div id=\"%s\" class=\"%s\" >", t.SAMTunnel.ID(), t.SAMTunnel.GetType())
 	}
 	t.Printdivf(t.SAMTunnel.ID(), "TunName", t.SAMTunnel.ID(), rw, req)
-	fmt.Fprintf(rw, "</span id=\"toggle%s\" class=\"control prop\">\n", t.SAMTunnel.ID())
-	fmt.Fprintf(rw, "  <a href=\"#\" onclick=\"toggle_visibility_class('%s');\">Click here to toggle visibility of all props#%s</a>", t.SAMTunnel.ID(), t.SAMTunnel.ID())
-	fmt.Fprintf(rw, "</span>\n")
+	fmt.Fprintf(rw, "  <span id=\"toggle%s\" class=\"control\">\n", t.SAMTunnel.ID())
+	fmt.Fprintf(rw, "    <a href=\"#\" onclick=\"toggle_visibility_class('%s');\"> Show/Hide %s</a>", t.SAMTunnel.ID(), t.SAMTunnel.ID())
+	fmt.Fprintf(rw, "    <a href=\"/%s/color\">Tunnel page</a>", t.SAMTunnel.ID())
+	fmt.Fprintf(rw, "  </span>\n")
 	for key, value := range t.SAMTunnel.Props() {
 		if key != "TunName" {
 			t.Printdivf(key, key, value, rw, req)
 		}
 	}
+	if strings.HasSuffix(req.URL.Path, "color") {
+		fmt.Fprintf(rw, "  </div>\n\n")
+	}
+	if strings.HasSuffix(req.URL.Path, "color") {
+		fmt.Fprintf(rw, "  <div id=\"%s\" class=\"%s control panel\" >", t.SAMTunnel.ID()+".control", t.SAMTunnel.GetType())
+	}
+	fmt.Fprintf(rw, "    <a href=\"/%s/start\">.[START]</a>", t.SAMTunnel.ID())
+	fmt.Fprintf(rw, "    <a href=\"/%s/stop\">.[STOP].</a>", t.SAMTunnel.ID())
+	fmt.Fprintf(rw, "    <a href=\"/%s/restart\">[RESTART].</a><br>", t.SAMTunnel.ID())
 	if strings.HasSuffix(req.URL.Path, "color") {
 		fmt.Fprintf(rw, "  </div>\n\n")
 	}
