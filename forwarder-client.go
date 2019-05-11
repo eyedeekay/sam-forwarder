@@ -100,7 +100,7 @@ func (f *SAMClientForwarder) print() []string {
 		"i2cp.reduceQuantity=" + f.reduceIdleQuantity,
 		"i2cp.closeOnIdle=" + f.closeIdle,
 		"i2cp.closeIdleTime=" + f.closeIdleTime,
-		"i2cp.messageReliability" + f.messageReliability,
+		"i2cp.messageReliability=" + f.messageReliability,
 		"i2cp.encryptLeaseSet=" + f.encryptLeaseSet,
 		lsk, lspk, lspsk,
 		f.accesslisttype(),
@@ -109,7 +109,7 @@ func (f *SAMClientForwarder) print() []string {
 }
 
 func (f *SAMClientForwarder) Props() map[string]string {
-	var r map[string]string
+	r := make(map[string]string)
 	for _, prop := range f.print() {
 		k, v := sfi2pkeys.Prop(prop)
 		r[k] = v

@@ -120,7 +120,7 @@ func NewTunnelHandlerMux(host, port, user, password, css, javascript string) *Tu
 	var m TunnelHandlerMux
 	m.Addr = host + ":" + port
 	Handler := http.NewServeMux()
-	m.pagenames = []string{"index.html"}
+	m.pagenames = []string{"index.html", "/"}
 	m.user = user
 	m.password = password
 	m.sessionToken = ""

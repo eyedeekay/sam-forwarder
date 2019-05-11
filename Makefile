@@ -3,7 +3,7 @@
 
 packagename = sam-forwarder
 samcatd = samcatd
-network = si
+network = host
 samhost = sam-host
 samport = 7656
 args = -r
@@ -32,6 +32,9 @@ recopy:
 fix-debian:
 	find ./debian -type f -exec sed -i 's|lair repo key|eyedeekay|g' {} \;
 	find ./debian -type f -exec sed -i 's|eyedeekay@safe-mail.net|hankhill19580@gmail.com|g' {} \;
+
+try:
+	cd etc/samcatd/ && ../../bin/samcatd -f tunnels.ini
 
 test: test-keys test-ntcp test-ssu test-config test-manager
 
@@ -145,20 +148,12 @@ example-config:
 
 
 docker-build:
-	docker build --no-cache \
+	docker build \
 		--build-arg user=$(samcatd) \
-		--build-arg path=example/www \
 		-f Dockerfile \
 		-t eyedeekay/$(samcatd) .
 
-docker-volume:
-	docker run -i -t -d \
-		--name $(samcatd)-volume \
-		--volume $(samcatd):/home/$(samcatd)/ \
-		eyedeekay/$(samcatd); true
-	docker stop $(samcatd)-volume; true
-
-docker-run: docker-volume
+docker-run:
 	docker rm -f $(samcatd); true
 	docker run -i -t -d \
 		--cap-add "net_bind_service" \
@@ -166,11 +161,10 @@ docker-run: docker-volume
 		--env samhost=$(samhost) \
 		--env samport=$(samport) \
 		--env args=$(args) \
-		--network-alias $(samcatd) \
 		--hostname $(samcatd) \
 		--name $(samcatd) \
 		--restart always \
-		--volumes-from $(samcatd)-volume \
+		-p 127.0.0.1:7957:7957 \
 		eyedeekay/$(samcatd)
 	make follow
 

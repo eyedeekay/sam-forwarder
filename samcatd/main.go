@@ -13,7 +13,7 @@ import (
 	"crawshaw.io/littleboss"
 	"github.com/eyedeekay/sam-forwarder/config"
 	"github.com/eyedeekay/sam-forwarder/manager"
-	"github.com/eyedeekay/samcatd-web"
+	//"github.com/eyedeekay/samcatd-web"
 )
 
 type flagOpts []string
@@ -132,11 +132,9 @@ var (
 )
 
 var (
-	webinterface    *samcatweb.SAMWebConfig
-	webinterfaceerr error
-	err             error
-	accessList      flagOpts
-	config          *i2ptunconf.Conf
+	err        error
+	accessList flagOpts
+	config     *i2ptunconf.Conf
 )
 
 func main() {
@@ -154,10 +152,11 @@ func lbMain(ctx context.Context) {
 
 	}
 
-	config = i2ptunconf.NewI2PBlankTunConf()
+	config = &i2ptunconf.Conf{}
 	if *iniFile != "none" && *iniFile != "" {
 		config, err = i2ptunconf.NewI2PTunConf(*iniFile)
 	} else {
+		config = i2ptunconf.NewI2PBlankTunConf()
 		*startUp = true
 	}
 	config.TargetHost = config.GetHost(*targetHost, "127.0.0.1")
