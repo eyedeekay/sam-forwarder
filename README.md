@@ -11,7 +11,12 @@ Since it seems to be doing UDP now, if you'd like to donate to further
 development there are some wallet addresses at the bottom of this readme for
 now.
 
+## getting
+
+        go get -u github.com/eyedeekay/sam-forwarder/samcatd
+
 ## building
+
 Just:
 
         make deps build

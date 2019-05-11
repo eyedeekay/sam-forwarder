@@ -63,7 +63,7 @@ test-keys:
 refresh:
 
 deps:
-	go get -u github.com/eyedeekay/sam-forwarder/daemon
+	go get -u github.com/eyedeekay/sam-forwarder/samcatd
 
 install:
 	install -m755 ./bin/$(samcatd) $(PREFIX)$(USR)$(LOCAL)/bin/
@@ -79,7 +79,7 @@ bin/$(samcatd):
 	go build -a -tags netgo \
 		-ldflags '-w -extldflags "-static"' \
 		-o ./bin/$(samcatd) \
-		./daemon/*.go
+		./samcatd/*.go
 
 all: daemon
 
@@ -206,7 +206,7 @@ js:
 	mkdir -p bin
 	$(GOPHERJS) build -v --tags netgo \
 		-o ./javascript/$(samcatd).js \
-		./daemon/*.go
+		./samcatd/*.go
 
 cleantar:
 	rm -f ../$(packagename)_$(VERSION).orig.tar.xz
