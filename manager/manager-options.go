@@ -34,6 +34,22 @@ func SetManagerHost(s string) func(*SAMManager) error {
 	}
 }
 
+//SetManagerWebUser sets the host of the SAMManager's SAM bridge
+func SetManagerWebUser(s string) func(*SAMManager) error {
+	return func(c *SAMManager) error {
+		c.config.UserName = s
+		return nil
+	}
+}
+
+//SetManagerWebPass sets the host of the SAMManager's SAM bridge
+func SetManagerWebPass(s string) func(*SAMManager) error {
+	return func(c *SAMManager) error {
+		c.config.Password = s
+		return nil
+	}
+}
+
 //SetManagerPort sets the port of the SAMManager's SAM bridge using a string
 func SetManagerPort(s string) func(*SAMManager) error {
 	return func(c *SAMManager) error {
@@ -107,6 +123,14 @@ func SetManagerConf(s *i2ptunconf.Conf) func(*SAMManager) error {
 func SetManagerStart(s bool) func(*SAMManager) error {
 	return func(c *SAMManager) error {
 		c.start = s
+		return nil
+	}
+}
+
+//SetManagerWeb sets the host of the SAMManager's SAM bridge
+func SetManagerWeb(s bool) func(*SAMManager) error {
+	return func(c *SAMManager) error {
+		c.UseWeb = s
 		return nil
 	}
 }

@@ -81,8 +81,8 @@ func Load(FilePath, TunName, passfile string, samConn *sam3.SAM, save bool) (i2p
 }
 
 func Prop(in string) (string, string) {
-	k := "unset"
-	v := "unset"
+	k := ""
+	v := ""
 	vals := strings.SplitN(in, "=", 2)
 	if len(vals) >= 1 {
 		k = vals[0]

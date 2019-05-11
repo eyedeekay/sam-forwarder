@@ -36,7 +36,7 @@ func (c *Conf) GetOutLength(arg, def int, label ...string) int {
 
 // SetInLength sets the inbound length from the config file
 func (c *Conf) SetInLength(label ...string) {
-	if v, ok := c.GetInt("outbound.length", label...); ok {
+	if v, ok := c.GetInt("inbound.length", label...); ok {
 		c.OutLength = v
 	} else {
 		c.OutLength = 3
@@ -45,7 +45,7 @@ func (c *Conf) SetInLength(label ...string) {
 
 // SetOutLength sets the outbound lenth from the config file
 func (c *Conf) SetOutLength(label ...string) {
-	if v, ok := c.GetInt("inbound.length", label...); ok {
+	if v, ok := c.GetInt("outbound.length", label...); ok {
 		c.InLength = v
 	} else {
 		c.InLength = 3

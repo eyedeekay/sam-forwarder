@@ -3,6 +3,9 @@ package sammanager
 import (
 	"fmt"
 	"log"
+	"os"
+	"os/signal"
+	"time"
 )
 
 import (
@@ -22,27 +25,43 @@ type SAMManager struct {
 	ServerPort string
 	SamHost    string
 	SamPort    string
-	useWeb     bool
+	UseWeb     bool
 	WebHost    string
 	WebPort    string
 
-	tunnels    []*samtunnelhandler.TunnelHandler
+	cssFile string
+	jsFile  string
+
 	handlerMux *samtunnelhandler.TunnelHandlerMux
 }
 
 func (s *SAMManager) Cleanup() {
-	for _, k := range s.tunnels {
+	for _, k := range s.handlerMux.Tunnels() {
 		k.Cleanup()
 	}
 }
 
 func (s *SAMManager) Serve() bool {
-	log.Println("Starting tunnels")
-	for _, element := range s.tunnels {
+	log.Println("Starting Tunnels()")
+	for _, element := range s.handlerMux.Tunnels() {
 		log.Println("Starting service tunnel", element.ID())
 		go element.Serve()
 	}
-	for true {
+
+	if s.UseWeb == true {
+		go s.handlerMux.ListenAndServe()
+	}
+	Close := false
+	for !Close {
+		time.Sleep(1 * time.Second)
+		c := make(chan os.Signal, 1)
+		signal.Notify(c, os.Interrupt)
+		go func() {
+			for sig := range c {
+				log.Println(sig)
+				Close = true
+			}
+		}()
 	}
 	return false
 }
@@ -52,7 +71,7 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 	s.FilePath = ""
 	s.save = true
 	s.start = false
-	s.useWeb = false
+	s.UseWeb = true
 	s.config = i2ptunconf.NewI2PBlankTunConf()
 	s.ServerHost = "localhost"
 	s.ServerPort = "8081"
@@ -61,11 +80,16 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 	s.WebHost = "localhost"
 	s.WebPort = "7957"
 	s.tunName = "samcatd-"
+	s.config.UserName = "samcatd"
+	s.config.Password = ""
+	s.cssFile = ""
+	s.jsFile = ""
 	for _, o := range opts {
 		if err := o(&s); err != nil {
 			return nil, err
 		}
 	}
+	s.handlerMux = samtunnelhandler.NewTunnelHandlerMux(s.WebHost, s.WebPort, s.config.UserName, s.config.Password, s.cssFile, s.jsFile)
 	log.Println("tunnel settings", s.ServerHost, s.ServerPort, s.SamHost, s.SamPort)
 	var err error
 	if s.FilePath != "" {
@@ -87,42 +111,42 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 			case "http":
 				if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
 					log.Println("found http under", label)
-					s.tunnels = append(s.tunnels, f)
+					s.handlerMux = s.handlerMux.Append(f)
 				} else {
 					return nil, e
 				}
 			case "server":
 				if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
 					log.Println("found server under", label)
-					s.tunnels = append(s.tunnels, f)
+					s.handlerMux = s.handlerMux.Append(f)
 				} else {
 					return nil, e
 				}
 			case "client":
 				if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
 					log.Println("found client under", label)
-					s.tunnels = append(s.tunnels, f)
+					s.handlerMux = s.handlerMux.Append(f)
 				} else {
 					return nil, e
 				}
 			case "udpserver":
 				if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMSSUForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
 					log.Println("found udpserver under", label)
-					s.tunnels = append(s.tunnels, f)
+					s.handlerMux = s.handlerMux.Append(f)
 				} else {
 					return nil, e
 				}
 			case "udpclient":
 				if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMSSUClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
 					log.Println("found udpclient under", label)
-					s.tunnels = append(s.tunnels, f)
+					s.handlerMux = s.handlerMux.Append(f)
 				} else {
 					return nil, e
 				}
 			default:
 				if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
 					log.Println("found server under", label)
-					s.tunnels = append(s.tunnels, f)
+					s.handlerMux = s.handlerMux.Append(f)
 				} else {
 					return nil, e
 				}
@@ -139,55 +163,51 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 		case "http":
 			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort)); e == nil {
 				log.Println("found default http")
-				s.tunnels = append(s.tunnels, f)
+				s.handlerMux = s.handlerMux.Append(f)
 			} else {
 				return nil, e
 			}
 		case "server":
 			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort)); e == nil {
 				log.Println("found default server")
-				s.tunnels = append(s.tunnels, f)
+				s.handlerMux = s.handlerMux.Append(f)
 			} else {
 				return nil, e
 			}
 		case "client":
 			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort)); e == nil {
 				log.Println("found default client")
-				s.tunnels = append(s.tunnels, f)
+				s.handlerMux = s.handlerMux.Append(f)
 			} else {
 				return nil, e
 			}
 		case "udpserver":
 			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMSSUForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort)); e == nil {
 				log.Println("found default udpserver")
-				s.tunnels = append(s.tunnels, f)
+				s.handlerMux = s.handlerMux.Append(f)
 			} else {
 				return nil, e
 			}
 		case "udpclient":
 			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMSSUClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort)); e == nil {
 				log.Println("found default udpclient")
-				s.tunnels = append(s.tunnels, f)
+				s.handlerMux = s.handlerMux.Append(f)
 			} else {
 				return nil, e
 			}
 		default:
 			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort)); e == nil {
 				log.Println("found default client")
-				s.tunnels = append(s.tunnels, f)
+				s.handlerMux = s.handlerMux.Append(f)
 			} else {
 				return nil, e
 			}
 		}
 	}
-	if s.useWeb == true {
-		s.handlerMux = samtunnelhandler.NewTunnelHandlerMux(s.tunnels, s.WebHost, s.WebPort)
-		go s.handlerMux.ListenAndServe()
-	}
 	return &s, nil
 }
 
-func NewSAMManager(inifile, servhost, servport, samhost, samport, webhost, webport string, start bool) (*SAMManager, error) {
+func NewSAMManager(inifile, servhost, servport, samhost, samport, webhost, webport, cssfile, jsfile string, start, web bool, webuser, webpass string) (*SAMManager, error) {
 	log.Println("tunnel settings", servhost, servport, samhost, samport)
 	return NewSAMManagerFromOptions(
 		SetManagerFilePath(inifile),
@@ -198,10 +218,13 @@ func NewSAMManager(inifile, servhost, servport, samhost, samport, webhost, webpo
 		SetManagerWebHost(webhost),
 		SetManagerWebPort(webport),
 		SetManagerStart(start),
+		SetManagerWebUser(webuser),
+		SetManagerWebPass(webpass),
+		SetManagerWeb(web),
 	)
 }
 
-func NewSAMManagerFromConf(conf *i2ptunconf.Conf, servhost, servport, samhost, samport, webhost, webport string, start bool) (*SAMManager, error) {
+func NewSAMManagerFromConf(conf *i2ptunconf.Conf, servhost, servport, samhost, samport, webhost, webport, cssfile, jsfile string, start, web bool, webuser, webpass string) (*SAMManager, error) {
 	log.Println("tunnel settings", servhost, servport, samhost, samport)
 	return NewSAMManagerFromOptions(
 		SetManagerConf(conf),
@@ -212,5 +235,8 @@ func NewSAMManagerFromConf(conf *i2ptunconf.Conf, servhost, servport, samhost, s
 		SetManagerWebHost(webhost),
 		SetManagerWebPort(webport),
 		SetManagerStart(start),
+		SetManagerWebUser(webuser),
+		SetManagerWebPass(webpass),
+		SetManagerWeb(web),
 	)
 }

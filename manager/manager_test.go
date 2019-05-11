@@ -21,61 +21,61 @@ func stringify(s []string) string {
 func (s *SAMManager) List(search ...string) *[]string {
 	var r []string
 	if search == nil {
-		for index, element := range s.tunnels {
+		for index, element := range s.handlerMux.Tunnels() {
 			r = append(r, fmt.Sprintf("  %v. %s", index, element.Print()))
 		}
 		return &r
 	} else if len(search) > 0 {
 		switch search[0] {
 		case "":
-			for index, element := range s.tunnels {
+			for index, element := range s.handlerMux.Tunnels() {
 				r = append(r, fmt.Sprintf("  %v. %s", index, element.Print()))
 			}
 			return &r
 		case "ntcpserver":
-			for index, element := range s.tunnels {
+			for index, element := range s.handlerMux.Tunnels() {
 				r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
 			}
 			return &r
 		case "httpserver":
-			for index, element := range s.tunnels {
+			for index, element := range s.handlerMux.Tunnels() {
 				if element.GetType() == "http" {
 					r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
 				}
 			}
 			return &r
 		case "ntcpclient":
-			for index, element := range s.tunnels {
+			for index, element := range s.handlerMux.Tunnels() {
 				r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
 			}
 			return &r
 		case "ssuserver":
-			for index, element := range s.tunnels {
+			for index, element := range s.handlerMux.Tunnels() {
 				r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
 			}
 			return &r
 		case "ssuclient":
-			for index, element := range s.tunnels {
+			for index, element := range s.handlerMux.Tunnels() {
 				r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
 			}
 			return &r
 		default:
-			for index, element := range s.tunnels {
+			for index, element := range s.handlerMux.Tunnels() {
 				if element.Search(stringify(search)) != "" {
 					r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
 				}
 			}
-			for index, element := range s.tunnels {
+			for index, element := range s.handlerMux.Tunnels() {
 				if element.Search(stringify(search)) != "" {
 					r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
 				}
 			}
-			for index, element := range s.tunnels {
+			for index, element := range s.handlerMux.Tunnels() {
 				if element.Search(stringify(search)) != "" {
 					r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
 				}
 			}
-			for index, element := range s.tunnels {
+			for index, element := range s.handlerMux.Tunnels() {
 				if element.Search(stringify(search)) != "" {
 					r = append(r, fmt.Sprintf("  %v. %s", index, element.Search(stringify(search))))
 				}

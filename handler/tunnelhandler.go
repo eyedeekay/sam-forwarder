@@ -3,6 +3,7 @@ package samtunnelhandler
 import (
 	"fmt"
 	"net/http"
+	"strings"
 )
 
 import (
@@ -14,26 +15,35 @@ type TunnelHandler struct {
 }
 
 func (t *TunnelHandler) Printdivf(id, key, value string, rw http.ResponseWriter, req *http.Request) {
-	if req.FormValue("color") == "true" {
-		fmt.Fprintf(rw, "    <div id=\"%s\" class=\"%s\" >\n", t.SAMTunnel.ID()+"."+id, t.SAMTunnel.ID())
-		fmt.Fprintf(rw, "      <div id=\"%s\" class=\"key\">%s</div>=", t.SAMTunnel.ID()+"."+id, key)
-		fmt.Fprintf(rw, "      <div id=\"%s\" class=\"value\">%s</div>\n", t.SAMTunnel.ID()+"."+id, value)
-		fmt.Fprintf(rw, "    </div>\n")
+	if key == "" || value == "" {
+		return
+	}
+	ID := t.SAMTunnel.ID()
+	if id != "" {
+		ID = t.SAMTunnel.ID() + "." + id
+	}
+	if strings.HasSuffix(req.URL.Path, "color") {
+		fmt.Fprintf(rw, "    <div id=\"%s\" class=\"%s %s %s\" >\n", ID, t.SAMTunnel.ID(), key, t.SAMTunnel.GetType())
+		fmt.Fprintf(rw, "      <span id=\"%s\" class=\"key\">%s</span>=", ID, key)
+		fmt.Fprintf(rw, "      <span id=\"%s\" class=\"value\">%s</span>\n", ID, value)
+		fmt.Fprintf(rw, "    </div>\n\n")
 	} else {
-		fmt.Fprintf(rw, "%s=%s", t.SAMTunnel.ID()+"."+id, t.SAMTunnel.ID())
+		fmt.Fprintf(rw, "%s=%s\n", ID, t.SAMTunnel.ID())
 	}
 }
 
 func (t *TunnelHandler) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
-	if req.FormValue("color") == "true" {
+	if strings.HasSuffix(req.URL.Path, "color") {
 		fmt.Fprintf(rw, "  <div id=\"%s\" class=\"%s\" >", t.SAMTunnel.ID(), t.SAMTunnel.GetType())
 	}
 	t.Printdivf(t.SAMTunnel.ID(), "TunName", t.SAMTunnel.ID(), rw, req)
 	for key, value := range t.SAMTunnel.Props() {
-		t.Printdivf(key, key, value, rw, req)
+		if key != "TunName" {
+			t.Printdivf(key, key, value, rw, req)
+		}
 	}
-	if req.FormValue("color") == "true" {
-		fmt.Fprintf(rw, "  </div>")
+	if strings.HasSuffix(req.URL.Path, "color") {
+		fmt.Fprintf(rw, "  </div>\n\n")
 	}
 }
 

@@ -33,9 +33,11 @@ func (c *Conf) GetKeys(arg, def string, label ...string) string {
 
 // SetKeys sets the key name from the config file
 func (c *Conf) SetKeys(label ...string) {
-	if _, ok := c.Get("keys", label...); ok {
+	if v, ok := c.Get("keys", label...); ok {
+		c.TunName = v
 		c.SaveFile = true
 	} else {
+		c.TunName = "forwarder"
 		c.SaveFile = false
 	}
 }

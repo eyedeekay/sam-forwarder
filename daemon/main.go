@@ -64,12 +64,16 @@ var (
 		"Client proxy mode(true or false)")
 	injectHeaders = flag.Bool("ih", false,
 		"Inject X-I2P-DEST headers")
-	webAdmin = flag.Bool("w", false,
+	webAdmin = flag.Bool("w", true,
 		"Start web administration interface")
 	sigType = flag.String("st", "",
 		"Signature type")
 	webPort = flag.String("wp", "7957",
 		"Web port")
+	webUser = flag.String("webuser", "samcatd",
+		"Web interface username")
+	webPass = flag.String("webpass", "",
+		"Web interface password")
 	webCSS = flag.String("css", "css/styles.css",
 		"custom CSS for web interface")
 	webJS = flag.String("js", "js/scripts.js",
@@ -189,6 +193,8 @@ func lbMain(ctx context.Context) {
 	config.TargetForPort443 = config.GetPort443(*targetPort443, "")
 	config.KeyFilePath = config.GetKeyFile(*encryptKeyFiles, "")
 	config.ClientDest = config.GetClientDest(*targetDest, "", "")
+	config.UserName = config.GetUserName(*webUser, "samcatd")
+	config.Password = config.GetPassword(*webPass, "")
 
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt)
@@ -201,7 +207,12 @@ func lbMain(ctx context.Context) {
 		config.SamPort,
 		"localhost",
 		*webPort,
+		*webCSS,
+		*webJS,
 		*startUp,
+		*webAdmin,
+		config.UserName,
+		config.Password,
 	); err == nil {
 		go func() {
 			for sig := range c {
@@ -210,9 +221,6 @@ func lbMain(ctx context.Context) {
 				}
 			}
 		}()
-		if *webAdmin {
-			go samcatweb.Serve(manager, "", "", manager.WebHost, manager.WebPort)
-		}
 		manager.Serve()
 	} else {
 		log.Fatal(err)

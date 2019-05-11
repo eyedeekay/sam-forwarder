@@ -57,6 +57,8 @@ type Conf struct {
 	AccessList                []string
 	MessageReliability        string
 	exists                    bool
+	UserName                  string
+	Password                  string
 }
 
 // Print returns and prints a formatted list of configured tunnel settings.
@@ -261,6 +263,8 @@ func (c *Conf) I2PINILoad(iniFile string, label ...string) error {
 		c.SetMessageReliability(label...)
 		c.SetClientDest(label...)
 		c.SetKeyFile(label...)
+		c.SetUserName(label...)
+		c.SetPassword(label...)
 		if v, ok := c.Get("i2cp.accessList", label...); ok {
 			csv := strings.Split(v, ",")
 			for _, z := range csv {
