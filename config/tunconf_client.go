@@ -9,6 +9,7 @@ import (
 func NewSAMHTTPClientFromConf(config *Conf) (*i2phttpproxy.SAMHTTPProxy, error) {
 	if config != nil {
 		return i2phttpproxy.NewHttpProxy(
+			i2phttpproxy.SetName(config.TunName),
 			i2phttpproxy.SetKeysPath(config.KeyFilePath),
 			i2phttpproxy.SetHost(config.SamHost),
 			i2phttpproxy.SetPort(config.SamPort),

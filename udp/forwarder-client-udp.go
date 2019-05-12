@@ -8,6 +8,7 @@ import (
 	//"path/filepath"
 	"strconv"
 	"strings"
+	"time"
 )
 
 import (
@@ -261,11 +262,14 @@ func (f *SAMSSUClientForwarder) Serve() error {
 			IP:   net.ParseIP(f.TargetHost),
 		}, nil)
 		if err != nil {
-			return err
+			//return err
+			log.Printf("Dial failed: %v, waiting 5 minutes to try again\n", err)
+			time.Sleep(5 * time.Minute)
 		}
 		log.Println("Forwarding client to i2p address:", f.addr.Base32())
 		f.forward(f.publishConnection)
 	}
+	return nil
 }
 
 //NewSAMSSUClientForwarderFromOptions makes a new SAM forwarder with default options, accepts host:port arguments

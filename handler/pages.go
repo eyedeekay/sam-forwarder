@@ -8,6 +8,13 @@ func DefaultCSS() string {
     background-color: #9DABD5;
     float:left
 }
+.client {
+    width: 63%;
+    max-width: 63%;
+    min-height: 15%;
+    background-color: #2D4470;
+    float:left
+}
 .http {
     width: 63%;
     max-width: 63%;
@@ -15,11 +22,11 @@ func DefaultCSS() string {
     background-color: #00ffff;
     float:left
 }
-.client {
+.httpclient {
     width: 63%;
     max-width: 63%;
     min-height: 15%;
-    background-color: #2D4470;
+    background-color: #709fa6;
     float:left
 }
 .udpserver {
@@ -60,7 +67,7 @@ a {
     color: #080808;
 }
 h1 {
-    background-color: #709fa6;
+    background-color: #9e9e9e;
 }
 `
 }

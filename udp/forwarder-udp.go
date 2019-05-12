@@ -8,6 +8,7 @@ import (
 	//"path/filepath"
 	"strconv"
 	"strings"
+	"time"
 )
 
 import (
@@ -250,15 +251,19 @@ func (f *SAMSSUForwarder) Serve() error {
 	log.Println("SAM Keys loaded,", b)
 
 	p, _ := strconv.Atoi(f.TargetPort)
-	f.clientConnection, err = net.DialUDP("udp", nil, &net.UDPAddr{
-		Port: p,
-		IP:   net.ParseIP(f.TargetHost),
-	})
-	if err != nil {
-		log.Fatalf("Dial failed: %v", err)
-	}
-	log.Printf("Connected to localhost %v\n", f.publishConnection)
 
+	Close := false
+	for !Close {
+		f.clientConnection, err = net.DialUDP("udp", nil, &net.UDPAddr{
+			Port: p,
+			IP:   net.ParseIP(f.TargetHost),
+		})
+		if err != nil {
+			log.Printf("Dial failed: %v, waiting 5 minutes to try again\n", err)
+			time.Sleep(5 * time.Minute)
+		}
+		log.Printf("Connected to localhost %v\n", f.publishConnection)
+	}
 	for {
 		f.forward()
 	}
