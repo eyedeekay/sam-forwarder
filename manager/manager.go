@@ -115,6 +115,13 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 				} else {
 					return nil, e
 				}
+			case "httpclient":
+				if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMHTTPClientFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
+					log.Println("found http under", label)
+					s.handlerMux = s.handlerMux.Append(f)
+				} else {
+					return nil, e
+				}
 			case "server":
 				if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
 					log.Println("found server under", label)
@@ -161,6 +168,13 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 		}
 		switch t {
 		case "http":
+			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort)); e == nil {
+				log.Println("found default http")
+				s.handlerMux = s.handlerMux.Append(f)
+			} else {
+				return nil, e
+			}
+		case "httpclient":
 			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort)); e == nil {
 				log.Println("found default http")
 				s.handlerMux = s.handlerMux.Append(f)

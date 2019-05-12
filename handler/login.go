@@ -75,7 +75,7 @@ func (m *TunnelHandlerMux) Home(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(fmt.Sprintf("Welcome %s! you are serving %d tunnels.\n", m.user, len(m.tunnels))))
 	fmt.Fprintf(w, "</h1>\n")
 	fmt.Fprintf(w, "  <div id=\"toggleall\" class=\"global control prop\">\n")
-	fmt.Fprintf(w, "    <a href=\"#\" onclick=\"toggle_visibility_class('%s');\">Show/Hide %s</a>", "prop", "all")
+	fmt.Fprintf(w, "    <a href=\"#\" onclick=\"toggle_visibility_class('%s');\">Show/Hide %s</a>\n", "prop", "all")
 	fmt.Fprintf(w, "  </div>\n")
 	for _, tunnel := range m.Tunnels() {
 		tunnel.ServeHTTP(w, r2)

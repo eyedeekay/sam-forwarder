@@ -42,8 +42,8 @@ func (t *TunnelHandler) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	}
 	t.Printdivf(t.SAMTunnel.ID(), "TunName", t.SAMTunnel.ID(), rw, req)
 	fmt.Fprintf(rw, "  <span id=\"toggle%s\" class=\"control\">\n", t.SAMTunnel.ID())
-	fmt.Fprintf(rw, "    <a href=\"#\" onclick=\"toggle_visibility_class('%s');\"> Show/Hide %s</a>", t.SAMTunnel.ID(), t.SAMTunnel.ID())
-	fmt.Fprintf(rw, "    <a href=\"/%s/color\">Tunnel page</a>", t.SAMTunnel.ID())
+	fmt.Fprintf(rw, "    <a href=\"#\" onclick=\"toggle_visibility_class('%s');\"> Show/Hide %s</a>\n", t.SAMTunnel.ID(), t.SAMTunnel.ID())
+	fmt.Fprintf(rw, "    <a href=\"/%s/color\">Tunnel page</a>\n", t.SAMTunnel.ID())
 	fmt.Fprintf(rw, "  </span>\n")
 	for key, value := range t.SAMTunnel.Props() {
 		if key != "TunName" {
@@ -59,6 +59,7 @@ func (t *TunnelHandler) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(rw, "    <a href=\"/%s/start\">.[START]</a>", t.SAMTunnel.ID())
 	fmt.Fprintf(rw, "    <a href=\"/%s/stop\">.[STOP].</a>", t.SAMTunnel.ID())
 	fmt.Fprintf(rw, "    <a href=\"/%s/restart\">[RESTART].</a><br>", t.SAMTunnel.ID())
+	fmt.Fprintf(rw, "    <div id=\"%s.status\" class=\"%s status\">.[STATUS].</div>", t.SAMTunnel.ID(), t.SAMTunnel.ID())
 	if strings.HasSuffix(req.URL.Path, "color") {
 		fmt.Fprintf(rw, "  </div>\n\n")
 	}

@@ -77,7 +77,6 @@ it's own application. The package will need to give the application
 CAP\_NET\_BIND\_SERVICE or something. This might work:
 
         sudo setcap cap_net_bind_service=epi ./bin/samcatd
-        sudo setcap cap_net_bind_service=epi ./bin/samcatd-web
 
 But I need to learn more about capabilities before I make that part of the
 thing.

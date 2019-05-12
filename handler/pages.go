@@ -89,6 +89,10 @@ function toggle_visibility_class(id) {
    for (let c of clist) {
        c.style.display = 'block';
    }
+   var slist = document.getElementsByClassName("status")
+   for (let s of slist) {
+       s.style.display = 'block';
+   }
 }
 toggle_visibility_class("prop")
 `
