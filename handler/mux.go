@@ -95,9 +95,9 @@ func (t *TunnelHandlerMux) Tunnels() []*TunnelHandler {
 
 func (m *TunnelHandlerMux) Append(v *TunnelHandler) *TunnelHandlerMux {
 	if m == nil {
-        return m
-    }
-    for _, prev := range m.tunnels {
+		return m
+	}
+	for _, prev := range m.tunnels {
 		if v.ID() == prev.ID() {
 			log.Printf("v.ID() found, %s == %s", v.ID(), prev.ID())
 			return m

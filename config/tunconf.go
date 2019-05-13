@@ -278,9 +278,9 @@ func (c *Conf) I2PINILoad(iniFile string, label ...string) error {
 // NewI2PBlankTunConf returns an empty but intialized tunconf
 func NewI2PBlankTunConf() *Conf {
 	var c Conf
-    c.Config = &goini.INI{}
+	c.Config = &goini.INI{}
 	c.Config = goini.New()
-    c.Config.Parse([]byte(""),"\n","=")
+	c.Config.Parse([]byte(""), "\n", "=")
 	return &c
 }
 
