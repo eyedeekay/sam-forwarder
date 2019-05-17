@@ -148,7 +148,7 @@ example-config:
 
 
 docker-build:
-	docker build \
+	docker build --no-cache \
 		--build-arg user=$(samcatd) \
 		-f Dockerfile \
 		-t eyedeekay/$(samcatd) .
@@ -174,7 +174,7 @@ c:
 follow:
 	docker logs -f $(samcatd)
 
-docker: docker-build docker-volume docker-run
+docker: docker-build docker-run
 
 index:
 	pandoc README.md -o docs/index.html

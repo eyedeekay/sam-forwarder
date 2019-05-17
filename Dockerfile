@@ -15,4 +15,4 @@ RUN go get -u github.com/eyedeekay/sam-forwarder/samcatd
 RUN make all install
 USER $user
 WORKDIR /opt/$user/
-CMD samcatd -f /usr/src/eephttpd/etc/samcatd/eephttpd.conf
+CMD samcatd -f /usr/src/eephttpd/etc/samcatd/tunnels.ini -littleboss start

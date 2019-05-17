@@ -4,8 +4,7 @@ Forward a local port to i2p over the SAM API, or proxy a destination to a port
 on the local host. This is a work-in-progress, but the basic functionality is,
 there and it's already pretty useful. Everything TCP works, but UDP forwarding
 has much less real use than TCP. Turns out UDP was less broken than I thought
-though. Yay. There's also a simple client-server VPN built on top of it,
-eventually, it will be replaced with a peer-to-peer version.
+though.
 
 Since it seems to be doing UDP now, if you'd like to donate to further
 development there are some wallet addresses at the bottom of this readme for
