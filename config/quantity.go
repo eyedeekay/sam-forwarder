@@ -39,7 +39,7 @@ func (c *Conf) SetInQuantity(label ...string) {
 	if v, ok := c.GetInt("inbound.quantity", label...); ok {
 		c.InQuantity = v
 	} else {
-		c.InQuantity = 5
+		c.InQuantity = 1
 	}
 }
 
@@ -48,6 +48,6 @@ func (c *Conf) SetOutQuantity(label ...string) {
 	if v, ok := c.GetInt("outbound.quantity", label...); ok {
 		c.OutQuantity = v
 	} else {
-		c.OutQuantity = 5
+		c.OutQuantity = 1
 	}
 }

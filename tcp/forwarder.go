@@ -14,6 +14,7 @@ import (
 
 import (
 	"github.com/eyedeekay/sam-forwarder/i2pkeys"
+	"github.com/eyedeekay/sam-forwarder/interface"
 	"github.com/eyedeekay/sam3"
 	"github.com/eyedeekay/sam3/i2pkeys"
 )
@@ -28,15 +29,15 @@ type SAMForwarder struct {
 	TargetHost string
 	TargetPort string
 
-	samConn           *sam3.SAM
-	SamKeys           i2pkeys.I2PKeys
-	publishStream     *sam3.StreamSession
-	publishListen     *sam3.StreamListener
-	publishConnection net.Conn
+	samConn       *sam3.SAM
+	SamKeys       i2pkeys.I2PKeys
+	publishStream *sam3.StreamSession
+	publishListen *sam3.StreamListener
 
 	FilePath string
 	file     io.ReadWriter
 	save     bool
+	up       bool
 
 	Type string
 
@@ -89,7 +90,6 @@ func (f *SAMForwarder) ID() string {
 func (f *SAMForwarder) Cleanup() {
 	f.publishStream.Close()
 	f.publishListen.Close()
-	f.publishConnection.Close()
 	f.samConn.Close()
 }
 
@@ -280,6 +280,9 @@ func (f *SAMForwarder) connUnlockAndClose(cli, conn bool, connection *sam3.SAMCo
 }
 
 func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
+	if !f.Up() {
+		return
+	}
 	var request *http.Request
 	var requestbytes []byte
 	var responsebytes []byte
@@ -335,36 +338,68 @@ func (f *SAMForwarder) Base64() string {
 //Serve starts the SAM connection and and forwards the local host:port to i2p
 func (f *SAMForwarder) Serve() error {
 	//lsk, lspk, lspsk := f.leasesetsettings()
-	if f.publishStream, err = f.samConn.NewStreamSession(f.TunName, f.SamKeys, f.print()); err != nil {
-		log.Println("Stream Creation error:", err.Error())
-		return err
-	}
-	log.Println("SAM stream session established.")
-	if f.publishListen, err = f.publishStream.Listen(); err != nil {
-		return err
-	}
-	log.Println("Starting Listener.")
-	b := string(f.SamKeys.Addr().Base32())
-	log.Println("SAM Listener created,", b)
-
-	for {
-		conn, err := f.publishListen.AcceptI2P()
-		if err != nil {
-			log.Fatalf("ERROR: failed to accept listener: %v", err)
+	if f.Up() {
+		if f.publishStream, err = f.samConn.NewStreamSession(f.TunName, f.SamKeys, f.print()); err != nil {
+			log.Println("Stream Creation error:", err.Error())
+			return err
 		}
-		log.Printf("Accepted connection %v\n", conn)
-		go f.forward(conn)
+		log.Println("SAM stream session established.")
+		if f.publishListen, err = f.publishStream.Listen(); err != nil {
+			return err
+		}
+		log.Println("Starting Listener.")
+		b := string(f.SamKeys.Addr().Base32())
+		log.Println("SAM Listener created,", b)
+
+		for {
+			conn, err := f.publishListen.AcceptI2P()
+			if err != nil {
+				log.Printf("ERROR: failed to accept listener: %v", err)
+				return nil
+			}
+			defer conn.Close()
+			log.Printf("Accepted connection %v\n", conn)
+			go f.forward(conn)
+		}
 	}
+	return nil
+}
+
+func (f *SAMForwarder) Up() bool {
+	return f.up
 }
 
 //Close shuts the whole thing down.
 func (f *SAMForwarder) Close() error {
 	var err error
-	err = f.samConn.Close()
+	//err = f.samConn.Close()
+	f.up = false
 	err = f.publishStream.Close()
-	err = f.publishListen.Close()
-	err = f.publishConnection.Close()
+	//err = f.samConn.Close()
+	//err = f.publishListen.Close()
 	return err
+}
+
+func (s *SAMForwarder) Load() (samtunnel.SAMTunnel, error) {
+	if s.samConn, err = sam3.NewSAM(s.sam()); err != nil {
+		return nil, err
+	}
+	log.Println("SAM Bridge connection established.")
+	if s.save {
+		log.Println("Saving i2p keys")
+	}
+	if s.SamKeys, err = sfi2pkeys.Load(s.FilePath, s.TunName, s.passfile, s.samConn, s.save); err != nil {
+		return nil, err
+	}
+	log.Println("Destination keys generated, tunnel name:", s.TunName)
+	if s.save {
+		if err := sfi2pkeys.Save(s.FilePath, s.TunName, s.passfile, s.SamKeys); err != nil {
+			return nil, err
+		}
+		log.Println("Saved tunnel keys for", s.TunName)
+	}
+	s.up = true
+	return s, nil
 }
 
 //NewSAMForwarder makes a new SAM forwarder with default options, accepts host:port arguments
@@ -413,22 +448,9 @@ func NewSAMForwarderFromOptions(opts ...func(*SAMForwarder) error) (*SAMForwarde
 			return nil, err
 		}
 	}
-	if s.samConn, err = sam3.NewSAM(s.sam()); err != nil {
-		return nil, err
+	l, e := s.Load()
+	if e != nil {
+		return nil, e
 	}
-	log.Println("SAM Bridge connection established.")
-	if s.save {
-		log.Println("Saving i2p keys")
-	}
-	if s.SamKeys, err = sfi2pkeys.Load(s.FilePath, s.TunName, s.passfile, s.samConn, s.save); err != nil {
-		return nil, err
-	}
-	log.Println("Destination keys generated, tunnel name:", s.TunName)
-	if s.save {
-		if err := sfi2pkeys.Save(s.FilePath, s.TunName, s.passfile, s.SamKeys); err != nil {
-			return nil, err
-		}
-		log.Println("Saved tunnel keys for", s.TunName)
-	}
-	return &s, nil
+	return l.(*SAMForwarder), nil
 }

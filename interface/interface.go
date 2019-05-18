@@ -13,4 +13,6 @@ type SAMTunnel interface {
 	Base64() string
 	Serve() error
 	Close() error
+	Up() bool
+	Load() (SAMTunnel, error)
 }

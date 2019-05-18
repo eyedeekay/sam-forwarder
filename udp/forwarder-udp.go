@@ -13,6 +13,7 @@ import (
 
 import (
 	"github.com/eyedeekay/sam-forwarder/i2pkeys"
+	"github.com/eyedeekay/sam-forwarder/interface"
 	"github.com/eyedeekay/sam3"
 	"github.com/eyedeekay/sam3/i2pkeys"
 )
@@ -36,6 +37,7 @@ type SAMSSUForwarder struct {
 	FilePath string
 	file     io.ReadWriter
 	save     bool
+	up       bool
 
 	// samcatd options
 	passfile string
@@ -269,6 +271,31 @@ func (f *SAMSSUForwarder) Serve() error {
 	}
 }
 
+func (s *SAMSSUForwarder) Load() (samtunnel.SAMTunnel, error) {
+	if s.samConn, err = sam3.NewSAM(s.sam()); err != nil {
+		return nil, err
+	}
+	log.Println("SAM Bridge connection established.")
+	if s.save {
+		log.Println("Saving i2p keys")
+	}
+	if s.SamKeys, err = sfi2pkeys.Load(s.FilePath, s.TunName, s.passfile, s.samConn, s.save); err != nil {
+		return nil, err
+	}
+	log.Println("Destination keys generated, tunnel name:", s.TunName)
+	if s.save {
+		if err := sfi2pkeys.Save(s.FilePath, s.TunName, s.passfile, s.SamKeys); err != nil {
+			return nil, err
+		}
+		log.Println("Saved tunnel keys for", s.TunName)
+	}
+	s.up = true
+	return s, nil
+}
+func (f *SAMSSUForwarder) Up() bool {
+	return f.up
+}
+
 //NewSAMSSUForwarder makes a new SAM forwarder with default options, accepts host:port arguments
 func NewSAMSSUForwarder(host, port string) (*SAMSSUForwarder, error) {
 	return NewSAMSSUForwarderFromOptions(SetHost(host), SetPort(port))
@@ -313,22 +340,9 @@ func NewSAMSSUForwarderFromOptions(opts ...func(*SAMSSUForwarder) error) (*SAMSS
 			return nil, err
 		}
 	}
-	if s.samConn, err = sam3.NewSAM(s.sam()); err != nil {
-		return nil, err
+	l, e := s.Load()
+	if e != nil {
+		return nil, e
 	}
-	log.Println("SAM Bridge connection established.")
-	if s.save {
-		log.Println("Saving i2p keys")
-	}
-	if s.SamKeys, err = sfi2pkeys.Load(s.FilePath, s.TunName, s.passfile, s.samConn, s.save); err != nil {
-		return nil, err
-	}
-	log.Println("Destination keys generated, tunnel name:", s.TunName)
-	if s.save {
-		if err := sfi2pkeys.Save(s.FilePath, s.TunName, s.passfile, s.SamKeys); err != nil {
-			return nil, err
-		}
-		log.Println("Saved tunnel keys for", s.TunName)
-	}
-	return &s, nil
+	return l.(*SAMSSUForwarder), nil
 }

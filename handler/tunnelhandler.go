@@ -37,14 +37,49 @@ func (t *TunnelHandler) Printdivf(id, key, value string, rw http.ResponseWriter,
 }
 
 func (t *TunnelHandler) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
-	if strings.HasSuffix(req.URL.Path, "color") {
-		fmt.Fprintf(rw, "  <div id=\"%s\" class=\"%s\" >", t.SAMTunnel.ID(), t.SAMTunnel.GetType())
-	}
 	if err := req.ParseForm(); err == nil {
 		if action := req.PostFormValue("action"); action != "" {
-			fmt.Fprintf(rw, "%s", action)
-			return
+			var err error
+			switch action {
+			case "start":
+				if !t.SAMTunnel.Up() {
+					fmt.Println("Starting tunnel", t.ID())
+					if t.SAMTunnel, err = t.Load(); err == nil {
+						t.Serve()
+					}
+					//return
+				} else {
+					fmt.Println(t.ID(), "already started")
+					req.URL.Path = req.URL.Path + "/color"
+				}
+			case "stop":
+				if t.SAMTunnel.Up() {
+					fmt.Println("Stopping tunnel", t.ID())
+					t.Close()
+				} else {
+					fmt.Println(t.ID(), "already stopped")
+					req.URL.Path = req.URL.Path + "/color"
+				}
+			case "restart":
+				if t.SAMTunnel.Up() {
+					fmt.Println("Stopping tunnel", t.ID())
+					t.Close()
+					fmt.Println("Starting tunnel", t.ID())
+					if t.SAMTunnel, err = t.Load(); err == nil {
+						t.Serve()
+					}
+					return
+				} else {
+					fmt.Println(t.ID(), "stopped.")
+					req.URL.Path = req.URL.Path + "/color"
+				}
+			default:
+			}
 		}
+	}
+
+	if strings.HasSuffix(req.URL.Path, "color") {
+		fmt.Fprintf(rw, "  <div id=\"%s\" class=\"%s\" >", t.SAMTunnel.ID(), t.SAMTunnel.GetType())
 	}
 
 	t.Printdivf(t.SAMTunnel.ID(), "TunName", t.SAMTunnel.ID(), rw, req)
