@@ -30,11 +30,10 @@ type SAMForwarder struct {
 	TargetHost string
 	TargetPort string
 
-	samConn           *sam3.SAM
-	SamKeys           i2pkeys.I2PKeys
-	publishStream     *sam3.StreamSession
-	publishListen     *sam3.StreamListener
-	publishConnection net.Conn
+	samConn       *sam3.SAM
+	SamKeys       i2pkeys.I2PKeys
+	publishStream *sam3.StreamSession
+	publishListen *sam3.StreamListener
 
 	FilePath string
 	file     io.ReadWriter
@@ -92,7 +91,6 @@ func (f *SAMForwarder) ID() string {
 func (f *SAMForwarder) Cleanup() {
 	f.publishStream.Close()
 	f.publishListen.Close()
-	f.publishConnection.Close()
 	f.samConn.Close()
 }
 
@@ -283,6 +281,9 @@ func (f *SAMForwarder) connUnlockAndClose(cli, conn bool, connection *sam3.SAMCo
 }
 
 func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
+	if !f.Up() {
+		return
+	}
 	var request *http.Request
 	var requestbytes []byte
 	var responsebytes []byte
@@ -338,26 +339,31 @@ func (f *SAMForwarder) Base64() string {
 //Serve starts the SAM connection and and forwards the local host:port to i2p
 func (f *SAMForwarder) Serve() error {
 	//lsk, lspk, lspsk := f.leasesetsettings()
-	if f.publishStream, err = f.samConn.NewStreamSession(f.TunName, f.SamKeys, f.print()); err != nil {
-		log.Println("Stream Creation error:", err.Error())
-		return err
-	}
-	log.Println("SAM stream session established.")
-	if f.publishListen, err = f.publishStream.Listen(); err != nil {
-		return err
-	}
-	log.Println("Starting Listener.")
-	b := string(f.SamKeys.Addr().Base32())
-	log.Println("SAM Listener created,", b)
-
-	for {
-		conn, err := f.publishListen.AcceptI2P()
-		if err != nil {
-			log.Fatalf("ERROR: failed to accept listener: %v", err)
+	if f.Up() {
+		if f.publishStream, err = f.samConn.NewStreamSession(f.TunName, f.SamKeys, f.print()); err != nil {
+			log.Println("Stream Creation error:", err.Error())
+			return err
 		}
-		log.Printf("Accepted connection %v\n", conn)
-		go f.forward(conn)
+		log.Println("SAM stream session established.")
+		if f.publishListen, err = f.publishStream.Listen(); err != nil {
+			return err
+		}
+		log.Println("Starting Listener.")
+		b := string(f.SamKeys.Addr().Base32())
+		log.Println("SAM Listener created,", b)
+
+		for {
+			conn, err := f.publishListen.AcceptI2P()
+			if err != nil {
+				log.Printf("ERROR: failed to accept listener: %v", err)
+				return nil
+			}
+			defer conn.Close()
+			log.Printf("Accepted connection %v\n", conn)
+			go f.forward(conn)
+		}
 	}
+	return nil
 }
 
 func (f *SAMForwarder) Up() bool {
@@ -367,11 +373,11 @@ func (f *SAMForwarder) Up() bool {
 //Close shuts the whole thing down.
 func (f *SAMForwarder) Close() error {
 	var err error
-	err = f.samConn.Close()
+	//err = f.samConn.Close()
 	f.up = false
 	err = f.publishStream.Close()
-	err = f.publishListen.Close()
-	err = f.publishConnection.Close()
+	//err = f.samConn.Close()
+	//err = f.publishListen.Close()
 	return err
 }
 

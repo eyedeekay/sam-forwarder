@@ -23,15 +23,6 @@ func (m *TunnelHandlerMux) ListenAndServe() {
 	m.Server.ListenAndServe()
 }
 
-func (m *TunnelHandlerMux) PageCheck(path string) bool {
-	for _, v := range m.pagenames {
-		if strings.Contains(path, strings.Replace(v, "/", "", 0)) {
-			return true
-		}
-	}
-	return false
-}
-
 func (m *TunnelHandlerMux) CheckCookie(w http.ResponseWriter, r *http.Request) bool {
 	if m.password != "" {
 		if m.sessionToken == "" {
@@ -61,18 +52,7 @@ func (m *TunnelHandlerMux) HandlerWrapper(h http.Handler) http.Handler {
 		if m.CheckCookie(w, r) == false {
 			return
 		}
-		if m.PageCheck(r.URL.Path) {
-			fmt.Fprintf(w, "<!DOCTYPE html>\n")
-			fmt.Fprintf(w, "<html>\n")
-			fmt.Fprintf(w, "<head>\n")
-			fmt.Fprintf(w, "  <link rel=\"stylesheet\" href=\"/styles.css\">")
-			fmt.Fprintf(w, "</head>\n")
-			fmt.Fprintf(w, "<body>\n")
-			h.ServeHTTP(w, r)
-			fmt.Fprintf(w, "  <script src=\"/scripts.js\"></script>\n")
-			fmt.Fprintf(w, "</body>\n")
-			fmt.Fprintf(w, "</html>\n")
-		} else if !strings.HasSuffix(r.URL.Path, "color") {
+		if !strings.HasSuffix(r.URL.Path, "color") {
 			h.ServeHTTP(w, r)
 		} else {
 			fmt.Fprintf(w, "<!DOCTYPE html>\n")
@@ -123,7 +103,7 @@ func NewTunnelHandlerMux(host, port, user, password, css, javascript string) *Tu
 	var m TunnelHandlerMux
 	m.Addr = host + ":" + port
 	Handler := http.NewServeMux()
-	m.pagenames = []string{"index.html", "/"}
+	m.pagenames = []string{"index.html", "index", ""}
 	m.user = user
 	m.password = password
 	m.sessionToken = ""

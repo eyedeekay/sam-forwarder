@@ -60,6 +60,12 @@ func (m *TunnelHandlerMux) Home(w http.ResponseWriter, r *http.Request) {
 	if m.CheckCookie(w, r) == false {
 		return
 	}
+	//	fmt.Fprintf(w, "URL PATH", r.URL.Path)
+	if r.URL.Path == "/" {
+		http.Redirect(w, r, "/index.html", 301)
+		fmt.Fprintf(w, "redirecting to index.html")
+		return
+	}
 	r2, err := http.NewRequest("GET", r.URL.Path+"/color", r.Body)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
