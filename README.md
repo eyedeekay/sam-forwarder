@@ -68,19 +68,11 @@ with the key will be able to decrypt and start the tunnels. It is up to the user
 to determine how to go about managing these keys. Right now this system is
 pretty bad. I'll be addressing that soon too.
 
-TCP and UDP are both working now. Additional functionality might be added by
-adding other kinds of protocols overtop the TCP and UDP tunnels as a primitive.
-There's a very basic UDP-based VPN available in samcatd by configuration-file
-only for now. Also it requires root. Probably need to split the VPN part into
-it's own application. The package will need to give the application
-CAP\_NET\_BIND\_SERVICE or something. This might work:
+TCP and UDP are both working now. but UDP requires the service to already be
+configured to work. Changes to address this shortcoming are pending.
 
-        sudo setcap cap_net_bind_service=epi ./bin/samcatd
-
-But I need to learn more about capabilities before I make that part of the
-thing.
-
-Some kind of reverse-proxy or filter is also an obvious choice.
+Experimental support for KCP-based error correction and streaming-over-datagrams
+is in the works. Some kind of reverse-proxy or filter is also an obvious choice.
 
 I've only enabled the use of a subset of the i2cp and tunnel configuration
 options, the ones I use the most and for no other real reason assume other
@@ -91,15 +83,8 @@ be added within 24 hours. I intend to have configuration options for all
 relevant i2cp and tunnel options, which I'm keeping track of
 [here](config/CHECKLIST.md).
 
-I should probably have some options that are available in other general network
-utilities. I've started to do this with samcatd.
-
-I want it to be able to save ini files based on the settings used for a running
-forwarder. Should be easy, I just need to decide how I want to do it. Also to
-focus a bit more. I've got more of a plan here now. tunconf has the loaded ini
-file inside it, and variables to track the state of the config options while
-running, and they can be switched to save options that might be changed via some
-interface or another.
+I need to just change how the configuration is done entirely. I want it to work
+with the configuration formats used by each I2P router.
 
 Example tools built using this are being broken off into their own repos. Use
 the other repos where appropriate, so I can leave the examples un-messed with.
@@ -110,8 +95,6 @@ figure I give it a web interface to configure stuff with. I'll probably put that
 in a different repo though. This is looking a little cluttered.
 
 TLS configuration is experimental.
-
-I've made it self-supervising, but I need to make better use of contexts.
 
 ## Stuff that's using it:
 
