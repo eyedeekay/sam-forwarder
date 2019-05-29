@@ -263,7 +263,8 @@ func (f *SAMSSUClientForwarder) Serve() error {
 		return err
 	}
 
-	for {
+	Close := false
+	for !Close {
 		p, _ := strconv.Atoi(f.TargetPort)
 		f.publishConnection, err = net.DialUDP("udp", &net.UDPAddr{
 			Port: p,
@@ -273,8 +274,13 @@ func (f *SAMSSUClientForwarder) Serve() error {
 			//return err
 			log.Printf("Dial failed: %v, waiting 5 minutes to try again\n", err)
 			time.Sleep(5 * time.Minute)
+		} else {
+			Close = true
 		}
 		log.Println("Forwarding client to i2p address:", f.addr.Base32())
+		//f.forward(f.publishConnection)
+	}
+	for {
 		f.forward(f.publishConnection)
 	}
 	return nil

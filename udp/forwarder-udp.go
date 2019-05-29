@@ -242,8 +242,8 @@ func (f *SAMSSUForwarder) Serve() error {
 	var err error
 
 	sp, _ := strconv.Atoi(f.SamPort)
-	if f.publishConnection, err = f.samConn.NewDatagramSession(f.TunName, f.SamKeys,
-		f.print(), sp); err != nil {
+	f.publishConnection, err = f.samConn.NewDatagramSession(f.TunName, f.SamKeys, f.print(), sp)
+	if err != nil {
 		log.Println("Session Creation error:", err.Error())
 		return err
 	}
@@ -263,6 +263,8 @@ func (f *SAMSSUForwarder) Serve() error {
 		if err != nil {
 			log.Printf("Dial failed: %v, waiting 5 minutes to try again\n", err)
 			time.Sleep(5 * time.Minute)
+		} else {
+			Close = true
 		}
 		log.Printf("Connected to localhost %v\n", f.publishConnection)
 	}
