@@ -307,7 +307,7 @@ func NewSAMSSUForwarder(host, port string) (*SAMSSUForwarder, error) {
 func NewSAMSSUForwarderFromOptions(opts ...func(*SAMSSUForwarder) error) (*SAMSSUForwarder, error) {
 	var s SAMSSUForwarder
 	s.SamHost = "127.0.0.1"
-	s.SamPort = "7655"
+	s.SamPort = "7656"
 	s.FilePath = ""
 	s.save = false
 	s.TargetHost = "127.0.0.1"

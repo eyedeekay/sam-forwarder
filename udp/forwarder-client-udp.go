@@ -315,7 +315,7 @@ func (s *SAMSSUClientForwarder) Load() (samtunnel.SAMTunnel, error) {
 func NewSAMSSUClientForwarderFromOptions(opts ...func(*SAMSSUClientForwarder) error) (*SAMSSUClientForwarder, error) {
 	var s SAMSSUClientForwarder
 	s.SamHost = "127.0.0.1"
-	s.SamPort = "7655"
+	s.SamPort = "7656"
 	s.FilePath = ""
 	s.save = false
 	s.TargetHost = "127.0.0.1"
