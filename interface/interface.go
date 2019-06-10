@@ -1,5 +1,9 @@
 package samtunnel
 
+import (
+	"github.com/eyedeekay/sam3/i2pkeys"
+)
+
 type SAMTunnel interface {
 	GetType() string
 	Cleanup()
@@ -11,6 +15,7 @@ type SAMTunnel interface {
 	//Destination() string
 	Base32() string
 	Base64() string
+	Keys() i2pkeys.I2PKeys
 	Serve() error
 	Close() error
 	Up() bool

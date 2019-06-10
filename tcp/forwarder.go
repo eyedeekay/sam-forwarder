@@ -87,6 +87,10 @@ func (f *SAMForwarder) ID() string {
 	return f.TunName
 }
 
+func (f *SAMForwarder) Keys() i2pkeys.I2PKeys {
+	return f.SamKeys
+}
+
 func (f *SAMForwarder) Cleanup() {
 	f.publishStream.Close()
 	f.publishListen.Close()

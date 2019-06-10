@@ -80,6 +80,10 @@ func (f *SAMClientForwarder) ID() string {
 	return f.TunName
 }
 
+func (f *SAMClientForwarder) Keys() i2pkeys.I2PKeys {
+	return f.SamKeys
+}
+
 func (f *SAMClientForwarder) print() []string {
 	lsk, lspk, lspsk := f.leasesetsettings()
 	return []string{

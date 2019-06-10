@@ -30,6 +30,7 @@ type Conf struct {
 	TargetPort                string
 	SamHost                   string
 	SamPort                   string
+    TunnelHost                string
 	TargetForPort443          string
 	TunName                   string
 	EncryptLeaseSet           bool
@@ -235,6 +236,7 @@ func (c *Conf) I2PINILoad(iniFile string, label ...string) error {
 		c.SetPort(label...)
 		c.SetSAMHost(label...)
 		c.SetSAMPort(label...)
+        c.SetEndpointHost(label...)
 		c.SetTunName(label...)
 		c.SetSigType(label...)
 		c.SetEncryptLease(label...)

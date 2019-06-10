@@ -82,6 +82,10 @@ func (f *SAMSSUForwarder) ID() string {
 	return f.TunName
 }
 
+func (f *SAMSSUForwarder) Keys() i2pkeys.I2PKeys {
+	return f.SamKeys
+}
+
 func (f *SAMSSUForwarder) Cleanup() {
 	f.publishConnection.Close()
 	f.clientConnection.Close()
