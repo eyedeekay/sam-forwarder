@@ -207,28 +207,28 @@ func (f *SAMSSUForwarder) sam() string {
 
 //func (f *SAMSSUForwarder) forward(conn net.Conn) {
 func (f *SAMSSUForwarder) forward() {
-	go func() {
-		//		defer f.clientConnection.Close()
-		//		defer f.publishConnection.Close()
-		buffer := make([]byte, 1024)
-		if size, addr, readerr := f.clientConnection.ReadFrom(buffer); readerr == nil {
-			if size2, writeerr := f.publishConnection.WriteTo(buffer, addr); writeerr == nil {
-				log.Printf("%q of %q bytes read", size, size2)
-				log.Printf("%q of %q bytes written", size2, size)
-			}
+
+	buffer := make([]byte, 1024)
+	if size, addr, readerr := f.clientConnection.ReadFrom(buffer); readerr == nil {
+		if size2, writeerr := f.publishConnection.WriteTo(buffer, addr); writeerr == nil {
+			log.Printf("%q of %q bytes read", size, size2)
+			log.Printf("%q of %q bytes written", size2, size)
+		} else {
+			log.Println(writeerr)
 		}
-	}()
-	go func() {
-		//		defer f.clientConnection.Close()
-		//		defer f.publishConnection.Close()
-		buffer := make([]byte, 1024)
-		if size, addr, readerr := f.publishConnection.ReadFrom(buffer); readerr == nil {
-			if size2, writeerr := f.clientConnection.WriteTo(buffer, addr); writeerr == nil {
-				log.Printf("%q of %q bytes read", size, size2)
-				log.Printf("%q of %q bytes written", size2, size)
-			}
+	} else {
+		log.Println(readerr)
+	}
+	if size, addr, readerr := f.publishConnection.ReadFrom(buffer); readerr == nil {
+		if size2, writeerr := f.clientConnection.WriteTo(buffer, addr); writeerr == nil {
+			log.Printf("%q of %q bytes read", size, size2)
+			log.Printf("%q of %q bytes written", size2, size)
+		} else {
+			log.Println(writeerr)
 		}
-	}()
+	} else {
+		log.Println(readerr)
+	}
 }
 
 //Base32 returns the base32 address where the local service is being forwarded
@@ -266,19 +266,24 @@ func (f *SAMSSUForwarder) Serve() error {
 		log.Println("Session Creation error:", err.Error())
 		return err
 	}
+
 	log.Println("SAM datagram session established.")
 	log.Println("Starting Forwarder.")
 	b := string(f.SamKeys.Addr().Base32())
 	log.Println("SAM Keys loaded,", b)
 
-	Close := false
-	for !Close {
-		addr, err := net.ResolveUDPAddr("udp", f.Target())
-		Close = f.errSleep(err)
-		f.clientConnection, err = net.DialUDP("udp", nil, addr)
-		Close = f.errSleep(err)
-		log.Printf("Connected to localhost %v\n", f.publishConnection)
-	}
+	/*Loop := false
+	    if f.clientConnection == nil {
+		for !Loop {
+	        log.Println("Attempting to resolve local UDP Service to forward to I2P", f.Target())
+			addr, err := net.ResolveUDPAddr("udp", f.Target())
+			Loop = f.errSleep(err)
+	        log.Println("Attempting to dial resolved UDP Address", f.Target())
+			f.clientConnection, err = net.DialUDP("udp", nil, addr)
+			Loop = f.errSleep(err)
+			log.Printf("Connected to localhost %v\n", f.publishConnection)
+		}
+	    }*/
 	for {
 		f.forward()
 	}
