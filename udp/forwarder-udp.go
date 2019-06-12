@@ -207,7 +207,18 @@ func (f *SAMSSUForwarder) sam() string {
 
 //func (f *SAMSSUForwarder) forward(conn net.Conn) {
 func (f *SAMSSUForwarder) forward() {
-
+	Loop := false
+	if f.clientConnection == nil {
+		for !Loop {
+			log.Println("Attempting to resolve local UDP Service to forward to I2P", f.Target())
+			addr, err := net.ResolveUDPAddr("udp", f.Target())
+			Loop = f.errSleep(err)
+			log.Println("Attempting to dial resolved UDP Address", f.Target())
+			f.clientConnection, err = net.DialUDP("udp", nil, addr)
+			Loop = f.errSleep(err)
+			log.Printf("Connected %v to localhost %v\n", f.publishConnection, f.clientConnection)
+		}
+	}
 	buffer := make([]byte, 1024)
 	if size, addr, readerr := f.clientConnection.ReadFrom(buffer); readerr == nil {
 		if size2, writeerr := f.publishConnection.WriteTo(buffer, addr); writeerr == nil {
@@ -272,18 +283,6 @@ func (f *SAMSSUForwarder) Serve() error {
 	b := string(f.SamKeys.Addr().Base32())
 	log.Println("SAM Keys loaded,", b)
 
-	/*Loop := false
-	    if f.clientConnection == nil {
-		for !Loop {
-	        log.Println("Attempting to resolve local UDP Service to forward to I2P", f.Target())
-			addr, err := net.ResolveUDPAddr("udp", f.Target())
-			Loop = f.errSleep(err)
-	        log.Println("Attempting to dial resolved UDP Address", f.Target())
-			f.clientConnection, err = net.DialUDP("udp", nil, addr)
-			Loop = f.errSleep(err)
-			log.Printf("Connected to localhost %v\n", f.publishConnection)
-		}
-	    }*/
 	for {
 		f.forward()
 	}
