@@ -26,6 +26,25 @@ func (c *Conf) GetType(argc, argu, argh bool, def string, label ...string) strin
 			typ += "server"
 		}
 	}
+	if def == "kcpclient" {
+		typ = "kcpclient"
+	}
+	if def == "kcpserver" {
+		typ = "kcpserver"
+	}
+	if typ != def {
+		return typ
+	}
+	if c.Config == nil {
+		return typ
+	}
+	if x, o := c.Get("type", label...); o {
+		return x
+	}
+	return def
+}
+
+func (c *Conf) GetOtherType(typ, def string, label ...string) string {
 	if typ != def {
 		return typ
 	}
@@ -44,7 +63,7 @@ func (c *Conf) SetType(label ...string) {
 		if strings.Contains(v, "client") {
 			c.Client = true
 		}
-		if c.Type == "server" || c.Type == "http" || c.Type == "client" || c.Type == "httpclient" || c.Type == "udpserver" || c.Type == "udpclient" {
+		if c.Type == "server" || c.Type == "http" || c.Type == "client" || c.Type == "httpclient" || c.Type == "udpserver" || c.Type == "udpclient" || c.Type == "kcpclient" || c.Type == "kcpserver" {
 			c.Type = v
 		}
 	} else {

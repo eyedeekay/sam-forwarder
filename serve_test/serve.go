@@ -18,9 +18,9 @@ import (
 var (
 	port               = "8100"
 	cport              = "8101"
-	uport              = "8102"
-	ucport             = "8103"
-	ssuport            = "8104"
+	UDPServerPort      = "8102"
+	UDPClientPort      = "8103"
+	SSUServerPort      = "8104"
 	udpserveraddr      *net.UDPAddr
 	udplocaladdr       *net.UDPAddr
 	ssulocaladdr       *net.UDPAddr
@@ -75,12 +75,12 @@ func client() {
 }
 
 func echo() {
-	/* Lets prepare a address at any address at port 10001*/
-	udpserveraddr, err = net.ResolveUDPAddr("udp", "127.0.0.1:"+uport)
+	/* Lets prepare a address at any address at port UDPServerPort */
+	udpserveraddr, err = net.ResolveUDPAddr("udp", "127.0.0.1:"+UDPServerPort)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("listening on :", uport)
+	fmt.Println("starting UDP echo server listening on :", UDPServerPort)
 
 	/* Now listen at selected port */
 	udpserverconn, err = net.ListenUDP("udp", udpserveraddr)
@@ -102,12 +102,18 @@ func echo() {
 	}
 }
 
-func serveudp() {
-	flag.Parse()
+func echoclient() {
+	udpclientaddr, e := net.Dial("udp", "127.0.0.1:"+UDPServerPort)
+	if e != nil {
+		log.Fatal(e)
+	}
+	udpclientaddr.Write([]byte("test"))
+}
 
+func serveudp() {
 	ssuforwarder, err = samforwarderudp.NewSAMSSUForwarderFromOptions(
 		samforwarderudp.SetHost("127.0.0.1"),
-		samforwarderudp.SetPort(uport),
+		samforwarderudp.SetPort(UDPServerPort),
 		samforwarderudp.SetSAMHost("127.0.0.1"),
 		samforwarderudp.SetSAMPort("7656"),
 		samforwarderudp.SetName("testudpserver"),
@@ -115,16 +121,18 @@ func serveudp() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	go ssuforwarder.Serve()
-	log.Printf("Serving on UDP port: %s  and on %s\n", uport, ssuforwarder.Base32())
+	f, e := ssuforwarder.Load()
+	if e != nil {
+		log.Fatal(e.Error())
+	}
+	go f.Serve()
+	log.Printf("Serving on UDP port: %s  and on %s\n", UDPServerPort, ssuforwarder.Base32())
 }
 
 func clientudp() {
-	flag.Parse()
-
 	ssuforwarderclient, err = samforwarderudp.NewSAMSSUClientForwarderFromOptions(
 		samforwarderudp.SetClientHost("127.0.0.1"),
-		samforwarderudp.SetClientPort(ssuport),
+		samforwarderudp.SetClientPort(UDPClientPort),
 		samforwarderudp.SetClientSAMHost("127.0.0.1"),
 		samforwarderudp.SetClientSAMPort("7656"),
 		samforwarderudp.SetClientName("testudpclient"),
@@ -133,17 +141,22 @@ func clientudp() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	go ssuforwarderclient.Serve()
-	log.Printf("Connecting UDP port: %s to %s\n", ssuport, ssuforwarder.Base32())
+
+	f, e := ssuforwarderclient.Load()
+	if e != nil {
+		log.Fatal(e.Error())
+	}
+	go f.Serve()
+	log.Printf("Connecting UDP port: %s to %s\n", SSUServerPort, ssuforwarder.Base32())
 }
 
 func setupudp() {
-	ssulocaladdr, err = net.ResolveUDPAddr("udp", "127.0.0.1:"+ssuport)
+	ssulocaladdr, err = net.ResolveUDPAddr("udp", "127.0.0.1:"+SSUServerPort)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	udplocaladdr, err = net.ResolveUDPAddr("udp", "127.0.0.1:"+ucport)
+	udplocaladdr, err = net.ResolveUDPAddr("udp", "127.0.0.1:"+UDPClientPort)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -40,25 +40,31 @@ test: test-keys test-ntcp test-ssu test-config test-manager
 
 long-test: test-serve test
 
-full-test: test-serve test
+full-test: test test-serve
 
 test-serve:
-	cd serve_test && go test
+	cd serve_test && go test -v -tags netgo \
+		-ldflags '-w -extldflags "-static"'
 
 test-ntcp:
-	go test
+	cd tcp && go test -v -tags netgo \
+		-ldflags '-w -extldflags "-static"'
 
 test-ssu:
-	cd udp && go test
+	cd udp && go test -v -tags netgo \
+		-ldflags '-w -extldflags "-static"'
 
 test-config:
-	cd config && go test
+	cd config && go test -v -tags netgo \
+		-ldflags '-w -extldflags "-static"'
 
 test-manager:
-	cd manager && go test
+	cd manager && go test -v -tags netgo \
+		-ldflags '-w -extldflags "-static"'
 
 test-keys:
-	cd i2pkeys && go test
+	cd i2pkeys && go test -v -tags netgo \
+		-ldflags '-w -extldflags "-static"'
 
 refresh:
 

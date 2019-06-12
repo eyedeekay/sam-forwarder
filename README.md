@@ -86,14 +86,6 @@ relevant i2cp and tunnel options, which I'm keeping track of
 I need to just change how the configuration is done entirely. I want it to work
 with the configuration formats used by each I2P router.
 
-Example tools built using this are being broken off into their own repos. Use
-the other repos where appropriate, so I can leave the examples un-messed with.
-
-It would be really awesome if I could make this run on Android. So I'll make
-that happen eventually. I started a daemon for managing multiple tunnels and I
-figure I give it a web interface to configure stuff with. I'll probably put that
-in a different repo though. This is looking a little cluttered.
-
 TLS configuration is experimental.
 
 ## Stuff that's using it:

@@ -208,8 +208,8 @@ func (f *SAMSSUForwarder) sam() string {
 //func (f *SAMSSUForwarder) forward(conn net.Conn) {
 func (f *SAMSSUForwarder) forward() {
 	go func() {
-		defer f.clientConnection.Close()
-		defer f.publishConnection.Close()
+		//		defer f.clientConnection.Close()
+		//		defer f.publishConnection.Close()
 		buffer := make([]byte, 1024)
 		if size, addr, readerr := f.clientConnection.ReadFrom(buffer); readerr == nil {
 			if size2, writeerr := f.publishConnection.WriteTo(buffer, addr); writeerr == nil {
@@ -219,8 +219,8 @@ func (f *SAMSSUForwarder) forward() {
 		}
 	}()
 	go func() {
-		defer f.clientConnection.Close()
-		defer f.publishConnection.Close()
+		//		defer f.clientConnection.Close()
+		//		defer f.publishConnection.Close()
 		buffer := make([]byte, 1024)
 		if size, addr, readerr := f.publishConnection.ReadFrom(buffer); readerr == nil {
 			if size2, writeerr := f.clientConnection.WriteTo(buffer, addr); writeerr == nil {
@@ -241,12 +241,27 @@ func (f *SAMSSUForwarder) Base64() string {
 	return f.SamKeys.Addr().Base64()
 }
 
+func (f *SAMSSUForwarder) errSleep(err error) bool {
+	if err != nil {
+		log.Printf("Dial failed: %v, waiting 5 minutes to try again\n", err)
+		time.Sleep(5 * time.Minute)
+		return false
+	} else {
+		return true
+	}
+}
+
 //Serve starts the SAM connection and and forwards the local host:port to i2p
 func (f *SAMSSUForwarder) Serve() error {
 	var err error
 
 	sp, _ := strconv.Atoi(f.SamPort)
-	f.publishConnection, err = f.samConn.NewDatagramSession(f.TunName, f.SamKeys, f.print(), sp)
+	f.publishConnection, err = f.samConn.NewDatagramSession(
+		f.TunName,
+		f.SamKeys,
+		f.print(),
+		sp-1,
+	)
 	if err != nil {
 		log.Println("Session Creation error:", err.Error())
 		return err
@@ -256,20 +271,12 @@ func (f *SAMSSUForwarder) Serve() error {
 	b := string(f.SamKeys.Addr().Base32())
 	log.Println("SAM Keys loaded,", b)
 
-	p, _ := strconv.Atoi(f.TargetPort)
-
 	Close := false
 	for !Close {
-		f.clientConnection, err = net.DialUDP("udp", nil, &net.UDPAddr{
-			Port: p,
-			IP:   net.ParseIP(f.TargetHost),
-		})
-		if err != nil {
-			log.Printf("Dial failed: %v, waiting 5 minutes to try again\n", err)
-			time.Sleep(5 * time.Minute)
-		} else {
-			Close = true
-		}
+		addr, err := net.ResolveUDPAddr("udp", f.Target())
+		Close = f.errSleep(err)
+		f.clientConnection, err = net.DialUDP("udp", nil, addr)
+		Close = f.errSleep(err)
 		log.Printf("Connected to localhost %v\n", f.publishConnection)
 	}
 	for {
@@ -278,7 +285,8 @@ func (f *SAMSSUForwarder) Serve() error {
 }
 
 func (s *SAMSSUForwarder) Load() (samtunnel.SAMTunnel, error) {
-	if s.samConn, err = sam3.NewSAM(s.sam()); err != nil {
+	s.samConn, err = sam3.NewSAM(s.sam())
+	if err != nil {
 		return nil, err
 	}
 	log.Println("SAM Bridge connection established.")
@@ -298,6 +306,7 @@ func (s *SAMSSUForwarder) Load() (samtunnel.SAMTunnel, error) {
 	s.up = true
 	return s, nil
 }
+
 func (f *SAMSSUForwarder) Up() bool {
 	return f.up
 }
