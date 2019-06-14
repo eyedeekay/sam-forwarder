@@ -3,7 +3,7 @@ package samforwardertest
 import (
 	"log"
 	"net"
-	"net/http"
+	//"net/http"
 	"testing"
 	"time"
 )
@@ -18,6 +18,7 @@ func countdown(i int) {
 	}
 }
 
+/*
 func TestTCP(t *testing.T) {
 	go serve()
 	countdown(61)
@@ -30,7 +31,7 @@ func TestTCP(t *testing.T) {
 	}
 	log.Println(resp)
 }
-
+*/
 func TestUDP(t *testing.T) {
 	go echo()
 	countdown(11)

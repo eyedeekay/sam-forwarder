@@ -31,6 +31,8 @@ type Conf struct {
 	SamHost                   string
 	SamPort                   string
 	TunnelHost                string
+	ControlHost               string
+	ControlPort               string
 	TargetForPort443          string
 	TunName                   string
 	EncryptLeaseSet           bool
@@ -267,6 +269,8 @@ func (c *Conf) I2PINILoad(iniFile string, label ...string) error {
 		c.SetKeyFile(label...)
 		c.SetUserName(label...)
 		c.SetPassword(label...)
+        c.SetControlHost(label...)
+        c.SetControlPort(label...)
 		if v, ok := c.Get("i2cp.accessList", label...); ok {
 			csv := strings.Split(v, ",")
 			for _, z := range csv {
