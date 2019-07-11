@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strings"
 
-    "github.com/justinas/nosurf"
+	"github.com/justinas/nosurf"
 )
 
 type TunnelHandlerMux struct {
@@ -57,7 +57,7 @@ func (m *TunnelHandlerMux) HandlerWrapper(h http.Handler) http.Handler {
 		if !strings.HasSuffix(r.URL.Path, "color") {
 			h.ServeHTTP(w, r)
 		} else {
-            m.ColorHeader(h, r, w)
+			m.ColorHeader(h, r, w)
 		}
 	})
 }
