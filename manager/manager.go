@@ -11,6 +11,7 @@ import (
 import (
 	"github.com/eyedeekay/sam-forwarder/config"
 	"github.com/eyedeekay/sam-forwarder/handler"
+	"github.com/justinas/nosurf"
 )
 
 type SAMManager struct {
@@ -218,6 +219,7 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 			}
 		}
 	}
+	s.handlerMux.Handler = nosurf.New(s.handlerMux.Handler)
 	return &s, nil
 }
 

@@ -6,8 +6,6 @@ import (
 	"log"
 	"net/http"
 	"strings"
-
-	"github.com/justinas/nosurf"
 )
 
 type TunnelHandlerMux struct {
@@ -106,7 +104,7 @@ func (m *TunnelHandlerMux) Append(v *TunnelHandler) *TunnelHandlerMux {
 	Handler.Handle(fmt.Sprintf("/%s", v.ID()), m.HandlerWrapper(v))
 	Handler.Handle(fmt.Sprintf("/%d/color", len(m.tunnels)), m.HandlerWrapper(v))
 	Handler.Handle(fmt.Sprintf("/%s/color", v.ID()), m.HandlerWrapper(v))
-	m.Handler = nosurf.New(Handler)
+	m.Handler = Handler
 	return m
 }
 
