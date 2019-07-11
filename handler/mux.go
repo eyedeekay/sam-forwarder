@@ -6,6 +6,8 @@ import (
 	"log"
 	"net/http"
 	"strings"
+
+    "github.com/justinas/nosurf"
 )
 
 type TunnelHandlerMux struct {
@@ -55,18 +57,32 @@ func (m *TunnelHandlerMux) HandlerWrapper(h http.Handler) http.Handler {
 		if !strings.HasSuffix(r.URL.Path, "color") {
 			h.ServeHTTP(w, r)
 		} else {
-			fmt.Fprintf(w, "<!DOCTYPE html>\n")
-			fmt.Fprintf(w, "<html>\n")
-			fmt.Fprintf(w, "<head>\n")
-			fmt.Fprintf(w, "  <link rel=\"stylesheet\" href=\"/styles.css\">")
-			fmt.Fprintf(w, "</head>\n")
-			fmt.Fprintf(w, "<body>\n")
-			h.ServeHTTP(w, r)
-			fmt.Fprintf(w, "  <script src=\"/scripts.js\"></script>\n")
-			fmt.Fprintf(w, "</body>\n")
-			fmt.Fprintf(w, "</html>\n")
+            m.ColorHeader(h, r, w)
 		}
 	})
+}
+
+func (m *TunnelHandlerMux) ColorHeader(h http.Handler, r *http.Request, w http.ResponseWriter) {
+	if !strings.HasSuffix(r.URL.Path, "color") {
+		h.ServeHTTP(w, r)
+	} else {
+		fmt.Fprintf(w, "<!DOCTYPE html>\n")
+		fmt.Fprintf(w, "<html>\n")
+		fmt.Fprintf(w, "<head>\n")
+		fmt.Fprintf(w, "  <link rel=\"stylesheet\" href=\"/styles.css\">")
+		fmt.Fprintf(w, "</head>\n")
+		fmt.Fprintf(w, "<body>\n")
+		fmt.Fprintf(w, "<h1>\n")
+		w.Write([]byte(fmt.Sprintf("<a href=\"/index.html\">Welcome %s! you are serving %d tunnels. </a>\n", m.user, len(m.tunnels))))
+		fmt.Fprintf(w, "</h1>\n")
+		fmt.Fprintf(w, "  <div id=\"toggleall\" class=\"global control\">\n")
+		fmt.Fprintf(w, "    <a href=\"#\" onclick=\"toggle_visibility_class('%s');\">Show/Hide %s</a>\n", "prop", "all")
+		fmt.Fprintf(w, "  </div>\n")
+		h.ServeHTTP(w, r)
+		fmt.Fprintf(w, "  <script src=\"/scripts.js\"></script>\n")
+		fmt.Fprintf(w, "</body>\n")
+		fmt.Fprintf(w, "</html>\n")
+	}
 }
 
 func (t *TunnelHandlerMux) Tunnels() []*TunnelHandler {
@@ -90,7 +106,7 @@ func (m *TunnelHandlerMux) Append(v *TunnelHandler) *TunnelHandlerMux {
 	Handler.Handle(fmt.Sprintf("/%s", v.ID()), m.HandlerWrapper(v))
 	Handler.Handle(fmt.Sprintf("/%d/color", len(m.tunnels)), m.HandlerWrapper(v))
 	Handler.Handle(fmt.Sprintf("/%s/color", v.ID()), m.HandlerWrapper(v))
-	m.Handler = Handler
+	m.Handler = nosurf.New(Handler)
 	return m
 }
 
