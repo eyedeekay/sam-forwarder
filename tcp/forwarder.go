@@ -9,10 +9,12 @@ import (
 	"net/http/httputil"
 	//"os"
 	//"path/filepath"
+	"strconv"
 	"strings"
 )
 
 import (
+	"github.com/eyedeekay/sam-forwarder/hashhash"
 	"github.com/eyedeekay/sam-forwarder/i2pkeys"
 	"github.com/eyedeekay/sam-forwarder/interface"
 	"github.com/eyedeekay/sam3"
@@ -31,6 +33,7 @@ type SAMForwarder struct {
 
 	samConn       *sam3.SAM
 	SamKeys       i2pkeys.I2PKeys
+	Hasher        *hashhash.Hasher
 	publishStream *sam3.StreamSession
 	publishListen *sam3.StreamListener
 
@@ -334,6 +337,13 @@ func (f *SAMForwarder) Base32() string {
 	return f.SamKeys.Addr().Base32()
 }
 
+//Base32Readable returns the base32 address where the local service is being forwarded
+func (f *SAMForwarder) Base32Readable() string {
+	b32 := strings.Replace(f.Base32(), ".b32.i2p", "", 1)
+	rhash, _ := f.Hasher.Friendly(b32)
+	return rhash + " " + strconv.Itoa(len(b32))
+}
+
 //Base64 returns the base64 address where the local service is being forwarded
 func (f *SAMForwarder) Base64() string {
 	return f.SamKeys.Addr().Base64()
@@ -352,8 +362,8 @@ func (f *SAMForwarder) Serve() error {
 			return err
 		}
 		log.Println("Starting Listener.")
-		b := string(f.SamKeys.Addr().Base32())
-		log.Println("SAM Listener created,", b)
+		log.Println("SAM Listener created,", f.Base32())
+		log.Println("Human-readable hash:\n   ", f.Base32Readable())
 
 		for {
 			conn, err := f.publishListen.AcceptI2P()
@@ -401,6 +411,10 @@ func (s *SAMForwarder) Load() (samtunnel.SAMTunnel, error) {
 			return nil, err
 		}
 		log.Println("Saved tunnel keys for", s.TunName)
+	}
+	s.Hasher, err = hashhash.NewHasher(len(strings.Replace(s.Base32(), ".b32.i2p", "", 1)))
+	if err != nil {
+		return nil, err
 	}
 	s.up = true
 	return s, nil

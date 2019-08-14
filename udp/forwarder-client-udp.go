@@ -12,6 +12,7 @@ import (
 )
 
 import (
+	"github.com/eyedeekay/sam-forwarder/hashhash"
 	"github.com/eyedeekay/sam-forwarder/i2pkeys"
 	"github.com/eyedeekay/sam-forwarder/interface"
 	"github.com/eyedeekay/sam3"
@@ -31,6 +32,7 @@ type SAMSSUClientForwarder struct {
 
 	samConn           *sam3.SAM
 	SamKeys           i2pkeys.I2PKeys
+	Hasher            *hashhash.Hasher
 	connectStream     *sam3.DatagramSession
 	dest              string
 	addr              i2pkeys.I2PAddr
@@ -218,6 +220,13 @@ func (f *SAMSSUClientForwarder) Base32() string {
 	return f.SamKeys.Addr().Base32()
 }
 
+//Base32Readable returns the base32 address where the local service is being forwarded
+func (f *SAMSSUClientForwarder) Base32Readable() string {
+	b32 := strings.Replace(f.Base32(), ".b32.i2p", "", 1)
+	rhash, _ := f.Hasher.Friendly(b32)
+	return rhash + " " + strconv.Itoa(len(b32))
+}
+
 //Base64 returns the base64 address of the local destination
 func (f *SAMSSUClientForwarder) Base64() string {
 	return f.SamKeys.Addr().Base64()
@@ -282,7 +291,7 @@ func (f *SAMSSUClientForwarder) Serve() error {
 	}
 	log.Println("SAM datagram session established.")
 	log.Printf("Connected to localhost %v\n", f.publishConnection)
-
+	log.Println("Human-readable hash of Client:\n   ", f.Base32Readable())
 	/*	Close := false
 		for !Close {
 			//addr, err := net.ResolveUDPAddr("udp", f.Target())
@@ -317,6 +326,10 @@ func (s *SAMSSUClientForwarder) Load() (samtunnel.SAMTunnel, error) {
 			return nil, err
 		}
 		log.Println("Saved tunnel keys for", s.TunName)
+	}
+	s.Hasher, err = hashhash.NewHasher(len(strings.Replace(s.Base32(), ".b32.i2p", "", 1)))
+	if err != nil {
+		return nil, err
 	}
 	s.up = true
 	return s, nil
