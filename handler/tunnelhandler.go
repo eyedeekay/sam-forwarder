@@ -3,6 +3,7 @@ package samtunnelhandler
 import (
 	"fmt"
 	"net/http"
+	"sort"
 	"strings"
 )
 
@@ -29,11 +30,20 @@ func (t *TunnelHandler) Printdivf(id, key, value string, rw http.ResponseWriter,
 	if strings.HasSuffix(req.URL.Path, "color") {
 		fmt.Fprintf(rw, "    <div id=\"%s\" class=\"%s %s %s %s\" >\n", ID, t.SAMTunnel.ID(), key, t.SAMTunnel.GetType(), prop)
 		fmt.Fprintf(rw, "      <span id=\"%s\" class=\"key\">%s</span>=", ID, key)
-		fmt.Fprintf(rw, "      <span id=\"%s\" class=\"value\">%s</span>\n", ID, value)
+		fmt.Fprintf(rw, "      <textarea id=\"%s\" rows=\"1\" class=\"value\">%s</textarea>\n", ID, value)
 		fmt.Fprintf(rw, "    </div>\n\n")
 	} else {
 		fmt.Fprintf(rw, "%s=%s\n", ID, t.SAMTunnel.ID())
 	}
+}
+
+func PropSort(props map[string]string) []string {
+	var slice []string
+	for k, v := range props {
+		slice = append(slice, k+"="+v)
+	}
+	sort.Strings(slice)
+	return slice
 }
 
 func (t *TunnelHandler) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
@@ -90,9 +100,11 @@ func (t *TunnelHandler) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 		fmt.Fprintf(rw, "    <a href=\"/%s/color\">Tunnel page</a>\n", t.SAMTunnel.ID())
 		fmt.Fprintf(rw, "  </span>\n")
 	}
-	for key, value := range t.SAMTunnel.Props() {
+	for _, value := range PropSort(t.SAMTunnel.Props()) {
+		key := strings.SplitN(value, "=", 2)[0]
+		val := strings.SplitN(value, "=", 2)[1]
 		if key != "TunName" {
-			t.Printdivf(key, key, value, rw, req)
+			t.Printdivf(key, key, val, rw, req)
 		}
 	}
 	if strings.HasSuffix(req.URL.Path, "color") {

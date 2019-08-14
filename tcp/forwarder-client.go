@@ -118,7 +118,11 @@ func (f *SAMClientForwarder) print() []string {
 
 func (f *SAMClientForwarder) Props() map[string]string {
 	r := make(map[string]string)
-	for _, prop := range f.print() {
+	print := f.print()
+	print = append(print, "base32="+f.Base32())
+	print = append(print, "base64="+f.Base64())
+	print = append(print, "base32words="+f.Base32Readable())
+	for _, prop := range print {
 		k, v := sfi2pkeys.Prop(prop)
 		r[k] = v
 	}

@@ -3,57 +3,58 @@ package samtunnelhandler
 func DefaultCSS() string {
 	return `.server {
     width: 63%;
-    max-width: 63%;
     min-height: 15%;
     background-color: #9DABD5;
-    float:left
+    float: left;
+    overflow-wrap: break-word;
 }
 .client {
     width: 63%;
-    max-width: 63%;
     min-height: 15%;
     background-color: #2D4470;
-    float:left
+    float: left;
+    overflow-wrap: break-word;
 }
 .http {
     width: 63%;
-    max-width: 63%;
     min-height: 15%;
     background-color: #00ffff;
-    float:left
+    float: left;
+    overflow-wrap: break-word;
 }
 .httpclient {
     width: 63%;
-    max-width: 63%;
     min-height: 15%;
     background-color: #709fa6;
-    float:left
+    float: left;
+    overflow-wrap: break-word;
 }
 .udpserver {
     width: 63%;
-    max-width: 63%;
     min-height: 15%;
     background-color: #265ea7;
-    float:left
+    float: left;
+    overflow-wrap: break-word;
 }
 .udpclient {
     width: 63%;
-    max-width: 63%;
     min-height: 15%;
     background-color: #222187;
-    float:left
+    float: left;
+    overflow-wrap: break-word;
 }
 .TunName {
     font-weight: bold;
 }
 .panel {
     width: 33%;
-    max-width: 33%;
     float: right;
-
 }
 .prop {
 
+}
+.prop:hover {
+    box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.1);
 }
 .global {
     background-color: #00ffff;
@@ -62,12 +63,25 @@ body {
     background-color: #9e9e9e;
     color: #070425;
     font-family: "monospace";
+    font-size: 1rem;
 }
 a {
     color: #080808;
 }
 h1 {
     background-color: #9e9e9e;
+}
+span {
+    float: left;
+    display: inline;
+}
+textarea {
+    display: inline-block;
+    width: 100%;
+    resize: none;
+    height: 1rem;
+    float: right;
+    display: inline;
 }
 .linkstyle {
   align-items: normal;
@@ -77,9 +91,9 @@ h1 {
   box-sizing: content-box;
   color: rgb(0, 0, 238);
   cursor: pointer;
-  display: inline;
   font: inherit;
   height: auto;
+  display: inline;
   padding: 0;
   perspective-origin: 0 0;
   text-align: start;

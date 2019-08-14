@@ -30,11 +30,11 @@ func (h *Hasher) Friendly(input string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return strings.Join(slice, "."), nil
+	return strings.Join(slice, " "), nil
 }
 
 func (h *Hasher) Unfriendly(input string) (string, error) {
-	slice := strings.Split(input, ".")
+	slice := strings.Split(input, " ")
 	hash, err := h.hasher.Dehumanize(slice)
 	if err != nil {
 		return "", err
