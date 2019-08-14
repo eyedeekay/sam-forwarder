@@ -2,6 +2,7 @@ package i2ptunconf
 
 import (
 	"github.com/eyedeekay/httptunnel"
+	"github.com/eyedeekay/httptunnel/multiproxy"
 	"github.com/eyedeekay/sam-forwarder/tcp"
 	"github.com/eyedeekay/sam-forwarder/udp"
 )
@@ -50,6 +51,53 @@ func NewSAMHTTPClientFromConfig(iniFile, SamHost, SamPort string, label ...strin
 			config.SamPort = config.GetSAMPort(SamPort, config.SamPort)
 		}
 		return NewSAMHTTPClientFromConf(config)
+	}
+	return nil, nil
+}
+
+func NewSAMBrowserClientFromConf(config *Conf) (*i2pbrowserproxy.SAMMultiProxy, error) {
+	if config != nil {
+		return i2pbrowserproxy.NewHttpProxy(
+			i2pbrowserproxy.SetName(config.TunName),
+			i2pbrowserproxy.SetKeysPath(config.KeyFilePath),
+			i2pbrowserproxy.SetHost(config.SamHost),
+			i2pbrowserproxy.SetPort(config.SamPort),
+			i2pbrowserproxy.SetProxyAddr(config.TargetHost+":"+config.TargetPort),
+			i2pbrowserproxy.SetControlHost(config.ControlHost),
+			i2pbrowserproxy.SetControlPort(config.ControlPort),
+			i2pbrowserproxy.SetInLength(uint(config.InLength)),
+			i2pbrowserproxy.SetOutLength(uint(config.OutLength)),
+			i2pbrowserproxy.SetInQuantity(uint(config.InQuantity)),
+			i2pbrowserproxy.SetOutQuantity(uint(config.OutQuantity)),
+			i2pbrowserproxy.SetInBackups(uint(config.InBackupQuantity)),
+			i2pbrowserproxy.SetOutBackups(uint(config.OutBackupQuantity)),
+			i2pbrowserproxy.SetInVariance(config.InVariance),
+			i2pbrowserproxy.SetOutVariance(config.OutVariance),
+			i2pbrowserproxy.SetUnpublished(config.Client),
+			i2pbrowserproxy.SetReduceIdle(config.ReduceIdle),
+			i2pbrowserproxy.SetCompression(config.UseCompression),
+			i2pbrowserproxy.SetReduceIdleTime(uint(config.ReduceIdleTime)),
+			i2pbrowserproxy.SetReduceIdleQuantity(uint(config.ReduceIdleQuantity)),
+			//i2pbrowserproxy.SetCloseIdle(config.CloseIdle),
+			//i2pbrowserproxy.SetCloseIdleTime(uint(config.CloseIdleTime)),
+		)
+	}
+	return nil, nil
+}
+
+func NewSAMBrowserClientFromConfig(iniFile, SamHost, SamPort string, label ...string) (*i2pbrowserproxy.SAMMultiProxy, error) {
+	if iniFile != "none" {
+		config, err := NewI2PTunConf(iniFile, label...)
+		if err != nil {
+			return nil, err
+		}
+		if SamHost != "" && SamHost != "127.0.0.1" && SamHost != "localhost" {
+			config.SamHost = config.GetSAMHost(SamHost, config.SamHost)
+		}
+		if SamPort != "" && SamPort != "7656" {
+			config.SamPort = config.GetSAMPort(SamPort, config.SamPort)
+		}
+		return NewSAMBrowserClientFromConf(config)
 	}
 	return nil, nil
 }

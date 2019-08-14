@@ -192,8 +192,15 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 				return nil, e
 			}
 		case "httpclient":
-			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort)); e == nil {
-				log.Println("found default http")
+			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMHTTPClientFromConfig(s.FilePath, s.SamHost, s.SamPort)); e == nil {
+				log.Println("found default httpclient")
+				s.handlerMux = s.handlerMux.Append(f)
+			} else {
+				return nil, e
+			}
+		case "browserclient":
+			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMBrowserClientFromConfig(s.FilePath, s.SamHost, s.SamPort)); e == nil {
+				log.Println("found default browserclient")
 				s.handlerMux = s.handlerMux.Append(f)
 			} else {
 				return nil, e
