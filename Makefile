@@ -27,8 +27,8 @@ echo:
 	find . -path ./.go -prune -o -name "*.go" -exec cat {} \; | nl
 
 recopy:
-	find ./tcp/ -name '*.go' -exec cp -rv {} . \;
-	sed -i '1s|^|//AUTO-GENERATED FOR BACKWARD COMPATIBILITY, USE ./tcp in the future\n|' *.go
+	#find ./tcp/ -name '*.go' -exec cp -rv {} . \;
+	#sed -i '1s|^|//AUTO-GENERATED FOR BACKWARD COMPATIBILITY, USE ./tcp in the future\n|' *.go
 
 ## TODO: Remove this, replace with something right
 fix-debian:

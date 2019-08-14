@@ -43,6 +43,20 @@ func DefaultCSS() string {
     float: left;
     overflow-wrap: break-word;
 }
+.vpnserver {
+    width: 63%;
+    min-height: 15%;
+    background-color: #265ea7;
+    float:left
+    overflow-wrap: break-word;
+}
+.vpnclient {
+    width: 63%;
+    min-height: 15%;
+    background-color: #222187;
+    float:left
+    overflow-wrap: break-word
+}
 .TunName {
     font-weight: bold;
 }
