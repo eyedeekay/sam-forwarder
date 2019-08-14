@@ -18,6 +18,8 @@ USR := usr/
 LOCAL := local/
 VERSION := 0.1
 
+GO111MODULE=on
+
 echo:
 	@echo "$(GOPATH)"
 	find . -path ./.go -prune -o -name "*.go" -exec gofmt -w {} \;
