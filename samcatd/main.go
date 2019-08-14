@@ -6,8 +6,8 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"strconv"
 	"strings"
-    "strconv"
 )
 
 import (
@@ -163,21 +163,21 @@ func lbMain(ctx context.Context) {
 			if err != nil {
 				return
 			}
-			lhash, err := Hasher.Unfriendlyslice(slice[0:len(slice)-2])
-            if err != nil {
+			lhash, err := Hasher.Unfriendlyslice(slice[0 : len(slice)-2])
+			if err != nil {
 				return
 			}
-            log.Println(lhash+".b32.i2p")
+			log.Println(lhash + ".b32.i2p")
 		} else {
 			Hasher, err := hashhash.NewHasher(52)
 			if err != nil {
 				return
 			}
 			lhash, err := Hasher.Unfriendlyslice(slice)
-            if err != nil {
+			if err != nil {
 				return
 			}
-            log.Println(lhash+".b32.i2p")
+			log.Println(lhash + ".b32.i2p")
 		}
 		return
 	}
