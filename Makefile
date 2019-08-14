@@ -89,6 +89,9 @@ bin/$(samcatd):
 		-o ../bin/$(samcatd) \
 		./*.go
 
+update:
+	git config --global url."git@github.com:RTradeLtd".insteadOf "https://github.com/RTradeLtd"
+
 all: daemon
 
 clean: clean-all

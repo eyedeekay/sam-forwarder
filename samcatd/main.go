@@ -7,11 +7,13 @@ import (
 	"os"
 	"os/signal"
 	"strings"
+    "strconv"
 )
 
 import (
 	"crawshaw.io/littleboss"
 	"github.com/eyedeekay/sam-forwarder/config"
+	"github.com/eyedeekay/sam-forwarder/hashhash"
 	"github.com/eyedeekay/sam-forwarder/manager"
 	//"github.com/eyedeekay/samcatd-web"
 )
@@ -98,6 +100,8 @@ var (
 		"Target port(Port of service to forward to i2p)")
 	targetPort443 = flag.String("tls", "",
 		"(Currently inoperative. Target TLS port(HTTPS Port of service to forward to i2p)")
+	peoplehash = flag.String("hashhash", "",
+		"32-word mnemonic representing a .b32.i2p address(will output .b32.i2p address and quit)")
 	samHost = flag.String("sh", "127.0.0.1",
 		"SAM host")
 	samPort = flag.String("sp", "7656",
@@ -150,6 +154,32 @@ func lbMain(ctx context.Context) {
 
 	if *readKeys != "" {
 
+	}
+
+	if *peoplehash != "" {
+		slice := strings.Split(*peoplehash, " ")
+		if length, err := strconv.Atoi(slice[len(slice)-1]); err == nil {
+			Hasher, err := hashhash.NewHasher(length)
+			if err != nil {
+				return
+			}
+			lhash, err := Hasher.Unfriendlyslice(slice[0:len(slice)-2])
+            if err != nil {
+				return
+			}
+            log.Println(lhash+".b32.i2p")
+		} else {
+			Hasher, err := hashhash.NewHasher(52)
+			if err != nil {
+				return
+			}
+			lhash, err := Hasher.Unfriendlyslice(slice)
+            if err != nil {
+				return
+			}
+            log.Println(lhash+".b32.i2p")
+		}
+		return
 	}
 
 	config = &i2ptunconf.Conf{}

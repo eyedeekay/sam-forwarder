@@ -9,6 +9,8 @@ import (
 )
 
 import (
+	//"github.com/RTradeLtd/go-anonvpn/client"
+	//"github.com/RTradeLtd/go-anonvpn/server"
 	"github.com/eyedeekay/sam-forwarder/config"
 	"github.com/eyedeekay/sam-forwarder/handler"
 	"github.com/justinas/nosurf"
@@ -151,6 +153,20 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 				} else {
 					return nil, e
 				}
+			/*case "vpnserver":
+				if f, e := samtunnelhandler.NewTunnelHandler(samforwardervpnserver.NewSAMVPNForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
+					log.Println("found vpnserver under", label)
+					s.handlerMux = s.handlerMux.Append(f)
+				} else {
+					return nil, e
+				}
+			case "vpnclient":
+				if f, e := samtunnelhandler.NewTunnelHandler(samforwardervpn.NewSAMVPNClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
+					log.Println("found vpnclient under", label)
+					s.handlerMux = s.handlerMux.Append(f)
+				} else {
+					return nil, e
+				}*/
 			default:
 				if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
 					log.Println("found server under", label)
@@ -210,6 +226,20 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 			} else {
 				return nil, e
 			}
+		/*case "vpnserver":
+			if f, e := samtunnelhandler.NewTunnelHandler(samforwardervpnserver.NewSAMVPNForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort)); e == nil {
+				log.Println("found default vpnserver")
+				s.handlerMux = s.handlerMux.Append(f)
+			} else {
+				return nil, e
+			}
+		case "vpnclient":
+			if f, e := samtunnelhandler.NewTunnelHandler(samforwardervpn.NewSAMVPNClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort)); e == nil {
+				log.Println("found default vpnclient")
+				s.handlerMux = s.handlerMux.Append(f)
+			} else {
+				return nil, e
+			}*/
 		default:
 			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort)); e == nil {
 				log.Println("found default client")
