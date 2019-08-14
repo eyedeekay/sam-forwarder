@@ -84,10 +84,10 @@ daemon: clean-daemon bin/$(samcatd)
 
 bin/$(samcatd):
 	mkdir -p bin
-	go build -a -tags netgo \
+	cd samcatd && go build -a -tags netgo \
 		-ldflags '-w -extldflags "-static"' \
-		-o ./bin/$(samcatd) \
-		./samcatd/*.go
+		-o ../bin/$(samcatd) \
+		./*.go
 
 all: daemon
 
