@@ -84,9 +84,15 @@ daemon: clean-daemon bin/$(samcatd)
 
 bin/$(samcatd):
 	mkdir -p bin
-	cd samcatd && go build -a -tags netgo \
+	cd samcatd && go build -a -tags "netgo static" \
 		-ldflags '-w -extldflags "-static"' \
 		-o ../bin/$(samcatd) \
+		./*.go
+
+bin/$(samcatd)-webview:
+	mkdir -p bin
+	cd samcatd && go build -a -tags "netgo nostatic" \
+		-o ../bin/$(samcatd)-webview \
 		./*.go
 
 update:
@@ -159,8 +165,7 @@ example-config:
 
 
 docker-build:
-	docker build --no-cache \
-		--build-arg user=$(samcatd) \
+	docker build --build-arg user=$(samcatd) \
 		-f Dockerfile \
 		-t eyedeekay/$(samcatd) .
 
@@ -178,9 +183,6 @@ docker-run:
 		-p 127.0.0.1:7957:7957 \
 		eyedeekay/$(samcatd)
 	make follow
-
-c:
-	go build ./i2pkeys
 
 follow:
 	docker logs -f $(samcatd)

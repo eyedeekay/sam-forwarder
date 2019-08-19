@@ -1,14 +1,10 @@
 # sam-forwarder
 
 Forward a local port to i2p over the SAM API, or proxy a destination to a port
-on the local host. This is a work-in-progress, but the basic functionality is,
-there and it's already pretty useful. Everything TCP works, but UDP forwarding
-has much less real use than TCP. Turns out UDP was less broken than I thought
-though.
-
-Since it seems to be doing UDP now, if you'd like to donate to further
-development there are some wallet addresses at the bottom of this readme for
-now.
+on the local host. This is no longer substantially a work-in-progress, it's a
+very useful way of configuring applications in an i2ptunnel-like way. TCP and
+UDP are supported, but there may be some lingering bugs in UDP, please report
+them if found.
 
 ## getting
 
@@ -38,23 +34,16 @@ There are a number of ways to use sam-forwarder:
 
 ## binaries
 
-Two binaries are produced by this repo. The first, ephsite, is only capable
-of running one tunnel at a time and doesn't have VPN support. I'm only updating
-it to make sure that the embeddable interface in existing applications doesn't
-change. It will go away and be replaced with a wrapper to translate it to
-'samcatd -s' commands whenever I complete [docs/CHECKLIST.md](docs/CHECKLIST.md).
+The standalone application for configuring tunnels is named samcatd and it's
+main package is in the directory ```./samcatd```. It works as a cli and is
+capable of running a WebUI, which is currently view-only. In a future time, the
+WebUI will also be capable of configuring and editing tunnels.
 
-The second, samcatd, is more advanced. It can start multiple tunnels with their
-own settings, or be used to start tunnels on the fly like ephsite by passing the
--s option. Eventually I'm probably just going to use this to configure all of my
-tunnels.
+The previous application ephsite has been fully retired. If you were using it,
+it can usually be replaced with ```samcatd -s``` and your existing arguments.
 
 Current limitations:
 ====================
-
-I need to document it better.
-[Besides fixing up the comments, this should help for now.](docs/USAGE.md). I
-also need to control output verbosity better.
 
 I need samcatd to accept a configuration folder identical to
 /etc/i2pd/tunnels.conf.d, since part of the point of this is to be compatible
@@ -67,9 +56,6 @@ support for encrypted saves has been added. The idea is that only the person
 with the key will be able to decrypt and start the tunnels. It is up to the user
 to determine how to go about managing these keys. Right now this system is
 pretty bad. I'll be addressing that soon too.
-
-TCP and UDP are both working now. but UDP requires the service to already be
-configured to work. Changes to address this shortcoming are pending.
 
 Experimental support for KCP-based error correction and streaming-over-datagrams
 is in the works. Some kind of reverse-proxy or filter is also an obvious choice.
@@ -86,7 +72,11 @@ relevant i2cp and tunnel options, which I'm keeping track of
 I need to just change how the configuration is done entirely. I want it to work
 with the configuration formats used by each I2P router.
 
-TLS configuration is experimental.
+TLS configuration is experimental. I have decided to implement optional,
+automatically-configured self-signed TLS certificates. No CA support is planned
+as an alternative CA would have to be used and no apparent option exists which
+would be usable. If you're working on anything like that, I would like very
+to know.
 
 ## Stuff that's using it:
 

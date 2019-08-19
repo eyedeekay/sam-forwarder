@@ -53,7 +53,12 @@ func (s *SAMManager) Serve() bool {
 
 	if s.UseWeb == true {
 		go s.handlerMux.ListenAndServe()
+		if _, err := s.LaunchUI(); err != nil {
+			log.Println(err.Error())
+			return false
+		}
 	}
+
 	Close := false
 	for !Close {
 		time.Sleep(1 * time.Second)
