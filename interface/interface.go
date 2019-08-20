@@ -28,3 +28,12 @@ type SAMTunnel interface {
 	Cleanup()                 // Stop the tunnel but leave the sockets alone for now
 	Up() bool                 // Return "true" if the tunnel is ready to go up.
 }
+
+type WebUI interface {
+	Title() string
+	URL() string
+	UseWebUI() bool
+	Width() int
+	Height() int
+	Resizable() bool
+}

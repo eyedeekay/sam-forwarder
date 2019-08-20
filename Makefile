@@ -82,6 +82,8 @@ install:
 
 daemon: clean-daemon bin/$(samcatd)
 
+daemon-webview: bin/$(samcatd)-webview
+
 bin/$(samcatd):
 	mkdir -p bin
 	cd samcatd && go build -a -tags "netgo static" \
@@ -98,14 +100,14 @@ bin/$(samcatd)-webview:
 update:
 	git config --global url."git@github.com:RTradeLtd".insteadOf "https://github.com/RTradeLtd"
 
-all: daemon
+all: daemon daemon-webview
 
 clean: clean-all
 
 clean-all: clean-daemon
 
 clean-daemon:
-	rm -f bin/$(samcatd)
+	rm -f bin/$(samcatd)*
 
 install-forwarder:
 	install -m755 bin/$(samcatd) /usr/local/bin/$(samcatd)
