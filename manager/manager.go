@@ -91,9 +91,11 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 		}
 	}
 	if port, err := strconv.Atoi(s.WebPort); err != nil {
+		log.Println("Error:", err)
 		return nil, err
 	} else {
-		if !pc.SCL(port) {
+		if pc.SCL(port) {
+			log.Println("Service found, launching GUI")
 			s.RunUI()
 			Exit()
 			return nil, nil
