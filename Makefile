@@ -36,7 +36,7 @@ fix-debian:
 	find ./debian -type f -exec sed -i 's|eyedeekay@safe-mail.net|hankhill19580@gmail.com|g' {} \;
 
 try:
-	cd etc/samcatd/ && ../../bin/samcatd -f tunnels.ini
+	cd etc/samcatd/ && ../../bin/samcatd-webview -f tunnels.ini
 
 test: test-keys test-ntcp test-ssu test-config test-manager
 

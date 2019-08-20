@@ -16,7 +16,7 @@ require (
 	github.com/kr/pty v1.1.8 // indirect
 	github.com/zieckey/goini v0.0.0-20180118150432-0da17d361d26
 	github.com/zserge/lorca v0.1.8
-	github.com/zserge/webview v0.0.0-20190123072648-16c93bcaeaeb
+	github.com/zserge/webview v0.0.0-20180509070823-016c6ffd99f3
 	golang.org/x/net v0.0.0-20190813141303-74dc4d7220e7 // indirect
 	golang.org/x/sys v0.0.0-20190813064441-fde4db37ae7a // indirect
 	golang.org/x/time v0.0.0-20190308202827-9d24e82272b4 // indirect

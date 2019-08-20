@@ -21,7 +21,8 @@ func (s *SAMManager) RunUI() {
 	if err != nil {
 		log.Println(err.Error())
 	}
-	go view.Run()
+	//go
+	view.Run()
 }
 
 func (s *SAMManager) Serve() bool {
@@ -34,11 +35,12 @@ func (s *SAMManager) Serve() bool {
 	if s.UseWebUI() == true {
 		go s.handlerMux.ListenAndServe()
 		if view, err = LaunchUI(s); err != nil {
-			log.Println(err.Error())
+			log.Println("UI Error:", err.Error())
 			return false
 		} else {
-			go view.Run()
-			return Exit()
+			//go
+			view.Run()
+			return true //Exit()
 		}
 	} else {
 		return Exit()

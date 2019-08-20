@@ -34,7 +34,7 @@ func (s *SAMManager) Serve() bool {
 		go s.handlerMux.ListenAndServe()
 		if view, err = LaunchUI(s); err != nil {
 			log.Println(err.Error())
-			return false
+			return Exit()
 		} else {
 			return Exit()
 		}
