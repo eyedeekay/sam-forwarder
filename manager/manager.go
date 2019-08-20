@@ -3,9 +3,11 @@ package sammanager
 import (
 	"fmt"
 	"log"
+	"strconv"
 )
 
 import (
+	"github.com/eyedeekay/portcheck"
 	"github.com/eyedeekay/sam-forwarder/config"
 	"github.com/eyedeekay/sam-forwarder/handler"
 	"github.com/justinas/nosurf"
@@ -32,6 +34,8 @@ type SAMManager struct {
 
 	handlerMux *samtunnelhandler.TunnelHandlerMux
 }
+
+var err error
 
 func (s *SAMManager) Cleanup() {
 	for _, k := range s.handlerMux.Tunnels() {
@@ -84,6 +88,15 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 	for _, o := range opts {
 		if err := o(&s); err != nil {
 			return nil, err
+		}
+	}
+	if port, err := strconv.Atoi(s.WebPort); err != nil {
+		return nil, err
+	} else {
+		if !pc.SCL(port) {
+			s.RunUI()
+			Exit()
+			return nil, nil
 		}
 	}
 	s.handlerMux = samtunnelhandler.NewTunnelHandlerMux(s.WebHost, s.WebPort, s.config.UserName, s.config.Password, s.cssFile, s.jsFile)

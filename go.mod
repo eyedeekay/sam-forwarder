@@ -9,6 +9,7 @@ require (
 	github.com/boreq/friendlyhash v0.0.0-20190522010448-1ca64b3ca69e
 	github.com/eyedeekay/goSam v0.1.1-0.20190814204230-d4c9b8c57dd6 // indirect
 	github.com/eyedeekay/httptunnel v0.0.0-20190814204746-0081636585cd
+	github.com/eyedeekay/portcheck v0.0.0-20190218044454-bb8718669680
 	github.com/eyedeekay/sam3 v0.0.0-20190730185140-f8d54526ea25
 	github.com/gtank/cryptopasta v0.0.0-20170601214702-1f550f6f2f69
 	github.com/justinas/nosurf v0.0.0-20190416172904-05988550ea18
