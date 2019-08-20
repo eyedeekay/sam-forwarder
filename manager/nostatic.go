@@ -38,9 +38,8 @@ func (s *SAMManager) Serve() bool {
 			log.Println("UI Error:", err.Error())
 			return false
 		} else {
-			//go
 			view.Run()
-			return true //Exit()
+            return true
 		}
 	} else {
 		return Exit()

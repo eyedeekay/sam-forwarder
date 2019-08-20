@@ -97,7 +97,6 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 		if pc.SCL(port) {
 			log.Println("Service found, launching GUI")
 			s.RunUI()
-			Exit()
 			return nil, nil
 		}
 	}
