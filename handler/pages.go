@@ -98,36 +98,36 @@ textarea {
     display: inline;
 }
 .linkstyle {
-  align-items: normal;
-  background-color: rgba(0,0,0,0);
-  border-color: rgb(0, 0, 238);
-  border-style: none;
-  box-sizing: content-box;
-  color: rgb(0, 0, 238);
-  cursor: pointer;
-  font: inherit;
-  height: auto;
-  display: inline;
-  padding: 0;
-  perspective-origin: 0 0;
-  text-align: start;
-  text-decoration: underline;
-  transform-origin: 0 0;
-  width: auto;
-  -moz-appearance: none;
-  -webkit-logical-height: 1em; /* Chrome ignores auto, so we have to use this hack to set the correct height  */
-  -webkit-logical-width: auto; /* Chrome ignores auto, but here for completeness */
+    align-items: normal;
+    background-color: rgba(0,0,0,0);
+    border-color: rgb(0, 0, 238);
+    border-style: none;
+    box-sizing: content-box;
+    color: rgb(0, 0, 238);
+    cursor: pointer;
+    font: inherit;
+    height: auto;
+    display: inline;
+    padding: 0;
+    perspective-origin: 0 0;
+    text-align: start;
+    text-decoration: underline;
+    transform-origin: 0 0;
+    width: auto;
+    -moz-appearance: none;
+    -webkit-logical-height: 1em; /* Chrome ignores auto, so we have to use this hack to set the correct height  */
+    -webkit-logical-width: auto; /* Chrome ignores auto, but here for completeness */
 }
 
 @supports (-moz-appearance:none) { /* Mozilla-only */
-  .linkstyle::-moz-focus-inner { /* reset any predefined properties */
-    border: none;
-    padding: 0;
-  }
-  .linkstyle:focus { /* add outline to focus pseudo-class */
-    outline-style: dotted;
-    outline-width: 1px;
-  }
+    .linkstyle::-moz-focus-inner { /* reset any predefined properties */
+        border: none;
+        padding: 0;
+    }
+    .linkstyle:focus { /* add outline to focus pseudo-class */
+        outline-style: dotted;
+        outline-width: 1px;
+    }
 }
 `
 }

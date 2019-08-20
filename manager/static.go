@@ -1,4 +1,4 @@
-// +build static
+// +build !nostatic
 
 package sammanager
 
