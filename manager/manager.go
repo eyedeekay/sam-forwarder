@@ -3,6 +3,9 @@ package sammanager
 import (
 	"fmt"
 	"log"
+	"os/exec"
+	"os/user"
+	"runtime"
 	"strconv"
 )
 
@@ -66,6 +69,23 @@ func (s *SAMManager) Resizable() bool {
 func (s *SAMManager) URL() string {
 	return "http://" + s.WebHost + ":" + s.WebPort
 }
+
+func User() string {
+	runningUser, _ := user.Current()
+	if runtime.GOOS != "windows" {
+		if runningUser.Uid == "0" {
+			cmd := exec.Command("logname")
+			out, err := cmd.Output()
+			if err != nil {
+				return err.Error()
+			}
+			return string(out)
+		}
+	}
+	return runningUser.Name
+}
+
+var runningUser = User()
 
 func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, error) {
 	var s SAMManager

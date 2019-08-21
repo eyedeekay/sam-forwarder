@@ -7,6 +7,8 @@ import (
 	"github.com/zserge/lorca"
 )
 
+var USER = ""
+
 func LaunchUI(s samtunnel.WebUI) (lorca.UI, error) {
 	if s.UseWebUI() == true {
 		if lorca.LocateChrome() != "" {

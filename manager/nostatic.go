@@ -39,7 +39,7 @@ func (s *SAMManager) Serve() bool {
 			return false
 		} else {
 			view.Run()
-            return true
+			return true
 		}
 	} else {
 		return Exit()
