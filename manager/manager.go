@@ -1,7 +1,7 @@
 package sammanager
 
 import (
-	"fmt"
+	//"fmt"
 	"log"
 	"os/exec"
 	"os/user"
@@ -130,82 +130,77 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 		if err != nil {
 			return nil, err
 		}
-	} else {
-		if s.config == nil {
-			return nil, fmt.Errorf("Configuration not found")
-		}
-		s.FilePath = s.config.FilePath
-	}
-	for _, label := range s.config.Labels {
-		if t, e := s.config.Get("type", label); e {
-			switch t {
-			case "http":
-				if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
-					log.Println("found http under", label)
-					s.handlerMux = s.handlerMux.Append(f)
-				} else {
-					return nil, e
-				}
-			case "httpclient":
-				if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMHTTPClientFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
-					log.Println("found http under", label)
-					s.handlerMux = s.handlerMux.Append(f)
-				} else {
-					return nil, e
-				}
-			case "server":
-				if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
-					log.Println("found server under", label)
-					s.handlerMux = s.handlerMux.Append(f)
-				} else {
-					return nil, e
-				}
-			case "client":
-				if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
-					log.Println("found client under", label)
-					s.handlerMux = s.handlerMux.Append(f)
-				} else {
-					return nil, e
-				}
-			case "udpserver":
-				if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMSSUForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
-					log.Println("found udpserver under", label)
-					s.handlerMux = s.handlerMux.Append(f)
-				} else {
-					return nil, e
-				}
-			case "udpclient":
-				if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMSSUClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
-					log.Println("found udpclient under", label)
-					s.handlerMux = s.handlerMux.Append(f)
-				} else {
-					return nil, e
-				}
-			/*case "vpnserver":
-				if f, e := samtunnelhandler.NewTunnelHandler(samforwardervpnserver.NewSAMVPNForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
-					log.Println("found vpnserver under", label)
-					s.handlerMux = s.handlerMux.Append(f)
-				} else {
-					return nil, e
-				}
-			case "vpnclient":
-				if f, e := samtunnelhandler.NewTunnelHandler(samforwardervpn.NewSAMVPNClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
-					log.Println("found vpnclient under", label)
-					s.handlerMux = s.handlerMux.Append(f)
-				} else {
-					return nil, e
-				}*/
-			default:
-				if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
-					log.Println("found server under", label)
-					s.handlerMux = s.handlerMux.Append(f)
-				} else {
-					return nil, e
+
+		for _, label := range s.config.Labels {
+			if t, e := s.config.Get("type", label); e {
+				switch t {
+				case "http":
+					if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
+						log.Println("found http under", label)
+						s.handlerMux = s.handlerMux.Append(f)
+					} else {
+						return nil, e
+					}
+				case "httpclient":
+					if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMHTTPClientFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
+						log.Println("found http under", label)
+						s.handlerMux = s.handlerMux.Append(f)
+					} else {
+						return nil, e
+					}
+				case "server":
+					if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
+						log.Println("found server under", label)
+						s.handlerMux = s.handlerMux.Append(f)
+					} else {
+						return nil, e
+					}
+				case "client":
+					if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
+						log.Println("found client under", label)
+						s.handlerMux = s.handlerMux.Append(f)
+					} else {
+						return nil, e
+					}
+				case "udpserver":
+					if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMSSUForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
+						log.Println("found udpserver under", label)
+						s.handlerMux = s.handlerMux.Append(f)
+					} else {
+						return nil, e
+					}
+				case "udpclient":
+					if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMSSUClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
+						log.Println("found udpclient under", label)
+						s.handlerMux = s.handlerMux.Append(f)
+					} else {
+						return nil, e
+					}
+				/*case "vpnserver":
+					if f, e := samtunnelhandler.NewTunnelHandler(samforwardervpnserver.NewSAMVPNForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
+						log.Println("found vpnserver under", label)
+						s.handlerMux = s.handlerMux.Append(f)
+					} else {
+						return nil, e
+					}
+				case "vpnclient":
+					if f, e := samtunnelhandler.NewTunnelHandler(samforwardervpn.NewSAMVPNClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
+						log.Println("found vpnclient under", label)
+						s.handlerMux = s.handlerMux.Append(f)
+					} else {
+						return nil, e
+					}*/
+				default:
+					if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort, label)); e == nil {
+						log.Println("found server under", label)
+						s.handlerMux = s.handlerMux.Append(f)
+					} else {
+						return nil, e
+					}
 				}
 			}
 		}
-	}
-	if len(s.config.Labels) == 0 || s.start {
+	} else {
 		t, b := s.config.Get("type")
 		if !b {
 			t = "client"
@@ -213,70 +208,70 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 		}
 		switch t {
 		case "http":
-			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort)); e == nil {
+			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMForwarderFromConf(s.config)); e == nil {
 				log.Println("found default http")
 				s.handlerMux = s.handlerMux.Append(f)
 			} else {
 				return nil, e
 			}
 		case "httpclient":
-			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMHTTPClientFromConfig(s.FilePath, s.SamHost, s.SamPort)); e == nil {
+			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMHTTPClientFromConf(s.config)); e == nil {
 				log.Println("found default httpclient")
 				s.handlerMux = s.handlerMux.Append(f)
 			} else {
 				return nil, e
 			}
 		case "browserclient":
-			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMBrowserClientFromConfig(s.FilePath, s.SamHost, s.SamPort)); e == nil {
+			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMBrowserClientFromConf(s.config)); e == nil {
 				log.Println("found default browserclient")
 				s.handlerMux = s.handlerMux.Append(f)
 			} else {
 				return nil, e
 			}
 		case "server":
-			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort)); e == nil {
+			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMForwarderFromConf(s.config)); e == nil {
 				log.Println("found default server")
 				s.handlerMux = s.handlerMux.Append(f)
 			} else {
 				return nil, e
 			}
 		case "client":
-			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort)); e == nil {
+			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMClientForwarderFromConf(s.config)); e == nil {
 				log.Println("found default client")
 				s.handlerMux = s.handlerMux.Append(f)
 			} else {
 				return nil, e
 			}
 		case "udpserver":
-			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMSSUForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort)); e == nil {
+			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMSSUForwarderFromConf(s.config)); e == nil {
 				log.Println("found default udpserver")
 				s.handlerMux = s.handlerMux.Append(f)
 			} else {
 				return nil, e
 			}
 		case "udpclient":
-			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMSSUClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort)); e == nil {
+			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMSSUClientForwarderFromConf(s.config)); e == nil {
 				log.Println("found default udpclient")
 				s.handlerMux = s.handlerMux.Append(f)
 			} else {
 				return nil, e
 			}
 		/*case "vpnserver":
-			if f, e := samtunnelhandler.NewTunnelHandler(samforwardervpnserver.NewSAMVPNForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort)); e == nil {
+			if f, e := samtunnelhandler.NewTunnelHandler(samforwardervpnserver.NewSAMVPNForwarderFromConf(s.config)); e == nil {
 				log.Println("found default vpnserver")
 				s.handlerMux = s.handlerMux.Append(f)
 			} else {
 				return nil, e
 			}
 		case "vpnclient":
-			if f, e := samtunnelhandler.NewTunnelHandler(samforwardervpn.NewSAMVPNClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort)); e == nil {
+			if f, e := samtunnelhandler.NewTunnelHandler(samforwardervpn.NewSAMVPNClientForwarderFromConf(s.config)); e == nil {
 				log.Println("found default vpnclient")
 				s.handlerMux = s.handlerMux.Append(f)
 			} else {
 				return nil, e
 			}*/
 		default:
-			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMClientForwarderFromConfig(s.FilePath, s.SamHost, s.SamPort)); e == nil {
+			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunconf.NewSAMClientForwarderFromConf(s.config)); e == nil {
 				log.Println("found default client")
 				s.handlerMux = s.handlerMux.Append(f)
 			} else {
