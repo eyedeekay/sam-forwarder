@@ -62,6 +62,7 @@ type Conf struct {
 	exists                    bool
 	UserName                  string
 	Password                  string
+	CryptFile                 string
 }
 
 // Print returns and prints a formatted list of configured tunnel settings.

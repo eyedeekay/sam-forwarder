@@ -7,6 +7,7 @@ network = host
 samhost = sam-host
 samport = 7656
 args = -r
+USER_GH=eyedeekay
 
 PREFIX := /
 VAR := var/
@@ -16,7 +17,7 @@ LOG := log/
 ETC := etc/
 USR := usr/
 LOCAL := local/
-VERSION := 0.1
+VERSION := 0.32.0
 
 GO111MODULE=on
 
@@ -222,3 +223,6 @@ tar:
 		--exclude .go \
 		--exclude bin \
 		-cJvf ../$(packagename)_$(VERSION).orig.tar.xz .
+
+tag:
+	gothub release -s $(GITHUB_TOKEN) -u $(USER_GH) -r $(packagename) -t v$(VERSION) -d "I2P Tunnel Management tool for Go applications"
