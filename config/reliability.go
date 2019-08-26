@@ -31,3 +31,11 @@ func (c *Conf) reliability() string {
 	}
 	return ""
 }
+
+//SetMessageReliability sets the host of the Conf's SAM bridge
+func SetMessageReliability(s string) func(*Conf) error {
+	return func(c *Conf) error {
+		c.MessageReliability = s
+		return nil
+	}
+}

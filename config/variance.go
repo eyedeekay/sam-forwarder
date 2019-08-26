@@ -1,5 +1,7 @@
 package i2ptunconf
 
+import "fmt"
+
 // GetInVariance takes an argument and a default. If the argument differs from the
 // default, the argument is always returned. If the argument and default are
 // the same and the key exists, the key is returned. If the key is absent, the
@@ -49,5 +51,27 @@ func (c *Conf) SetOutVariance(label ...string) {
 		c.OutVariance = v
 	} else {
 		c.OutVariance = 0
+	}
+}
+
+//SetInVariance sets the variance of a number of hops inbound
+func SetInVariance(i int) func(*Conf) error {
+	return func(c *Conf) error {
+		if i < 7 && i > -7 {
+			c.InVariance = i //strconv.Itoa(i)
+			return nil
+		}
+		return fmt.Errorf("Invalid inbound tunnel length")
+	}
+}
+
+//SetOutVariance sets the variance of a number of hops outbound
+func SetOutVariance(i int) func(*Conf) error {
+	return func(c *Conf) error {
+		if i < 7 && i > -7 {
+			c.OutVariance = i //strconv.Itoa(i)
+			return nil
+		}
+		return fmt.Errorf("Invalid outbound tunnel variance")
 	}
 }

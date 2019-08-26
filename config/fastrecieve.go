@@ -25,3 +25,15 @@ func (c *Conf) SetFastRecieve(label ...string) {
 		c.FastRecieve = false
 	}
 }
+
+//SetFastRecieve tells clients to recieve all messages as quicky as possible
+func SetFastRecieve(b bool) func(*Conf) error {
+	return func(c *Conf) error {
+		if b {
+			c.FastRecieve = b // "true"
+			return nil
+		}
+		c.FastRecieve = b // "false"
+		return nil
+	}
+}

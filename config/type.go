@@ -63,10 +63,66 @@ func (c *Conf) SetType(label ...string) {
 		if strings.Contains(v, "client") {
 			c.Client = true
 		}
-		if c.Type == "server" || c.Type == "http" || c.Type == "client" || c.Type == "httpclient" || c.Type == "udpserver" || c.Type == "udpclient" || c.Type == "kcpclient" || c.Type == "kcpserver" {
+		switch c.Type {
+		case "server":
 			c.Type = v
+		case "http":
+			c.Type = v
+		case "client":
+			c.Type = v
+		case "httpclient":
+			c.Type = v
+		case "browserclient":
+			c.Type = v
+		case "udpserver":
+			c.Type = v
+		case "udpclient":
+			c.Type = v
+		case "vpnserver":
+			c.Type = v
+		case "vpnclient":
+			c.Type = v
+		case "kcpclient":
+			c.Type = v
+		case "kcpserver":
+			c.Type = v
+		default:
+			c.Type = "browserclient"
 		}
 	} else {
-		c.Type = "server"
+		c.Type = "browserclient"
+	}
+}
+
+//SetType sets the type of the forwarder server
+func SetType(s string) func(*Conf) error {
+	return func(c *Conf) error {
+		switch c.Type {
+		case "server":
+			c.Type = s
+		case "http":
+			c.Type = s
+		case "client":
+			c.Type = s
+		case "httpclient":
+			c.Type = s
+		case "browserclient":
+			c.Type = s
+		case "udpserver":
+			c.Type = s
+		case "udpclient":
+			c.Type = s
+		case "vpnserver":
+			c.Type = s
+		case "vpnclient":
+			c.Type = s
+		case "kcpclient":
+			c.Type = s
+		case "kcpserver":
+			c.Type = s
+		default:
+			c.Type = "browserclient"
+		}
+		return nil
 	}
 }

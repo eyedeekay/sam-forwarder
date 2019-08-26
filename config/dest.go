@@ -25,3 +25,11 @@ func (c *Conf) SetClientDest(label ...string) {
 		c.ClientDest = v
 	}
 }
+
+//SetSaveFile tells the router to save the tunnel's keys long-term
+func SetDestination(b string) func(*Conf) error {
+	return func(c *Conf) error {
+		c.ClientDest = b
+		return nil
+	}
+}

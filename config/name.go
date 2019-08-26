@@ -47,6 +47,22 @@ func (c *Conf) SetTunName(label ...string) {
 	if v, ok := c.Get("keys", label...); ok {
 		c.TunName = v
 	} else {
-		c.TunName = "fowarder"
+		c.TunName = "forwarder"
+	}
+}
+
+//SetName sets the host of the Conf's SAM bridge
+func SetName(s string) func(*Conf) error {
+	return func(c *Conf) error {
+		c.TunName = s
+		return nil
+	}
+}
+
+//SetSaveFile tells the router to save the tunnel's keys long-term
+func SetSaveFile(b bool) func(*Conf) error {
+	return func(c *Conf) error {
+		c.SaveFile = b
+		return nil
 	}
 }

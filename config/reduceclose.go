@@ -1,5 +1,9 @@
 package i2ptunconf
 
+import (
+	"fmt"
+)
+
 // GetReduceOnIdle takes an argument and a default. If the argument differs from the
 // default, the argument is always returned. If the argument and default are
 // the same and the key exists, the key is returned. If the key is absent, the
@@ -127,5 +131,88 @@ func (c *Conf) SetCloseIdleTime(label ...string) {
 		c.CloseIdleTime = v
 	} else {
 		c.CloseIdleTime = 300000
+	}
+}
+
+//SetReduceIdle tells the connection to reduce it's tunnels during extended idle time.
+func SetReduceIdle(b bool) func(*Conf) error {
+	return func(c *Conf) error {
+		if b {
+			c.ReduceIdle = b // "true"
+			return nil
+		}
+		c.ReduceIdle = b // "false"
+		return nil
+	}
+}
+
+//SetReduceIdleTime sets the time to wait before reducing tunnels to idle levels
+func SetReduceIdleTime(u int) func(*Conf) error {
+	return func(c *Conf) error {
+		c.ReduceIdleTime = 300000
+		if u >= 6 {
+			c.ReduceIdleTime = (u * 60) * 1000 // strconv.Itoa((u * 60) * 1000)
+			return nil
+		}
+		return fmt.Errorf("Invalid reduce idle timeout(Measured in minutes) %v", u)
+	}
+}
+
+//SetReduceIdleTimeMs sets the time to wait before reducing tunnels to idle levels in milliseconds
+func SetReduceIdleTimeMs(u int) func(*Conf) error {
+	return func(c *Conf) error {
+		c.ReduceIdleTime = 300000
+		if u >= 300000 {
+			c.ReduceIdleTime = u // strconv.Itoa(u)
+			return nil
+		}
+		return fmt.Errorf("Invalid reduce idle timeout(Measured in milliseconds) %v", u)
+	}
+}
+
+//SetReduceIdleQuantity sets minimum number of tunnels to reduce to during idle time
+func SetReduceIdleQuantity(u int) func(*Conf) error {
+	return func(c *Conf) error {
+		if u < 5 {
+			c.ReduceIdleQuantity = u // strconv.Itoa(u)
+			return nil
+		}
+		return fmt.Errorf("Invalid reduce tunnel quantity")
+	}
+}
+
+//SetCloseIdle tells the connection to close it's tunnels during extended idle time.
+func SetCloseIdle(b bool) func(*Conf) error {
+	return func(c *Conf) error {
+		if b {
+			c.CloseIdle = b // "true"
+			return nil
+		}
+		c.CloseIdle = b // "false"
+		return nil
+	}
+}
+
+//SetCloseIdleTime sets the time to wait before closing tunnels to idle levels
+func SetCloseIdleTime(u int) func(*Conf) error {
+	return func(c *Conf) error {
+		c.CloseIdleTime = 300000
+		if u >= 6 {
+			c.CloseIdleTime = (u * 60) * 1000 // strconv.Itoa((u * 60) * 1000)
+			return nil
+		}
+		return fmt.Errorf("Invalid close idle timeout(Measured in minutes) %v", u)
+	}
+}
+
+//SetCloseIdleTimeMs sets the time to wait before closing tunnels to idle levels in milliseconds
+func SetCloseIdleTimeMs(u int) func(*Conf) error {
+	return func(c *Conf) error {
+		c.CloseIdleTime = 300000
+		if u >= 300000 {
+			c.CloseIdleTime = u //strconv.Itoa(u)
+			return nil
+		}
+		return fmt.Errorf("Invalid close idle timeout(Measured in milliseconds) %v", u)
 	}
 }

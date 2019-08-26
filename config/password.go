@@ -25,3 +25,11 @@ func (c *Conf) SetPassword(label ...string) {
 		c.Password = "samcatd"
 	}
 }
+
+//SetPassword sets the host of the Conf's SAM bridge
+func SetPassword(s string) func(*Conf) error {
+	return func(c *Conf) error {
+		c.Password = s
+		return nil
+	}
+}

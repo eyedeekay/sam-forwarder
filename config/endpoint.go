@@ -25,3 +25,11 @@ func (c *Conf) SetEndpointHost(label ...string) {
 		c.TunnelHost = "10.79.0.1"
 	}
 }
+
+//SetTunnelHost is used for VPN endpoints
+func SetTunnelHost(s string) func(*Conf) error {
+	return func(c *Conf) error {
+		c.TunnelHost = s
+		return nil
+	}
+}

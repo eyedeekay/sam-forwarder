@@ -51,3 +51,27 @@ func (c *Conf) SetAllowZeroHopOut(label ...string) {
 		c.OutAllowZeroHop = false
 	}
 }
+
+//SetAllowZeroIn tells the tunnel to accept zero-hop peers
+func SetAllowZeroIn(b bool) func(*Conf) error {
+	return func(c *Conf) error {
+		if b {
+			c.InAllowZeroHop = b // "true"
+			return nil
+		}
+		c.InAllowZeroHop = b // "false"
+		return nil
+	}
+}
+
+//SetAllowZeroOut tells the tunnel to accept zero-hop peers
+func SetAllowZeroOut(b bool) func(*Conf) error {
+	return func(c *Conf) error {
+		if b {
+			c.OutAllowZeroHop = b // "true"
+			return nil
+		}
+		c.OutAllowZeroHop = b // "false"
+		return nil
+	}
+}

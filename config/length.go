@@ -1,5 +1,7 @@
 package i2ptunconf
 
+import "fmt"
+
 // GetInLength takes an argument and a default. If the argument differs from the
 // default, the argument is always returned. If the argument and default are
 // the same and the key exists, the key is returned. If the key is absent, the
@@ -49,5 +51,27 @@ func (c *Conf) SetOutLength(label ...string) {
 		c.InLength = v
 	} else {
 		c.InLength = 3
+	}
+}
+
+//SetInLength sets the number of hops inbound
+func SetInLength(u int) func(*Conf) error {
+	return func(c *Conf) error {
+		if u < 7 && u >= 0 {
+			c.InLength = u // strconv.Itoa(u)
+			return nil
+		}
+		return fmt.Errorf("Invalid inbound tunnel length")
+	}
+}
+
+//SetOutLength sets the number of hops outbound
+func SetOutLength(u int) func(*Conf) error {
+	return func(c *Conf) error {
+		if u < 7 && u >= 0 {
+			c.OutLength = u // strconv.Itoa(u)
+			return nil
+		}
+		return fmt.Errorf("Invalid outbound tunnel length")
 	}
 }

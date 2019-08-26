@@ -1,5 +1,10 @@
 package i2ptunconf
 
+import (
+	"fmt"
+	"strconv"
+)
+
 // GetHost takes an argument and a default. If the argument differs from the
 // default, the argument is always returned. If the argument and default are
 // the same and the key exists, the key is returned. If the key is absent, the
@@ -49,5 +54,28 @@ func (c *Conf) SetControlPort(label ...string) {
 		c.ControlPort = v
 	} else {
 		c.ControlPort = ""
+	}
+}
+
+//SetControlHost sets the host of the service to forward
+func SetControlHost(s string) func(*Conf) error {
+	return func(c *Conf) error {
+		c.ControlHost = s
+		return nil
+	}
+}
+
+//SetControlPort sets the port of the service to forward
+func SetControlPort(s string) func(*Conf) error {
+	return func(c *Conf) error {
+		port, err := strconv.Atoi(s)
+		if err != nil {
+			return fmt.Errorf("Invalid TCP Server Target Port %s; non-number ", s)
+		}
+		if port < 65536 && port > -1 {
+			c.ControlPort = s
+			return nil
+		}
+		return fmt.Errorf("Invalid port")
 	}
 }

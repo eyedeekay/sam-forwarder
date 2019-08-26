@@ -1,5 +1,7 @@
 package i2ptunconf
 
+import "fmt"
+
 // GetInQuantity takes an argument and a default. If the argument differs from the
 // default, the argument is always returned. If the argument and default are
 // the same and the key exists, the key is returned. If the key is absent, the
@@ -49,5 +51,27 @@ func (c *Conf) SetOutQuantity(label ...string) {
 		c.OutQuantity = v
 	} else {
 		c.OutQuantity = 1
+	}
+}
+
+//SetInQuantity sets the inbound tunnel quantity
+func SetInQuantity(u int) func(*Conf) error {
+	return func(c *Conf) error {
+		if u <= 16 && u > 0 {
+			c.InQuantity = u //strconv.Itoa(u)
+			return nil
+		}
+		return fmt.Errorf("Invalid inbound tunnel quantity")
+	}
+}
+
+//SetOutQuantity sets the outbound tunnel quantity
+func SetOutQuantity(u int) func(*Conf) error {
+	return func(c *Conf) error {
+		if u <= 16 && u > 0 {
+			c.OutQuantity = u // strconv.Itoa(u)
+			return nil
+		}
+		return fmt.Errorf("Invalid outbound tunnel quantity")
 	}
 }

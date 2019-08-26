@@ -25,3 +25,15 @@ func (c *Conf) SetCompressed(label ...string) {
 		c.UseCompression = true
 	}
 }
+
+//SetCompress tells clients to use compression
+func SetCompress(b bool) func(*Conf) error {
+	return func(c *Conf) error {
+		if b {
+			c.UseCompression = b // "true"
+			return nil
+		}
+		c.UseCompression = b // "false"
+		return nil
+	}
+}

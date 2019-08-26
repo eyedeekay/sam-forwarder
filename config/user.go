@@ -25,3 +25,11 @@ func (c *Conf) SetUserName(label ...string) {
 		c.UserName = "samcatd"
 	}
 }
+
+//SetUserName sets the host of the Conf's SAM bridge
+func SetUserName(s string) func(*Conf) error {
+	return func(c *Conf) error {
+		c.UserName = s
+		return nil
+	}
+}

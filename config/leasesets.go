@@ -103,3 +103,39 @@ func (c *Conf) SetLeasesetPrivateSigningKey(label ...string) {
 		c.LeaseSetPrivateSigningKey = ""
 	}
 }
+
+//SetEncrypt tells the router to use an encrypted leaseset
+func SetEncrypt(b bool) func(*Conf) error {
+	return func(c *Conf) error {
+		if b {
+			c.EncryptLeaseSet = b //"true"
+			return nil
+		}
+		c.EncryptLeaseSet = b //"false"
+		return nil
+	}
+}
+
+//SetLeaseSetKey sets the host of the Conf's SAM bridge
+func SetLeaseSetKey(s string) func(*Conf) error {
+	return func(c *Conf) error {
+		c.LeaseSetKey = s
+		return nil
+	}
+}
+
+//SetLeaseSetPrivateKey sets the host of the Conf's SAM bridge
+func SetLeaseSetPrivateKey(s string) func(*Conf) error {
+	return func(c *Conf) error {
+		c.LeaseSetPrivateKey = s
+		return nil
+	}
+}
+
+//SetLeaseSetPrivateSigningKey sets the host of the Conf's SAM bridge
+func SetLeaseSetPrivateSigningKey(s string) func(*Conf) error {
+	return func(c *Conf) error {
+		c.LeaseSetPrivateSigningKey = s
+		return nil
+	}
+}

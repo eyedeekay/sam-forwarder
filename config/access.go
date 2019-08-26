@@ -1,6 +1,9 @@
 package i2ptunconf
 
-import "strings"
+import (
+	"fmt"
+	"strings"
+)
 
 // GetAccessListType takes an argument and a default. If the argument differs from the
 // default, the argument is always returned. If the argument and default are
@@ -63,4 +66,37 @@ func (c *Conf) accesslist() string {
 		return "i2cp.accessList=" + strings.TrimSuffix(r, ",")
 	}
 	return ""
+}
+
+//SetAccessListType tells the system to treat the accessList as a whitelist
+func SetAccessListType(s string) func(*Conf) error {
+	return func(c *Conf) error {
+		if s == "whitelist" {
+			c.AccessListType = "whitelist"
+			return nil
+		} else if s == "blacklist" {
+			c.AccessListType = "blacklist"
+			return nil
+		} else if s == "none" {
+			c.AccessListType = ""
+			return nil
+		} else if s == "" {
+			c.AccessListType = ""
+			return nil
+		}
+		return fmt.Errorf("Invalid Access list type(whitelist, blacklist, none)")
+	}
+}
+
+//SetAccessList tells the system to treat the accessList as a whitelist
+func SetAccessList(s []string) func(*Conf) error {
+	return func(c *Conf) error {
+		if len(s) > 0 {
+			for _, a := range s {
+				c.AccessList = append(c.AccessList, a)
+			}
+			return nil
+		}
+		return nil
+	}
 }

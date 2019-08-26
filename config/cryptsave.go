@@ -25,3 +25,11 @@ func (c *Conf) SetKeyFile(label ...string) {
 		c.KeyFilePath = "./"
 	}
 }
+
+//SetKeyFile sets
+func SetKeyFile(s string) func(*Conf) error {
+	return func(c *Conf) error {
+		c.KeyFilePath = s
+		return nil
+	}
+}
