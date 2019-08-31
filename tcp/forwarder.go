@@ -25,12 +25,12 @@ import (
 //SAMForwarder is a structure which automatically configured the forwarding of
 //a local service to i2p over the SAM API.
 type SAMForwarder struct {
-	SamHost string
+	/*SamHost string
 	SamPort string
 	TunName string
 
 	TargetHost string
-	TargetPort string
+	TargetPort string*/
 
 	samConn       *sam3.SAM
 	SamKeys       i2pkeys.I2PKeys
@@ -38,48 +38,50 @@ type SAMForwarder struct {
 	publishStream *sam3.StreamSession
 	publishListen *sam3.StreamListener
 
-	FilePath string
-	file     io.ReadWriter
-	save     bool
-	up       bool
+	//FilePath string
+	file io.ReadWriter
+	//save     bool
+	up bool
 
 	// conf
 	Conf *i2ptunconf.Conf
 
-	Type string
+	//Type string
 
 	// samcatd options
-	passfile string
+	//passfile string
 
-	sigType string
+	//sigType string
 
-	// I2CP options
-	encryptLeaseSet           string
-	leaseSetKey               string
-	leaseSetPrivateKey        string
-	leaseSetPrivateSigningKey string
-	LeaseSetKeys              *i2pkeys.I2PKeys
-	inAllowZeroHop            string
-	outAllowZeroHop           string
-	inLength                  string
-	outLength                 string
-	inQuantity                string
-	outQuantity               string
-	inVariance                string
-	outVariance               string
-	inBackupQuantity          string
-	outBackupQuantity         string
-	fastRecieve               string
-	useCompression            string
-	messageReliability        string
-	closeIdle                 string
-	closeIdleTime             string
-	reduceIdle                string
-	reduceIdleTime            string
-	reduceIdleQuantity        string
-	//Streaming Library options
-	accessListType string
-	accessList     []string
+	/*
+		// I2CP options
+		encryptLeaseSet           string
+		leaseSetKey               string
+		leaseSetPrivateKey        string
+		leaseSetPrivateSigningKey string
+		LeaseSetKeys              *i2pkeys.I2PKeys
+		inAllowZeroHop            string
+		outAllowZeroHop           string
+		inLength                  string
+		outLength                 string
+		inQuantity                string
+		outQuantity               string
+		inVariance                string
+		outVariance               string
+		inBackupQuantity          string
+		outBackupQuantity         string
+		fastRecieve               string
+		useCompression            string
+		messageReliability        string
+		closeIdle                 string
+		closeIdleTime             string
+		reduceIdle                string
+		reduceIdleTime            string
+		reduceIdleQuantity        string
+		//Streaming Library options
+		accessListType string
+		accessList     []string
+	*/
 
 	clientLock bool
 	connLock   bool
@@ -95,7 +97,7 @@ func (f *SAMForwarder) Config() *i2ptunconf.Conf {
 }
 
 func (f *SAMForwarder) ID() string {
-	return f.TunName
+	return f.Config().TunName
 }
 
 func (f *SAMForwarder) Keys() i2pkeys.I2PKeys {
@@ -109,7 +111,7 @@ func (f *SAMForwarder) Cleanup() {
 }
 
 func (f *SAMForwarder) GetType() string {
-	return f.Type
+	return f.Conf.Type
 }
 
 /*func (f *SAMForwarder) targetForPort443() string {
@@ -120,7 +122,7 @@ func (f *SAMForwarder) GetType() string {
 }*/
 
 func (f *SAMForwarder) print() []string {
-	lsk, lspk, lspsk := f.leasesetsettings()
+	/*lsk, lspk, lspsk := f.Config().Leasesetsettings()
 	return []string{
 		//f.targetForPort443(),
 		"inbound.length=" + f.inLength,
@@ -145,7 +147,8 @@ func (f *SAMForwarder) print() []string {
 		lsk, lspk, lspsk,
 		f.accesslisttype(),
 		f.accesslist(),
-	}
+	}*/
+	return f.Conf.PrintSlice()
 }
 
 func (f *SAMForwarder) Props() map[string]string {
@@ -163,11 +166,11 @@ func (f *SAMForwarder) Props() map[string]string {
 
 func (f *SAMForwarder) Print() string {
 	var r string
-	r += "name=" + f.TunName + "\n"
-	r += "type=" + f.Type + "\n"
+	r += "name=" + f.Config().TunName + "\n"
+	r += "type=" + f.Conf.Type + "\n"
 	r += "base32=" + f.Base32() + "\n"
 	r += "base64=" + f.Base64() + "\n"
-	if f.Type == "http" {
+	if f.Conf.Type == "http" {
 		r += "httpserver\n"
 	} else {
 		r += "ntcpserver\n"
@@ -192,20 +195,20 @@ func (f *SAMForwarder) Search(search string) string {
 }
 
 func (f *SAMForwarder) accesslisttype() string {
-	if f.accessListType == "whitelist" {
+	if f.Config().AccessListType == "whitelist" {
 		return "i2cp.enableAccessList=true"
-	} else if f.accessListType == "blacklist" {
+	} else if f.Config().AccessListType == "blacklist" {
 		return "i2cp.enableBlackList=true"
-	} else if f.accessListType == "none" {
+	} else if f.Config().AccessListType == "none" {
 		return ""
 	}
 	return ""
 }
 
 func (f *SAMForwarder) accesslist() string {
-	if f.accessListType != "" && len(f.accessList) > 0 {
+	if f.Config().AccessListType != "" && len(f.Config().AccessList) > 0 {
 		r := ""
-		for _, s := range f.accessList {
+		for _, s := range f.Config().AccessList {
 			r += s + ","
 		}
 		return "i2cp.accessList=" + strings.TrimSuffix(r, ",")
@@ -215,25 +218,25 @@ func (f *SAMForwarder) accesslist() string {
 
 func (f *SAMForwarder) leasesetsettings() (string, string, string) {
 	var r, s, t string
-	if f.leaseSetKey != "" {
-		r = "i2cp.leaseSetKey=" + f.leaseSetKey
+	if f.Config().LeaseSetKey != "" {
+		r = "i2cp.leaseSetKey=" + f.Config().LeaseSetKey
 	}
-	if f.leaseSetPrivateKey != "" {
-		s = "i2cp.leaseSetPrivateKey=" + f.leaseSetPrivateKey
+	if f.Config().LeaseSetPrivateKey != "" {
+		s = "i2cp.leaseSetPrivateKey=" + f.Config().LeaseSetPrivateKey
 	}
-	if f.leaseSetPrivateSigningKey != "" {
-		t = "i2cp.leaseSetPrivateSigningKey=" + f.leaseSetPrivateSigningKey
+	if f.Config().LeaseSetPrivateSigningKey != "" {
+		t = "i2cp.leaseSetPrivateSigningKey=" + f.Config().LeaseSetPrivateSigningKey
 	}
 	return r, s, t
 }
 
 // Target returns the host:port of the local service you want to forward to i2p
 func (f *SAMForwarder) Target() string {
-	return f.TargetHost + ":" + f.TargetPort
+	return f.Config().TargetHost + ":" + f.Config().TargetPort
 }
 
 func (f *SAMForwarder) sam() string {
-	return f.SamHost + ":" + f.SamPort
+	return f.Config().SamHost + ":" + f.Config().SamPort
 }
 
 func (f *SAMForwarder) HTTPRequestBytes(conn *sam3.SAMConn) ([]byte, *http.Request, error) {
@@ -311,7 +314,7 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 		log.Fatalf("Dial failed: %v", err)
 	}
 	go func() {
-		if f.Type == "http" {
+		if f.Conf.Type == "http" {
 			defer f.clientUnlockAndClose(true, false, client)
 			defer f.connUnlockAndClose(false, true, conn)
 			if requestbytes, request, err = f.HTTPRequestBytes(conn); err == nil {
@@ -327,7 +330,7 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 		}
 	}()
 	go func() {
-		if f.Type == "http" {
+		if f.Conf.Type == "http" {
 			defer f.clientUnlockAndClose(false, true, client)
 			defer f.connUnlockAndClose(true, false, conn)
 			if responsebytes, err = f.HTTPResponseBytes(client, request); err == nil {
@@ -363,9 +366,9 @@ func (f *SAMForwarder) Base64() string {
 
 //Serve starts the SAM connection and and forwards the local host:port to i2p
 func (f *SAMForwarder) Serve() error {
-	//lsk, lspk, lspsk := f.leasesetsettings()
+	//lsk, lspk, lspsk := f.Config().Leasesetsettings()
 	if f.Up() {
-		if f.publishStream, err = f.samConn.NewStreamSession(f.TunName, f.SamKeys, f.print()); err != nil {
+		if f.publishStream, err = f.samConn.NewStreamSession(f.Conf.TunName, f.SamKeys, f.print()); err != nil {
 			log.Println("Stream Creation error:", err.Error())
 			return err
 		}
@@ -411,18 +414,18 @@ func (s *SAMForwarder) Load() (samtunnel.SAMTunnel, error) {
 		return nil, err
 	}
 	log.Println("SAM Bridge connection established.")
-	if s.save {
+	if s.Conf.SaveFile {
 		log.Println("Saving i2p keys")
 	}
-	if s.SamKeys, err = sfi2pkeys.Load(s.FilePath, s.TunName, s.passfile, s.samConn, s.save); err != nil {
+	if s.SamKeys, err = sfi2pkeys.Load(s.Conf.FilePath, s.Conf.TunName, s.Conf.KeyFilePath, s.samConn, s.Conf.SaveFile); err != nil {
 		return nil, err
 	}
-	log.Println("Destination keys generated, tunnel name:", s.TunName)
-	if s.save {
-		if err := sfi2pkeys.Save(s.FilePath, s.TunName, s.passfile, s.SamKeys); err != nil {
+	log.Println("Destination keys generated, tunnel name:", s.Conf.TunName)
+	if s.Conf.SaveFile {
+		if err := sfi2pkeys.Save(s.Conf.FilePath, s.Conf.TunName, s.Conf.KeyFilePath, s.SamKeys); err != nil {
 			return nil, err
 		}
-		log.Println("Saved tunnel keys for", s.TunName)
+		log.Println("Saved tunnel keys for", s.Conf.TunName)
 	}
 	s.Hasher, err = hashhash.NewHasher(len(strings.Replace(s.Base32(), ".b32.i2p", "", 1)))
 	if err != nil {
@@ -440,39 +443,40 @@ func NewSAMForwarder(host, port string) (*SAMForwarder, error) {
 //NewSAMForwarderFromOptions makes a new SAM forwarder with default options, accepts host:port arguments
 func NewSAMForwarderFromOptions(opts ...func(*SAMForwarder) error) (*SAMForwarder, error) {
 	var s SAMForwarder
-	s.SamHost = "127.0.0.1"
-	s.SamPort = "7656"
-	s.FilePath = ""
-	s.save = false
-	s.TargetHost = "127.0.0.1"
-	s.TargetPort = "8081"
-	s.TunName = "samForwarder"
-	s.Type = "server"
-	s.inLength = "3"
-	s.outLength = "3"
-	s.inQuantity = "2"
-	s.outQuantity = "2"
-	s.inVariance = "1"
-	s.outVariance = "1"
-	s.inBackupQuantity = "3"
-	s.outBackupQuantity = "3"
-	s.inAllowZeroHop = "false"
-	s.outAllowZeroHop = "false"
-	s.encryptLeaseSet = "false"
-	s.leaseSetKey = ""
-	s.leaseSetPrivateKey = ""
-	s.leaseSetPrivateSigningKey = ""
-	s.fastRecieve = "false"
-	s.useCompression = "true"
-	s.reduceIdle = "false"
-	s.reduceIdleTime = "15"
-	s.reduceIdleQuantity = "4"
-	s.closeIdle = "false"
-	s.closeIdleTime = "300000"
+	/*	s.Conf.SamHost = "127.0.0.1"
+		s.Conf.SamPort = "7656"
+		s.Conf.FilePath = ""
+		s.save = false
+		s.Conf.TargetHost = "127.0.0.1"
+		s.Conf.TargetPort = "8081"
+		s.Conf.TunName = "samForwarder"
+		s.Conf.Type = "server"
+		s.inLength = "3"
+		s.outLength = "3"
+		s.inQuantity = "2"
+		s.outQuantity = "2"
+		s.inVariance = "1"
+		s.outVariance = "1"
+		s.inBackupQuantity = "3"
+		s.outBackupQuantity = "3"
+		s.inAllowZeroHop = "false"
+		s.outAllowZeroHop = "false"
+		s.encryptLeaseSet = "false"
+		s.leaseSetKey = ""
+		s.leaseSetPrivateKey = ""
+		s.leaseSetPrivateSigningKey = ""
+		s.fastRecieve = "false"
+		s.useCompression = "true"
+		s.reduceIdle = "false"
+		s.reduceIdleTime = "15"
+		s.reduceIdleQuantity = "4"
+		s.closeIdle = "false"
+		s.closeIdleTime = "300000"
+	    s.messageReliability = "none"
+	    s.passfile = ""*/
+	s.Conf = i2ptunconf.NewI2PBlankTunConf()
 	s.clientLock = false
 	s.connLock = false
-	s.messageReliability = "none"
-	s.passfile = ""
 	for _, o := range opts {
 		if err := o(&s); err != nil {
 			return nil, err

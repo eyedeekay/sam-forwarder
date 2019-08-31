@@ -13,7 +13,7 @@ type ManagerOption func(*SAMManager) error
 //SetManagerFilePath sets the host of the SAMManager's SAM bridge
 func SetManagerFilePath(s string) func(*SAMManager) error {
 	return func(c *SAMManager) error {
-		c.FilePath = s
+		c.config.FilePath = s
 		return nil
 	}
 }

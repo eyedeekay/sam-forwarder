@@ -1,1 +1,1 @@
-{"net":{"http_server_properties":{"servers":[{"https://accounts.google.com":{"supports_spdy":true}}],"version":5},"network_qualities":{"CAISE21lc2hhYmxlX21haW5fbm9tYXAYgICAgPj/////AQ==":"4G"}}}
+{"net":{"http_server_properties":{"servers":[{"https://accounts.google.com":{"supports_spdy":true}},{"https://clients1.google.com":{"supports_spdy":true}}],"version":5},"network_qualities":{"CAISE21lc2hhYmxlX21haW5fbm9tYXAYgICAgPj/////AQ==":"4G"}}}

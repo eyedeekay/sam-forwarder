@@ -17,7 +17,7 @@ LOG := log/
 ETC := etc/
 USR := usr/
 LOCAL := local/
-VERSION := 0.32.03
+VERSION := 0.32.04
 
 GO111MODULE=on
 
@@ -37,7 +37,7 @@ fix-debian:
 	find ./debian -type f -exec sed -i 's|eyedeekay@safe-mail.net|hankhill19580@gmail.com|g' {} \;
 
 try:
-	cd etc/samcatd/ && ../../bin/samcatd -f tunnels.ini
+	./bin/samcatd -f etc/samcatd/tunnels.ini
 
 test: test-keys test-ntcp test-ssu test-config test-manager
 

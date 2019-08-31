@@ -191,6 +191,7 @@ func lbMain(ctx context.Context) {
 	}
 	config.TargetHost = config.GetHost(*targetHost, "127.0.0.1")
 	config.TargetPort = config.GetPort(*targetPort, "8081")
+	config.FilePath = *iniFile
 	config.SaveFile = config.GetSaveFile(*saveFile, true)
 	config.SaveDirectory = config.GetDir(*targetDir, "../")
 	config.SamHost = config.GetSAMHost(*samHost, "127.0.0.1")

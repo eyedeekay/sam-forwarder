@@ -11,6 +11,7 @@ require (
 	github.com/justinas/nosurf v0.0.0-20190416172904-05988550ea18
 	github.com/zieckey/goini v0.0.0-20180118150432-0da17d361d26
 	github.com/zserge/lorca v0.1.8
+	github.com/zserge/webview v0.0.0-20190123072648-16c93bcaeaeb
 	golang.org/x/crypto v0.0.0-20190829043050-9756ffdc2472 // indirect
 	golang.org/x/net v0.0.0-20190827160401-ba9fcec4b297 // indirect
 	golang.org/x/sys v0.0.0-20190830142957-1e83adbbebd0 // indirect
