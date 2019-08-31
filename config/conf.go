@@ -7,7 +7,6 @@ import (
 
 import (
 	"github.com/eyedeekay/sam-forwarder/i2pkeys"
-	"github.com/eyedeekay/sam-forwarder/interface"
 	"github.com/eyedeekay/sam3/i2pkeys"
 )
 
@@ -179,59 +178,4 @@ func (f *Conf) Up() bool {
 //Close shuts the whole thing down.
 func (f *Conf) Close() error {
 	return nil
-}
-
-func (s *Conf) Load() (samtunnel.SAMTunnel, error) {
-	return s, nil
-}
-
-//NewConf makes a new SAM forwarder with default options, accepts host:port arguments
-func NewConf(host, port string) (*Conf, error) {
-	return NewConfFromOptions(SetHost(host), SetPort(port))
-}
-
-//NewConfFromOptions makes a new SAM forwarder with default options, accepts host:port arguments
-func NewConfFromOptions(opts ...func(samtunnel.SAMTunnel) error) (*Conf, error) {
-	var s Conf
-	s.SamHost = "127.0.0.1"
-	s.SamPort = "7656"
-	s.FilePath = ""
-	s.SaveFile = false
-	s.TargetHost = "127.0.0.1"
-	s.TargetPort = "8081"
-	s.TunName = "samForwarder"
-	s.Type = "server"
-	s.InLength = 3
-	s.OutLength = 3
-	s.InQuantity = 2
-	s.OutQuantity = 2
-	s.InVariance = 1
-	s.OutVariance = 1
-	s.InBackupQuantity = 3
-	s.OutBackupQuantity = 3
-	s.InAllowZeroHop = false
-	s.OutAllowZeroHop = false
-	s.EncryptLeaseSet = false
-	s.LeaseSetKey = ""
-	s.LeaseSetPrivateKey = ""
-	s.LeaseSetPrivateSigningKey = ""
-	s.FastRecieve = false
-	s.UseCompression = true
-	s.ReduceIdle = false
-	s.ReduceIdleTime = 15
-	s.ReduceIdleQuantity = 4
-	s.CloseIdle = false
-	s.CloseIdleTime = 300000
-	s.MessageReliability = "none"
-	s.KeyFilePath = ""
-	for _, o := range opts {
-		if err := o(&s); err != nil {
-			return nil, err
-		}
-	}
-	//l, e := s.Load()
-	//if e != nil {
-	//return nil, e
-	//}
-	return &s, nil //l.(*Conf), nil
 }

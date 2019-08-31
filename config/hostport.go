@@ -1,11 +1,5 @@
 package i2ptunconf
 
-import (
-	"fmt"
-	"strconv"
-)
-
-import "github.com/eyedeekay/sam-forwarder/interface"
 
 // GetHost takes an argument and a default. If the argument differs from the
 // default, the argument is always returned. If the argument and default are
@@ -56,28 +50,5 @@ func (c *Conf) SetPort(label ...string) {
 		c.TargetPort = v
 	} else {
 		c.TargetPort = "8081"
-	}
-}
-
-//SetHost sets the host of the service to forward
-func SetHost(s string) func(samtunnel.SAMTunnel) error {
-	return func(c samtunnel.SAMTunnel) error {
-		c.(*Conf).TargetHost = s
-		return nil
-	}
-}
-
-//SetPort sets the port of the service to forward
-func SetPort(s string) func(samtunnel.SAMTunnel) error {
-	return func(c samtunnel.SAMTunnel) error {
-		port, err := strconv.Atoi(s)
-		if err != nil {
-			return fmt.Errorf("Invalid TCP Server Target Port %s; non-number ", s)
-		}
-		if port < 65536 && port > -1 {
-			c.(*Conf).TargetPort = s
-			return nil
-		}
-		return fmt.Errorf("Invalid port")
 	}
 }

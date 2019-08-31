@@ -1,6 +1,6 @@
 package i2ptunconf
 
-import "github.com/eyedeekay/sam-forwarder/interface"
+
 
 // GetEndpointHost takes an argument and a default. If the argument differs from the
 // default, the argument is always returned. If the argument and default are
@@ -25,13 +25,5 @@ func (c *Conf) SetEndpointHost(label ...string) {
 		c.TunnelHost = v
 	} else {
 		c.TunnelHost = "10.79.0.1"
-	}
-}
-
-//SetTunnelHost is used for VPN endpoints
-func SetTunnelHost(s string) func(samtunnel.SAMTunnel) error {
-	return func(c samtunnel.SAMTunnel) error {
-		c.(*Conf).TunnelHost = s
-		return nil
 	}
 }

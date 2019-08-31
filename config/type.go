@@ -4,7 +4,7 @@ import (
 	"strings"
 )
 
-import "github.com/eyedeekay/sam-forwarder/interface"
+
 
 // GetType takes an argument and a default. If the argument differs from the
 // default, the argument is always returned. If the argument and default are
@@ -96,35 +96,3 @@ func (c *Conf) SetType(label ...string) {
 	}
 }
 
-//SetType sets the type of the forwarder server
-func SetType(s string) func(samtunnel.SAMTunnel) error {
-	return func(c samtunnel.SAMTunnel) error {
-		switch c.(*Conf).Type {
-		case "server":
-			c.(*Conf).Type = s
-		case "http":
-			c.(*Conf).Type = s
-		case "client":
-			c.(*Conf).Type = s
-		case "httpclient":
-			c.(*Conf).Type = s
-		case "browserclient":
-			c.(*Conf).Type = s
-		case "udpserver":
-			c.(*Conf).Type = s
-		case "udpclient":
-			c.(*Conf).Type = s
-		case "vpnserver":
-			c.(*Conf).Type = s
-		case "vpnclient":
-			c.(*Conf).Type = s
-		case "kcpclient":
-			c.(*Conf).Type = s
-		case "kcpserver":
-			c.(*Conf).Type = s
-		default:
-			c.(*Conf).Type = "browserclient"
-		}
-		return nil
-	}
-}

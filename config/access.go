@@ -1,11 +1,10 @@
 package i2ptunconf
 
 import (
-	"fmt"
 	"strings"
 )
 
-import "github.com/eyedeekay/sam-forwarder/interface"
+
 
 // GetAccessListType takes an argument and a default. If the argument differs from the
 // default, the argument is always returned. If the argument and default are
@@ -68,37 +67,4 @@ func (c *Conf) accesslist() string {
 		return "i2cp.accessList=" + strings.TrimSuffix(r, ",")
 	}
 	return ""
-}
-
-//SetAccessListType tells the system to treat the accessList as a whitelist
-func SetAccessListType(s string) func(samtunnel.SAMTunnel) error {
-	return func(c samtunnel.SAMTunnel) error {
-		if s == "whitelist" {
-			c.(*Conf).AccessListType = "whitelist"
-			return nil
-		} else if s == "blacklist" {
-			c.(*Conf).AccessListType = "blacklist"
-			return nil
-		} else if s == "none" {
-			c.(*Conf).AccessListType = ""
-			return nil
-		} else if s == "" {
-			c.(*Conf).AccessListType = ""
-			return nil
-		}
-		return fmt.Errorf("Invalid Access list type(whitelist, blacklist, none)")
-	}
-}
-
-//SetAccessList tells the system to treat the accessList as a whitelist
-func SetAccessList(s []string) func(samtunnel.SAMTunnel) error {
-	return func(c samtunnel.SAMTunnel) error {
-		if len(s) > 0 {
-			for _, a := range s {
-				c.(*Conf).AccessList = append(c.(*Conf).AccessList, a)
-			}
-			return nil
-		}
-		return nil
-	}
 }

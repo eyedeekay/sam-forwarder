@@ -1,7 +1,5 @@
 package i2ptunconf
 
-import "fmt"
-import "github.com/eyedeekay/sam-forwarder/interface"
 
 // GetInLength takes an argument and a default. If the argument differs from the
 // default, the argument is always returned. If the argument and default are
@@ -52,27 +50,5 @@ func (c *Conf) SetOutLength(label ...string) {
 		c.InLength = v
 	} else {
 		c.InLength = 3
-	}
-}
-
-//SetInLength sets the number of hops inbound
-func SetInLength(u int) func(samtunnel.SAMTunnel) error {
-	return func(c samtunnel.SAMTunnel) error {
-		if u < 7 && u >= 0 {
-			c.(*Conf).InLength = u // strconv.Itoa(u)
-			return nil
-		}
-		return fmt.Errorf("Invalid inbound tunnel length")
-	}
-}
-
-//SetOutLength sets the number of hops outbound
-func SetOutLength(u int) func(samtunnel.SAMTunnel) error {
-	return func(c samtunnel.SAMTunnel) error {
-		if u < 7 && u >= 0 {
-			c.(*Conf).OutLength = u // strconv.Itoa(u)
-			return nil
-		}
-		return fmt.Errorf("Invalid outbound tunnel length")
 	}
 }

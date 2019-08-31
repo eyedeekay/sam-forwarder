@@ -1,8 +1,5 @@
 package i2ptunconf
 
-import "fmt"
-import "github.com/eyedeekay/sam-forwarder/interface"
-
 // GetInBackups takes an argument and a default. If the argument differs from the
 // default, the argument is always returned. If the argument and default are
 // the same and the key exists, the key is returned. If the key is absent, the
@@ -52,27 +49,5 @@ func (c *Conf) SetOutBackups(label ...string) {
 		c.OutBackupQuantity = v
 	} else {
 		c.OutBackupQuantity = 2
-	}
-}
-
-//SetInBackups sets the inbound tunnel backups
-func SetInBackups(u int) func(samtunnel.SAMTunnel) error {
-	return func(c samtunnel.SAMTunnel) error {
-		if u < 6 && u >= 0 {
-			c.(*Conf).InBackupQuantity = u // strconv.Itoa(u)
-			return nil
-		}
-		return fmt.Errorf("Invalid inbound tunnel backup quantity")
-	}
-}
-
-//SetOutBackups sets the inbound tunnel backups
-func SetOutBackups(u int) func(samtunnel.SAMTunnel) error {
-	return func(c samtunnel.SAMTunnel) error {
-		if u < 6 && u >= 0 {
-			c.(*Conf).OutBackupQuantity = u // strconv.Itoa(u)
-			return nil
-		}
-		return fmt.Errorf("Invalid outbound tunnel backup quantity")
 	}
 }

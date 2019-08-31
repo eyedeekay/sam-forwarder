@@ -1,6 +1,6 @@
 package i2ptunconf
 
-import "github.com/eyedeekay/sam-forwarder/interface"
+
 
 // GetFastRecieve takes an argument and a default. If the argument differs from the
 // default, the argument is always returned. If the argument and default are
@@ -25,13 +25,5 @@ func (c *Conf) SetFastRecieve(label ...string) {
 		c.FastRecieve = v
 	} else {
 		c.FastRecieve = false
-	}
-}
-
-//SetFastRecieve tells clients to recieve all messages as quicky as possible
-func SetFastRecieve(b bool) func(samtunnel.SAMTunnel) error {
-	return func(c samtunnel.SAMTunnel) error {
-		c.(*Conf).FastRecieve = b
-		return nil
 	}
 }

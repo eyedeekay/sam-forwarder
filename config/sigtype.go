@@ -1,6 +1,6 @@
 package i2ptunconf
 
-import "github.com/eyedeekay/sam-forwarder/interface"
+
 
 // GetSigType takes an argument and a default. If the argument differs from the
 // default, the argument is always returned. If the argument and default are
@@ -43,26 +43,5 @@ func (c *Conf) SetSigType(label ...string) {
 		}
 	} else {
 		c.SigType = "EdDSA_SHA512_Ed25519"
-	}
-}
-
-//SetSigType sets the type of the forwarder server
-func SetSigType(s string) func(samtunnel.SAMTunnel) error {
-	return func(c samtunnel.SAMTunnel) error {
-		switch s {
-		case "DSA_SHA1":
-			c.(*Conf).SigType = "DSA_SHA1"
-		case "ECDSA_SHA256_P256":
-			c.(*Conf).SigType = "ECDSA_SHA256_P256"
-		case "ECDSA_SHA384_P384":
-			c.(*Conf).SigType = "ECDSA_SHA384_P384"
-		case "ECDSA_SHA512_P521":
-			c.(*Conf).SigType = "ECDSA_SHA512_P521"
-		case "EdDSA_SHA512_Ed25519":
-			c.(*Conf).SigType = "EdDSA_SHA512_Ed25519"
-		default:
-			c.(*Conf).SigType = "EdDSA_SHA512_Ed25519"
-		}
-		return nil
 	}
 }

@@ -1,17 +1,9 @@
 package i2ptunconf
 
-import "github.com/eyedeekay/sam-forwarder/interface"
+
 
 //Option is a Conf Option
-type Option func(samtunnel.SAMTunnel) error
-
-//SetFilePath sets the path to save the config file at.
-func SetFilePath(s string) func(samtunnel.SAMTunnel) error {
-	return func(c samtunnel.SAMTunnel) error {
-		c.(*Conf).FilePath = s
-		return nil
-	}
-}
+type Option func(*Conf) error
 
 //SetTargetForPort sets the port of the Conf's SAM bridge using a string
 /*func SetTargetForPort443(s string) func(samtunnel.SAMTunnel) error {

@@ -1,6 +1,6 @@
 package i2ptunconf
 
-import "github.com/eyedeekay/sam-forwarder/interface"
+
 
 // GetPassword takes an argument and a default. If the argument differs from the
 // default, the argument is always returned. If the argument and default are
@@ -25,13 +25,5 @@ func (c *Conf) SetPassword(label ...string) {
 		c.Password = v
 	} else {
 		c.Password = "samcatd"
-	}
-}
-
-//SetPassword sets the host of the Conf's SAM bridge
-func SetPassword(s string) func(samtunnel.SAMTunnel) error {
-	return func(c samtunnel.SAMTunnel) error {
-		c.(*Conf).Password = s
-		return nil
 	}
 }

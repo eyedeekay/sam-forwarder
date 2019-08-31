@@ -1,6 +1,6 @@
 package i2ptunconf
 
-import "github.com/eyedeekay/sam-forwarder/interface"
+
 
 // GetUseCompression takes an argument and a default. If the argument differs from the
 // default, the argument is always returned. If the argument and default are
@@ -25,17 +25,5 @@ func (c *Conf) SetCompressed(label ...string) {
 		c.UseCompression = v
 	} else {
 		c.UseCompression = true
-	}
-}
-
-//SetCompress tells clients to use compression
-func SetCompress(b bool) func(samtunnel.SAMTunnel) error {
-	return func(c samtunnel.SAMTunnel) error {
-		if b {
-			c.(*Conf).UseCompression = b // "true"
-			return nil
-		}
-		c.(*Conf).UseCompression = b // "false"
-		return nil
 	}
 }

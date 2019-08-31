@@ -1,6 +1,6 @@
 package i2ptunconf
 
-import "github.com/eyedeekay/sam-forwarder/interface"
+
 
 // GetUserName takes an argument and a default. If the argument differs from the
 // default, the argument is always returned. If the argument and default are
@@ -25,13 +25,5 @@ func (c *Conf) SetUserName(label ...string) {
 		c.UserName = v
 	} else {
 		c.UserName = "samcatd"
-	}
-}
-
-//SetUserName sets the host of the Conf's SAM bridge
-func SetUserName(s string) func(samtunnel.SAMTunnel) error {
-	return func(c samtunnel.SAMTunnel) error {
-		c.(*Conf).UserName = s
-		return nil
 	}
 }

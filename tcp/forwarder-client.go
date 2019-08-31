@@ -16,6 +16,7 @@ import (
 	"github.com/eyedeekay/sam-forwarder/interface"
 	"github.com/eyedeekay/sam3"
 	"github.com/eyedeekay/sam3/i2pkeys"
+    "github.com/eyedeekay/sam-forwarder/config"
 )
 
 // SAMClientForwarder is a tcp proxy that automatically forwards ports to i2p
@@ -40,6 +41,9 @@ type SAMClientForwarder struct {
 	file     io.ReadWriter
 	save     bool
 	up       bool
+
+    // config
+    Conf   *i2ptunconf.Conf
 
 	// samcatd options
 	passfile string
@@ -73,6 +77,10 @@ type SAMClientForwarder struct {
 	//Streaming Library options
 	accessListType string
 	accessList     []string
+}
+
+func (f *SAMClientForwarder) Config() *i2ptunconf.Conf {
+    return f.Conf
 }
 
 func (f *SAMClientForwarder) GetType() string {

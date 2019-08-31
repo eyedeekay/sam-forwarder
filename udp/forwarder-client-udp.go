@@ -17,6 +17,7 @@ import (
 	"github.com/eyedeekay/sam-forwarder/interface"
 	"github.com/eyedeekay/sam3"
 	"github.com/eyedeekay/sam3/i2pkeys"
+    "github.com/eyedeekay/sam-forwarder/config"
 )
 
 //SAMSSUClientForwarder is a structure which automatically configured the forwarding of
@@ -42,6 +43,9 @@ type SAMSSUClientForwarder struct {
 	file     io.ReadWriter
 	save     bool
 	up       bool
+
+    // config
+    Conf *i2ptunconf.Conf
 
 	// samcatd options
 	passfile string
@@ -74,6 +78,10 @@ type SAMSSUClientForwarder struct {
 	//Streaming Library options
 	accessListType string
 	accessList     []string
+}
+
+func (f *SAMSSUClientForwarder) Config() *i2ptunconf.Conf {
+    return f.Conf
 }
 
 func (f *SAMSSUClientForwarder) GetType() string {
