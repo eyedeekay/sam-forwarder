@@ -5,7 +5,6 @@ import (
 )
 
 type SAMTunnel interface {
-
 	// Tunnel Options
 	GetType() string             // Get the type of the tunnel in use(server, client, http, udp, etc)
 	Print() string               // Print all the tunnel options as a string

@@ -1,5 +1,7 @@
 package i2ptunconf
 
+import "github.com/eyedeekay/sam-forwarder/interface"
+
 //i2cp.messageReliability
 // GetMessageReliability takes an argument and a default. If the argument differs from the
 // default, the argument is always returned. If the argument and default are
@@ -33,9 +35,9 @@ func (c *Conf) reliability() string {
 }
 
 //SetMessageReliability sets the host of the Conf's SAM bridge
-func SetMessageReliability(s string) func(*Conf) error {
-	return func(c *Conf) error {
-		c.MessageReliability = s
+func SetMessageReliability(s string) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
+		c.(*Conf).MessageReliability = s
 		return nil
 	}
 }

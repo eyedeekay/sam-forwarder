@@ -10,6 +10,7 @@ import (
 )
 
 import (
+	"github.com/eyedeekay/sam3/i2pkeys"
 	"github.com/zieckey/goini"
 )
 
@@ -62,10 +63,11 @@ type Conf struct {
 	exists                    bool
 	UserName                  string
 	Password                  string
+	LoadedKeys                i2pkeys.I2PKeys
 }
 
-// Print returns and prints a formatted list of configured tunnel settings.
-func (c *Conf) Print() []string {
+// PrintSlice returns and prints a formatted list of configured tunnel settings.
+func (c *Conf) PrintSlice() []string {
 	confstring := []string{
 		c.SignatureType(),
 		"inbound.length=" + strconv.Itoa(c.InLength),

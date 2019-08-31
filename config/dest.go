@@ -1,5 +1,7 @@
 package i2ptunconf
 
+import "github.com/eyedeekay/sam-forwarder/interface"
+
 // GetClientDest takes an argument and a default. If the argument differs from the
 // default, the argument is always returned. If the argument and default are
 // the same and the key exists, the key is returned. If the key is absent, the
@@ -27,9 +29,9 @@ func (c *Conf) SetClientDest(label ...string) {
 }
 
 //SetSaveFile tells the router to save the tunnel's keys long-term
-func SetDestination(b string) func(*Conf) error {
-	return func(c *Conf) error {
-		c.ClientDest = b
+func SetDestination(b string) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
+		c.(*Conf).ClientDest = b
 		return nil
 	}
 }

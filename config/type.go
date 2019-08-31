@@ -4,11 +4,13 @@ import (
 	"strings"
 )
 
+import "github.com/eyedeekay/sam-forwarder/interface"
+
 // GetType takes an argument and a default. If the argument differs from the
 // default, the argument is always returned. If the argument and default are
 // the same and the key exists, the key is returned. If the key is absent, the
 // default is returned.
-func (c *Conf) GetType(argc, argu, argh bool, def string, label ...string) string {
+func (c *Conf) GetTypes(argc, argu, argh bool, def string, label ...string) string {
 	var typ string
 	if argu {
 		typ += "udp"
@@ -95,33 +97,33 @@ func (c *Conf) SetType(label ...string) {
 }
 
 //SetType sets the type of the forwarder server
-func SetType(s string) func(*Conf) error {
-	return func(c *Conf) error {
-		switch c.Type {
+func SetType(s string) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
+		switch c.(*Conf).Type {
 		case "server":
-			c.Type = s
+			c.(*Conf).Type = s
 		case "http":
-			c.Type = s
+			c.(*Conf).Type = s
 		case "client":
-			c.Type = s
+			c.(*Conf).Type = s
 		case "httpclient":
-			c.Type = s
+			c.(*Conf).Type = s
 		case "browserclient":
-			c.Type = s
+			c.(*Conf).Type = s
 		case "udpserver":
-			c.Type = s
+			c.(*Conf).Type = s
 		case "udpclient":
-			c.Type = s
+			c.(*Conf).Type = s
 		case "vpnserver":
-			c.Type = s
+			c.(*Conf).Type = s
 		case "vpnclient":
-			c.Type = s
+			c.(*Conf).Type = s
 		case "kcpclient":
-			c.Type = s
+			c.(*Conf).Type = s
 		case "kcpserver":
-			c.Type = s
+			c.(*Conf).Type = s
 		default:
-			c.Type = "browserclient"
+			c.(*Conf).Type = "browserclient"
 		}
 		return nil
 	}

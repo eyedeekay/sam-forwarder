@@ -1,5 +1,7 @@
 package i2ptunconf
 
+import "github.com/eyedeekay/sam-forwarder/interface"
+
 // GetSaveFile takes an argument and a default. If the argument differs from the
 // default, the argument is always returned. If the argument and default are
 // the same and the key exists, the key is returned. If the key is absent, the
@@ -52,17 +54,17 @@ func (c *Conf) SetTunName(label ...string) {
 }
 
 //SetName sets the host of the Conf's SAM bridge
-func SetName(s string) func(*Conf) error {
-	return func(c *Conf) error {
-		c.TunName = s
+func SetName(s string) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
+		c.(*Conf).TunName = s
 		return nil
 	}
 }
 
 //SetSaveFile tells the router to save the tunnel's keys long-term
-func SetSaveFile(b bool) func(*Conf) error {
-	return func(c *Conf) error {
-		c.SaveFile = b
+func SetSaveFile(b bool) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
+		c.(*Conf).SaveFile = b
 		return nil
 	}
 }

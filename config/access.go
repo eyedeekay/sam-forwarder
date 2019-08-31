@@ -5,6 +5,8 @@ import (
 	"strings"
 )
 
+import "github.com/eyedeekay/sam-forwarder/interface"
+
 // GetAccessListType takes an argument and a default. If the argument differs from the
 // default, the argument is always returned. If the argument and default are
 // the same and the key exists, the key is returned. If the key is absent, the
@@ -69,19 +71,19 @@ func (c *Conf) accesslist() string {
 }
 
 //SetAccessListType tells the system to treat the accessList as a whitelist
-func SetAccessListType(s string) func(*Conf) error {
-	return func(c *Conf) error {
+func SetAccessListType(s string) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
 		if s == "whitelist" {
-			c.AccessListType = "whitelist"
+			c.(*Conf).AccessListType = "whitelist"
 			return nil
 		} else if s == "blacklist" {
-			c.AccessListType = "blacklist"
+			c.(*Conf).AccessListType = "blacklist"
 			return nil
 		} else if s == "none" {
-			c.AccessListType = ""
+			c.(*Conf).AccessListType = ""
 			return nil
 		} else if s == "" {
-			c.AccessListType = ""
+			c.(*Conf).AccessListType = ""
 			return nil
 		}
 		return fmt.Errorf("Invalid Access list type(whitelist, blacklist, none)")
@@ -89,11 +91,11 @@ func SetAccessListType(s string) func(*Conf) error {
 }
 
 //SetAccessList tells the system to treat the accessList as a whitelist
-func SetAccessList(s []string) func(*Conf) error {
-	return func(c *Conf) error {
+func SetAccessList(s []string) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
 		if len(s) > 0 {
 			for _, a := range s {
-				c.AccessList = append(c.AccessList, a)
+				c.(*Conf).AccessList = append(c.(*Conf).AccessList, a)
 			}
 			return nil
 		}

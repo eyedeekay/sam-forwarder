@@ -1,5 +1,7 @@
 package i2ptunconf
 
+import "github.com/eyedeekay/sam-forwarder/interface"
+
 // GetEncryptLeaseset takes an argument and a default. If the argument differs from the
 // default, the argument is always returned. If the argument and default are
 // the same and the key exists, the key is returned. If the key is absent, the
@@ -105,37 +107,37 @@ func (c *Conf) SetLeasesetPrivateSigningKey(label ...string) {
 }
 
 //SetEncrypt tells the router to use an encrypted leaseset
-func SetEncrypt(b bool) func(*Conf) error {
-	return func(c *Conf) error {
+func SetEncrypt(b bool) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
 		if b {
-			c.EncryptLeaseSet = b //"true"
+			c.(*Conf).EncryptLeaseSet = b //"true"
 			return nil
 		}
-		c.EncryptLeaseSet = b //"false"
+		c.(*Conf).EncryptLeaseSet = b //"false"
 		return nil
 	}
 }
 
 //SetLeaseSetKey sets the host of the Conf's SAM bridge
-func SetLeaseSetKey(s string) func(*Conf) error {
-	return func(c *Conf) error {
-		c.LeaseSetKey = s
+func SetLeaseSetKey(s string) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
+		c.(*Conf).LeaseSetKey = s
 		return nil
 	}
 }
 
 //SetLeaseSetPrivateKey sets the host of the Conf's SAM bridge
-func SetLeaseSetPrivateKey(s string) func(*Conf) error {
-	return func(c *Conf) error {
-		c.LeaseSetPrivateKey = s
+func SetLeaseSetPrivateKey(s string) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
+		c.(*Conf).LeaseSetPrivateKey = s
 		return nil
 	}
 }
 
 //SetLeaseSetPrivateSigningKey sets the host of the Conf's SAM bridge
-func SetLeaseSetPrivateSigningKey(s string) func(*Conf) error {
-	return func(c *Conf) error {
-		c.LeaseSetPrivateSigningKey = s
+func SetLeaseSetPrivateSigningKey(s string) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
+		c.(*Conf).LeaseSetPrivateSigningKey = s
 		return nil
 	}
 }

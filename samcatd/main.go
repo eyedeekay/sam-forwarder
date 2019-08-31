@@ -218,7 +218,7 @@ func lbMain(ctx context.Context) {
 	config.AccessListType = config.GetAccessListType(*accessListType, "none")
 	config.CloseIdle = config.GetCloseOnIdle(*closeIdle, false)
 	config.CloseIdleTime = config.GetCloseIdleTime(*closeIdleTime, 600000)
-	config.Type = config.GetType(*client, *udpMode, *injectHeaders, "server")
+	config.Type = config.GetTypes(*client, *udpMode, *injectHeaders, "server")
 	config.TargetForPort443 = config.GetPort443(*targetPort443, "")
 	config.KeyFilePath = config.GetKeyFile(*encryptKeyFiles, "")
 	config.ClientDest = config.GetClientDest(*targetDest, "", "")

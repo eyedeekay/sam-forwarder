@@ -17,7 +17,7 @@ LOG := log/
 ETC := etc/
 USR := usr/
 LOCAL := local/
-VERSION := 0.32.0
+VERSION := 0.32.01
 
 GO111MODULE=on
 
@@ -226,3 +226,7 @@ tar:
 
 tag:
 	gothub release -s $(GITHUB_TOKEN) -u $(USER_GH) -r $(packagename) -t v$(VERSION) -d "I2P Tunnel Management tool for Go applications"
+
+sed:
+	sed -i 's|func(\*Conf)|func(samtunnel.SAMTunnel)|g' ./config/*.go
+	sed -i 's|func(c \*Conf)|func(c samtunnel.SAMTunnel)|g' ./config/*.go

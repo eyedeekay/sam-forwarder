@@ -1,5 +1,7 @@
 package i2ptunconf
 
+import "github.com/eyedeekay/sam-forwarder/interface"
+
 // GetInAllowZeroHop takes an argument and a default. If the argument differs from the
 // default, the argument is always returned. If the argument and default are
 // the same and the key exists, the key is returned. If the key is absent, the
@@ -53,25 +55,17 @@ func (c *Conf) SetAllowZeroHopOut(label ...string) {
 }
 
 //SetAllowZeroIn tells the tunnel to accept zero-hop peers
-func SetAllowZeroIn(b bool) func(*Conf) error {
-	return func(c *Conf) error {
-		if b {
-			c.InAllowZeroHop = b // "true"
-			return nil
-		}
-		c.InAllowZeroHop = b // "false"
+func SetAllowZeroIn(b bool) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
+		c.(*Conf).InAllowZeroHop = b // "false"
 		return nil
 	}
 }
 
 //SetAllowZeroOut tells the tunnel to accept zero-hop peers
-func SetAllowZeroOut(b bool) func(*Conf) error {
-	return func(c *Conf) error {
-		if b {
-			c.OutAllowZeroHop = b // "true"
-			return nil
-		}
-		c.OutAllowZeroHop = b // "false"
+func SetAllowZeroOut(b bool) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
+		c.(*Conf).OutAllowZeroHop = b // "false"
 		return nil
 	}
 }

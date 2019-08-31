@@ -5,6 +5,8 @@ import (
 	"strconv"
 )
 
+import "github.com/eyedeekay/sam-forwarder/interface"
+
 // GetSAMHost takes an argument and a default. If the argument differs from the
 // default, the argument is always returned. If the argument and default are
 // the same and the key exists, the key is returned. If the key is absent, the
@@ -58,22 +60,22 @@ func (c *Conf) SetSAMPort(label ...string) {
 }
 
 //SetSAMHost sets the host of the Conf's SAM bridge
-func SetSAMHost(s string) func(*Conf) error {
-	return func(c *Conf) error {
-		c.SamHost = s
+func SetSAMHost(s string) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
+		c.(*Conf).SamHost = s
 		return nil
 	}
 }
 
 //SetSAMPort sets the port of the Conf's SAM bridge using a string
-func SetSAMPort(s string) func(*Conf) error {
-	return func(c *Conf) error {
+func SetSAMPort(s string) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
 		port, err := strconv.Atoi(s)
 		if err != nil {
 			return fmt.Errorf("Invalid SAM Port %s; non-number", s)
 		}
 		if port < 65536 && port > -1 {
-			c.SamPort = s
+			c.(*Conf).SamPort = s
 			return nil
 		}
 		return fmt.Errorf("Invalid port")

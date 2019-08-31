@@ -5,6 +5,8 @@ import (
 	"strconv"
 )
 
+import "github.com/eyedeekay/sam-forwarder/interface"
+
 // GetHost takes an argument and a default. If the argument differs from the
 // default, the argument is always returned. If the argument and default are
 // the same and the key exists, the key is returned. If the key is absent, the
@@ -58,22 +60,22 @@ func (c *Conf) SetControlPort(label ...string) {
 }
 
 //SetControlHost sets the host of the service to forward
-func SetControlHost(s string) func(*Conf) error {
-	return func(c *Conf) error {
-		c.ControlHost = s
+func SetControlHost(s string) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
+		c.(*Conf).ControlHost = s
 		return nil
 	}
 }
 
 //SetControlPort sets the port of the service to forward
-func SetControlPort(s string) func(*Conf) error {
-	return func(c *Conf) error {
+func SetControlPort(s string) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
 		port, err := strconv.Atoi(s)
 		if err != nil {
 			return fmt.Errorf("Invalid TCP Server Target Port %s; non-number ", s)
 		}
 		if port < 65536 && port > -1 {
-			c.ControlPort = s
+			c.(*Conf).ControlPort = s
 			return nil
 		}
 		return fmt.Errorf("Invalid port")

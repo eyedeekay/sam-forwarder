@@ -1,0 +1,3 @@
+2019/08/20-19:24:33.481 40bb Reusing MANIFEST /media/longterm/go/src/github.com/eyedeekay/sam-forwarder/etc/samcatd/samcatd/Default/shared_proto_db/metadata/MANIFEST-000001
+2019/08/20-19:24:33.481 40bb Recovering log #3
+2019/08/20-19:24:33.482 40bb Reusing old log /media/longterm/go/src/github.com/eyedeekay/sam-forwarder/etc/samcatd/samcatd/Default/shared_proto_db/metadata/000003.log 

@@ -2,6 +2,8 @@ package i2ptunconf
 
 import "fmt"
 
+import "github.com/eyedeekay/sam-forwarder/interface"
+
 // GetInQuantity takes an argument and a default. If the argument differs from the
 // default, the argument is always returned. If the argument and default are
 // the same and the key exists, the key is returned. If the key is absent, the
@@ -55,10 +57,10 @@ func (c *Conf) SetOutQuantity(label ...string) {
 }
 
 //SetInQuantity sets the inbound tunnel quantity
-func SetInQuantity(u int) func(*Conf) error {
-	return func(c *Conf) error {
+func SetInQuantity(u int) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
 		if u <= 16 && u > 0 {
-			c.InQuantity = u //strconv.Itoa(u)
+			c.(*Conf).InQuantity = u //strconv.Itoa(u)
 			return nil
 		}
 		return fmt.Errorf("Invalid inbound tunnel quantity")
@@ -66,10 +68,10 @@ func SetInQuantity(u int) func(*Conf) error {
 }
 
 //SetOutQuantity sets the outbound tunnel quantity
-func SetOutQuantity(u int) func(*Conf) error {
-	return func(c *Conf) error {
+func SetOutQuantity(u int) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
 		if u <= 16 && u > 0 {
-			c.OutQuantity = u // strconv.Itoa(u)
+			c.(*Conf).OutQuantity = u // strconv.Itoa(u)
 			return nil
 		}
 		return fmt.Errorf("Invalid outbound tunnel quantity")
