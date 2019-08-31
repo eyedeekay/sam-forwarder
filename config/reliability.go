@@ -1,7 +1,5 @@
 package i2ptunconf
 
-
-
 //i2cp.messageReliability
 // GetMessageReliability takes an argument and a default. If the argument differs from the
 // default, the argument is always returned. If the argument and default are

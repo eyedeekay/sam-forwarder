@@ -14,10 +14,10 @@ import (
 )
 
 import (
+	"github.com/eyedeekay/sam-forwarder/config"
 	"github.com/eyedeekay/sam-forwarder/hashhash"
 	"github.com/eyedeekay/sam-forwarder/i2pkeys"
 	"github.com/eyedeekay/sam-forwarder/interface"
-    "github.com/eyedeekay/sam-forwarder/config"
 	"github.com/eyedeekay/sam3"
 	"github.com/eyedeekay/sam3/i2pkeys"
 )
@@ -43,8 +43,8 @@ type SAMForwarder struct {
 	save     bool
 	up       bool
 
-    // conf
-    Conf *i2ptunconf.Conf
+	// conf
+	Conf *i2ptunconf.Conf
 
 	Type string
 
@@ -91,7 +91,7 @@ type SAMForwarder struct {
 var err error
 
 func (f *SAMForwarder) Config() *i2ptunconf.Conf {
-    return f.Conf
+	return f.Conf
 }
 
 func (f *SAMForwarder) ID() string {

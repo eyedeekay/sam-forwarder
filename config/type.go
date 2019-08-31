@@ -4,8 +4,6 @@ import (
 	"strings"
 )
 
-
-
 // GetType takes an argument and a default. If the argument differs from the
 // default, the argument is always returned. If the argument and default are
 // the same and the key exists, the key is returned. If the key is absent, the
@@ -95,4 +93,3 @@ func (c *Conf) SetType(label ...string) {
 		c.Type = "browserclient"
 	}
 }
-

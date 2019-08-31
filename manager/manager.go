@@ -12,7 +12,7 @@ import (
 import (
 	"github.com/eyedeekay/portcheck"
 	"github.com/eyedeekay/sam-forwarder/config"
-    "github.com/eyedeekay/sam-forwarder/config/helpers"
+	"github.com/eyedeekay/sam-forwarder/config/helpers"
 	"github.com/eyedeekay/sam-forwarder/handler"
 	"github.com/justinas/nosurf"
 )

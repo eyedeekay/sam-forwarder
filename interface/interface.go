@@ -1,12 +1,12 @@
 package samtunnel
 
 import (
+	"github.com/eyedeekay/sam-forwarder/config"
 	"github.com/eyedeekay/sam3/i2pkeys"
-    "github.com/eyedeekay/sam-forwarder/config"
 )
 
 type SAMTunnel interface {
-    Config() *i2ptunconf.Conf
+	Config() *i2ptunconf.Conf
 	// Tunnel Options
 	GetType() string             // Get the type of the tunnel in use(server, client, http, udp, etc)
 	Print() string               // Print all the tunnel options as a string

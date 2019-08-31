@@ -1,7 +1,5 @@
 package i2ptunconf
 
-
-
 //Option is a Conf Option
 type Option func(*Conf) error
 
