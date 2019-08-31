@@ -18,8 +18,6 @@ import (
 )
 
 type SAMManager struct {
-	//FilePath string
-	save   bool
 	start  bool
 	config *i2ptunconf.Conf
 
@@ -92,7 +90,6 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 	var s SAMManager
 	s.config = i2ptunconf.NewI2PBlankTunConf()
 	s.config.FilePath = ""
-	s.save = true
 	s.start = false
 	s.UseWeb = true
 	s.ServerHost = "localhost"

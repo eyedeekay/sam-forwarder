@@ -15,6 +15,13 @@ func DefaultCSS() string {
     float: left;
     overflow-wrap: break-word;
 }
+.tcpclient {
+    width: 63%;
+    min-height: 15%;
+    background-color: #2D4470;
+    float: left;
+    overflow-wrap: break-word;
+}
 .http {
     width: 63%;
     min-height: 15%;

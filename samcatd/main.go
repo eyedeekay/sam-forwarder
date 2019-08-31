@@ -15,7 +15,6 @@ import (
 	"github.com/eyedeekay/sam-forwarder/config"
 	"github.com/eyedeekay/sam-forwarder/hashhash"
 	"github.com/eyedeekay/sam-forwarder/manager"
-	//"github.com/eyedeekay/samcatd-web"
 )
 
 type flagOpts []string

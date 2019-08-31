@@ -25,63 +25,17 @@ import (
 //SAMForwarder is a structure which automatically configured the forwarding of
 //a local service to i2p over the SAM API.
 type SAMForwarder struct {
-	/*SamHost string
-	SamPort string
-	TunName string
-
-	TargetHost string
-	TargetPort string*/
-
 	samConn       *sam3.SAM
 	SamKeys       i2pkeys.I2PKeys
 	Hasher        *hashhash.Hasher
 	publishStream *sam3.StreamSession
 	publishListen *sam3.StreamListener
 
-	//FilePath string
 	file io.ReadWriter
-	//save     bool
 	up bool
 
 	// conf
 	Conf *i2ptunconf.Conf
-
-	//Type string
-
-	// samcatd options
-	//passfile string
-
-	//sigType string
-
-	/*
-		// I2CP options
-		encryptLeaseSet           string
-		leaseSetKey               string
-		leaseSetPrivateKey        string
-		leaseSetPrivateSigningKey string
-		LeaseSetKeys              *i2pkeys.I2PKeys
-		inAllowZeroHop            string
-		outAllowZeroHop           string
-		inLength                  string
-		outLength                 string
-		inQuantity                string
-		outQuantity               string
-		inVariance                string
-		outVariance               string
-		inBackupQuantity          string
-		outBackupQuantity         string
-		fastRecieve               string
-		useCompression            string
-		messageReliability        string
-		closeIdle                 string
-		closeIdleTime             string
-		reduceIdle                string
-		reduceIdleTime            string
-		reduceIdleQuantity        string
-		//Streaming Library options
-		accessListType string
-		accessList     []string
-	*/
 
 	clientLock bool
 	connLock   bool
@@ -443,37 +397,6 @@ func NewSAMForwarder(host, port string) (*SAMForwarder, error) {
 //NewSAMForwarderFromOptions makes a new SAM forwarder with default options, accepts host:port arguments
 func NewSAMForwarderFromOptions(opts ...func(*SAMForwarder) error) (*SAMForwarder, error) {
 	var s SAMForwarder
-	/*	s.Conf.SamHost = "127.0.0.1"
-		s.Conf.SamPort = "7656"
-		s.Conf.FilePath = ""
-		s.save = false
-		s.Conf.TargetHost = "127.0.0.1"
-		s.Conf.TargetPort = "8081"
-		s.Conf.TunName = "samForwarder"
-		s.Conf.Type = "server"
-		s.inLength = "3"
-		s.outLength = "3"
-		s.inQuantity = "2"
-		s.outQuantity = "2"
-		s.inVariance = "1"
-		s.outVariance = "1"
-		s.inBackupQuantity = "3"
-		s.outBackupQuantity = "3"
-		s.inAllowZeroHop = "false"
-		s.outAllowZeroHop = "false"
-		s.encryptLeaseSet = "false"
-		s.leaseSetKey = ""
-		s.leaseSetPrivateKey = ""
-		s.leaseSetPrivateSigningKey = ""
-		s.fastRecieve = "false"
-		s.useCompression = "true"
-		s.reduceIdle = "false"
-		s.reduceIdleTime = "15"
-		s.reduceIdleQuantity = "4"
-		s.closeIdle = "false"
-		s.closeIdleTime = "300000"
-	    s.messageReliability = "none"
-	    s.passfile = ""*/
 	s.Conf = i2ptunconf.NewI2PBlankTunConf()
 	s.clientLock = false
 	s.connLock = false

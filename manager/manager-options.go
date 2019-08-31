@@ -18,14 +18,6 @@ func SetManagerFilePath(s string) func(*SAMManager) error {
 	}
 }
 
-//SetManagerSaveFile tells the router to use an encrypted leaseset
-func SetManagerSaveFile(b bool) func(*SAMManager) error {
-	return func(c *SAMManager) error {
-		c.save = b
-		return nil
-	}
-}
-
 //SetManagerHost sets the host of the SAMManager's SAM bridge
 func SetManagerHost(s string) func(*SAMManager) error {
 	return func(c *SAMManager) error {
