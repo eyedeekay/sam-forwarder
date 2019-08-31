@@ -47,7 +47,7 @@ func PropSort(props map[string]string) []string {
 }
 
 func (t *TunnelHandler) ControlForm(rw http.ResponseWriter, req *http.Request) {
-    if err := req.ParseForm(); err == nil {
+	if err := req.ParseForm(); err == nil {
 		if action := req.PostFormValue("action"); action != "" {
 			var err error
 			switch action {
@@ -90,7 +90,7 @@ func (t *TunnelHandler) ControlForm(rw http.ResponseWriter, req *http.Request) {
 }
 
 func (t *TunnelHandler) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
-    t.ControlForm(rw, req)
+	t.ControlForm(rw, req)
 
 	if strings.HasSuffix(req.URL.Path, "color") {
 		fmt.Fprintf(rw, "  <div id=\"%s\" class=\"%s\" >", t.SAMTunnel.ID(), t.SAMTunnel.GetType())
@@ -112,7 +112,7 @@ func (t *TunnelHandler) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 		}
 	}
 	if strings.HasSuffix(req.URL.Path, "color") {
-        fmt.Fprintf(rw, "  </div>\n\n")
+		fmt.Fprintf(rw, "  </div>\n\n")
 		fmt.Fprintf(rw, "  <div id=\"%s\" class=\"%s control panel\" >", t.SAMTunnel.ID()+".control", t.SAMTunnel.GetType())
 
 		fmt.Fprintf(rw, "    <form class=\"linkstyle\" name=\"start\" action=\"/%s\" method=\"post\">", t.SAMTunnel.ID())

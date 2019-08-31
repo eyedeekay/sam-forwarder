@@ -28,8 +28,8 @@ type SAMClientForwarder struct {
 	addr              i2pkeys.I2PAddr
 	publishConnection net.Listener
 
-	file     io.ReadWriter
-	up       bool
+	file io.ReadWriter
+	up   bool
 
 	// config
 	Conf *i2ptunconf.Conf
@@ -52,7 +52,7 @@ func (f *SAMClientForwarder) Keys() i2pkeys.I2PKeys {
 }
 
 func (f *SAMClientForwarder) print() []string {
-    return f.Config().PrintSlice()
+	return f.Config().PrintSlice()
 }
 
 func (f *SAMClientForwarder) Props() map[string]string {
@@ -260,8 +260,8 @@ func NewSAMClientForwarder(host, port string) (*SAMClientForwarder, error) {
 //NewSAMClientForwarderFromOptions makes a new SAM forwarder with default options, accepts host:port arguments
 func NewSAMClientForwarderFromOptions(opts ...func(*SAMClientForwarder) error) (*SAMClientForwarder, error) {
 	var s SAMClientForwarder
-    s.Conf = i2ptunconf.NewI2PBlankTunConf()
-    s.Conf.Type = "tcpclient"
+	s.Conf = i2ptunconf.NewI2PBlankTunConf()
+	s.Conf.Type = "tcpclient"
 	for _, o := range opts {
 		if err := o(&s); err != nil {
 			return nil, err

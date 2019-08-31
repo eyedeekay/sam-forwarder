@@ -11,7 +11,7 @@ type Option func(*SAMSSUForwarder) error
 //SetFilePath sets the host of the SAMSSUForwarder's SAM bridge
 func SetFilePath(s string) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
-		c.FilePath = s
+		c.Conf.FilePath = s
 		return nil
 	}
 }
@@ -19,7 +19,7 @@ func SetFilePath(s string) func(*SAMSSUForwarder) error {
 //SetSaveFile tells the router to use an encrypted leaseset
 func SetSaveFile(b bool) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
-		c.save = b
+		c.Conf.SaveFile = b
 		return nil
 	}
 }
@@ -27,7 +27,7 @@ func SetSaveFile(b bool) func(*SAMSSUForwarder) error {
 //SetHost sets the host of the SAMSSUForwarder's SAM bridge
 func SetHost(s string) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
-		c.TargetHost = s
+		c.Conf.TargetHost = s
 		return nil
 	}
 }
@@ -40,7 +40,7 @@ func SetPort(s string) func(*SAMSSUForwarder) error {
 			return fmt.Errorf("Invalid SSU Server Target Port %s; non-number ", s)
 		}
 		if port < 65536 && port > -1 {
-			c.TargetPort = s
+			c.Conf.TargetPort = s
 			return nil
 		}
 		return fmt.Errorf("Invalid port")
@@ -50,7 +50,7 @@ func SetPort(s string) func(*SAMSSUForwarder) error {
 //SetSAMHost sets the host of the SAMSSUForwarder's SAM bridge
 func SetSAMHost(s string) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
-		c.SamHost = s
+		c.Conf.SamHost = s
 		return nil
 	}
 }
@@ -63,7 +63,7 @@ func SetSAMPort(s string) func(*SAMSSUForwarder) error {
 			return fmt.Errorf("Invalid SAM Port %s; non-number", s)
 		}
 		if port < 65536 && port > -1 {
-			c.SamPort = s
+			c.Conf.SamPort = s
 			return nil
 		}
 		return fmt.Errorf("Invalid port")
@@ -73,7 +73,7 @@ func SetSAMPort(s string) func(*SAMSSUForwarder) error {
 //SetName sets the host of the SAMSSUForwarder's SAM bridge
 func SetName(s string) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
-		c.TunName = s
+		c.Conf.TunName = s
 		return nil
 	}
 }
@@ -82,19 +82,19 @@ func SetName(s string) func(*SAMSSUForwarder) error {
 func SetSigType(s string) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
 		if s == "" {
-			c.sigType = ""
+			c.Conf.SigType = ""
 		} else if s == "DSA_SHA1" {
-			c.sigType = "DSA_SHA1"
+			c.Conf.SigType = "DSA_SHA1"
 		} else if s == "ECDSA_SHA256_P256" {
-			c.sigType = "ECDSA_SHA256_P256"
+			c.Conf.SigType = "ECDSA_SHA256_P256"
 		} else if s == "ECDSA_SHA384_P384" {
-			c.sigType = "ECDSA_SHA384_P384"
+			c.Conf.SigType = "ECDSA_SHA384_P384"
 		} else if s == "ECDSA_SHA512_P521" {
-			c.sigType = "ECDSA_SHA512_P521"
+			c.Conf.SigType = "ECDSA_SHA512_P521"
 		} else if s == "EdDSA_SHA512_Ed25519" {
-			c.sigType = "EdDSA_SHA512_Ed25519"
+			c.Conf.SigType = "EdDSA_SHA512_Ed25519"
 		} else {
-			c.sigType = "EdDSA_SHA512_Ed25519"
+			c.Conf.SigType = "EdDSA_SHA512_Ed25519"
 		}
 		return nil
 	}
@@ -104,7 +104,7 @@ func SetSigType(s string) func(*SAMSSUForwarder) error {
 func SetInLength(u int) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
 		if u < 7 && u >= 0 {
-			c.inLength = strconv.Itoa(u)
+			c.Conf.InLength = u
 			return nil
 		}
 		return fmt.Errorf("Invalid inbound tunnel length")
@@ -115,7 +115,7 @@ func SetInLength(u int) func(*SAMSSUForwarder) error {
 func SetOutLength(u int) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
 		if u < 7 && u >= 0 {
-			c.outLength = strconv.Itoa(u)
+			c.Conf.OutLength = u
 			return nil
 		}
 		return fmt.Errorf("Invalid outbound tunnel length")
@@ -126,7 +126,7 @@ func SetOutLength(u int) func(*SAMSSUForwarder) error {
 func SetInVariance(i int) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
 		if i < 7 && i > -7 {
-			c.inVariance = strconv.Itoa(i)
+			c.Conf.InVariance = i
 			return nil
 		}
 		return fmt.Errorf("Invalid inbound tunnel length")
@@ -137,7 +137,7 @@ func SetInVariance(i int) func(*SAMSSUForwarder) error {
 func SetOutVariance(i int) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
 		if i < 7 && i > -7 {
-			c.outVariance = strconv.Itoa(i)
+			c.Conf.OutVariance = i
 			return nil
 		}
 		return fmt.Errorf("Invalid outbound tunnel variance")
@@ -148,7 +148,7 @@ func SetOutVariance(i int) func(*SAMSSUForwarder) error {
 func SetInQuantity(u int) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
 		if u <= 16 && u > 0 {
-			c.inQuantity = strconv.Itoa(u)
+			c.Conf.InQuantity = u
 			return nil
 		}
 		return fmt.Errorf("Invalid inbound tunnel quantity")
@@ -159,7 +159,7 @@ func SetInQuantity(u int) func(*SAMSSUForwarder) error {
 func SetOutQuantity(u int) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
 		if u <= 16 && u > 0 {
-			c.outQuantity = strconv.Itoa(u)
+			c.Conf.OutQuantity = u
 			return nil
 		}
 		return fmt.Errorf("Invalid outbound tunnel quantity")
@@ -170,7 +170,7 @@ func SetOutQuantity(u int) func(*SAMSSUForwarder) error {
 func SetInBackups(u int) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
 		if u < 6 && u >= 0 {
-			c.inBackupQuantity = strconv.Itoa(u)
+			c.Conf.InBackupQuantity = u
 			return nil
 		}
 		return fmt.Errorf("Invalid inbound tunnel backup quantity")
@@ -181,7 +181,7 @@ func SetInBackups(u int) func(*SAMSSUForwarder) error {
 func SetOutBackups(u int) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
 		if u < 6 && u >= 0 {
-			c.outBackupQuantity = strconv.Itoa(u)
+			c.Conf.OutBackupQuantity = u
 			return nil
 		}
 		return fmt.Errorf("Invalid outbound tunnel backup quantity")
@@ -192,10 +192,10 @@ func SetOutBackups(u int) func(*SAMSSUForwarder) error {
 func SetEncrypt(b bool) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
 		if b {
-			c.encryptLeaseSet = "true"
+			c.Conf.EncryptLeaseSet = true
 			return nil
 		}
-		c.encryptLeaseSet = "false"
+		c.Conf.EncryptLeaseSet = false
 		return nil
 	}
 }
@@ -203,7 +203,7 @@ func SetEncrypt(b bool) func(*SAMSSUForwarder) error {
 //SetLeaseSetKey sets
 func SetLeaseSetKey(s string) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
-		c.leaseSetKey = s
+		c.Conf.LeaseSetKey = s
 		return nil
 	}
 }
@@ -211,7 +211,7 @@ func SetLeaseSetKey(s string) func(*SAMSSUForwarder) error {
 //SetLeaseSetPrivateKey sets
 func SetLeaseSetPrivateKey(s string) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
-		c.leaseSetPrivateKey = s
+		c.Conf.LeaseSetPrivateKey = s
 		return nil
 	}
 }
@@ -219,7 +219,7 @@ func SetLeaseSetPrivateKey(s string) func(*SAMSSUForwarder) error {
 //SetLeaseSetPrivateSigningKey sets
 func SetLeaseSetPrivateSigningKey(s string) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
-		c.leaseSetPrivateSigningKey = s
+		c.Conf.LeaseSetPrivateSigningKey = s
 		return nil
 	}
 }
@@ -227,7 +227,7 @@ func SetLeaseSetPrivateSigningKey(s string) func(*SAMSSUForwarder) error {
 //SetMessageReliability sets
 func SetMessageReliability(s string) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
-		c.messageReliability = s
+		c.Conf.MessageReliability = s
 		return nil
 	}
 }
@@ -236,10 +236,10 @@ func SetMessageReliability(s string) func(*SAMSSUForwarder) error {
 func SetAllowZeroIn(b bool) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
 		if b {
-			c.inAllowZeroHop = "true"
+			c.Conf.InAllowZeroHop = true
 			return nil
 		}
-		c.inAllowZeroHop = "false"
+		c.Conf.InAllowZeroHop = false
 		return nil
 	}
 }
@@ -248,10 +248,10 @@ func SetAllowZeroIn(b bool) func(*SAMSSUForwarder) error {
 func SetAllowZeroOut(b bool) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
 		if b {
-			c.outAllowZeroHop = "true"
+			c.Conf.OutAllowZeroHop = true
 			return nil
 		}
-		c.outAllowZeroHop = "false"
+		c.Conf.OutAllowZeroHop = false
 		return nil
 	}
 }
@@ -260,10 +260,10 @@ func SetAllowZeroOut(b bool) func(*SAMSSUForwarder) error {
 func SetFastRecieve(b bool) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
 		if b {
-			c.fastRecieve = "true"
+			c.Conf.FastRecieve = true
 			return nil
 		}
-		c.fastRecieve = "false"
+		c.Conf.FastRecieve = false
 		return nil
 	}
 }
@@ -272,10 +272,10 @@ func SetFastRecieve(b bool) func(*SAMSSUForwarder) error {
 func SetCompress(b bool) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
 		if b {
-			c.useCompression = "true"
+			c.Conf.UseCompression = true
 			return nil
 		}
-		c.useCompression = "false"
+		c.Conf.UseCompression = false
 		return nil
 	}
 }
@@ -284,10 +284,10 @@ func SetCompress(b bool) func(*SAMSSUForwarder) error {
 func SetReduceIdle(b bool) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
 		if b {
-			c.reduceIdle = "true"
+			c.Conf.ReduceIdle = true
 			return nil
 		}
-		c.reduceIdle = "false"
+		c.Conf.ReduceIdle = false
 		return nil
 	}
 }
@@ -295,9 +295,9 @@ func SetReduceIdle(b bool) func(*SAMSSUForwarder) error {
 //SetReduceIdleTime sets the time to wait before reducing tunnels to idle levels
 func SetReduceIdleTime(u int) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
-		c.reduceIdleTime = "300000"
+		c.Conf.ReduceIdleTime = 300000
 		if u >= 6 {
-			c.reduceIdleTime = strconv.Itoa((u * 60) * 1000)
+			c.Conf.ReduceIdleTime = (u * 60) * 1000
 			return nil
 		}
 		return fmt.Errorf("Invalid close idle timeout(Measured in minutes) %v", u)
@@ -307,9 +307,9 @@ func SetReduceIdleTime(u int) func(*SAMSSUForwarder) error {
 //SetReduceIdleTimeMs sets the time to wait before reducing tunnels to idle levels in milliseconds
 func SetReduceIdleTimeMs(u int) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
-		c.reduceIdleTime = "300000"
+		c.Conf.ReduceIdleTime = 300000
 		if u >= 300000 {
-			c.reduceIdleTime = strconv.Itoa(u)
+			c.Conf.ReduceIdleTime = u
 			return nil
 		}
 		return fmt.Errorf("Invalid close idle timeout(Measured in milliseconds) %v", u)
@@ -320,7 +320,7 @@ func SetReduceIdleTimeMs(u int) func(*SAMSSUForwarder) error {
 func SetReduceIdleQuantity(u int) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
 		if u < 5 {
-			c.reduceIdleQuantity = strconv.Itoa(u)
+			c.Conf.ReduceIdleQuantity = u
 			return nil
 		}
 		return fmt.Errorf("Invalid reduce tunnel quantity")
@@ -331,10 +331,10 @@ func SetReduceIdleQuantity(u int) func(*SAMSSUForwarder) error {
 func SetCloseIdle(b bool) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
 		if b {
-			c.closeIdle = "true"
+			c.Conf.CloseIdle = true
 			return nil
 		}
-		c.closeIdle = "false"
+		c.Conf.CloseIdle = false
 		return nil
 	}
 }
@@ -342,9 +342,9 @@ func SetCloseIdle(b bool) func(*SAMSSUForwarder) error {
 //SetCloseIdleTime sets the time to wait before closing tunnels to idle levels
 func SetCloseIdleTime(u int) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
-		c.closeIdleTime = "300000"
+		c.Conf.CloseIdleTime = 300000
 		if u >= 6 {
-			c.closeIdleTime = strconv.Itoa((u * 60) * 2000)
+			c.Conf.CloseIdleTime = (u * 60) * 1000
 			return nil
 		}
 		return fmt.Errorf("Invalid reduce idle timeout(Measured in minutes)")
@@ -354,9 +354,9 @@ func SetCloseIdleTime(u int) func(*SAMSSUForwarder) error {
 //SetCloseIdleTimeMs sets the time to wait before closing tunnels to idle levels in milliseconds
 func SetCloseIdleTimeMs(u int) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
-		c.closeIdleTime = "300000"
+		c.Conf.CloseIdleTime = 300000
 		if u >= 300000 {
-			c.closeIdleTime = strconv.Itoa(u)
+			c.Conf.CloseIdleTime = u
 			return nil
 		}
 		return fmt.Errorf("Invalid reduce idle timeout(Measured in minutes)")
@@ -367,16 +367,16 @@ func SetCloseIdleTimeMs(u int) func(*SAMSSUForwarder) error {
 func SetAccessListType(s string) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
 		if s == "whitelist" {
-			c.accessListType = "whitelist"
+			c.Conf.AccessListType = "whitelist"
 			return nil
 		} else if s == "blacklist" {
-			c.accessListType = "blacklist"
+			c.Conf.AccessListType = "blacklist"
 			return nil
 		} else if s == "none" {
-			c.accessListType = ""
+			c.Conf.AccessListType = ""
 			return nil
 		} else if s == "" {
-			c.accessListType = ""
+			c.Conf.AccessListType = ""
 			return nil
 		}
 		return fmt.Errorf("Invalid Access list type(whitelist, blacklist, none)")
@@ -388,7 +388,7 @@ func SetAccessList(s []string) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
 		if len(s) > 0 {
 			for _, a := range s {
-				c.accessList = append(c.accessList, a)
+				c.Conf.AccessList = append(c.Conf.AccessList, a)
 			}
 			return nil
 		}
@@ -399,7 +399,7 @@ func SetAccessList(s []string) func(*SAMSSUForwarder) error {
 //SetKeyFile sets
 func SetKeyFile(s string) func(*SAMSSUForwarder) error {
 	return func(c *SAMSSUForwarder) error {
-		c.passfile = s
+		c.Conf.KeyFilePath = s
 		return nil
 	}
 }

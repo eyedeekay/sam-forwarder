@@ -96,7 +96,7 @@ func (c *Conf) PrintSlice() []string {
 		c.lsspk(),
 	}
 
-	log.Println(confstring)
+	log.Println("Tunnel:", c.TunName, "using config:", confstring)
 	return confstring
 }
 

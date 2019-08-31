@@ -32,7 +32,7 @@ type SAMForwarder struct {
 	publishListen *sam3.StreamListener
 
 	file io.ReadWriter
-	up bool
+	up   bool
 
 	// conf
 	Conf *i2ptunconf.Conf
