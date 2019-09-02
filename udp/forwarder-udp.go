@@ -37,6 +37,9 @@ type SAMSSUForwarder struct {
 var err error
 
 func (f *SAMSSUForwarder) Config() *i2ptunconf.Conf {
+	if f.Conf == nil {
+		f.Conf = i2ptunconf.NewI2PBlankTunConf()
+	}
 	return f.Conf
 }
 

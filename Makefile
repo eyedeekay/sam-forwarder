@@ -17,7 +17,7 @@ LOG := log/
 ETC := etc/
 USR := usr/
 LOCAL := local/
-VERSION := 0.32.04
+VERSION := 0.32.05
 
 GO111MODULE=on
 
@@ -26,6 +26,9 @@ echo:
 	find . -path ./.go -prune -o -name "*.go" -exec gofmt -w {} \;
 	find . -path ./.go -prune -o -name "*.i2pkeys" -exec rm {} \;
 	find . -path ./.go -prune -o -name "*.go" -exec cat {} \; | nl
+
+tag:
+	gothub release -s $(GITHUB_TOKEN) -u $(USER_GH) -r $(packagename) -t v$(VERSION) -d "I2P Tunnel Management tool for Go applications"
 
 recopy:
 	#find ./tcp/ -name '*.go' -exec cp -rv {} . \;
@@ -223,9 +226,6 @@ tar:
 		--exclude .go \
 		--exclude bin \
 		-cJvf ../$(packagename)_$(VERSION).orig.tar.xz .
-
-tag:
-	gothub release -s $(GITHUB_TOKEN) -u $(USER_GH) -r $(packagename) -t v$(VERSION) -d "I2P Tunnel Management tool for Go applications"
 
 sed:
 	sed -i 's|func(\*Conf)|func(samtunnel.SAMTunnel)|g' ./config/*.go

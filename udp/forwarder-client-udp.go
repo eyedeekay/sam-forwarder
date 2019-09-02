@@ -36,6 +36,9 @@ type SAMSSUClientForwarder struct {
 }
 
 func (f *SAMSSUClientForwarder) Config() *i2ptunconf.Conf {
+	if f.Conf == nil {
+		f.Conf = i2ptunconf.NewI2PBlankTunConf()
+	}
 	return f.Conf
 }
 
