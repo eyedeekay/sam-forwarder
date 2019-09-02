@@ -382,7 +382,7 @@ func (s *SAMForwarder) Load() (samtunnel.SAMTunnel, error) {
 		if err := sfi2pkeys.Save(s.Conf.FilePath, s.Conf.TunName, s.Conf.KeyFilePath, s.SamKeys); err != nil {
 			return nil, err
 		}
-		log.Println("Saved tunnel keys for", s.Conf.TunName)
+		log.Println("Saved tunnel keys for", s.Conf.TunName, "in", s.Conf.FilePath)
 	}
 	s.Hasher, err = hashhash.NewHasher(len(strings.Replace(s.Base32(), ".b32.i2p", "", 1)))
 	if err != nil {
