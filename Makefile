@@ -88,6 +88,15 @@ daemon: clean-daemon bin/$(samcatd)
 
 daemon-webview: bin/$(samcatd)-webview
 
+daemon-cli: bin/$(samcatd)-cli
+
+bin/$(samcatd)-cli:
+	mkdir -p bin
+	cd samcatd && go build -a -tags "netgo" \
+		-ldflags '-w -extldflags "-static"' \
+		-o ../bin/$(samcatd)-cli \
+		./*.go
+
 bin/$(samcatd):
 	mkdir -p bin
 	cd samcatd && go build -a -tags "netgo static" \
@@ -104,9 +113,9 @@ bin/$(samcatd)-webview:
 update:
 	git config --global url."git@github.com:RTradeLtd".insteadOf "https://github.com/RTradeLtd"
 
-all: daemon daemon-webview
+all: daemon-cli daemon daemon-webview
 
-clean: clean-all
+clean: clean-all echo
 
 clean-all: clean-daemon
 
@@ -153,6 +162,7 @@ key-management:
 example-config:
 	@echo "example config - valid for both ephsite and samcat" >> USAGE.md
 	@echo "==================================================" >> USAGE.md
+	@echo "" >> USAGE.md
 	@echo "Options are still being added, pretty much as fast as I can put them" >> USAGE.md
 	@echo "in. For up-to-the-minute options, see [the checklist](config/CHECKLIST.md)" >> USAGE.md
 	@echo "" >> USAGE.md

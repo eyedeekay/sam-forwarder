@@ -25,15 +25,27 @@ func (c *Conf) GetTypes(argc, argu, argh bool, def string, label ...string) stri
 		} else {
 			typ += "server"
 		}
+		if typ != def {
+			return typ
+		}
 	}
 	if def == "kcpclient" {
-		typ = "kcpclient"
+		return def
 	}
 	if def == "kcpserver" {
-		typ = "kcpserver"
+		return def
 	}
-	if typ != def {
-		return typ
+	if def == "eephttpd" {
+		return def
+	}
+	if def == "vpnclient" {
+		return def
+	}
+	if def == "vpnserver" {
+		return def
+	}
+	if def == "browserclient" {
+		return def
 	}
 	if c.Config == nil {
 		return typ
@@ -77,6 +89,8 @@ func (c *Conf) SetType(label ...string) {
 		case "udpserver":
 			c.Type = v
 		case "udpclient":
+			c.Type = v
+		case "eephttpd":
 			c.Type = v
 		case "vpnserver":
 			c.Type = v
