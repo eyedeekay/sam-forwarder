@@ -290,9 +290,11 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 		} else {
 			defer client.Close()
 			defer conn.Close()
-			if val, ok := f.Bytes[f.ClientBase64(conn)]; ok == true {
-				if val > f.ByteLimit {
-					return
+			if f.ByteLimit > 0 {
+				if val, ok := f.Bytes[f.ClientBase64(conn)]; ok == true {
+					if val > f.ByteLimit {
+						return
+					}
 				}
 			}
 			if count, err := io.Copy(client, conn); err == nil {
