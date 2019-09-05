@@ -30,6 +30,8 @@ type SAMForwarder struct {
 	Hasher        *hashhash.Hasher
 	publishStream *sam3.StreamSession
 	publishListen *sam3.StreamListener
+	Bytes         map[string]int64
+	ByteLimit     int64
 
 	file io.ReadWriter
 	up   bool
@@ -196,6 +198,11 @@ func (f *SAMForwarder) sam() string {
 	return f.Config().SamHost + ":" + f.Config().SamPort
 }
 
+func (f *SAMForwarder) ClientBase64(conn *sam3.SAMConn) string {
+	dest := conn.RemoteAddr().(i2pkeys.I2PAddr)
+	return dest.Base32()
+}
+
 func (f *SAMForwarder) HTTPRequestBytes(conn *sam3.SAMConn) ([]byte, *http.Request, error) {
 	var request *http.Request
 	var retrequest []byte
@@ -283,7 +290,11 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 		} else {
 			defer client.Close()
 			defer conn.Close()
-			io.Copy(client, conn)
+			if count, err := io.Copy(client, conn); err == nil {
+				if f.ByteLimit > 0 {
+					f.Bytes[f.ClientBase64(conn)] += count
+				}
+			}
 		}
 	}()
 	go func() {
@@ -300,6 +311,7 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 			defer client.Close()
 			defer conn.Close()
 			io.Copy(conn, client)
+
 		}
 	}()
 }
@@ -403,6 +415,8 @@ func NewSAMForwarderFromOptions(opts ...func(*SAMForwarder) error) (*SAMForwarde
 	s.Conf = i2ptunconf.NewI2PBlankTunConf()
 	s.clientLock = false
 	s.connLock = false
+	s.ByteLimit = -1
+	s.Bytes = make(map[string]int64)
 	for _, o := range opts {
 		if err := o(&s); err != nil {
 			return nil, err

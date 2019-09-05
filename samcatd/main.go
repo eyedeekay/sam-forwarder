@@ -79,8 +79,8 @@ var (
 		"custom CSS for web interface")
 	webJS = flag.String("js", "js/scripts.js",
 		"custom JS for web interface")
-    webDir = flag.String("wwwdir", "./www",
-        "Default www directory to serve if starting eephttpd")
+	webDir = flag.String("wwwdir", "./www",
+		"Default www directory to serve if starting eephttpd")
 	leaseSetKey = flag.String("k", "none",
 		"key for encrypted leaseset")
 	leaseSetPrivateKey = flag.String("pk", "none",
@@ -226,7 +226,7 @@ func lbMain(ctx context.Context) {
 	config.ClientDest = config.GetClientDest(*targetDest, "", "")
 	config.UserName = config.GetUserName(*webUser, "samcatd")
 	config.Password = config.GetPassword(*webPass, "")
-    config.ServeDirectory = config.GetWWWDir(*webDir, "./www")
+	config.ServeDirectory = config.GetWWWDir(*webDir, "./www")
 
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt)

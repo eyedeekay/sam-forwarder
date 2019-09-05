@@ -26,7 +26,7 @@ type Conf struct {
 	SigType                   string
 	Type                      string
 	SaveDirectory             string
-    ServeDirectory            string
+	ServeDirectory            string
 	SaveFile                  bool
 	TargetHost                string
 	TargetPort                string
@@ -274,7 +274,7 @@ func (c *Conf) I2PINILoad(iniFile string, label ...string) error {
 		c.SetPassword(label...)
 		c.SetControlHost(label...)
 		c.SetControlPort(label...)
-        c.SetWWWDir(label...)
+		c.SetWWWDir(label...)
 		if v, ok := c.Get("i2cp.accessList", label...); ok {
 			csv := strings.Split(v, ",")
 			for _, z := range csv {

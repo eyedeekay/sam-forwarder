@@ -27,6 +27,8 @@ type SAMClientForwarder struct {
 	connectStream     *sam3.StreamSession
 	addr              i2pkeys.I2PAddr
 	publishConnection net.Listener
+	Bytes             map[string]int
+	ByteLimit         int
 
 	file io.ReadWriter
 	up   bool
