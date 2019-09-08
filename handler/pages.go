@@ -43,6 +43,20 @@ func DefaultCSS() string {
     float: left;
     overflow-wrap: break-word;
 }
+.outproxy {
+    width: 63%;
+    min-height: 15%;
+    background-color: #265ea7;
+    float: left;
+    overflow-wrap: break-word;
+}
+.outproxyhttp {
+    width: 63%;
+    min-height: 15%;
+    background-color: #265ea7;
+    float: left;
+    overflow-wrap: break-word;
+}
 .udpclient {
     width: 63%;
     min-height: 15%;

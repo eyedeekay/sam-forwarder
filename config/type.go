@@ -44,6 +44,12 @@ func (c *Conf) GetTypes(argc, argu, argh bool, def string, label ...string) stri
 	if def == "vpnserver" {
 		return def
 	}
+	if def == "outproxy" {
+		return def
+	}
+	if def == "outproxyhttp" {
+		return def
+	}
 	if def == "browserclient" {
 		return def
 	}
@@ -91,6 +97,10 @@ func (c *Conf) SetType(label ...string) {
 		case "udpclient":
 			c.Type = v
 		case "eephttpd":
+			c.Type = v
+		case "outproxy":
+			c.Type = v
+		case "outproxyhttp":
 			c.Type = v
 		case "vpnserver":
 			c.Type = v

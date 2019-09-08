@@ -184,6 +184,13 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 					} else {
 						return nil, e
 					}
+				case "outproxy":
+					if f, e := samtunnelhandler.NewTunnelHandler(i2ptunhelper.NewOutProxyFromConfig(s.config.FilePath, s.SamHost, s.SamPort, label)); e == nil {
+						log.Println("found outproxy under", label)
+						s.handlerMux = s.handlerMux.Append(f)
+					} else {
+						return nil, e
+					}
 				/*case "vpnserver":
 					if f, e := samtunnelhandler.NewTunnelHandler(samforwardervpnserver.NewSAMVPNForwarderFromConfig(s.config.FilePath, s.SamHost, s.SamPort, label)); e == nil {
 						log.Println("found vpnserver under", label)
@@ -271,20 +278,34 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 			} else {
 				return nil, e
 			}
-		/*case "vpnserver":
-			if f, e := samtunnelhandler.NewTunnelHandler(samforwardervpnserver.NewSAMVPNForwarderFromConf(s.config)); e == nil {
-				log.Println("found default vpnserver")
+		case "outproxy":
+			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunhelper.NewOutProxyFromConf(s.config)); e == nil {
+				log.Println("found default udpclient")
 				s.handlerMux = s.handlerMux.Append(f)
 			} else {
 				return nil, e
 			}
-		case "vpnclient":
-			if f, e := samtunnelhandler.NewTunnelHandler(samforwardervpn.NewSAMVPNClientForwarderFromConf(s.config)); e == nil {
-				log.Println("found default vpnclient")
-				s.handlerMux = s.handlerMux.Append(f)
-			} else {
-				return nil, e
-			}*/
+			/*case "outproxyhttp":
+				if f, e := samtunnelhandler.NewTunnelHandler(i2ptunhelper.NewEepHttpdFromConf(s.config)); e == nil {
+					log.Println("found default udpclient")
+					s.handlerMux = s.handlerMux.Append(f)
+				} else {
+					return nil, e
+				}*s/
+			/*case "vpnserver":
+				if f, e := samtunnelhandler.NewTunnelHandler(samforwardervpnserver.NewSAMVPNForwarderFromConf(s.config)); e == nil {
+					log.Println("found default vpnserver")
+					s.handlerMux = s.handlerMux.Append(f)
+				} else {
+					return nil, e
+				}
+			case "vpnclient":
+				if f, e := samtunnelhandler.NewTunnelHandler(samforwardervpn.NewSAMVPNClientForwarderFromConf(s.config)); e == nil {
+					log.Println("found default vpnclient")
+					s.handlerMux = s.handlerMux.Append(f)
+				} else {
+					return nil, e
+				}*/
 		default:
 			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunhelper.NewSAMClientForwarderFromConf(s.config)); e == nil {
 				log.Println("found default client")
