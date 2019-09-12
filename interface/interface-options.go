@@ -41,10 +41,6 @@ func SetAccessList(s []string) func(SAMTunnel) error {
 //SetCompress tells clients to use compression
 func SetCompress(b bool) func(SAMTunnel) error {
 	return func(c SAMTunnel) error {
-		if b {
-			c.Config().UseCompression = b // "true"
-			return nil
-		}
 		c.Config().UseCompression = b // "false"
 		return nil
 	}
@@ -58,7 +54,7 @@ func SetFilePath(s string) func(SAMTunnel) error {
 	}
 }
 
-//SetControlHost sets the host of the service to forward
+//SetControlHost sets the host of the service to present an API on
 func SetControlHost(s string) func(SAMTunnel) error {
 	return func(c SAMTunnel) error {
 		c.Config().ControlHost = s
@@ -66,7 +62,7 @@ func SetControlHost(s string) func(SAMTunnel) error {
 	}
 }
 
-//SetControlPort sets the port of the service to forward
+//SetControlPort sets the port of the service to present an API on
 func SetControlPort(s string) func(SAMTunnel) error {
 	return func(c SAMTunnel) error {
 		port, err := strconv.Atoi(s)
@@ -81,7 +77,8 @@ func SetControlPort(s string) func(SAMTunnel) error {
 	}
 }
 
-//SetKeyFile sets
+//SetKeyFile sets the path to a file containing a private key for decrypting
+//locally-encrypted i2p keys.
 func SetKeyFile(s string) func(SAMTunnel) error {
 	return func(c SAMTunnel) error {
 		c.Config().KeyFilePath = s
@@ -89,7 +86,8 @@ func SetKeyFile(s string) func(SAMTunnel) error {
 	}
 }
 
-//SetSaveFile tells the router to save the tunnel's keys long-term
+//SetSaveFile tells the router to save the tunnel's keys long-term to allow a
+//persistent identity
 func SetDestination(b string) func(SAMTunnel) error {
 	return func(c SAMTunnel) error {
 		c.Config().ClientDest = b
@@ -97,7 +95,7 @@ func SetDestination(b string) func(SAMTunnel) error {
 	}
 }
 
-//SetTunnelHost is used for VPN endpoints
+//SetTunnelHost is used for VPN endpoints only.
 func SetTunnelHost(s string) func(SAMTunnel) error {
 	return func(c SAMTunnel) error {
 		c.Config().TunnelHost = s
@@ -139,16 +137,12 @@ func SetPort(s string) func(SAMTunnel) error {
 //SetEncrypt tells the router to use an encrypted leaseset
 func SetEncrypt(b bool) func(SAMTunnel) error {
 	return func(c SAMTunnel) error {
-		if b {
-			c.Config().EncryptLeaseSet = b //"true"
-			return nil
-		}
 		c.Config().EncryptLeaseSet = b //"false"
 		return nil
 	}
 }
 
-//SetLeaseSetKey sets the host of the Conf's SAM bridge
+//SetLeaseSetKey sets key to use with the encrypted leaseset
 func SetLeaseSetKey(s string) func(SAMTunnel) error {
 	return func(c SAMTunnel) error {
 		c.Config().LeaseSetKey = s
@@ -156,7 +150,7 @@ func SetLeaseSetKey(s string) func(SAMTunnel) error {
 	}
 }
 
-//SetLeaseSetPrivateKey sets the host of the Conf's SAM bridge
+//SetLeaseSetPrivateKey sets the private key to use with the encrypted leaseset
 func SetLeaseSetPrivateKey(s string) func(SAMTunnel) error {
 	return func(c SAMTunnel) error {
 		c.Config().LeaseSetPrivateKey = s
@@ -164,7 +158,7 @@ func SetLeaseSetPrivateKey(s string) func(SAMTunnel) error {
 	}
 }
 
-//SetLeaseSetPrivateSigningKey sets the host of the Conf's SAM bridge
+//SetLeaseSetPrivateSigningKey sets the private signing key to use with the encrypted leaseset
 func SetLeaseSetPrivateSigningKey(s string) func(SAMTunnel) error {
 	return func(c SAMTunnel) error {
 		c.Config().LeaseSetPrivateSigningKey = s
@@ -400,7 +394,7 @@ func SetType(s string) func(SAMTunnel) error {
 	}
 }
 
-//SetUserName sets the host of the Conf's SAM bridge
+//SetUserName sets username for authentication purposes
 func SetUserName(s string) func(SAMTunnel) error {
 	return func(c SAMTunnel) error {
 		c.Config().UserName = s
