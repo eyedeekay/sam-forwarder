@@ -240,3 +240,11 @@ tar:
 sed:
 	sed -i 's|func(\*Conf)|func(samtunnel.SAMTunnel)|g' ./config/*.go
 	sed -i 's|func(c \*Conf)|func(c samtunnel.SAMTunnel)|g' ./config/*.go
+
+tasks:
+	golint ./tcp
+	#golint ./udp
+	#golint ./config
+	#golint ./config
+	#golint ./config
+	#golint ./config

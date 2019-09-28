@@ -12,7 +12,7 @@ import (
 func RunUI() {
 }
 
-func (s *app) Serve() bool {
+func (s *SAMManager) Serve() bool {
 	log.Println("Starting Tunnels()")
 	for _, element := range s.clientMux.Tunnels() {
 		log.Println("Starting service tunnel", element.ID())

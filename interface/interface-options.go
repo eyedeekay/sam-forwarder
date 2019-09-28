@@ -86,8 +86,7 @@ func SetKeyFile(s string) func(SAMTunnel) error {
 	}
 }
 
-//SetSaveFile tells the router to save the tunnel's keys long-term to allow a
-//persistent identity
+//SetDestination tells the
 func SetDestination(b string) func(SAMTunnel) error {
 	return func(c SAMTunnel) error {
 		c.Config().ClientDest = b
@@ -134,7 +133,7 @@ func SetPort(s string) func(SAMTunnel) error {
 	}
 }
 
-//SetEncrypt tells the router to use an encrypted leaseset
+//SetEncrypt tells the outproxy.SetHttp to use an encrypted leaseset
 func SetEncrypt(b bool) func(SAMTunnel) error {
 	return func(c SAMTunnel) error {
 		c.Config().EncryptLeaseSet = b //"false"
@@ -196,7 +195,7 @@ func SetName(s string) func(SAMTunnel) error {
 	}
 }
 
-//SetSaveFile tells the router to save the tunnel's keys long-term
+//SetSaveFile tells the application to save the tunnel's keys long-term
 func SetSaveFile(b bool) func(SAMTunnel) error {
 	return func(c SAMTunnel) error {
 		c.Config().SaveFile = b
