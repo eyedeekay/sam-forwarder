@@ -19,7 +19,7 @@ USR := usr/
 LOCAL := local/
 VERSION := 0.32.081
 
-GO111MODULE=on
+GO111MODULE=off
 
 echo:
 	@echo "$(GOPATH)"
@@ -92,7 +92,7 @@ daemon-cli: bin/$(samcatd)-cli
 
 bin/$(samcatd)-cli:
 	mkdir -p bin
-	cd samcatd && go build -a -tags "netgo" \
+	cd samcatd && go build -a -tags "netgo cli" \
 		-ldflags '-w -extldflags "-static"' \
 		-o ../bin/$(samcatd)-cli \
 		./*.go
