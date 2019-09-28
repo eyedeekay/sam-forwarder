@@ -1,4 +1,5 @@
-// +build !nostatic,static,!cli
+// +build static
+// +build !nostatic !cli
 
 package sammanager
 

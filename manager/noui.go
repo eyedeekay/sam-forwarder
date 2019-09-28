@@ -1,4 +1,5 @@
-// +build !nostatic,!static,cli
+// +build cli
+// +build !nostatic !static
 
 package sammanager
 
@@ -9,7 +10,7 @@ import (
 	"time"
 )
 
-func RunUI() {
+func (s *SAMManager )RunUI() {
 }
 
 func (s *SAMManager) Serve() bool {
