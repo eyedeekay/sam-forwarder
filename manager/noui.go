@@ -14,7 +14,7 @@ func RunUI() {
 
 func (s *SAMManager) Serve() bool {
 	log.Println("Starting Tunnels()")
-	for _, element := range s.clientMux.Tunnels() {
+	for _, element := range s.handlerMux.Tunnels() {
 		log.Println("Starting service tunnel", element.ID())
 		go element.Serve()
 	}
