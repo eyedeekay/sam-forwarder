@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func (s *SAMManager )RunUI() {
+func (s *SAMManager) RunUI() {
 }
 
 func (s *SAMManager) Serve() bool {

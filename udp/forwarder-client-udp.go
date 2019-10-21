@@ -15,7 +15,7 @@ import (
 	"github.com/eyedeekay/sam-forwarder/i2pkeys"
 	"github.com/eyedeekay/sam-forwarder/interface"
 	"github.com/eyedeekay/sam3"
-	"github.com/eyedeekay/sam3/i2pkeys"
+	i2pkeys "github.com/eyedeekay/sam3/i2pkeys"
 )
 
 //SAMSSUClientForwarder is a structure which automatically configured the forwarding of

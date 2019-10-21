@@ -17,7 +17,7 @@ LOG := log/
 ETC := etc/
 USR := usr/
 LOCAL := local/
-VERSION := 0.32.081
+VERSION := 0.32.082
 
 GO111MODULE=off
 
