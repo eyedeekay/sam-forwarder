@@ -214,7 +214,7 @@ func (f *SAMForwarder) HTTPRequestBytes(conn *sam3.SAMConn) ([]byte, *http.Reque
 	dest := conn.RemoteAddr().(i2pkeys.I2PAddr)
 	request.Header.Add("X-I2p-Dest-Base64", dest.Base64())
 	request.Header.Add("X-I2p-Dest-Base32", dest.Base32())
-	request.Header.Add("X-I2p-Dest-Hash", dest.DestHash().String())
+	request.Header.Add("X-I2p-Dest-Hash", dest.DestHash().Hash())
 	if retrequest, err = httputil.DumpRequest(request, true); err != nil {
 		return nil, nil, err
 	}
@@ -229,8 +229,6 @@ func (f *SAMForwarder) HTTPResponseBytes(conn net.Conn, req *http.Request) ([]by
 	if err != nil {
 		return nil, err
 	}
-	response.Header.Add("X-I2p-Dest-Base64", f.Base64())
-	response.Header.Add("X-I2p-Dest-Base32", f.Base32())
 	if retresponse, err = httputil.DumpResponse(response, true); err != nil {
 		return nil, err
 	}

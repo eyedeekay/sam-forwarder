@@ -11,7 +11,7 @@ require (
 	github.com/eyedeekay/i2pdig v0.0.0-20180718204453-a67cb46e2e5f // indirect
 	github.com/eyedeekay/outproxy v0.0.0-20190908174238-22bd71d43733
 	github.com/eyedeekay/portcheck v0.0.0-20190218044454-bb8718669680
-	github.com/eyedeekay/sam3 v0.0.0-20190730185140-f8d54526ea25
+	github.com/eyedeekay/sam3 v0.32.1
 	github.com/gtank/cryptopasta v0.0.0-20170601214702-1f550f6f2f69
 	github.com/justinas/nosurf v0.0.0-20190416172904-05988550ea18
 	github.com/spf13/pflag v1.0.3 // indirect
