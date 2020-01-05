@@ -19,7 +19,7 @@ USR := usr/
 LOCAL := local/
 VERSION := 0.32.09
 
-GO111MODULE=off
+GO111MODULE=on
 
 echo:
 	@echo "$(GOPATH)"
