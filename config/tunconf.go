@@ -10,6 +10,7 @@ import (
 )
 
 import (
+	//  "github.com/eyedeekay/sam3"
 	"github.com/eyedeekay/sam3/i2pkeys"
 	"github.com/zieckey/goini"
 )
@@ -17,54 +18,54 @@ import (
 // Conf is a tructure containing an ini config, with some functions to help
 // when you use it for in conjunction with command-line flags
 type Conf struct {
-	Config                    *goini.INI
-	FilePath                  string
-	KeyFilePath               string
-	Labels                    []string
-	Client                    bool
-	ClientDest                string
-	SigType                   string
-	Type                      string
-	SaveDirectory             string
-	ServeDirectory            string
-	SaveFile                  bool
-	TargetHost                string
-	TargetPort                string
-	SamHost                   string
-	SamPort                   string
-	TunnelHost                string
-	ControlHost               string
-	ControlPort               string
-	TargetForPort443          string
-	TunName                   string
-	EncryptLeaseSet           bool
-	LeaseSetKey               string
-	LeaseSetEncType           string
-	LeaseSetPrivateKey        string
-	LeaseSetPrivateSigningKey string
-	InAllowZeroHop            bool
-	OutAllowZeroHop           bool
-	InLength                  int
-	OutLength                 int
-	InQuantity                int
-	OutQuantity               int
-	InVariance                int
-	OutVariance               int
-	InBackupQuantity          int
-	OutBackupQuantity         int
-	UseCompression            bool
-	FastRecieve               bool
-	ReduceIdle                bool
-	ReduceIdleTime            int
-	ReduceIdleQuantity        int
-	CloseIdle                 bool
-	CloseIdleTime             int
-	AccessListType            string
-	AccessList                []string
-	MessageReliability        string
-	exists                    bool
-	UserName                  string
-	Password                  string
+	Config                    *goini.INI `default:&goini.INI{}`
+	FilePath                  string     `default:"./"`
+	KeyFilePath               string     `default:"./"`
+	Labels                    []string   `default:{""}`
+	Client                    bool       `default:true`
+	ClientDest                string     `default:"idk.i2p"`
+	SigType                   string     `default:"SIGNATURE_TYPE=EdDSA_SHA512_Ed25519"`
+	Type                      string     `default:"client"`
+	SaveDirectory             string     `default:"./"`
+	ServeDirectory            string     `default:"./www"`
+	SaveFile                  bool       `default:false`
+	TargetHost                string     `default:"127.0.0.1"`
+	TargetPort                string     `default:"7778"`
+	SamHost                   string     `default:"127.0.0.1"`
+	SamPort                   string     `default:"7656"`
+	TunnelHost                string     `default:"127.0.0.1"`
+	ControlHost               string     `default:"127.0.0.1"`
+	ControlPort               string     `default:"7951"`
+	TargetForPort443          string     `default:""`
+	TunName                   string     `default:"goi2ptunnel"`
+	EncryptLeaseSet           bool       `default:false`
+	LeaseSetKey               string     `default:""`
+	LeaseSetEncType           string     `default:"4,0"`
+	LeaseSetPrivateKey        string     `default:""`
+	LeaseSetPrivateSigningKey string     `default:""`
+	InAllowZeroHop            bool       `default:false`
+	OutAllowZeroHop           bool       `default:false`
+	InLength                  int        `default:3`
+	OutLength                 int        `default:3`
+	InQuantity                int        `default:1`
+	OutQuantity               int        `default:1`
+	InVariance                int        `default:0`
+	OutVariance               int        `default:0`
+	InBackupQuantity          int        `default:1`
+	OutBackupQuantity         int        `default:1`
+	UseCompression            bool       `default:true`
+	FastRecieve               bool       `default:true`
+	ReduceIdle                bool       `default:false`
+	ReduceIdleTime            int        `default:36000000`
+	ReduceIdleQuantity        int        `default:1`
+	CloseIdle                 bool       `default:false`
+	CloseIdleTime             int        `default:36000000`
+	AccessListType            string     `default:"none"`
+	AccessList                []string   `default:{""}`
+	MessageReliability        string     `default:""`
+	exists                    bool       `default:false`
+	UserName                  string     `default:""`
+	Password                  string     `default:""`
 	LoadedKeys                i2pkeys.I2PKeys
 }
 
@@ -288,11 +289,18 @@ func (c *Conf) I2PINILoad(iniFile string, label ...string) error {
 
 // NewI2PBlankTunConf returns an empty but intialized tunconf
 func NewI2PBlankTunConf() *Conf {
-	var c Conf
+	//	var c Conf
+	c := new(Conf)
+	c.SamHost = "127.0.0.1"
+	c.SamPort = "7656"
+	c.TunName = "unksam"
+	c.TargetHost = "127.0.0.1"
+	c.TargetPort = "0"
+	c.ClientDest = "idk.i2p"
 	c.Config = &goini.INI{}
 	c.Config = goini.New()
-	c.Config.Parse([]byte(""), "\n", "=")
-	return &c
+	c.Config.Parse([]byte("[client]\nsamhost=\"127.0.0.1\"\nsamport=\"7656\"\n"), "\n", "=")
+	return c
 }
 
 // NewI2PTunConf returns a Conf structure from an ini file, for modification

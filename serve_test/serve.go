@@ -111,7 +111,7 @@ func echoclient() {
 }
 
 func serveudp() {
-	ssuforwarder, err = samforwarderudp.NewSAMSSUForwarderFromOptions(
+	ssuforwarder, err = samforwarderudp.NewSAMDGForwarderFromOptions(
 		samforwarderudp.SetHost("127.0.0.1"),
 		samforwarderudp.SetPort(UDPServerPort),
 		samforwarderudp.SetSAMHost("127.0.0.1"),
@@ -130,7 +130,7 @@ func serveudp() {
 }
 
 func clientudp() {
-	ssuforwarderclient, err = samforwarderudp.NewSAMSSUClientForwarderFromOptions(
+	ssuforwarderclient, err = samforwarderudp.NewSAMDGClientForwarderFromOptions(
 		samforwarderudp.SetClientHost("127.0.0.1"),
 		samforwarderudp.SetClientPort(UDPClientPort),
 		samforwarderudp.SetClientSAMHost("127.0.0.1"),

@@ -69,10 +69,10 @@ func NewSAMForwarderFromConfig(iniFile, SamHost, SamPort string, label ...string
 	return nil, nil
 }
 
-// NewSAMSSUForwarderFromConf generates a SAMSSUforwarder from *i2ptunconf.Conf
-func NewSAMSSUForwarderFromConf(config *i2ptunconf.Conf) (*samforwarderudp.SAMSSUForwarder, error) {
+// NewSAMDGForwarderFromConf generates a SAMSSUforwarder from *i2ptunconf.Conf
+func NewSAMDGForwarderFromConf(config *i2ptunconf.Conf) (*samforwarderudp.SAMDGForwarder, error) {
 	if config != nil {
-		return samforwarderudp.NewSAMSSUForwarderFromOptions(
+		return samforwarderudp.NewSAMDGForwarderFromOptions(
 			samforwarderudp.SetSaveFile(config.SaveFile),
 			samforwarderudp.SetFilePath(config.SaveDirectory),
 			samforwarderudp.SetHost(config.TargetHost),
@@ -111,8 +111,8 @@ func NewSAMSSUForwarderFromConf(config *i2ptunconf.Conf) (*samforwarderudp.SAMSS
 	return nil, nil
 }
 
-// NewSAMSSUForwarderFromConfig generates a new SAMSSUForwarder from a config file
-func NewSAMSSUForwarderFromConfig(iniFile, SamHost, SamPort string, label ...string) (*samforwarderudp.SAMSSUForwarder, error) {
+// NewSAMDGForwarderFromConfig generates a new SAMDGForwarder from a config file
+func NewSAMDGForwarderFromConfig(iniFile, SamHost, SamPort string, label ...string) (*samforwarderudp.SAMDGForwarder, error) {
 	if iniFile != "none" {
 		config, err := i2ptunconf.NewI2PTunConf(iniFile, label...)
 		if err != nil {
@@ -124,7 +124,7 @@ func NewSAMSSUForwarderFromConfig(iniFile, SamHost, SamPort string, label ...str
 		if SamPort != "" && SamPort != "7656" {
 			config.SamPort = config.GetSAMPort(SamPort, config.SamPort)
 		}
-		return NewSAMSSUForwarderFromConf(config)
+		return NewSAMDGForwarderFromConf(config)
 	}
 	return nil, nil
 }

@@ -164,14 +164,14 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 						return nil, e
 					}
 				case "udpserver":
-					if f, e := samtunnelhandler.NewTunnelHandler(i2ptunhelper.NewSAMSSUForwarderFromConfig(s.config.FilePath, s.SamHost, s.SamPort, label)); e == nil {
+					if f, e := samtunnelhandler.NewTunnelHandler(i2ptunhelper.NewSAMDGForwarderFromConfig(s.config.FilePath, s.SamHost, s.SamPort, label)); e == nil {
 						log.Println("found udpserver under", label)
 						s.handlerMux = s.handlerMux.Append(f)
 					} else {
 						return nil, e
 					}
 				case "udpclient":
-					if f, e := samtunnelhandler.NewTunnelHandler(i2ptunhelper.NewSAMSSUClientForwarderFromConfig(s.config.FilePath, s.SamHost, s.SamPort, label)); e == nil {
+					if f, e := samtunnelhandler.NewTunnelHandler(i2ptunhelper.NewSAMDGClientForwarderFromConfig(s.config.FilePath, s.SamHost, s.SamPort, label)); e == nil {
 						log.Println("found udpclient under", label)
 						s.handlerMux = s.handlerMux.Append(f)
 					} else {
@@ -265,14 +265,14 @@ func NewSAMManagerFromOptions(opts ...func(*SAMManager) error) (*SAMManager, err
 				return nil, e
 			}
 		case "udpserver":
-			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunhelper.NewSAMSSUForwarderFromConf(s.config)); e == nil {
+			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunhelper.NewSAMDGForwarderFromConf(s.config)); e == nil {
 				log.Println("found default udpserver")
 				s.handlerMux = s.handlerMux.Append(f)
 			} else {
 				return nil, e
 			}
 		case "udpclient":
-			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunhelper.NewSAMSSUClientForwarderFromConf(s.config)); e == nil {
+			if f, e := samtunnelhandler.NewTunnelHandler(i2ptunhelper.NewSAMDGClientForwarderFromConf(s.config)); e == nil {
 				log.Println("found default udpclient")
 				s.handlerMux = s.handlerMux.Append(f)
 			} else {

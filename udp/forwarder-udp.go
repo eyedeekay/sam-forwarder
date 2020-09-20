@@ -1,6 +1,7 @@
 package samforwarderudp
 
 import (
+	"fmt"
 	"io"
 	"log"
 	"net"
@@ -18,9 +19,9 @@ import (
 	"github.com/eyedeekay/sam3/i2pkeys"
 )
 
-//SAMSSUForwarder is a structure which automatically configured the forwarding of
+//SAMDGForwarder is a structure which automatically configured the forwarding of
 //a local service to i2p over the SAM API.
-type SAMSSUForwarder struct {
+type SAMDGForwarder struct {
 	samConn           *sam3.SAM
 	SamKeys           i2pkeys.I2PKeys
 	Hasher            *hashhash.Hasher
@@ -36,36 +37,36 @@ type SAMSSUForwarder struct {
 
 var err error
 
-func (f *SAMSSUForwarder) Config() *i2ptunconf.Conf {
+func (f *SAMDGForwarder) Config() *i2ptunconf.Conf {
 	if f.Conf == nil {
 		f.Conf = i2ptunconf.NewI2PBlankTunConf()
 	}
 	return f.Conf
 }
 
-func (f *SAMSSUForwarder) GetType() string {
+func (f *SAMDGForwarder) GetType() string {
 	return f.Config().Type
 }
 
-func (f *SAMSSUForwarder) ID() string {
+func (f *SAMDGForwarder) ID() string {
 	return f.Config().TunName
 }
 
-func (f *SAMSSUForwarder) Keys() i2pkeys.I2PKeys {
+func (f *SAMDGForwarder) Keys() i2pkeys.I2PKeys {
 	return f.SamKeys
 }
 
-func (f *SAMSSUForwarder) Cleanup() {
+func (f *SAMDGForwarder) Cleanup() {
 	f.publishConnection.Close()
 	f.clientConnection.Close()
 	f.samConn.Close()
 }
 
-func (f *SAMSSUForwarder) Close() error {
+func (f *SAMDGForwarder) Close() error {
 	return nil
 }
 
-func (f *SAMSSUForwarder) print() []string {
+func (f *SAMDGForwarder) print() []string {
 	/*lsk, lspk, lspsk := f.leasesetsettings()
 	return []string{
 		//f.targetForPort443(),
@@ -95,7 +96,7 @@ func (f *SAMSSUForwarder) print() []string {
 	return f.Config().PrintSlice()
 }
 
-func (f *SAMSSUForwarder) Props() map[string]string {
+func (f *SAMDGForwarder) Props() map[string]string {
 	r := make(map[string]string)
 	print := f.print()
 	print = append(print, "base32="+f.Base32())
@@ -108,7 +109,7 @@ func (f *SAMSSUForwarder) Props() map[string]string {
 	return r
 }
 
-func (f *SAMSSUForwarder) Print() string {
+func (f *SAMDGForwarder) Print() string {
 	var r string
 	r += "name=" + f.Config().TunName + "\n"
 	r += "type=" + f.Config().Type + "\n"
@@ -121,7 +122,7 @@ func (f *SAMSSUForwarder) Print() string {
 	return strings.Replace(r, "\n\n", "\n", -1)
 }
 
-func (f *SAMSSUForwarder) Search(search string) string {
+func (f *SAMDGForwarder) Search(search string) string {
 	terms := strings.Split(search, ",")
 	if search == "" {
 		return f.Print()
@@ -134,7 +135,7 @@ func (f *SAMSSUForwarder) Search(search string) string {
 	return f.Print()
 }
 
-func (f *SAMSSUForwarder) accesslisttype() string {
+func (f *SAMDGForwarder) accesslisttype() string {
 	if f.Config().AccessListType == "whitelist" {
 		return "i2cp.enableAccessList=true"
 	} else if f.Config().AccessListType == "blacklist" {
@@ -145,7 +146,7 @@ func (f *SAMSSUForwarder) accesslisttype() string {
 	return ""
 }
 
-func (f *SAMSSUForwarder) accesslist() string {
+func (f *SAMDGForwarder) accesslist() string {
 	if f.Config().AccessListType != "" && len(f.Config().AccessList) > 0 {
 		r := ""
 		for _, s := range f.Config().AccessList {
@@ -156,7 +157,7 @@ func (f *SAMSSUForwarder) accesslist() string {
 	return ""
 }
 
-func (f *SAMSSUForwarder) leasesetsettings() (string, string, string) {
+func (f *SAMDGForwarder) leasesetsettings() (string, string, string) {
 	var r, s, t string
 	if f.Config().LeaseSetKey != "" {
 		r = "i2cp.leaseSetKey=" + f.Config().LeaseSetKey
@@ -171,16 +172,16 @@ func (f *SAMSSUForwarder) leasesetsettings() (string, string, string) {
 }
 
 // Target returns the host:port of the local service you want to forward to i2p
-func (f *SAMSSUForwarder) Target() string {
+func (f *SAMDGForwarder) Target() string {
 	return f.Config().TargetHost + ":" + f.Config().TargetPort
 }
 
-func (f *SAMSSUForwarder) sam() string {
+func (f *SAMDGForwarder) sam() string {
 	return f.Config().SamHost + ":" + f.Config().SamPort
 }
 
-//func (f *SAMSSUForwarder) forward(conn net.Conn) {
-func (f *SAMSSUForwarder) forward() {
+//func (f *SAMDGForwarder) forward(conn net.Conn) {
+func (f *SAMDGForwarder) forward() {
 	Loop := false
 	if f.clientConnection == nil {
 		for !Loop {
@@ -217,23 +218,23 @@ func (f *SAMSSUForwarder) forward() {
 }
 
 //Base32 returns the base32 address where the local service is being forwarded
-func (f *SAMSSUForwarder) Base32() string {
+func (f *SAMDGForwarder) Base32() string {
 	return f.SamKeys.Addr().Base32()
 }
 
 //Base32Readable returns the base32 address where the local service is being forwarded
-func (f *SAMSSUForwarder) Base32Readable() string {
+func (f *SAMDGForwarder) Base32Readable() string {
 	b32 := strings.Replace(f.Base32(), ".b32.i2p", "", 1)
 	rhash, _ := f.Hasher.Friendly(b32)
 	return rhash + " " + strconv.Itoa(len(b32))
 }
 
 //Base64 returns the base64 address where the local service is being forwarded
-func (f *SAMSSUForwarder) Base64() string {
+func (f *SAMDGForwarder) Base64() string {
 	return f.SamKeys.Addr().Base64()
 }
 
-func (f *SAMSSUForwarder) errSleep(err error) bool {
+func (f *SAMDGForwarder) errSleep(err error) bool {
 	if err != nil {
 		log.Printf("Dial failed: %v, waiting 5 minutes to try again\n", err)
 		time.Sleep(5 * time.Minute)
@@ -244,10 +245,10 @@ func (f *SAMSSUForwarder) errSleep(err error) bool {
 }
 
 //Serve starts the SAM connection and and forwards the local host:port to i2p
-func (f *SAMSSUForwarder) Serve() error {
+func (f *SAMDGForwarder) Serve() error {
 	var err error
 
-	sp, _ := strconv.Atoi(f.Config().SamPort)
+	sp, err := strconv.Atoi(f.Config().SamPort)
 	f.publishConnection, err = f.samConn.NewDatagramSession(
 		f.Config().TunName,
 		f.SamKeys,
@@ -255,8 +256,7 @@ func (f *SAMSSUForwarder) Serve() error {
 		sp-1,
 	)
 	if err != nil {
-		log.Println("Session Creation error:", err.Error())
-		return err
+		return fmt.Errorf("Session creation Error%s", err)
 	}
 
 	log.Println("SAM datagram session established.")
@@ -268,55 +268,55 @@ func (f *SAMSSUForwarder) Serve() error {
 	}
 }
 
-func (s *SAMSSUForwarder) Load() (samtunnel.SAMTunnel, error) {
+func (s *SAMDGForwarder) Load() (samtunnel.SAMTunnel, error) {
 	s.samConn, err = sam3.NewSAM(s.sam())
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("SAM connection error%s", err)
 	}
 	log.Println("SAM Bridge connection established.")
 	if s.Config().SaveFile {
 		log.Println("Saving i2p keys")
 	}
 	if s.SamKeys, err = sfi2pkeys.Load(s.Config().FilePath, s.Config().TunName, s.Config().KeyFilePath, s.samConn, s.Config().SaveFile); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("SAM key load/generate error%s", err)
 	}
 	log.Println("Destination keys generated, tunnel name:", s.Config().TunName)
 	if s.Config().SaveFile {
 		if err := sfi2pkeys.Save(s.Config().FilePath, s.Config().TunName, s.Config().KeyFilePath, s.SamKeys); err != nil {
-			return nil, err
+			return nil, fmt.Errorf("SAM key save error%s", err)
 		}
 		log.Println("Saved tunnel keys for", s.Conf.TunName, "in", s.Conf.FilePath)
 	}
 	s.Hasher, err = hashhash.NewHasher(len(strings.Replace(s.Base32(), ".b32.i2p", "", 1)))
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Word-hash generation error%s", err)
 	}
 	s.up = true
 	return s, nil
 }
 
-func (f *SAMSSUForwarder) Up() bool {
+func (f *SAMDGForwarder) Up() bool {
 	return f.up
 }
 
-//NewSAMSSUForwarder makes a new SAM forwarder with default options, accepts host:port arguments
-func NewSAMSSUForwarder(host, port string) (*SAMSSUForwarder, error) {
-	return NewSAMSSUForwarderFromOptions(SetHost(host), SetPort(port))
+//NewSAMDGForwarder makes a new SAM forwarder with default options, accepts host:port arguments
+func NewSAMDGForwarder(host, port string) (*SAMDGForwarder, error) {
+	return NewSAMDGForwarderFromOptions(SetHost(host), SetPort(port))
 }
 
-//NewSAMSSUForwarderFromOptions makes a new SAM forwarder with default options, accepts host:port arguments
-func NewSAMSSUForwarderFromOptions(opts ...func(*SAMSSUForwarder) error) (*SAMSSUForwarder, error) {
-	var s SAMSSUForwarder
+//NewSAMDGForwarderFromOptions makes a new SAM forwarder with default options, accepts host:port arguments
+func NewSAMDGForwarderFromOptions(opts ...func(*SAMDGForwarder) error) (*SAMDGForwarder, error) {
+	var s SAMDGForwarder
 	s.Conf = i2ptunconf.NewI2PBlankTunConf()
 	s.Conf.Type = "udpserver"
 	for _, o := range opts {
 		if err := o(&s); err != nil {
-			return nil, err
+			return nil, fmt.Errorf("Option Setting Error: %s", err)
 		}
 	}
 	l, e := s.Load()
 	if e != nil {
-		return nil, e
+		return nil, fmt.Errorf("%s", e)
 	}
-	return l.(*SAMSSUForwarder), nil
+	return l.(*SAMDGForwarder), nil
 }

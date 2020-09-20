@@ -5,36 +5,36 @@ import (
 	"strconv"
 )
 
-//Option is a SAMSSUForwarder Option
-type Option func(*SAMSSUForwarder) error
+//Option is a SAMDGForwarder Option
+type Option func(*SAMDGForwarder) error
 
-//SetFilePath sets the host of the SAMSSUForwarder's SAM bridge
-func SetFilePath(s string) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+//SetFilePath sets the host of the SAMDGForwarder's SAM bridge
+func SetFilePath(s string) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		c.Conf.FilePath = s
 		return nil
 	}
 }
 
 //SetSaveFile tells the router to use an encrypted leaseset
-func SetSaveFile(b bool) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+func SetSaveFile(b bool) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		c.Conf.SaveFile = b
 		return nil
 	}
 }
 
-//SetHost sets the host of the SAMSSUForwarder's SAM bridge
-func SetHost(s string) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+//SetHost sets the host of the SAMDGForwarder's SAM bridge
+func SetHost(s string) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		c.Conf.TargetHost = s
 		return nil
 	}
 }
 
-//SetPort sets the port of the SAMSSUForwarder's SAM bridge using a string
-func SetPort(s string) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+//SetPort sets the port of the SAMDGForwarder's SAM bridge using a string
+func SetPort(s string) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		port, err := strconv.Atoi(s)
 		if err != nil {
 			return fmt.Errorf("Invalid SSU Server Target Port %s; non-number ", s)
@@ -47,17 +47,17 @@ func SetPort(s string) func(*SAMSSUForwarder) error {
 	}
 }
 
-//SetSAMHost sets the host of the SAMSSUForwarder's SAM bridge
-func SetSAMHost(s string) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+//SetSAMHost sets the host of the SAMDGForwarder's SAM bridge
+func SetSAMHost(s string) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		c.Conf.SamHost = s
 		return nil
 	}
 }
 
-//SetSAMPort sets the port of the SAMSSUForwarder's SAM bridge using a string
-func SetSAMPort(s string) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+//SetSAMPort sets the port of the SAMDGForwarder's SAM bridge using a string
+func SetSAMPort(s string) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		port, err := strconv.Atoi(s)
 		if err != nil {
 			return fmt.Errorf("Invalid SAM Port %s; non-number", s)
@@ -70,17 +70,17 @@ func SetSAMPort(s string) func(*SAMSSUForwarder) error {
 	}
 }
 
-//SetName sets the host of the SAMSSUForwarder's SAM bridge
-func SetName(s string) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+//SetName sets the host of the SAMDGForwarder's SAM bridge
+func SetName(s string) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		c.Conf.TunName = s
 		return nil
 	}
 }
 
 //SetSigType sets the type of the forwarder server
-func SetSigType(s string) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+func SetSigType(s string) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		if s == "" {
 			c.Conf.SigType = ""
 		} else if s == "DSA_SHA1" {
@@ -101,8 +101,8 @@ func SetSigType(s string) func(*SAMSSUForwarder) error {
 }
 
 //SetInLength sets the number of hops inbound
-func SetInLength(u int) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+func SetInLength(u int) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		if u < 7 && u >= 0 {
 			c.Conf.InLength = u
 			return nil
@@ -112,8 +112,8 @@ func SetInLength(u int) func(*SAMSSUForwarder) error {
 }
 
 //SetOutLength sets the number of hops outbound
-func SetOutLength(u int) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+func SetOutLength(u int) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		if u < 7 && u >= 0 {
 			c.Conf.OutLength = u
 			return nil
@@ -123,8 +123,8 @@ func SetOutLength(u int) func(*SAMSSUForwarder) error {
 }
 
 //SetInVariance sets the variance of a number of hops inbound
-func SetInVariance(i int) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+func SetInVariance(i int) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		if i < 7 && i > -7 {
 			c.Conf.InVariance = i
 			return nil
@@ -134,8 +134,8 @@ func SetInVariance(i int) func(*SAMSSUForwarder) error {
 }
 
 //SetOutVariance sets the variance of a number of hops outbound
-func SetOutVariance(i int) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+func SetOutVariance(i int) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		if i < 7 && i > -7 {
 			c.Conf.OutVariance = i
 			return nil
@@ -145,8 +145,8 @@ func SetOutVariance(i int) func(*SAMSSUForwarder) error {
 }
 
 //SetInQuantity sets the inbound tunnel quantity
-func SetInQuantity(u int) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+func SetInQuantity(u int) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		if u <= 16 && u > 0 {
 			c.Conf.InQuantity = u
 			return nil
@@ -156,8 +156,8 @@ func SetInQuantity(u int) func(*SAMSSUForwarder) error {
 }
 
 //SetOutQuantity sets the outbound tunnel quantity
-func SetOutQuantity(u int) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+func SetOutQuantity(u int) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		if u <= 16 && u > 0 {
 			c.Conf.OutQuantity = u
 			return nil
@@ -167,8 +167,8 @@ func SetOutQuantity(u int) func(*SAMSSUForwarder) error {
 }
 
 //SetInBackups sets the inbound tunnel backups
-func SetInBackups(u int) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+func SetInBackups(u int) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		if u < 6 && u >= 0 {
 			c.Conf.InBackupQuantity = u
 			return nil
@@ -178,8 +178,8 @@ func SetInBackups(u int) func(*SAMSSUForwarder) error {
 }
 
 //SetOutBackups sets the inbound tunnel backups
-func SetOutBackups(u int) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+func SetOutBackups(u int) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		if u < 6 && u >= 0 {
 			c.Conf.OutBackupQuantity = u
 			return nil
@@ -189,8 +189,8 @@ func SetOutBackups(u int) func(*SAMSSUForwarder) error {
 }
 
 //SetEncrypt tells the router to use an encrypted leaseset
-func SetEncrypt(b bool) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+func SetEncrypt(b bool) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		if b {
 			c.Conf.EncryptLeaseSet = true
 			return nil
@@ -201,40 +201,40 @@ func SetEncrypt(b bool) func(*SAMSSUForwarder) error {
 }
 
 //SetLeaseSetKey sets
-func SetLeaseSetKey(s string) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+func SetLeaseSetKey(s string) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		c.Conf.LeaseSetKey = s
 		return nil
 	}
 }
 
 //SetLeaseSetPrivateKey sets
-func SetLeaseSetPrivateKey(s string) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+func SetLeaseSetPrivateKey(s string) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		c.Conf.LeaseSetPrivateKey = s
 		return nil
 	}
 }
 
 //SetLeaseSetPrivateSigningKey sets
-func SetLeaseSetPrivateSigningKey(s string) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+func SetLeaseSetPrivateSigningKey(s string) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		c.Conf.LeaseSetPrivateSigningKey = s
 		return nil
 	}
 }
 
 //SetMessageReliability sets
-func SetMessageReliability(s string) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+func SetMessageReliability(s string) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		c.Conf.MessageReliability = s
 		return nil
 	}
 }
 
 //SetAllowZeroIn tells the tunnel to accept zero-hop peers
-func SetAllowZeroIn(b bool) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+func SetAllowZeroIn(b bool) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		if b {
 			c.Conf.InAllowZeroHop = true
 			return nil
@@ -245,8 +245,8 @@ func SetAllowZeroIn(b bool) func(*SAMSSUForwarder) error {
 }
 
 //SetAllowZeroOut tells the tunnel to accept zero-hop peers
-func SetAllowZeroOut(b bool) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+func SetAllowZeroOut(b bool) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		if b {
 			c.Conf.OutAllowZeroHop = true
 			return nil
@@ -257,8 +257,8 @@ func SetAllowZeroOut(b bool) func(*SAMSSUForwarder) error {
 }
 
 //SetFastRecieve tells clients to use compression
-func SetFastRecieve(b bool) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+func SetFastRecieve(b bool) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		if b {
 			c.Conf.FastRecieve = true
 			return nil
@@ -269,8 +269,8 @@ func SetFastRecieve(b bool) func(*SAMSSUForwarder) error {
 }
 
 //SetCompress tells clients to use compression
-func SetCompress(b bool) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+func SetCompress(b bool) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		if b {
 			c.Conf.UseCompression = true
 			return nil
@@ -281,8 +281,8 @@ func SetCompress(b bool) func(*SAMSSUForwarder) error {
 }
 
 //SetReduceIdle tells the connection to reduce it's tunnels during extended idle time.
-func SetReduceIdle(b bool) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+func SetReduceIdle(b bool) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		if b {
 			c.Conf.ReduceIdle = true
 			return nil
@@ -293,8 +293,8 @@ func SetReduceIdle(b bool) func(*SAMSSUForwarder) error {
 }
 
 //SetReduceIdleTime sets the time to wait before reducing tunnels to idle levels
-func SetReduceIdleTime(u int) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+func SetReduceIdleTime(u int) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		c.Conf.ReduceIdleTime = 300000
 		if u >= 6 {
 			c.Conf.ReduceIdleTime = (u * 60) * 1000
@@ -305,8 +305,8 @@ func SetReduceIdleTime(u int) func(*SAMSSUForwarder) error {
 }
 
 //SetReduceIdleTimeMs sets the time to wait before reducing tunnels to idle levels in milliseconds
-func SetReduceIdleTimeMs(u int) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+func SetReduceIdleTimeMs(u int) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		c.Conf.ReduceIdleTime = 300000
 		if u >= 300000 {
 			c.Conf.ReduceIdleTime = u
@@ -317,8 +317,8 @@ func SetReduceIdleTimeMs(u int) func(*SAMSSUForwarder) error {
 }
 
 //SetReduceIdleQuantity sets minimum number of tunnels to reduce to during idle time
-func SetReduceIdleQuantity(u int) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+func SetReduceIdleQuantity(u int) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		if u < 5 {
 			c.Conf.ReduceIdleQuantity = u
 			return nil
@@ -328,8 +328,8 @@ func SetReduceIdleQuantity(u int) func(*SAMSSUForwarder) error {
 }
 
 //SetCloseIdle tells the connection to close it's tunnels during extended idle time.
-func SetCloseIdle(b bool) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+func SetCloseIdle(b bool) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		if b {
 			c.Conf.CloseIdle = true
 			return nil
@@ -340,8 +340,8 @@ func SetCloseIdle(b bool) func(*SAMSSUForwarder) error {
 }
 
 //SetCloseIdleTime sets the time to wait before closing tunnels to idle levels
-func SetCloseIdleTime(u int) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+func SetCloseIdleTime(u int) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		c.Conf.CloseIdleTime = 300000
 		if u >= 6 {
 			c.Conf.CloseIdleTime = (u * 60) * 1000
@@ -352,8 +352,8 @@ func SetCloseIdleTime(u int) func(*SAMSSUForwarder) error {
 }
 
 //SetCloseIdleTimeMs sets the time to wait before closing tunnels to idle levels in milliseconds
-func SetCloseIdleTimeMs(u int) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+func SetCloseIdleTimeMs(u int) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		c.Conf.CloseIdleTime = 300000
 		if u >= 300000 {
 			c.Conf.CloseIdleTime = u
@@ -364,8 +364,8 @@ func SetCloseIdleTimeMs(u int) func(*SAMSSUForwarder) error {
 }
 
 //SetAccessListType tells the system to treat the accessList as a whitelist
-func SetAccessListType(s string) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+func SetAccessListType(s string) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		if s == "whitelist" {
 			c.Conf.AccessListType = "whitelist"
 			return nil
@@ -384,8 +384,8 @@ func SetAccessListType(s string) func(*SAMSSUForwarder) error {
 }
 
 //SetAccessList tells the system to treat the accessList as a whitelist
-func SetAccessList(s []string) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+func SetAccessList(s []string) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		if len(s) > 0 {
 			for _, a := range s {
 				c.Conf.AccessList = append(c.Conf.AccessList, a)
@@ -397,8 +397,8 @@ func SetAccessList(s []string) func(*SAMSSUForwarder) error {
 }
 
 //SetKeyFile sets
-func SetKeyFile(s string) func(*SAMSSUForwarder) error {
-	return func(c *SAMSSUForwarder) error {
+func SetKeyFile(s string) func(*SAMDGForwarder) error {
+	return func(c *SAMDGForwarder) error {
 		c.Conf.KeyFilePath = s
 		return nil
 	}
