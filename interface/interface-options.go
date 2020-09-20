@@ -5,14 +5,14 @@ import (
 	"strconv"
 )
 
-//SetAccessListType tells the system to treat the accessList as a whitelist
+//SetAccessListType tells the system to treat the accessList as a allowlist
 func SetAccessListType(s string) func(SAMTunnel) error {
 	return func(c SAMTunnel) error {
-		if s == "whitelist" {
-			c.Config().AccessListType = "whitelist"
+		if s == "allowlist" {
+			c.Config().AccessListType = "allowlist"
 			return nil
-		} else if s == "blacklist" {
-			c.Config().AccessListType = "blacklist"
+		} else if s == "blocklist" {
+			c.Config().AccessListType = "blocklist"
 			return nil
 		} else if s == "none" {
 			c.Config().AccessListType = ""
@@ -21,11 +21,11 @@ func SetAccessListType(s string) func(SAMTunnel) error {
 			c.Config().AccessListType = ""
 			return nil
 		}
-		return fmt.Errorf("Invalid Access list type(whitelist, blacklist, none)")
+		return fmt.Errorf("Invalid Access list type(allowlist, blocklist, none)")
 	}
 }
 
-//SetAccessList tells the system to treat the accessList as a whitelist
+//SetAccessList tells the system to treat the accessList as a allowlist
 func SetAccessList(s []string) func(SAMTunnel) error {
 	return func(c SAMTunnel) error {
 		if len(s) > 0 {

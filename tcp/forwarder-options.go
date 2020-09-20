@@ -376,14 +376,14 @@ func SetCloseIdleTimeMs(u int) func(*SAMForwarder) error {
 	}
 }
 
-//SetAccessListType tells the system to treat the AccessList as a whitelist
+//SetAccessListType tells the system to treat the AccessList as a allowlist
 func SetAccessListType(s string) func(*SAMForwarder) error {
 	return func(c *SAMForwarder) error {
-		if s == "whitelist" {
-			c.Conf.AccessListType = "whitelist"
+		if s == "allowlist" {
+			c.Conf.AccessListType = "allowlist"
 			return nil
-		} else if s == "blacklist" {
-			c.Conf.AccessListType = "blacklist"
+		} else if s == "blocklist" {
+			c.Conf.AccessListType = "blocklist"
 			return nil
 		} else if s == "none" {
 			c.Conf.AccessListType = ""
@@ -392,11 +392,11 @@ func SetAccessListType(s string) func(*SAMForwarder) error {
 			c.Conf.AccessListType = ""
 			return nil
 		}
-		return fmt.Errorf("Invalid Access list type(whitelist, blacklist, none)")
+		return fmt.Errorf("Invalid Access list type(allowlist, blocklist, none)")
 	}
 }
 
-//SetAccessList tells the system to treat the AccessList as a whitelist
+//SetAccessList tells the system to treat the AccessList as a allowlist
 func SetAccessList(s []string) func(*SAMForwarder) error {
 	return func(c *SAMForwarder) error {
 		if len(s) > 0 {

@@ -371,14 +371,14 @@ func SetClientCloseIdleTimeMs(u int) func(*SAMClientForwarder) error {
 	}
 }
 
-//SetClientAccessListType tells the system to treat the accessList as a whitelist
+//SetClientAccessListType tells the system to treat the accessList as a allowlist
 func SetClientAccessListType(s string) func(*SAMClientForwarder) error {
 	return func(c *SAMClientForwarder) error {
-		if s == "whitelist" {
-			c.Conf.AccessListType = "whitelist"
+		if s == "allowlist" {
+			c.Conf.AccessListType = "allowlist"
 			return nil
-		} else if s == "blacklist" {
-			c.Conf.AccessListType = "blacklist"
+		} else if s == "blocklist" {
+			c.Conf.AccessListType = "blocklist"
 			return nil
 		} else if s == "none" {
 			c.Conf.AccessListType = ""
@@ -387,11 +387,11 @@ func SetClientAccessListType(s string) func(*SAMClientForwarder) error {
 			c.Conf.AccessListType = ""
 			return nil
 		}
-		return fmt.Errorf("Invalid Access list type(whitelist, blacklist, none)")
+		return fmt.Errorf("Invalid Access list type(allowlist, blocklist, none)")
 	}
 }
 
-//SetClientAccessList tells the system to treat the accessList as a whitelist
+//SetClientAccessList tells the system to treat the accessList as a allowlist
 func SetClientAccessList(s []string) func(*SAMClientForwarder) error {
 	return func(c *SAMClientForwarder) error {
 		if len(s) > 0 {

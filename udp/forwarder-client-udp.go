@@ -112,9 +112,9 @@ func (f *SAMDGClientForwarder) Search(search string) string {
 }
 
 func (f *SAMDGClientForwarder) accesslisttype() string {
-	if f.Config().AccessListType == "whitelist" {
+	if f.Config().AccessListType == "allowlist" {
 		return "i2cp.enableAccessList=true"
-	} else if f.Config().AccessListType == "blacklist" {
+	} else if f.Config().AccessListType == "blocklist" {
 		return "i2cp.enableBlackList=true"
 	} else if f.Config().AccessListType == "none" {
 		return ""

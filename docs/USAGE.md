@@ -13,7 +13,7 @@ usage:
 flag needs an argument: -h
 Usage of ./bin/samcatd:
   -a string
-    	Type of access list to use, can be "whitelist" "blacklist" or "none". (default "none")
+    	Type of access list to use, can be "allowlist" "blocklist" or "none". (default "none")
   -c	Client proxy mode(true or false)
   -conv string
     	Display the base32 and base64 values of a specified .i2pkeys file

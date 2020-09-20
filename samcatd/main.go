@@ -110,7 +110,7 @@ var (
 	tunName = flag.String("n", "forwarder",
 		"Tunnel name, this must be unique but can be anything.")
 	accessListType = flag.String("a", "none",
-		"Type of access list to use, can be \"whitelist\" \"blacklist\" or \"none\".")
+		"Type of access list to use, can be \"allowlist\" \"blocklist\" or \"none\".")
 	inLength = flag.Int("il", 3,
 		"Set inbound tunnel length(0 to 7)")
 	outLength = flag.Int("ol", 3,

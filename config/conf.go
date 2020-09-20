@@ -108,9 +108,9 @@ func (f *Conf) Search(search string) string {
 
 /*
 func (f *Conf) accesslisttype() string {
-	if f.accessListType == "whitelist" {
+	if f.accessListType == "allowlist" {
 		return "i2cp.enableAccessList=true"
-	} else if f.accessListType == "blacklist" {
+	} else if f.accessListType == "blocklist" {
 		return "i2cp.enableBlackList=true"
 	} else if f.accessListType == "none" {
 		return ""
