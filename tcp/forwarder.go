@@ -129,7 +129,7 @@ func (f *SAMForwarder) Print() string {
 	r += "type=" + f.Conf.Type + "\n"
 	r += "base32=" + f.Base32() + "\n"
 	r += "base64=" + f.Base64() + "\n"
-	if f.Conf.Type == "http" {
+	if f.Conf.Type == "http" || f.Conf.Type == "https" {
 		r += "httpserver\n"
 	} else {
 		r += "ntcpserver\n"
@@ -276,7 +276,7 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 		log.Fatalf("Dial failed: %v", err)
 	}
 	go func() {
-		if f.Conf.Type == "http" {
+		if f.Conf.Type == "http" || f.Conf.Type == "https" {
 			defer f.clientUnlockAndClose(true, false, client)
 			defer f.connUnlockAndClose(false, true, conn)
 			if requestbytes, request, err = f.HTTPRequestBytes(conn); err == nil {
@@ -303,7 +303,7 @@ func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
 		}
 	}()
 	go func() {
-		if f.Conf.Type == "http" {
+		if f.Conf.Type == "http" || f.Conf.Type == "https" {
 			defer f.clientUnlockAndClose(false, true, client)
 			defer f.connUnlockAndClose(true, false, conn)
 			if responsebytes, err = f.HTTPResponseBytes(client, request); err == nil {

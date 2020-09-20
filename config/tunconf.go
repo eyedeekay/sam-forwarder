@@ -39,6 +39,7 @@ type Conf struct {
 	TunName                   string
 	EncryptLeaseSet           bool
 	LeaseSetKey               string
+	LeaseSetEncType           string
 	LeaseSetPrivateKey        string
 	LeaseSetPrivateSigningKey string
 	InAllowZeroHop            bool
