@@ -247,6 +247,7 @@ func (c *Conf) I2PINILoad(iniFile string, label ...string) error {
 		c.SetTunName(label...)
 		c.SetSigType(label...)
 		c.SetEncryptLease(label...)
+		c.SetLeaseSetEncType(label...)
 		c.SetLeasesetKey(label...)
 		c.SetLeasesetPrivateKey(label...)
 		c.SetLeasesetPrivateSigningKey(label...)
@@ -297,6 +298,7 @@ func NewI2PBlankTunConf() *Conf {
 	c.TargetHost = "127.0.0.1"
 	c.TargetPort = "0"
 	c.ClientDest = "idk.i2p"
+	c.LeaseSetEncType = "4,0"
 	c.Config = &goini.INI{}
 	c.Config = goini.New()
 	c.Config.Parse([]byte("[client]\nsamhost=\"127.0.0.1\"\nsamport=\"7656\"\n"), "\n", "=")

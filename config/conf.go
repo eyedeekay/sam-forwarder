@@ -58,6 +58,7 @@ func (f *Conf) print() []string {
 		"i2cp.closeIdleTime=" + fmt.Sprintf("%d", f.CloseIdleTime),
 		"i2cp.messageReliability=" + f.MessageReliability,
 		"i2cp.encryptLeaseSet=" + fmt.Sprintf("%t", f.EncryptLeaseSet),
+		"i2cp.leaseSetEncType=" + fmt.Sprintf("%s", f.LeaseSetEncType),
 		lsk, lspk, lspsk,
 		f.accesslisttype(),
 		f.accesslist(),
