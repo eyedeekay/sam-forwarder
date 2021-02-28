@@ -15,6 +15,7 @@ import (
 	"github.com/eyedeekay/sam-forwarder/hashhash"
 	"github.com/eyedeekay/sam-forwarder/i2pkeys"
 	"github.com/eyedeekay/sam-forwarder/interface"
+	"github.com/eyedeekay/sam-forwarder/options"
 	"github.com/eyedeekay/sam3"
 	"github.com/eyedeekay/sam3/i2pkeys"
 )
@@ -259,7 +260,7 @@ func (s *SAMClientForwarder) Load() (samtunnel.SAMTunnel, error) {
 
 //NewSAMClientForwarder makes a new SAM forwarder with default options, accepts host:port arguments
 func NewSAMClientForwarder(host, port string) (samtunnel.SAMTunnel, error) {
-	return NewSAMClientForwarderFromOptions(SetClientHost(host), SetClientPort(port))
+	return NewSAMClientForwarderFromOptions(samoptions.SetHost(host), samoptions.SetPort(port))
 }
 
 //NewSAMClientForwarderFromOptions makes a new SAM forwarder with default options, accepts host:port arguments

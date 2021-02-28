@@ -3,10 +3,12 @@ package samforwarderudp
 import (
 	"log"
 	"testing"
+
+	"github.com/eyedeekay/sam-forwarder/options"
 )
 
 func TestOptionUDPHost(t *testing.T) {
-	client, err := NewSAMDGForwarderFromOptions(SetHost("127.0.0.1"))
+	client, err := NewSAMDGForwarderFromOptions(samoptions.SetHost("127.0.0.1"))
 	if err != nil {
 		t.Fatalf("NewSAMDGForwarder() Error: %q\n", err)
 	}
@@ -14,7 +16,7 @@ func TestOptionUDPHost(t *testing.T) {
 }
 
 func TestOptionUDPPort(t *testing.T) {
-	client, err := NewSAMDGForwarderFromOptions(SetPort("7656"))
+	client, err := NewSAMDGForwarderFromOptions(samoptions.SetPort("7656"))
 	if err != nil {
 		t.Fatalf("NewSAMDGForwarder() Error: %q\n", err)
 	}
@@ -22,7 +24,7 @@ func TestOptionUDPPort(t *testing.T) {
 }
 
 func TestOptionUDPInLength(t *testing.T) {
-	client, err := NewSAMDGForwarderFromOptions(SetInLength(3))
+	client, err := NewSAMDGForwarderFromOptions(samoptions.SetInLength(3))
 	if err != nil {
 		t.Fatalf("NewSAMDGForwarder() Error: %q\n", err)
 	}
@@ -30,7 +32,7 @@ func TestOptionUDPInLength(t *testing.T) {
 }
 
 func TestOptionUDPOutLength(t *testing.T) {
-	client, err := NewSAMDGForwarderFromOptions(SetInLength(3))
+	client, err := NewSAMDGForwarderFromOptions(samoptions.SetInLength(3))
 	if err != nil {
 		t.Fatalf("NewSAMDGForwarder() Error: %q\n", err)
 	}
@@ -38,7 +40,7 @@ func TestOptionUDPOutLength(t *testing.T) {
 }
 
 func TestOptionUDPInVariance(t *testing.T) {
-	client, err := NewSAMDGForwarderFromOptions(SetInVariance(1))
+	client, err := NewSAMDGForwarderFromOptions(samoptions.SetInVariance(1))
 	if err != nil {
 		t.Fatalf("NewSAMDGForwarder() Error: %q\n", err)
 	}
@@ -46,7 +48,7 @@ func TestOptionUDPInVariance(t *testing.T) {
 }
 
 func TestOptionUDPOutVariance(t *testing.T) {
-	client, err := NewSAMDGForwarderFromOptions(SetOutVariance(1))
+	client, err := NewSAMDGForwarderFromOptions(samoptions.SetOutVariance(1))
 	if err != nil {
 		t.Fatalf("NewSAMDGForwarder() Error: %q\n", err)
 	}
@@ -54,7 +56,7 @@ func TestOptionUDPOutVariance(t *testing.T) {
 }
 
 func TestOptionUDPInQuantity(t *testing.T) {
-	client, err := NewSAMDGForwarderFromOptions(SetInQuantity(6))
+	client, err := NewSAMDGForwarderFromOptions(samoptions.SetInQuantity(6))
 	if err != nil {
 		t.Fatalf("NewSAMDGForwarder() Error: %q\n", err)
 	}
@@ -62,7 +64,7 @@ func TestOptionUDPInQuantity(t *testing.T) {
 }
 
 func TestOptionUDPOutQuantity(t *testing.T) {
-	client, err := NewSAMDGForwarderFromOptions(SetOutQuantity(6))
+	client, err := NewSAMDGForwarderFromOptions(samoptions.SetOutQuantity(6))
 	if err != nil {
 		t.Fatalf("NewSAMDGForwarder() Error: %q\n", err)
 	}
@@ -70,7 +72,7 @@ func TestOptionUDPOutQuantity(t *testing.T) {
 }
 
 func TestOptionUDPInBackups(t *testing.T) {
-	client, err := NewSAMDGForwarderFromOptions(SetInBackups(5))
+	client, err := NewSAMDGForwarderFromOptions(samoptions.SetInBackups(5))
 	if err != nil {
 		t.Fatalf("NewSAMDGForwarder() Error: %q\n", err)
 	}
@@ -78,7 +80,7 @@ func TestOptionUDPInBackups(t *testing.T) {
 }
 
 func TestOptionUDPOutBackups(t *testing.T) {
-	client, err := NewSAMDGForwarderFromOptions(SetOutBackups(5))
+	client, err := NewSAMDGForwarderFromOptions(samoptions.SetOutBackups(5))
 	if err != nil {
 		t.Fatalf("NewSAMDGForwarder() Error: %q\n", err)
 	}
@@ -86,7 +88,7 @@ func TestOptionUDPOutBackups(t *testing.T) {
 }
 
 func TestOptionUDPReduceIdleQuantity(t *testing.T) {
-	client, err := NewSAMDGForwarderFromOptions(SetReduceIdleQuantity(4))
+	client, err := NewSAMDGForwarderFromOptions(samoptions.SetReduceIdleQuantity(4))
 	if err != nil {
 		t.Fatalf("NewSAMDGForwarder() Error: %q\n", err)
 	}
@@ -94,7 +96,7 @@ func TestOptionUDPReduceIdleQuantity(t *testing.T) {
 }
 
 func TestOptionUDPEncryptLease(t *testing.T) {
-	client, err := NewSAMDGForwarderFromOptions(SetEncrypt(true))
+	client, err := NewSAMDGForwarderFromOptions(samoptions.SetEncrypt(true))
 	if err != nil {
 		t.Fatalf("NewSAMDGForwarder() Error: %q\n", err)
 	}
@@ -102,7 +104,7 @@ func TestOptionUDPEncryptLease(t *testing.T) {
 }
 
 func TestOptionUDPSaveFile(t *testing.T) {
-	client, err := NewSAMDGForwarderFromOptions(SetSaveFile(true))
+	client, err := NewSAMDGForwarderFromOptions(samoptions.SetSaveFile(true))
 	if err != nil {
 		t.Fatalf("NewSAMDGForwarder() Error: %q\n", err)
 	}
@@ -110,7 +112,7 @@ func TestOptionUDPSaveFile(t *testing.T) {
 }
 
 func TestClientOptionHost(t *testing.T) {
-	client, err := NewSAMDGClientForwarderFromOptions(SetClientHost("127.0.0.1"))
+	client, err := NewSAMDGClientForwarderFromOptions(samoptions.SetHost("127.0.0.1"))
 	if err != nil {
 		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
 	}
@@ -118,7 +120,7 @@ func TestClientOptionHost(t *testing.T) {
 }
 
 func TestClientOptionPort(t *testing.T) {
-	client, err := NewSAMDGClientForwarderFromOptions(SetClientSAMPort("7656"))
+	client, err := NewSAMDGClientForwarderFromOptions(samoptions.SetSAMPort("7656"))
 	if err != nil {
 		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
 	}
@@ -126,7 +128,7 @@ func TestClientOptionPort(t *testing.T) {
 }
 
 func TestClientOptionInLength(t *testing.T) {
-	client, err := NewSAMDGClientForwarderFromOptions(SetClientInLength(3))
+	client, err := NewSAMDGClientForwarderFromOptions(samoptions.SetInLength(3))
 	if err != nil {
 		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
 	}
@@ -134,7 +136,7 @@ func TestClientOptionInLength(t *testing.T) {
 }
 
 func TestClientOptionOutLength(t *testing.T) {
-	client, err := NewSAMDGClientForwarderFromOptions(SetClientInLength(3))
+	client, err := NewSAMDGClientForwarderFromOptions(samoptions.SetInLength(3))
 	if err != nil {
 		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
 	}
@@ -142,7 +144,7 @@ func TestClientOptionOutLength(t *testing.T) {
 }
 
 func TestClientOptionInVariance(t *testing.T) {
-	client, err := NewSAMDGClientForwarderFromOptions(SetClientInVariance(1))
+	client, err := NewSAMDGClientForwarderFromOptions(samoptions.SetInVariance(1))
 	if err != nil {
 		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
 	}
@@ -150,7 +152,7 @@ func TestClientOptionInVariance(t *testing.T) {
 }
 
 func TestClientOptionOutVariance(t *testing.T) {
-	client, err := NewSAMDGClientForwarderFromOptions(SetClientOutVariance(1))
+	client, err := NewSAMDGClientForwarderFromOptions(samoptions.SetOutVariance(1))
 	if err != nil {
 		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
 	}
@@ -158,7 +160,7 @@ func TestClientOptionOutVariance(t *testing.T) {
 }
 
 func TestClientOptionInQuantity(t *testing.T) {
-	client, err := NewSAMDGClientForwarderFromOptions(SetClientInQuantity(6))
+	client, err := NewSAMDGClientForwarderFromOptions(samoptions.SetInQuantity(6))
 	if err != nil {
 		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
 	}
@@ -166,7 +168,7 @@ func TestClientOptionInQuantity(t *testing.T) {
 }
 
 func TestClientOptionOutQuantity(t *testing.T) {
-	client, err := NewSAMDGClientForwarderFromOptions(SetClientOutQuantity(6))
+	client, err := NewSAMDGClientForwarderFromOptions(samoptions.SetOutQuantity(6))
 	if err != nil {
 		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
 	}
@@ -174,7 +176,7 @@ func TestClientOptionOutQuantity(t *testing.T) {
 }
 
 func TestClientOptionInBackups(t *testing.T) {
-	client, err := NewSAMDGClientForwarderFromOptions(SetClientInBackups(5))
+	client, err := NewSAMDGClientForwarderFromOptions(samoptions.SetInBackups(5))
 	if err != nil {
 		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
 	}
@@ -182,7 +184,7 @@ func TestClientOptionInBackups(t *testing.T) {
 }
 
 func TestClientOptionOutBackups(t *testing.T) {
-	client, err := NewSAMDGClientForwarderFromOptions(SetClientOutBackups(5))
+	client, err := NewSAMDGClientForwarderFromOptions(samoptions.SetOutBackups(5))
 	if err != nil {
 		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
 	}
@@ -190,7 +192,7 @@ func TestClientOptionOutBackups(t *testing.T) {
 }
 
 func TestClientOptionReduceIdleQuantity(t *testing.T) {
-	client, err := NewSAMDGClientForwarderFromOptions(SetClientReduceIdleQuantity(4))
+	client, err := NewSAMDGClientForwarderFromOptions(samoptions.SetReduceIdleQuantity(4))
 	if err != nil {
 		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
 	}
@@ -198,7 +200,7 @@ func TestClientOptionReduceIdleQuantity(t *testing.T) {
 }
 
 func TestClientOptionReduceIdleTimeMs(t *testing.T) {
-	client, err := NewSAMDGClientForwarderFromOptions(SetClientReduceIdleTimeMs(300000))
+	client, err := NewSAMDGClientForwarderFromOptions(samoptions.SetReduceIdleTimeMs(300000))
 	if err != nil {
 		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
 	}
@@ -206,7 +208,7 @@ func TestClientOptionReduceIdleTimeMs(t *testing.T) {
 }
 
 func TestClientOptionReduceIdleTime(t *testing.T) {
-	client, err := NewSAMDGClientForwarderFromOptions(SetClientReduceIdleTime(6))
+	client, err := NewSAMDGClientForwarderFromOptions(samoptions.SetReduceIdleTime(6))
 	if err != nil {
 		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
 	}
@@ -214,7 +216,7 @@ func TestClientOptionReduceIdleTime(t *testing.T) {
 }
 
 func TestClientOptionCloseIdleTimeMs(t *testing.T) {
-	client, err := NewSAMDGClientForwarderFromOptions(SetClientCloseIdleTimeMs(300000))
+	client, err := NewSAMDGClientForwarderFromOptions(samoptions.SetCloseIdleTimeMs(300000))
 	if err != nil {
 		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
 	}
@@ -222,7 +224,7 @@ func TestClientOptionCloseIdleTimeMs(t *testing.T) {
 }
 
 func TestClientOptionCloseIdleTime(t *testing.T) {
-	client, err := NewSAMDGClientForwarderFromOptions(SetClientCloseIdleTime(6))
+	client, err := NewSAMDGClientForwarderFromOptions(samoptions.SetCloseIdleTime(6))
 	if err != nil {
 		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
 	}
@@ -230,7 +232,7 @@ func TestClientOptionCloseIdleTime(t *testing.T) {
 }
 
 func TestClientOptionEncryptLease(t *testing.T) {
-	client, err := NewSAMDGClientForwarderFromOptions(SetClientEncrypt(true))
+	client, err := NewSAMDGClientForwarderFromOptions(samoptions.SetEncrypt(true))
 	if err != nil {
 		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
 	}
@@ -238,7 +240,7 @@ func TestClientOptionEncryptLease(t *testing.T) {
 }
 
 func TestClientOptionSaveFile(t *testing.T) {
-	client, err := NewSAMDGClientForwarderFromOptions(SetClientSaveFile(true))
+	client, err := NewSAMDGClientForwarderFromOptions(samoptions.SetSaveFile(true))
 	if err != nil {
 		t.Fatalf("NewSAMForwarder() Error: %q\n", err)
 	}
