@@ -70,6 +70,7 @@ type Conf struct {
 	UseTLS                    bool       `default:false`
 	Cert                      string     `default:""`
 	Pem                       string     `default:""`
+	HostName                  string     `default:""`
 	//TLSConf                   *tls.Config
 	LoadedKeys i2pkeys.I2PKeys
 }

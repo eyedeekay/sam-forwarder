@@ -2,7 +2,9 @@ package i2ptunconf
 
 import (
 	"crypto/tls"
-	"log"
+	"strings"
+
+	"github.com/eyedeekay/sam-forwarder/tls"
 )
 
 // GetPort443 takes an argument and a default. If the argument differs from the
@@ -62,7 +64,7 @@ func (c *Conf) GetTLSConfig(arg, def string, label ...string) string {
 	if c.Config == nil {
 		return arg
 	}
-	if x, o := c.Get("cert", label...); o {
+	if x, o := c.Get("cert.pem", label...); o {
 		return x
 	}
 	return arg
@@ -70,7 +72,7 @@ func (c *Conf) GetTLSConfig(arg, def string, label ...string) string {
 
 // SetClientDest sets the key name from the config file
 func (c *Conf) SetTLSConfig(label ...string) {
-	if v, ok := c.Get("cert", label...); ok {
+	if v, ok := c.Get("cert.pem", label...); ok {
 		c.Cert = v
 	} else {
 		c.Cert = ""
@@ -85,7 +87,7 @@ func (c *Conf) GetTLSConfigPem(arg, def string, label ...string) string {
 	if c.Config == nil {
 		return arg
 	}
-	if x, o := c.Get("pem", label...); o {
+	if x, o := c.Get("key.pem", label...); o {
 		return x
 	}
 	return arg
@@ -93,17 +95,17 @@ func (c *Conf) GetTLSConfigPem(arg, def string, label ...string) string {
 
 // SetClientDest sets the key name from the config file
 func (c *Conf) SetTLSConfigPem(label ...string) {
-	if v, ok := c.Get("pem", label...); ok {
+	if v, ok := c.Get("key.pem", label...); ok {
 		c.Pem = v
 	} else {
 		c.Pem = ""
 	}
 }
 
-func (c *Conf) TLSConfig() *tls.Config {
-	cert, err := tls.LoadX509KeyPair(c.Cert, c.Pem)
-	if err != nil {
-		log.Fatal(err)
+func (c *Conf) TLSConfig() (*tls.Config, error) {
+	names := []string{c.Base32()}
+	if c.HostName != "" && strings.HasSuffix(c.HostName, ".i2p") {
+		names = append(names, c.HostName)
 	}
-	return &tls.Config{Certificates: []tls.Certificate{cert}}
+	return i2ptls.TLSConfig(c.Cert, c.Pem, names)
 }

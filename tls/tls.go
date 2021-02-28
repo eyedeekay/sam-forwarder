@@ -8,6 +8,7 @@ import (
 	"crypto/x509/pkix"
 	"encoding/pem"
 	"log"
+	"math/big"
 	"os"
 )
 
@@ -18,9 +19,15 @@ func CheckFile(path string) bool {
 	return true
 }
 
-func Certificate(Cert, Pem string, names []string, priv *ed25519.PrivateKey) (*tls.Certificate, error) {
+func CertPemificate(CertPem, KeyPem string, names []string, priv ed25519.PrivateKey) (tls.Certificate, error) {
+
+	serialNumberLimit := new(big.Int).Lsh(big.NewInt(1), 128)
+	serialNumber, err := rand.Int(rand.Reader, serialNumberLimit)
+	if err != nil {
+		log.Fatalf("Failed to generate serial number: %v", err)
+	}
 	template := x509.Certificate{
-		//		SerialNumber: serialNumber,
+		SerialNumber: serialNumber,
 		Subject: pkix.Name{
 			Organization: []string{"Acme Co"},
 		},
@@ -30,27 +37,28 @@ func Certificate(Cert, Pem string, names []string, priv *ed25519.PrivateKey) (*t
 		ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth},
 		BasicConstraintsValid: true,
 	}
-	template.DNSNames = append(template.DNSNames, names...)
-
+	if len(names) > 0 {
+		template.DNSNames = append(template.DNSNames, names...)
+	}
 	derBytes, err := x509.CreateCertificate(rand.Reader, &template, &template, priv.Public().(ed25519.PublicKey), priv)
 	if err != nil {
 		log.Fatalf("Failed to create certificate: %v", err)
 	}
-	certOut, err := os.Create(Cert)
+	certOut, err := os.Create(CertPem)
 	if err != nil {
-		log.Fatalf("Failed to open "+Cert+" for writing: %v", err)
+		log.Fatalf("Failed to open "+CertPem+" for writing: %v", err)
 	}
 	if err := pem.Encode(certOut, &pem.Block{Type: "CERTIFICATE", Bytes: derBytes}); err != nil {
-		log.Fatalf("Failed to write data to "+Cert+": %v", err)
+		log.Fatalf("Failed to write data to "+CertPem+": %v", err)
 	}
 	if err := certOut.Close(); err != nil {
-		log.Fatalf("Error closing "+Cert+": %v", err)
+		log.Fatalf("Error closing "+CertPem+": %v", err)
 	}
-	log.Print("wrote " + Cert + "\n")
+	log.Print("wrote " + CertPem + "\n")
 
-	keyOut, err := os.OpenFile(Pem, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600)
+	keyOut, err := os.OpenFile(KeyPem, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600)
 	if err != nil {
-		log.Fatalf("Failed to open "+Pem+" for writing: %v", err)
+		log.Fatalf("Failed to open "+KeyPem+" for writing: %v", err)
 	}
 	privBytes, err := x509.MarshalPKCS8PrivateKey(priv)
 	if err != nil {
@@ -62,25 +70,31 @@ func Certificate(Cert, Pem string, names []string, priv *ed25519.PrivateKey) (*t
 	if err := keyOut.Close(); err != nil {
 		log.Fatalf("Error closing key.pem: %v", err)
 	}
-	return tls.LoadX509KeyPair(Cert, Pem)
+	return tls.LoadX509KeyPair(CertPem, KeyPem)
 }
 
-func TLSConfig(Cert, Pem string, names []string) *tls.Config {
-	if CheckFile(Cert) && CheckFile(Pem) {
-		cert, err := tls.LoadX509KeyPair(Cert, Pem)
+func TLSConfig(CertPem, KeyPem string, names []string) (*tls.Config, error) {
+	var ServerName string
+	if len(names) > 0 {
+		ServerName = names[0]
+	}
+
+	if CheckFile(CertPem) && CheckFile(KeyPem) {
+		cert, err := tls.LoadX509KeyPair(CertPem, KeyPem)
 		if err != nil {
-			log.Fatal(err)
+			return nil, err
 		}
-		return &tls.Config{Certificates: []tls.Certificate{cert}}
+
+		return &tls.Config{Certificates: []tls.Certificate{cert}, ServerName: ServerName}, nil
 	} else {
 		_, priv, err := ed25519.GenerateKey(rand.Reader)
 		if err != nil {
-			log.Fatal(err)
+			return nil, err
 		}
-		cert, err := Certificate(Cert, Pem, names, priv)
+		cert, err := CertPemificate(CertPem, KeyPem, names, priv)
 		if err != nil {
-			log.Fatal(err)
+			return nil, err
 		}
-		return &tls.Config{Certificates: []tls.Certificate{cert}}
+		return &tls.Config{Certificates: []tls.Certificate{cert}, ServerName: ServerName}, nil
 	}
 }

@@ -5,3 +5,5 @@ bin/*
 */*.i2pkeys
 README.md.asc
 samcatd
+*/*.pem
+*.pem
