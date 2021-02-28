@@ -284,6 +284,9 @@ func (c *Conf) I2PINILoad(iniFile string, label ...string) error {
 		c.SetControlHost(label...)
 		c.SetControlPort(label...)
 		c.SetWWWDir(label...)
+		c.SetUseTLS(label...)
+		c.SetTLSConfigCertPem(label...)
+		c.SetTLSConfigKeyPem(label...)
 		if v, ok := c.Get("i2cp.accessList", label...); ok {
 			csv := strings.Split(v, ",")
 			for _, z := range csv {

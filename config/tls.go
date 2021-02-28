@@ -57,7 +57,7 @@ func (c *Conf) SetUseTLS(label ...string) {
 }
 
 // GetTLSConfig
-func (c *Conf) GetTLSConfig(arg, def string, label ...string) string {
+func (c *Conf) GetTLSConfigCertPem(arg, def string, label ...string) string {
 	if arg != def {
 		return arg
 	}
@@ -71,7 +71,7 @@ func (c *Conf) GetTLSConfig(arg, def string, label ...string) string {
 }
 
 // SetClientDest sets the key name from the config file
-func (c *Conf) SetTLSConfig(label ...string) {
+func (c *Conf) SetTLSConfigCertPem(label ...string) {
 	if v, ok := c.Get("cert.pem", label...); ok {
 		c.Cert = v
 	} else {
@@ -80,7 +80,7 @@ func (c *Conf) SetTLSConfig(label ...string) {
 }
 
 // GetTLSConfig
-func (c *Conf) GetTLSConfigPem(arg, def string, label ...string) string {
+func (c *Conf) GetTLSConfigKeyPem(arg, def string, label ...string) string {
 	if arg != def {
 		return arg
 	}
@@ -94,7 +94,7 @@ func (c *Conf) GetTLSConfigPem(arg, def string, label ...string) string {
 }
 
 // SetClientDest sets the key name from the config file
-func (c *Conf) SetTLSConfigPem(label ...string) {
+func (c *Conf) SetTLSConfigKeyPem(label ...string) {
 	if v, ok := c.Get("key.pem", label...); ok {
 		c.Pem = v
 	} else {
