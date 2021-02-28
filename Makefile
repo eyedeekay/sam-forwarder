@@ -25,6 +25,7 @@ echo:
 	@echo "$(GOPATH)"
 	find . -path ./.go -prune -o -name "*.go" -exec gofmt -w {} \;
 	find . -path ./.go -prune -o -name "*.i2pkeys" -exec rm {} \;
+	find . -path ./.go -prune -o -name "*.pem" -exec rm {} \;
 	find . -path ./.go -prune -o -name "*.go" -exec cat {} \; | nl
 
 tag:
