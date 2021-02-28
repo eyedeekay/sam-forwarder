@@ -361,7 +361,7 @@ func (f *SAMForwarder) Serve() error {
 		log.Println("SAM Listener created,", f.Base32())
 		log.Println("Human-readable hash:\n   ", f.Base32Readable())
 		if f.Conf.UseTLS {
-			f.publishListen = tls.NewListener(publishListen, f.Conf.TLSConf)
+			f.publishListen = tls.NewListener(publishListen, f.Conf.TLSConfig())
 		} else {
 			f.publishListen = publishListen
 		}

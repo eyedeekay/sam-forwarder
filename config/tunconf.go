@@ -1,7 +1,7 @@
 package i2ptunconf
 
 import (
-	"crypto/tls"
+	//	"crypto/tls"
 	"io/ioutil"
 	"log"
 	"os"
@@ -68,8 +68,10 @@ type Conf struct {
 	UserName                  string     `default:""`
 	Password                  string     `default:""`
 	UseTLS                    bool       `default:false`
-	TLSConf                   *tls.Config
-	LoadedKeys                i2pkeys.I2PKeys
+	Cert                      string     `default:""`
+	Pem                       string     `default:""`
+	//TLSConf                   *tls.Config
+	LoadedKeys i2pkeys.I2PKeys
 }
 
 // PrintSlice returns and prints a formatted list of configured tunnel settings.

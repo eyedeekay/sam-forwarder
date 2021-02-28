@@ -1,6 +1,10 @@
 package samtunnelhandler
 
-import "fmt"
+import (
+	"fmt"
+	"net/http"
+	"strings"
+)
 
 func DefaultCSS() string {
 	return `.server {

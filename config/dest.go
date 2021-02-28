@@ -22,6 +22,6 @@ func (c *Conf) SetClientDest(label ...string) {
 	if v, ok := c.Get("destination", label...); ok {
 		c.ClientDest = v
 	} else {
-		c.ClientDest = v
+		c.ClientDest = ""
 	}
 }
