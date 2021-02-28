@@ -2,6 +2,7 @@ package samforwarder
 
 import (
 	"bufio"
+	"crypto/tls"
 	"io"
 	"log"
 	"net"
@@ -29,7 +30,7 @@ type SAMForwarder struct {
 	SamKeys       i2pkeys.I2PKeys
 	Hasher        *hashhash.Hasher
 	publishStream *sam3.StreamSession
-	publishListen *sam3.StreamListener
+	publishListen net.Listener //*sam3.StreamListener
 	Bytes         map[string]int64
 	ByteLimit     int64
 
@@ -198,12 +199,12 @@ func (f *SAMForwarder) sam() string {
 	return f.Config().SamHost + ":" + f.Config().SamPort
 }
 
-func (f *SAMForwarder) ClientBase64(conn *sam3.SAMConn) string {
+func (f *SAMForwarder) ClientBase64(conn net.Conn) string {
 	dest := conn.RemoteAddr().(i2pkeys.I2PAddr)
 	return dest.Base32()
 }
 
-func (f *SAMForwarder) HTTPRequestBytes(conn *sam3.SAMConn) ([]byte, *http.Request, error) {
+func (f *SAMForwarder) HTTPRequestBytes(conn net.Conn) ([]byte, *http.Request, error) {
 	var request *http.Request
 	var retrequest []byte
 	var err error
@@ -249,7 +250,7 @@ func (f *SAMForwarder) clientUnlockAndClose(cli, conn bool, client net.Conn) {
 	}
 }
 
-func (f *SAMForwarder) connUnlockAndClose(cli, conn bool, connection *sam3.SAMConn) {
+func (f *SAMForwarder) connUnlockAndClose(cli, conn bool, connection net.Conn) {
 	if cli {
 		f.connClientLock = cli
 	}
@@ -263,7 +264,7 @@ func (f *SAMForwarder) connUnlockAndClose(cli, conn bool, connection *sam3.SAMCo
 	}
 }
 
-func (f *SAMForwarder) forward(conn *sam3.SAMConn) { //(conn net.Conn) {
+func (f *SAMForwarder) forward(conn net.Conn) { //(conn net.Conn) {
 	if !f.Up() {
 		return
 	}
@@ -351,15 +352,20 @@ func (f *SAMForwarder) Serve() error {
 			return err
 		}
 		log.Println("SAM stream session established.")
-		if f.publishListen, err = f.publishStream.Listen(); err != nil {
+		publishListen, err := f.publishStream.Listen()
+		if err != nil {
 			return err
 		}
 		log.Println("Starting Listener.")
 		log.Println("SAM Listener created,", f.Base32())
 		log.Println("Human-readable hash:\n   ", f.Base32Readable())
-
+		if f.Conf.UseTLS {
+			f.publishListen = tls.NewListener(publishListen, f.Conf.TLSConf)
+		} else {
+			f.publishListen = publishListen
+		}
 		for {
-			conn, err := f.publishListen.AcceptI2P()
+			conn, err := f.publishListen.Accept()
 			if err != nil {
 				log.Printf("ERROR: failed to accept listener: %v", err)
 				return nil
@@ -414,12 +420,12 @@ func (s *SAMForwarder) Load() (samtunnel.SAMTunnel, error) {
 }
 
 //NewSAMForwarder makes a new SAM forwarder with default options, accepts host:port arguments
-func NewSAMForwarder(host, port string) (*SAMForwarder, error) {
+func NewSAMForwarder(host, port string) (samtunnel.SAMTunnel, error) {
 	return NewSAMForwarderFromOptions(SetHost(host), SetPort(port))
 }
 
 //NewSAMForwarderFromOptions makes a new SAM forwarder with default options, accepts host:port arguments
-func NewSAMForwarderFromOptions(opts ...func(*SAMForwarder) error) (*SAMForwarder, error) {
+func NewSAMForwarderFromOptions(opts ...func(samtunnel.SAMTunnel) error) (*SAMForwarder, error) {
 	var s SAMForwarder
 	s.Conf = i2ptunconf.NewI2PBlankTunConf()
 	s.clientLock = false

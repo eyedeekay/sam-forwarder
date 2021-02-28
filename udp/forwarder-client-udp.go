@@ -282,7 +282,7 @@ func (s *SAMDGClientForwarder) Load() (samtunnel.SAMTunnel, error) {
 }
 
 //NewSAMDGClientForwarderFromOptions makes a new SAM forwarder with default options, accepts host:port arguments
-func NewSAMDGClientForwarderFromOptions(opts ...func(*SAMDGClientForwarder) error) (*SAMDGClientForwarder, error) {
+func NewSAMDGClientForwarderFromOptions(opts ...func(samtunnel.SAMTunnel) error) (*SAMDGClientForwarder, error) {
 	var s SAMDGClientForwarder
 	s.Conf = i2ptunconf.NewI2PBlankTunConf()
 	s.Conf.Type = "udpclient"

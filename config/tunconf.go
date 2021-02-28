@@ -1,6 +1,7 @@
 package i2ptunconf
 
 import (
+	"crypto/tls"
 	"io/ioutil"
 	"log"
 	"os"
@@ -66,6 +67,8 @@ type Conf struct {
 	exists                    bool       `default:false`
 	UserName                  string     `default:""`
 	Password                  string     `default:""`
+	UseTLS                    bool       `default:false`
+	TLSConf                   *tls.Config
 	LoadedKeys                i2pkeys.I2PKeys
 }
 

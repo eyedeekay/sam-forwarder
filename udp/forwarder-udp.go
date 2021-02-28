@@ -300,12 +300,12 @@ func (f *SAMDGForwarder) Up() bool {
 }
 
 //NewSAMDGForwarder makes a new SAM forwarder with default options, accepts host:port arguments
-func NewSAMDGForwarder(host, port string) (*SAMDGForwarder, error) {
+func NewSAMDGForwarder(host, port string) (samtunnel.SAMTunnel, error) {
 	return NewSAMDGForwarderFromOptions(SetHost(host), SetPort(port))
 }
 
 //NewSAMDGForwarderFromOptions makes a new SAM forwarder with default options, accepts host:port arguments
-func NewSAMDGForwarderFromOptions(opts ...func(*SAMDGForwarder) error) (*SAMDGForwarder, error) {
+func NewSAMDGForwarderFromOptions(opts ...func(samtunnel.SAMTunnel) error) (*SAMDGForwarder, error) {
 	var s SAMDGForwarder
 	s.Conf = i2ptunconf.NewI2PBlankTunConf()
 	s.Conf.Type = "udpserver"

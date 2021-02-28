@@ -3,79 +3,81 @@ package samforwarder
 import (
 	"fmt"
 	"strconv"
+
+	"github.com/eyedeekay/sam-forwarder/interface"
 )
 
 //Option is a SAMForwarder Option
-type Option func(*SAMForwarder) error
+type Option func(samtunnel.SAMTunnel) error
 
 //SetFilePath sets the path to save the config file at.
-func SetFilePath(s string) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
-		c.Conf.FilePath = s
+func SetFilePath(s string) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
+		c.Config().FilePath = s
 		return nil
 	}
 }
 
 //SetType sets the type of the forwarder server
-func SetType(s string) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
+func SetType(s string) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
 		if s == "http" {
-			c.Conf.Type = s
+			c.Config().Type = s
 			return nil
 		} else {
-			c.Conf.Type = "server"
+			c.Config().Type = "server"
 			return nil
 		}
 	}
 }
 
 //SetSigType sets the type of the forwarder server
-func SetSigType(s string) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
+func SetSigType(s string) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
 		if s == "" {
-			c.Conf.SigType = ""
+			c.Config().SigType = ""
 		} else if s == "DSA_SHA1" {
-			c.Conf.SigType = "DSA_SHA1"
+			c.Config().SigType = "DSA_SHA1"
 		} else if s == "ECDSA_SHA256_P256" {
-			c.Conf.SigType = "ECDSA_SHA256_P256"
+			c.Config().SigType = "ECDSA_SHA256_P256"
 		} else if s == "ECDSA_SHA384_P384" {
-			c.Conf.SigType = "ECDSA_SHA384_P384"
+			c.Config().SigType = "ECDSA_SHA384_P384"
 		} else if s == "ECDSA_SHA512_P521" {
-			c.Conf.SigType = "ECDSA_SHA512_P521"
+			c.Config().SigType = "ECDSA_SHA512_P521"
 		} else if s == "EdDSA_SHA512_Ed25519" {
-			c.Conf.SigType = "EdDSA_SHA512_Ed25519"
+			c.Config().SigType = "EdDSA_SHA512_Ed25519"
 		} else {
-			c.Conf.SigType = "EdDSA_SHA512_Ed25519"
+			c.Config().SigType = "EdDSA_SHA512_Ed25519"
 		}
 		return nil
 	}
 }
 
 //SetSaveFile tells the router to save the tunnel's keys long-term
-func SetSaveFile(b bool) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
-		c.Conf.SaveFile = b
+func SetSaveFile(b bool) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
+		c.Config().SaveFile = b
 		return nil
 	}
 }
 
 //SetHost sets the host of the service to forward
-func SetHost(s string) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
-		c.Conf.TargetHost = s
+func SetHost(s string) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
+		c.Config().TargetHost = s
 		return nil
 	}
 }
 
 //SetPort sets the port of the service to forward
-func SetPort(s string) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
+func SetPort(s string) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
 		port, err := strconv.Atoi(s)
 		if err != nil {
 			return fmt.Errorf("Invalid TCP Server Target Port %s; non-number ", s)
 		}
 		if port < 65536 && port > -1 {
-			c.Conf.TargetPort = s
+			c.Config().TargetPort = s
 			return nil
 		}
 		return fmt.Errorf("Invalid port")
@@ -83,22 +85,22 @@ func SetPort(s string) func(*SAMForwarder) error {
 }
 
 //SetSAMHost sets the host of the SAMForwarder's SAM bridge
-func SetSAMHost(s string) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
-		c.Conf.SamHost = s
+func SetSAMHost(s string) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
+		c.Config().SamHost = s
 		return nil
 	}
 }
 
 //SetSAMPort sets the port of the SAMForwarder's SAM bridge using a string
-func SetSAMPort(s string) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
+func SetSAMPort(s string) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
 		port, err := strconv.Atoi(s)
 		if err != nil {
 			return fmt.Errorf("Invalid SAM Port %s; non-number", s)
 		}
 		if port < 65536 && port > -1 {
-			c.Conf.SamPort = s
+			c.Config().SamPort = s
 			return nil
 		}
 		return fmt.Errorf("Invalid port")
@@ -106,18 +108,18 @@ func SetSAMPort(s string) func(*SAMForwarder) error {
 }
 
 //SetName sets the host of the SAMForwarder's SAM bridge
-func SetName(s string) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
-		c.Conf.TunName = s
+func SetName(s string) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
+		c.Config().TunName = s
 		return nil
 	}
 }
 
 //SetInLength sets the number of hops inbound
-func SetInLength(u int) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
+func SetInLength(u int) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
 		if u < 7 && u >= 0 {
-			c.Conf.InLength = u
+			c.Config().InLength = u
 			return nil
 		}
 		return fmt.Errorf("Invalid inbound tunnel length")
@@ -125,10 +127,10 @@ func SetInLength(u int) func(*SAMForwarder) error {
 }
 
 //SetOutLength sets the number of hops outbound
-func SetOutLength(u int) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
+func SetOutLength(u int) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
 		if u < 7 && u >= 0 {
-			c.Conf.OutLength = u
+			c.Config().OutLength = u
 			return nil
 		}
 		return fmt.Errorf("Invalid outbound tunnel length")
@@ -136,10 +138,10 @@ func SetOutLength(u int) func(*SAMForwarder) error {
 }
 
 //SetInVariance sets the variance of a number of hops inbound
-func SetInVariance(i int) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
+func SetInVariance(i int) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
 		if i < 7 && i > -7 {
-			c.Conf.InVariance = i
+			c.Config().InVariance = i
 			return nil
 		}
 		return fmt.Errorf("Invalid inbound tunnel length")
@@ -147,10 +149,10 @@ func SetInVariance(i int) func(*SAMForwarder) error {
 }
 
 //SetOutVariance sets the variance of a number of hops outbound
-func SetOutVariance(i int) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
+func SetOutVariance(i int) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
 		if i < 7 && i > -7 {
-			c.Conf.OutVariance = i
+			c.Config().OutVariance = i
 			return nil
 		}
 		return fmt.Errorf("Invalid outbound tunnel variance")
@@ -158,10 +160,10 @@ func SetOutVariance(i int) func(*SAMForwarder) error {
 }
 
 //SetInQuantity sets the inbound tunnel quantity
-func SetInQuantity(u int) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
+func SetInQuantity(u int) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
 		if u <= 16 && u > 0 {
-			c.Conf.InQuantity = u
+			c.Config().InQuantity = u
 			return nil
 		}
 		return fmt.Errorf("Invalid inbound tunnel quantity")
@@ -169,10 +171,10 @@ func SetInQuantity(u int) func(*SAMForwarder) error {
 }
 
 //SetOutQuantity sets the outbound tunnel quantity
-func SetOutQuantity(u int) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
+func SetOutQuantity(u int) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
 		if u <= 16 && u > 0 {
-			c.Conf.OutQuantity = u
+			c.Config().OutQuantity = u
 			return nil
 		}
 		return fmt.Errorf("Invalid outbound tunnel quantity")
@@ -180,10 +182,10 @@ func SetOutQuantity(u int) func(*SAMForwarder) error {
 }
 
 //SetInBackups sets the inbound tunnel backups
-func SetInBackups(u int) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
+func SetInBackups(u int) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
 		if u < 6 && u >= 0 {
-			c.Conf.InBackupQuantity = u
+			c.Config().InBackupQuantity = u
 			return nil
 		}
 		return fmt.Errorf("Invalid inbound tunnel backup quantity")
@@ -191,10 +193,10 @@ func SetInBackups(u int) func(*SAMForwarder) error {
 }
 
 //SetOutBackups sets the inbound tunnel backups
-func SetOutBackups(u int) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
+func SetOutBackups(u int) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
 		if u < 6 && u >= 0 {
-			c.Conf.OutBackupQuantity = u
+			c.Config().OutBackupQuantity = u
 			return nil
 		}
 		return fmt.Errorf("Invalid outbound tunnel backup quantity")
@@ -202,115 +204,115 @@ func SetOutBackups(u int) func(*SAMForwarder) error {
 }
 
 //SetEncrypt tells the router to use an encrypted leaseset
-func SetEncrypt(b bool) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
+func SetEncrypt(b bool) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
 		if b {
-			c.Conf.EncryptLeaseSet = true
+			c.Config().EncryptLeaseSet = true
 			return nil
 		}
-		c.Conf.EncryptLeaseSet = false
+		c.Config().EncryptLeaseSet = false
 		return nil
 	}
 }
 
 //SetLeaseSetKey sets the host of the SAMForwarder's SAM bridge
-func SetLeaseSetKey(s string) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
-		c.Conf.LeaseSetKey = s
+func SetLeaseSetKey(s string) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
+		c.Config().LeaseSetKey = s
 		return nil
 	}
 }
 
 //SetLeaseSetPrivateKey sets the host of the SAMForwarder's SAM bridge
-func SetLeaseSetPrivateKey(s string) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
-		c.Conf.LeaseSetPrivateKey = s
+func SetLeaseSetPrivateKey(s string) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
+		c.Config().LeaseSetPrivateKey = s
 		return nil
 	}
 }
 
 //SetLeaseSetPrivateSigningKey sets the host of the SAMForwarder's SAM bridge
-func SetLeaseSetPrivateSigningKey(s string) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
-		c.Conf.LeaseSetPrivateSigningKey = s
+func SetLeaseSetPrivateSigningKey(s string) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
+		c.Config().LeaseSetPrivateSigningKey = s
 		return nil
 	}
 }
 
 //SetMessageReliability sets the host of the SAMForwarder's SAM bridge
-func SetMessageReliability(s string) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
-		c.Conf.MessageReliability = s
+func SetMessageReliability(s string) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
+		c.Config().MessageReliability = s
 		return nil
 	}
 }
 
 //SetAllowZeroIn tells the tunnel to accept zero-hop peers
-func SetAllowZeroIn(b bool) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
+func SetAllowZeroIn(b bool) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
 		if b {
-			c.Conf.InAllowZeroHop = true
+			c.Config().InAllowZeroHop = true
 			return nil
 		}
-		c.Conf.InAllowZeroHop = false
+		c.Config().InAllowZeroHop = false
 		return nil
 	}
 }
 
 //SetAllowZeroOut tells the tunnel to accept zero-hop peers
-func SetAllowZeroOut(b bool) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
+func SetAllowZeroOut(b bool) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
 		if b {
-			c.Conf.OutAllowZeroHop = true
+			c.Config().OutAllowZeroHop = true
 			return nil
 		}
-		c.Conf.OutAllowZeroHop = false
+		c.Config().OutAllowZeroHop = false
 		return nil
 	}
 }
 
 //SetCompress tells clients to use compression
-func SetCompress(b bool) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
+func SetCompress(b bool) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
 		if b {
-			c.Conf.UseCompression = true
+			c.Config().UseCompression = true
 			return nil
 		}
-		c.Conf.UseCompression = false
+		c.Config().UseCompression = false
 		return nil
 	}
 }
 
 //SetFastRecieve tells clients to use compression
-func SetFastRecieve(b bool) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
+func SetFastRecieve(b bool) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
 		if b {
-			c.Conf.FastRecieve = true
+			c.Config().FastRecieve = true
 			return nil
 		}
-		c.Conf.FastRecieve = false
+		c.Config().FastRecieve = false
 		return nil
 	}
 }
 
 //SetReduceIdle tells the connection to reduce it's tunnels during extended idle time.
-func SetReduceIdle(b bool) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
+func SetReduceIdle(b bool) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
 		if b {
-			c.Conf.ReduceIdle = true
+			c.Config().ReduceIdle = true
 			return nil
 		}
-		c.Conf.ReduceIdle = false
+		c.Config().ReduceIdle = false
 		return nil
 	}
 }
 
 //SetReduceIdleTime sets the time to wait before reducing tunnels to idle levels
-func SetReduceIdleTime(u int) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
-		c.Conf.ReduceIdleTime = 300000
+func SetReduceIdleTime(u int) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
+		c.Config().ReduceIdleTime = 300000
 		if u >= 6 {
-			c.Conf.ReduceIdleTime = (u * 60) * 1000
+			c.Config().ReduceIdleTime = (u * 60) * 1000
 			return nil
 		}
 		return fmt.Errorf("Invalid reduce idle timeout(Measured in minutes) %v", u)
@@ -318,11 +320,11 @@ func SetReduceIdleTime(u int) func(*SAMForwarder) error {
 }
 
 //SetReduceIdleTimeMs sets the time to wait before reducing tunnels to idle levels in milliseconds
-func SetReduceIdleTimeMs(u int) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
-		c.Conf.ReduceIdleTime = 300000
+func SetReduceIdleTimeMs(u int) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
+		c.Config().ReduceIdleTime = 300000
 		if u >= 300000 {
-			c.Conf.ReduceIdleTime = u
+			c.Config().ReduceIdleTime = u
 			return nil
 		}
 		return fmt.Errorf("Invalid reduce idle timeout(Measured in milliseconds) %v", u)
@@ -330,10 +332,10 @@ func SetReduceIdleTimeMs(u int) func(*SAMForwarder) error {
 }
 
 //SetReduceIdleQuantity sets minimum number of tunnels to reduce to during idle time
-func SetReduceIdleQuantity(u int) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
+func SetReduceIdleQuantity(u int) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
 		if u < 5 {
-			c.Conf.ReduceIdleQuantity = u
+			c.Config().ReduceIdleQuantity = u
 			return nil
 		}
 		return fmt.Errorf("Invalid reduce tunnel quantity")
@@ -341,23 +343,23 @@ func SetReduceIdleQuantity(u int) func(*SAMForwarder) error {
 }
 
 //SetCloseIdle tells the connection to close it's tunnels during extended idle time.
-func SetCloseIdle(b bool) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
+func SetCloseIdle(b bool) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
 		if b {
-			c.Conf.CloseIdle = true
+			c.Config().CloseIdle = true
 			return nil
 		}
-		c.Conf.CloseIdle = false
+		c.Config().CloseIdle = false
 		return nil
 	}
 }
 
 //SetCloseIdleTime sets the time to wait before closing tunnels to idle levels
-func SetCloseIdleTime(u int) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
-		c.Conf.CloseIdleTime = 300000
+func SetCloseIdleTime(u int) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
+		c.Config().CloseIdleTime = 300000
 		if u >= 6 {
-			c.Conf.CloseIdleTime = (u * 60) * 1000
+			c.Config().CloseIdleTime = (u * 60) * 1000
 			return nil
 		}
 		return fmt.Errorf("Invalid close idle timeout(Measured in minutes) %v", u)
@@ -365,11 +367,11 @@ func SetCloseIdleTime(u int) func(*SAMForwarder) error {
 }
 
 //SetCloseIdleTimeMs sets the time to wait before closing tunnels to idle levels in milliseconds
-func SetCloseIdleTimeMs(u int) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
-		c.Conf.CloseIdleTime = 300000
+func SetCloseIdleTimeMs(u int) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
+		c.Config().CloseIdleTime = 300000
 		if u >= 300000 {
-			c.Conf.CloseIdleTime = u
+			c.Config().CloseIdleTime = u
 			return nil
 		}
 		return fmt.Errorf("Invalid close idle timeout(Measured in milliseconds) %v", u)
@@ -377,19 +379,19 @@ func SetCloseIdleTimeMs(u int) func(*SAMForwarder) error {
 }
 
 //SetAccessListType tells the system to treat the AccessList as a allowlist
-func SetAccessListType(s string) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
+func SetAccessListType(s string) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
 		if s == "allowlist" {
-			c.Conf.AccessListType = "allowlist"
+			c.Config().AccessListType = "allowlist"
 			return nil
 		} else if s == "blocklist" {
-			c.Conf.AccessListType = "blocklist"
+			c.Config().AccessListType = "blocklist"
 			return nil
 		} else if s == "none" {
-			c.Conf.AccessListType = ""
+			c.Config().AccessListType = ""
 			return nil
 		} else if s == "" {
-			c.Conf.AccessListType = ""
+			c.Config().AccessListType = ""
 			return nil
 		}
 		return fmt.Errorf("Invalid Access list type(allowlist, blocklist, none)")
@@ -397,11 +399,11 @@ func SetAccessListType(s string) func(*SAMForwarder) error {
 }
 
 //SetAccessList tells the system to treat the AccessList as a allowlist
-func SetAccessList(s []string) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
+func SetAccessList(s []string) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
 		if len(s) > 0 {
 			for _, a := range s {
-				c.Conf.AccessList = append(c.Conf.AccessList, a)
+				c.Config().AccessList = append(c.Config().AccessList, a)
 			}
 			return nil
 		}
@@ -410,14 +412,14 @@ func SetAccessList(s []string) func(*SAMForwarder) error {
 }
 
 //SetTargetForPort sets the port of the SAMForwarder's SAM bridge using a string
-/*func SetTargetForPort443(s string) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
+/*func SetTargetForPort443(s string) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
 		port, err := strconv.Atoi(s)
 		if err != nil {
 			return fmt.Errorf("Invalid Target Port %s; non-number ", s)
 		}
 		if port < 65536 && port > -1 {
-			c.Conf.TargetForPort443 = s
+			c.Config().TargetForPort443 = s
 			return nil
 		}
 		return fmt.Errorf("Invalid port")
@@ -426,9 +428,9 @@ func SetAccessList(s []string) func(*SAMForwarder) error {
 */
 
 //SetKeyFile sets
-func SetKeyFile(s string) func(*SAMForwarder) error {
-	return func(c *SAMForwarder) error {
-		c.Conf.KeyFilePath = s
+func SetKeyFile(s string) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
+		c.Config().KeyFilePath = s
 		return nil
 	}
 }

@@ -258,12 +258,12 @@ func (s *SAMClientForwarder) Load() (samtunnel.SAMTunnel, error) {
 }
 
 //NewSAMClientForwarder makes a new SAM forwarder with default options, accepts host:port arguments
-func NewSAMClientForwarder(host, port string) (*SAMClientForwarder, error) {
+func NewSAMClientForwarder(host, port string) (samtunnel.SAMTunnel, error) {
 	return NewSAMClientForwarderFromOptions(SetClientHost(host), SetClientPort(port))
 }
 
 //NewSAMClientForwarderFromOptions makes a new SAM forwarder with default options, accepts host:port arguments
-func NewSAMClientForwarderFromOptions(opts ...func(*SAMClientForwarder) error) (*SAMClientForwarder, error) {
+func NewSAMClientForwarderFromOptions(opts ...func(samtunnel.SAMTunnel) error) (*SAMClientForwarder, error) {
 	var s SAMClientForwarder
 	s.Conf = i2ptunconf.NewI2PBlankTunConf()
 	s.Conf.Type = "tcpclient"
