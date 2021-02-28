@@ -1,5 +1,7 @@
 package samtunnelhandler
 
+import "fmt"
+
 func DefaultCSS() string {
 	return `.server {
     width: 63%;
@@ -184,4 +186,71 @@ function toggle_visibility_class(id) {
 }
 toggle_visibility_class("prop")
 `
+}
+
+func (t *TunnelHandler) ColorSpan(shortid string) string {
+	r := fmt.Sprintf("  <span id=\"toggle%s\" class=\"control\">\n", t.SAMTunnel.ID())
+	r += fmt.Sprintf("    <a href=\"#\" onclick=\"toggle_visibility_class('%s');\"> Show/Hide %s</a><br>\n", t.SAMTunnel.ID(), t.SAMTunnel.ID())
+	r += fmt.Sprintf("    <a href=\"/%s/color\">Tunnel page</a>\n", t.SAMTunnel.ID())
+	r += fmt.Sprintf("  </span>\n")
+	return r
+}
+
+func (t *TunnelHandler) ColorForm(shortid, tuntype string) string {
+	r := fmt.Sprintf("  </div>\n\n")
+	r += fmt.Sprintf("  <div id=\"%s\" class=\"%s control panel\" >", shortid+".control", tuntype)
+
+	r += fmt.Sprintf("    <form class=\"linkstyle\" name=\"start\" action=\"/%s\" method=\"post\">", shortid)
+	r += fmt.Sprintf("      <input class=\"linkstyle\" type=\"hidden\" value=\"start\" name=\"action\" />")
+	r += fmt.Sprintf("      <input class=\"linkstyle\" type=\"submit\" value=\".[START]\">")
+	r += fmt.Sprintf("    </form>")
+
+	r += fmt.Sprintf("    <form class=\"linkstyle\" name=\"stop\" action=\"/%s\" method=\"post\">", shortid)
+	r += fmt.Sprintf("      <input class=\"linkstyle\" type=\"hidden\" value=\"stop\" name=\"action\" />")
+	r += fmt.Sprintf("      <input class=\"linkstyle\" type=\"submit\" value=\".[STOP].\">")
+	r += fmt.Sprintf("    </form>")
+
+	r += fmt.Sprintf("    <form class=\"linkstyle\" name=\"restart\" action=\"/%s\" method=\"post\">", shortid)
+	r += fmt.Sprintf("      <input class=\"linkstyle\" type=\"hidden\" value=\"restart\" name=\"action\" />")
+	r += fmt.Sprintf("      <input class=\"linkstyle\" type=\"submit\" value=\"[RESTART].\">")
+	r += fmt.Sprintf("    </form>")
+
+	r += fmt.Sprintf("    <div id=\"%s.status\" class=\"%s status\">.[STATUS].</div>", shortid, shortid)
+	r += fmt.Sprintf("  </div>\n\n")
+	return r
+}
+
+func (t *TunnelHandler) ColorWrap(longid, shortid, key, tuntype, prop, value string) string {
+	r := fmt.Sprintf("    <div id=\"%s\" class=\"%s %s %s %s\" >\n", longid, shortid, key, tuntype, prop)
+	r += fmt.Sprintf("      <span id=\"%s\" class=\"key\">%s</span>=", longid, key)
+	r += fmt.Sprintf("      <textarea id=\"%s\" rows=\"1\" class=\"value\">%s</textarea>\n", longid, value)
+	r += fmt.Sprintf("    </div>\n\n")
+	return r
+}
+
+func (t *TunnelHandler) ColorDiv(shortid, tuntype string) string {
+	return fmt.Sprintf("  <div id=\"%s\" class=\"%s\" >", t.SAMTunnel.ID(), t.SAMTunnel.GetType())
+}
+
+func (m *TunnelHandlerMux) ColorHeader(h http.Handler, r *http.Request, w http.ResponseWriter) {
+	if !strings.HasSuffix(r.URL.Path, "color") {
+		h.ServeHTTP(w, r)
+	} else {
+		fmt.Fprintf(w, "<!DOCTYPE html>\n")
+		fmt.Fprintf(w, "<html>\n")
+		fmt.Fprintf(w, "<head>\n")
+		fmt.Fprintf(w, "  <link rel=\"stylesheet\" href=\"/styles.css\">")
+		fmt.Fprintf(w, "</head>\n")
+		fmt.Fprintf(w, "<body>\n")
+		fmt.Fprintf(w, "<h1>\n")
+		w.Write([]byte(fmt.Sprintf("<a href=\"/index.html\">Welcome %s! you are serving %d tunnels. </a>\n", m.user, len(m.tunnels))))
+		fmt.Fprintf(w, "</h1>\n")
+		fmt.Fprintf(w, "  <div id=\"toggleall\" class=\"global control\">\n")
+		fmt.Fprintf(w, "    <a href=\"#\" onclick=\"toggle_visibility_class('%s');\">Show/Hide %s</a>\n", "prop", "all")
+		fmt.Fprintf(w, "  </div>\n")
+		h.ServeHTTP(w, r)
+		fmt.Fprintf(w, "  <script src=\"/scripts.js\"></script>\n")
+		fmt.Fprintf(w, "</body>\n")
+		fmt.Fprintf(w, "</html>\n")
+	}
 }
