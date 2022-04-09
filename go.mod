@@ -24,3 +24,5 @@ require (
 	github.com/zserge/webview v0.0.0-20190123072648-16c93bcaeaeb
 	gitlab.com/opennota/wd v0.0.0-20191124020556-236695b0ea63 // indirect
 )
+	
+replace gopkg.in/russross/blackfriday.v2 v2.1.0 => github.com/russross/blackfriday/v2 v2.1.0

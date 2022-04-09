@@ -32,6 +32,7 @@ type SAMForwarder struct {
 	Hasher        *hashhash.Hasher
 	publishStream *sam3.StreamSession
 	publishListen net.Listener //*sam3.StreamListener
+	//publishListen *sam3.StreamListener
 	Bytes         map[string]int64
 	ByteLimit     int64
 
@@ -272,15 +273,14 @@ func (f *SAMForwarder) forward(conn net.Conn) { //(conn net.Conn) {
 	var request *http.Request
 	var requestbytes []byte
 	var responsebytes []byte
-	var err error
-	var client net.Conn
-	if client, err = net.Dial("tcp", f.Target()); err != nil {
-		log.Fatalf("Dial failed: %v", err)
-	}
 	go func() {
+		var err error
+		var client net.Conn
+		if client, err = net.Dial("tcp", f.Target()); err != nil {
+			log.Fatalf("Dial failed: %v", err)
+		}
+		defer client.Close()
 		if f.Conf.Type == "http" || f.Conf.Type == "https" {
-			defer f.clientUnlockAndClose(true, false, client)
-			defer f.connUnlockAndClose(false, true, conn)
 			if requestbytes, request, err = f.HTTPRequestBytes(conn); err == nil {
 				log.Printf("Forwarding modified request: \n\t %s", string(requestbytes))
 				client.Write(requestbytes)
@@ -288,8 +288,6 @@ func (f *SAMForwarder) forward(conn net.Conn) { //(conn net.Conn) {
 				log.Println("Error: ", requestbytes, err)
 			}
 		} else {
-			defer client.Close()
-			defer conn.Close()
 			if f.ByteLimit > 0 {
 				if val, ok := f.Bytes[f.ClientBase64(conn)]; ok == true {
 					if val > f.ByteLimit {
@@ -305,9 +303,13 @@ func (f *SAMForwarder) forward(conn net.Conn) { //(conn net.Conn) {
 		}
 	}()
 	go func() {
+		var err error
+		var client net.Conn
+		if client, err = net.Dial("tcp", f.Target()); err != nil {
+			log.Fatalf("Dial failed: %v", err)
+		}
+		defer client.Close()
 		if f.Conf.Type == "http" || f.Conf.Type == "https" {
-			defer f.clientUnlockAndClose(false, true, client)
-			defer f.connUnlockAndClose(true, false, conn)
 			if responsebytes, err = f.HTTPResponseBytes(client, request); err == nil {
 				log.Printf("Forwarding modified response: \n\t%s", string(responsebytes))
 				conn.Write(responsebytes)
@@ -315,8 +317,6 @@ func (f *SAMForwarder) forward(conn net.Conn) { //(conn net.Conn) {
 				log.Println("Response Error: ", responsebytes, err)
 			}
 		} else {
-			defer client.Close()
-			defer conn.Close()
 			if val, ok := f.Bytes[f.ClientBase64(conn)]; ok == true {
 				if val > f.ByteLimit {
 					return

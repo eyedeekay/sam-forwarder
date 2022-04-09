@@ -41,7 +41,7 @@ fix-debian:
 	find ./debian -type f -exec sed -i 's|eyedeekay@safe-mail.net|hankhill19580@gmail.com|g' {} \;
 
 try:
-	./bin/samcatd -f etc/samcatd/tunnels.ini
+	./bin/samcatd-cli -f etc/samcatd/tunnels.ini
 
 test: test-keys test-ntcp test-ssu test-config test-manager
 
@@ -50,28 +50,28 @@ long-test: test-serve test
 full-test: test test-serve
 
 test-serve:
-	cd serve_test && go test -v -tags netgo \
-		-ldflags '-w -extldflags "-static"'
+	go test -v -tags netgo \
+		-ldflags '-w -extldflags "-static"' ./serve_test
 
 test-ntcp:
-	cd tcp && go test -v -tags netgo \
-		-ldflags '-w -extldflags "-static"'
+	go test -v -tags netgo \
+		-ldflags '-w -extldflags "-static"' ./tcp
 
 test-ssu:
-	cd udp && go test -v -tags netgo \
-		-ldflags '-w -extldflags "-static"'
+	go test -v -tags netgo \
+		-ldflags '-w -extldflags "-static"' ./udp
 
 test-config:
-	cd config && go test -v -tags netgo \
-		-ldflags '-w -extldflags "-static"'
+	go test -v -tags netgo \
+		-ldflags '-w -extldflags "-static"' ./config
 
 test-manager:
-	cd manager && go test -v -tags netgo \
-		-ldflags '-w -extldflags "-static"'
+	go test -v -tags netgo \
+		-ldflags '-w -extldflags "-static"' ./manager
 
 test-keys:
-	cd i2pkeys && go test -v -tags netgo \
-		-ldflags '-w -extldflags "-static"'
+	go test -v -tags netgo \
+		-ldflags '-w -extldflags "-static"' ./i2pkeys
 
 refresh:
 
@@ -93,23 +93,23 @@ daemon-cli: bin/$(samcatd)-cli
 
 bin/$(samcatd)-cli:
 	mkdir -p bin
-	cd samcatd && go build -a -tags "netgo cli" \
+	go build -a -tags "netgo cli" \
 		-ldflags '-w -extldflags "-static"' \
-		-o ../bin/$(samcatd)-cli \
-		./*.go
+		-o ./bin/$(samcatd)-cli \
+		./samcatd/*.go
 
 bin/$(samcatd):
 	mkdir -p bin
-	cd samcatd && go build -a -tags "netgo static" \
+	go build -a -tags "netgo static" \
 		-ldflags '-w -extldflags "-static"' \
-		-o ../bin/$(samcatd) \
-		./*.go
+		-o ./bin/$(samcatd) \
+		./samcatd/*.go
 
 bin/$(samcatd)-webview:
 	mkdir -p bin
-	cd samcatd && go build -a -tags "netgo nostatic" \
-		-o ../bin/$(samcatd)-webview \
-		./*.go
+	go build -a -tags "netgo nostatic" \
+		-o ./bin/$(samcatd)-webview \
+		./samcatd/*.go
 
 update:
 	git config --global url."git@github.com:RTradeLtd".insteadOf "https://github.com/RTradeLtd"
