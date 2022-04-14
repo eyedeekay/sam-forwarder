@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/eyedeekay/sam-forwarder/interface"
+	samtunnel "github.com/eyedeekay/sam-forwarder/interface"
 )
 
 //Option is a SAMForwarder Option
@@ -405,6 +405,16 @@ func SetAccessList(s []string) func(samtunnel.SAMTunnel) error {
 			for _, a := range s {
 				c.Config().AccessList = append(c.Config().AccessList, a)
 			}
+			return nil
+		}
+		return nil
+	}
+}
+
+func SetUseTLS(b bool) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
+		if b {
+			c.Config().UseTLS = true
 			return nil
 		}
 		return nil
