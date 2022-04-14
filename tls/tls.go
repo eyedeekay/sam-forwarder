@@ -1,7 +1,8 @@
 package i2ptls
 
 import (
-	"crypto/ed25519"
+	"crypto/ecdsa"
+	"crypto/elliptic"
 	"crypto/rand"
 	"crypto/tls"
 	"crypto/x509"
@@ -9,7 +10,10 @@ import (
 	"encoding/pem"
 	"log"
 	"math/big"
+	"net"
 	"os"
+	"strings"
+	"time"
 )
 
 func CheckFile(path string) bool {
@@ -19,28 +23,58 @@ func CheckFile(path string) bool {
 	return true
 }
 
-func CertPemificate(CertPem, KeyPem string, names []string, priv ed25519.PrivateKey) (tls.Certificate, error) {
+func NewTLSCertificate(names []string, priv *ecdsa.PrivateKey) ([]byte, error) {
+	notBefore := time.Now()
+	notAfter := notBefore.Add(5 * 365 * 24 * time.Hour)
 
 	serialNumberLimit := new(big.Int).Lsh(big.NewInt(1), 128)
 	serialNumber, err := rand.Int(rand.Reader, serialNumberLimit)
 	if err != nil {
-		log.Fatalf("Failed to generate serial number: %v", err)
+		return nil, err
 	}
+
+	host := names[0]
+
 	template := x509.Certificate{
 		SerialNumber: serialNumber,
 		Subject: pkix.Name{
-			Organization: []string{"Acme Co"},
+			Organization:       []string{"I2P Anonymous Network"},
+			OrganizationalUnit: []string{"I2P"},
+			Locality:           []string{"XX"},
+			StreetAddress:      []string{"XX"},
+			Country:            []string{"XX"},
+			CommonName:         host,
 		},
-		//		NotBefore:             notBefore,
-		//		NotAfter:              notAfter,
-		//		KeyUsage:              keyUsage,
+		NotBefore:          notBefore,
+		NotAfter:           notAfter,
+		SignatureAlgorithm: x509.ECDSAWithSHA512,
+
+		KeyUsage:              x509.KeyUsageCertSign | x509.KeyUsageKeyEncipherment | x509.KeyUsageDigitalSignature,
 		ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth},
 		BasicConstraintsValid: true,
+		IsCA:                  true,
 	}
-	if len(names) > 0 {
-		template.DNSNames = append(template.DNSNames, names...)
+
+	hosts := strings.Split(host, ",")
+	for _, h := range hosts {
+		if ip := net.ParseIP(h); ip != nil {
+			template.IPAddresses = append(template.IPAddresses, ip)
+		} else {
+			template.DNSNames = append(template.DNSNames, h)
+		}
 	}
-	derBytes, err := x509.CreateCertificate(rand.Reader, &template, &template, priv.Public().(ed25519.PublicKey), priv)
+
+	derBytes, err := x509.CreateCertificate(rand.Reader, &template, &template, &priv.PublicKey, priv)
+	if err != nil {
+		return nil, err
+	}
+
+	return derBytes, nil
+}
+
+//func CertPemificate(CertPem, KeyPem string, names []string, priv ed25519.PrivateKey) (tls.Certificate, error) {
+func CertPemificate(CertPem, KeyPem string, names []string, priv *ecdsa.PrivateKey) (tls.Certificate, error) {
+	derBytes, err := NewTLSCertificate(names, priv)
 	if err != nil {
 		log.Fatalf("Failed to create certificate: %v", err)
 	}
@@ -87,7 +121,8 @@ func TLSConfig(CertPem, KeyPem string, names []string) (*tls.Config, error) {
 
 		return &tls.Config{Certificates: []tls.Certificate{cert}, ServerName: ServerName}, nil
 	} else {
-		_, priv, err := ed25519.GenerateKey(rand.Reader)
+		//_,
+		priv, err := ecdsa.GenerateKey(elliptic.P384(), rand.Reader)
 		if err != nil {
 			return nil, err
 		}
@@ -95,6 +130,18 @@ func TLSConfig(CertPem, KeyPem string, names []string) (*tls.Config, error) {
 		if err != nil {
 			return nil, err
 		}
-		return &tls.Config{Certificates: []tls.Certificate{cert}, ServerName: ServerName}, nil
+		return &tls.Config{
+			MinVersion:               tls.VersionTLS12,
+			CurvePreferences:         []tls.CurveID{tls.CurveP521, tls.CurveP384, tls.CurveP256},
+			PreferServerCipherSuites: true,
+			CipherSuites: []uint16{
+				tls.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,
+				tls.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
+				tls.TLS_RSA_WITH_AES_256_GCM_SHA384,
+				tls.TLS_RSA_WITH_AES_256_CBC_SHA,
+			},
+			Certificates: []tls.Certificate{cert},
+			ServerName:   ServerName,
+		}, nil
 	}
 }
