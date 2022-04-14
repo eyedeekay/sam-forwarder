@@ -421,6 +421,24 @@ func SetUseTLS(b bool) func(samtunnel.SAMTunnel) error {
 	}
 }
 
+func SetTLSConfigCertPem(s string) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
+		if len(s) > 0 {
+			c.Config().Cert = s
+		}
+		return nil
+	}
+}
+
+func SetTLSConfigKeysPem(s string) func(samtunnel.SAMTunnel) error {
+	return func(c samtunnel.SAMTunnel) error {
+		if len(s) > 0 {
+			c.Config().Pem = s
+		}
+		return nil
+	}
+}
+
 //SetTargetForPort sets the port of the SAMForwarder's SAM bridge using a string
 /*func SetTargetForPort443(s string) func(samtunnel.SAMTunnel) error {
 	return func(c samtunnel.SAMTunnel) error {

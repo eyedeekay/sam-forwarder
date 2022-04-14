@@ -4,7 +4,7 @@ import (
 	"crypto/tls"
 	"strings"
 
-	"github.com/eyedeekay/sam-forwarder/tls"
+	i2ptls "github.com/eyedeekay/sam-forwarder/tls"
 )
 
 // GetPort443 takes an argument and a default. If the argument differs from the
@@ -106,6 +106,12 @@ func (c *Conf) TLSConfig() (*tls.Config, error) {
 	names := []string{c.Base32()}
 	if c.HostName != "" && strings.HasSuffix(c.HostName, ".i2p") {
 		names = append(names, c.HostName)
+	}
+	if len(c.Cert) < 1 {
+		c.Cert = "cert.pem"
+	}
+	if len(c.Pem) < 1 {
+		c.Pem = "key.pem"
 	}
 	return i2ptls.TLSConfig(c.Cert, c.Pem, names)
 }
