@@ -8,9 +8,9 @@ func (c *Conf) GetInBackups(arg, def int, label ...string) int {
 	if arg != def {
 		return arg
 	}
-	if c.Config == nil {
-		return arg
-	}
+	//if c.Config == nil {
+	//	return arg
+	//}
 	if x, o := c.GetInt("inbound.backupQuantity", label...); o {
 		return x
 	}
@@ -25,9 +25,9 @@ func (c *Conf) GetOutBackups(arg, def int, label ...string) int {
 	if arg != def {
 		return arg
 	}
-	if c.Config == nil {
-		return arg
-	}
+	//if c.Config == nil {
+	//	return arg
+	//}
 	if x, o := c.GetInt("outbound.backupQuantity", label...); o {
 		return x
 	}

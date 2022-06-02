@@ -2,21 +2,25 @@ package samtunnelhandler
 
 import (
 	"fmt"
+	"html/template"
 	"io/ioutil"
 	"log"
 	"net/http"
-	"strings"
 )
 
 type TunnelHandlerMux struct {
 	http.Server
-	pagenames    []string
-	tunnels      []*TunnelHandler
-	user         string
-	password     string
-	sessionToken string
-	cssString    string
-	jsString     string
+	pagenames       []string
+	tunnels         []*TunnelHandler
+	user            string
+	password        string
+	sessionToken    string
+	cssString       string
+	jsString        string
+	templateTop     string
+	templateBot     string
+	templateTopHTML template.Template
+	templateBotHTML template.Template
 }
 
 func (m *TunnelHandlerMux) ListenAndServe() {
@@ -52,11 +56,11 @@ func (m *TunnelHandlerMux) HandlerWrapper(h http.Handler) http.Handler {
 		if m.CheckCookie(w, r) == false {
 			return
 		}
-		if !strings.HasSuffix(r.URL.Path, "color") {
-			h.ServeHTTP(w, r)
-		} else {
-			m.ColorHeader(h, r, w)
-		}
+		//if !strings.HasSuffix(r.URL.Path, "color") {
+		h.ServeHTTP(w, r)
+		//} else {
+		//	m.ColorHeader(h, r, w)
+		//}
 	})
 }
 

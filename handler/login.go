@@ -60,7 +60,6 @@ func (m *TunnelHandlerMux) Home(w http.ResponseWriter, r *http.Request) {
 	if m.CheckCookie(w, r) == false {
 		return
 	}
-	//	fmt.Fprintf(w, "URL PATH", r.URL.Path)
 	if r.URL.Path == "/" {
 		http.Redirect(w, r, "/index.html", 301)
 		fmt.Fprintf(w, "redirecting to index.html")
@@ -82,7 +81,7 @@ func (m *TunnelHandlerMux) Home(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "  <body>\n")
 	fmt.Fprintf(w, "    <h1>\n")
 	w.Write([]byte(fmt.Sprintf("    <a href=\"/index.html\">Welcome %s! you are serving %d tunnels. </a>\n", m.user, len(m.tunnels))))
-	//fmt.Fprintf(w, "")
+	fmt.Fprintf(w, "")
 	fmt.Fprintf(w, "    </h1>\n")
 	fmt.Fprintf(w, "    <div id=\"toggleall\" class=\"global control\">\n")
 	fmt.Fprintf(w, "      <a href=\"#\" onclick=\"toggle_visibility_class('%s');\">Show/Hide %s</a>\n", "prop", "all")

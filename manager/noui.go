@@ -1,3 +1,4 @@
+//go:build cli && (!nostatic || !static)
 // +build cli
 // +build !nostatic !static
 

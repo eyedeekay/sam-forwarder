@@ -8,9 +8,9 @@ func (c *Conf) GetEncryptLeaseset(arg, def bool, label ...string) bool {
 	if arg != def {
 		return arg
 	}
-	if c.Config == nil {
-		return arg
-	}
+	//if c.Config == nil {
+	//	return arg
+	//}
 	if x, o := c.GetBool("i2cp.encryptLeaseSet", label...); o {
 		return x
 	}
@@ -34,9 +34,9 @@ func (c *Conf) GetLeasesetKey(arg, def string, label ...string) string {
 	if arg != def {
 		return arg
 	}
-	if c.Config == nil {
-		return arg
-	}
+	//if c.Config == nil {
+	//	return arg
+	//}
 	if x, o := c.Get("i2cp.leaseSetKey", label...); o {
 		return x
 	}
@@ -60,9 +60,9 @@ func (c *Conf) GetLeasesetPrivateKey(arg, def string, label ...string) string {
 	if arg != def {
 		return arg
 	}
-	if c.Config == nil {
-		return arg
-	}
+	//if c.Config == nil {
+	//	return arg
+	//}
 	if x, o := c.Get("i2cp.leaseSetPrivateKey", label...); o {
 		return x
 	}
@@ -86,9 +86,9 @@ func (c *Conf) GetLeasesetPrivateSigningKey(arg, def string, label ...string) st
 	if arg != def {
 		return arg
 	}
-	if c.Config == nil {
-		return arg
-	}
+	//if c.Config == nil {
+	//	return arg
+	//}
 	if x, o := c.Get("i2cp.leaseSetPrivateSigningKey", label...); o {
 		return x
 	}
@@ -112,9 +112,9 @@ func (c *Conf) GetLeaseSetEncType(arg, def string, label ...string) string {
 	if arg != def {
 		return arg
 	}
-	if c.Config == nil {
-		return arg
-	}
+	//if c.Config == nil {
+	//	return arg
+	//}
 	if x, o := c.Get("i2cp.leaseSetEncType", label...); o {
 		return x
 	}

@@ -8,14 +8,13 @@ import (
 	"strconv"
 	"strings"
 	"time"
-)
 
-import (
-	"github.com/eyedeekay/sam-forwarder/config"
+	i2ptunconf "github.com/eyedeekay/sam-forwarder/config"
 	"github.com/eyedeekay/sam-forwarder/hashhash"
-	"github.com/eyedeekay/sam-forwarder/i2pkeys"
-	"github.com/eyedeekay/sam-forwarder/interface"
-	"github.com/eyedeekay/sam-forwarder/options"
+	sfi2pkeys "github.com/eyedeekay/sam-forwarder/i2pkeys"
+	samoptions "github.com/eyedeekay/sam-forwarder/options"
+
+	samtunnel "github.com/eyedeekay/sam-forwarder/interface"
 	"github.com/eyedeekay/sam3"
 	"github.com/eyedeekay/sam3/i2pkeys"
 )
@@ -23,6 +22,8 @@ import (
 //SAMDGForwarder is a structure which automatically configured the forwarding of
 //a local service to i2p over the SAM API.
 type SAMDGForwarder struct {
+	*i2ptunconf.Conf
+
 	samConn           *sam3.SAM
 	SamKeys           i2pkeys.I2PKeys
 	Hasher            *hashhash.Hasher
@@ -31,9 +32,6 @@ type SAMDGForwarder struct {
 
 	file io.ReadWriter
 	up   bool
-
-	// config
-	Conf *i2ptunconf.Conf
 }
 
 var err error

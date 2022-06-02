@@ -24,9 +24,9 @@ func (c *Conf) GetSigType(argt, def string, label ...string) string {
 	if typ != def {
 		return typ
 	}
-	if c.Config == nil {
-		return typ
-	}
+	//if c.Config == nil {
+	//	return typ
+	//}
 	if x, o := c.Get("signaturetype", label...); o {
 		return x
 	}

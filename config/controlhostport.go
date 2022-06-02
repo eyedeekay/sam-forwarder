@@ -8,9 +8,9 @@ func (c *Conf) GetControlHost(arg, def string, label ...string) string {
 	if arg != def {
 		return arg
 	}
-	if c.Config == nil {
-		return arg
-	}
+	//if c.Config == nil {
+	//	return arg
+	//}
 	if x, o := c.Get("controlhost", label...); o {
 		return x
 	}
@@ -25,9 +25,9 @@ func (c *Conf) GetControlPort(arg, def string, label ...string) string {
 	if arg != def {
 		return arg
 	}
-	if c.Config == nil {
-		return arg
-	}
+	//if c.Config == nil {
+	//	return arg
+	//}
 	if x, o := c.Get("controlport", label...); o {
 		return x
 	}

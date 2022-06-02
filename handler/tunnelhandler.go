@@ -1,126 +1,61 @@
 package samtunnelhandler
 
 import (
-	"fmt"
+	"html/template"
 	"net/http"
-	"sort"
-	"strings"
-)
 
-import (
-	"github.com/eyedeekay/sam-forwarder/interface"
+	samtunnel "github.com/eyedeekay/sam-forwarder/interface"
 )
 
 type TunnelHandler struct {
 	samtunnel.SAMTunnel
-}
-
-func (t *TunnelHandler) Printdivf(id, key, value string, rw http.ResponseWriter, req *http.Request) {
-	if key == "" || value == "" {
-		return
-	}
-	ID := t.SAMTunnel.ID()
-	if id != "" {
-		ID = t.SAMTunnel.ID() + "." + id
-	}
-	prop := ""
-	if key != "TunName" {
-		prop = "prop"
-	}
-	fmt.Fprintf(rw, t.ColorWrap(ID, t.SAMTunnel.ID(), key, t.SAMTunnel.GetType(), prop, value))
-}
-
-func (t *TunnelHandler) Printf(id, key, value string, rw http.ResponseWriter, req *http.Request) {
-	if key == "" || value == "" {
-		return
-	}
-	ID := t.SAMTunnel.ID()
-	if id != "" {
-		ID = t.SAMTunnel.ID() + "." + id
-	}
-	fmt.Fprintf(rw, "%s=%s\n", ID, t.SAMTunnel.ID())
-}
-
-func PropSort(props map[string]string) []string {
-	var slice []string
-	for k, v := range props {
-		slice = append(slice, k+"="+v)
-	}
-	sort.Strings(slice)
-	return slice
-}
-
-func (t *TunnelHandler) ControlForm(rw http.ResponseWriter, req *http.Request) {
-	if err := req.ParseForm(); err == nil {
-		if action := req.PostFormValue("action"); action != "" {
-			var err error
-			switch action {
-			case "start":
-				if !t.SAMTunnel.Up() {
-					fmt.Println("Starting tunnel", t.ID())
-					if t.SAMTunnel, err = t.Load(); err == nil {
-						t.Serve()
-					}
-					//return
-				} else {
-					fmt.Println(t.ID(), "already started")
-					req.URL.Path = req.URL.Path + "/color"
-				}
-			case "stop":
-				if t.SAMTunnel.Up() {
-					fmt.Println("Stopping tunnel", t.ID())
-					t.Close()
-				} else {
-					fmt.Println(t.ID(), "already stopped")
-					req.URL.Path = req.URL.Path + "/color"
-				}
-			case "restart":
-				if t.SAMTunnel.Up() {
-					fmt.Println("Stopping tunnel", t.ID())
-					t.Close()
-					fmt.Println("Starting tunnel", t.ID())
-					if t.SAMTunnel, err = t.Load(); err == nil {
-						t.Serve()
-					}
-					return
-				} else {
-					fmt.Println(t.ID(), "stopped.")
-					req.URL.Path = req.URL.Path + "/color"
-				}
-			default:
-			}
-		}
-	}
+	template     string
+	htmlTemplate *template.Template
 }
 
 func (t *TunnelHandler) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
-	t.ControlForm(rw, req)
-	if strings.HasSuffix(req.URL.Path, "color") {
-		fmt.Fprintf(rw, t.ColorDiv(t.SAMTunnel.ID(), t.SAMTunnel.GetType()))
-		t.Printdivf(t.SAMTunnel.ID(), "TunName", t.SAMTunnel.ID(), rw, req)
-		fmt.Fprintf(rw, t.ColorSpan(t.SAMTunnel.ID()))
-		for _, value := range PropSort(t.SAMTunnel.Props()) {
-			key := strings.SplitN(value, "=", 2)[0]
-			val := strings.SplitN(value, "=", 2)[1]
-			if key != "TunName" {
-				t.Printdivf(key, key, val, rw, req)
-			}
-		}
-		fmt.Fprintf(rw, t.ColorForm(t.SAMTunnel.ID(), t.SAMTunnel.GetType()))
-	} else {
-		t.Printf(t.SAMTunnel.ID(), "TunName", t.SAMTunnel.ID(), rw, req)
-		for _, value := range PropSort(t.SAMTunnel.Props()) {
-			key := strings.SplitN(value, "=", 2)[0]
-			val := strings.SplitN(value, "=", 2)[1]
-			if key != "TunName" {
-				t.Printf(key, key, val, rw, req)
-			}
-		}
-	}
+	t.htmlTemplate.Execute(rw, t.SAMTunnel)
 }
 
 func NewTunnelHandler(ob samtunnel.SAMTunnel, err error) (*TunnelHandler, error) {
 	var t TunnelHandler
 	t.SAMTunnel = ob
+	t.template = `<div class="samtunnel">
+<div class="samtunnel-header">
+<div class="samtunnel-header-title">
+<span class="samtunnel-header-title-text">
+<span class="samtunnel-header-title-text-id">{{.ID}}</span>
+<span class="samtunnel-header-title-text-type">{{.Type}}</span>
+</span>
+</div>
+<div class="samtunnel-header-controls">
+<form method="post" action="{{.ID}}/control">
+<input type="hidden" name="action" value="start">
+<input type="submit" value="Start">
+</form>
+<form method="post" action="{{.ID}}/control">
+<input type="hidden" name="action" value="stop">
+<input type="submit" value="Stop">
+</form>
+<form method="post" action="{{.ID}}/control">
+<input type="hidden" name="action" value="restart">
+<input type="submit" value="Restart">
+</form>
+</div>
+</div>
+<div class="samtunnel-body">
+{{range $key, $value := .Props }}
+<div class="samtunnel-body-prop">
+<span class="samtunnel-body-prop-key">{{$key}}</span>
+<span class="samtunnel-body-prop-value">{{$value}}</span>
+</div>
+{{end}}
+</div>
+</div>
+`
+	t.htmlTemplate, err = template.New(ob.ID()).Parse(t.template)
+	if err != nil {
+		return nil, err
+	}
 	return &t, err
 }

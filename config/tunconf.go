@@ -8,69 +8,69 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
-)
 
-import (
-	//  "github.com/eyedeekay/sam3"
 	"github.com/eyedeekay/sam3/i2pkeys"
 	"github.com/zieckey/goini"
 )
 
+//  "github.com/eyedeekay/sam3"
+
 // Conf is a tructure containing an ini config, with some functions to help
 // when you use it for in conjunction with command-line flags
 type Conf struct {
-	Config                    *goini.INI `default:&goini.INI{}`
-	FilePath                  string     `default:"./"`
-	KeyFilePath               string     `default:"./"`
-	Labels                    []string   `default:{""}`
-	Client                    bool       `default:true`
-	ClientDest                string     `default:"idk.i2p"`
-	SigType                   string     `default:"SIGNATURE_TYPE=EdDSA_SHA512_Ed25519"`
-	Type                      string     `default:"client"`
-	SaveDirectory             string     `default:"./"`
-	ServeDirectory            string     `default:"./www"`
-	SaveFile                  bool       `default:false`
-	TargetHost                string     `default:"127.0.0.1"`
-	TargetPort                string     `default:"7778"`
-	SamHost                   string     `default:"127.0.0.1"`
-	SamPort                   string     `default:"7656"`
-	TunnelHost                string     `default:"127.0.0.1"`
-	ControlHost               string     `default:"127.0.0.1"`
-	ControlPort               string     `default:"7951"`
-	TargetForPort443          string     `default:""`
-	TunName                   string     `default:"goi2ptunnel"`
-	EncryptLeaseSet           bool       `default:false`
-	LeaseSetKey               string     `default:""`
-	LeaseSetEncType           string     `default:"4,0"`
-	LeaseSetPrivateKey        string     `default:""`
-	LeaseSetPrivateSigningKey string     `default:""`
-	InAllowZeroHop            bool       `default:false`
-	OutAllowZeroHop           bool       `default:false`
-	InLength                  int        `default:3`
-	OutLength                 int        `default:3`
-	InQuantity                int        `default:1`
-	OutQuantity               int        `default:1`
-	InVariance                int        `default:0`
-	OutVariance               int        `default:0`
-	InBackupQuantity          int        `default:1`
-	OutBackupQuantity         int        `default:1`
-	UseCompression            bool       `default:true`
-	FastRecieve               bool       `default:true`
-	ReduceIdle                bool       `default:false`
-	ReduceIdleTime            int        `default:36000000`
-	ReduceIdleQuantity        int        `default:1`
-	CloseIdle                 bool       `default:false`
-	CloseIdleTime             int        `default:36000000`
-	AccessListType            string     `default:"none"`
-	AccessList                []string   `default:{""}`
-	MessageReliability        string     `default:""`
-	exists                    bool       `default:false`
-	UserName                  string     `default:""`
-	Password                  string     `default:""`
-	UseTLS                    bool       `default:false`
-	Cert                      string     `default:""`
-	Pem                       string     `default:""`
-	HostName                  string     `default:""`
+	//Config                    *goini.INI `default:&goini.INI{}`
+	goini.INI
+	FilePath                  string   `default:"./"`
+	KeyFilePath               string   `default:"./"`
+	Labels                    []string `default:"{''}"`
+	Client                    bool     `default:"true"`
+	ClientDest                string   `default:"idk.i2p"`
+	SigType                   string   `default:"SIGNATURE_TYPE=EdDSA_SHA512_Ed25519"`
+	Type                      string   `default:"client"`
+	SaveDirectory             string   `default:"./"`
+	ServeDirectory            string   `default:"./www"`
+	SaveFile                  bool     `default:"false"`
+	TargetHost                string   `default:"127.0.0.1"`
+	TargetPort                string   `default:"7778"`
+	SamHost                   string   `default:"127.0.0.1"`
+	SamPort                   string   `default:"7656"`
+	TunnelHost                string   `default:"127.0.0.1"`
+	ControlHost               string   `default:"127.0.0.1"`
+	ControlPort               string   `default:"7951"`
+	TargetForPort443          string   `default:""`
+	TunName                   string   `default:"goi2ptunnel"`
+	EncryptLeaseSet           bool     `default:"false"`
+	LeaseSetKey               string   `default:""`
+	LeaseSetEncType           string   `default:"4,0"`
+	LeaseSetPrivateKey        string   `default:""`
+	LeaseSetPrivateSigningKey string   `default:""`
+	InAllowZeroHop            bool     `default:"false"`
+	OutAllowZeroHop           bool     `default:"false"`
+	InLength                  int      `default:"3"`
+	OutLength                 int      `default:"3"`
+	InQuantity                int      `default:"1"`
+	OutQuantity               int      `default:"1"`
+	InVariance                int      `default:"0"`
+	OutVariance               int      `default:"0"`
+	InBackupQuantity          int      `default:"1"`
+	OutBackupQuantity         int      `default:"1"`
+	UseCompression            bool     `default:"true"`
+	FastRecieve               bool     `default:"true"`
+	ReduceIdle                bool     `default:"false"`
+	ReduceIdleTime            int      `default:"36000000"`
+	ReduceIdleQuantity        int      `default:"1"`
+	CloseIdle                 bool     `default:"false"`
+	CloseIdleTime             int      `default:"36000000"`
+	AccessListType            string   `default:"none"`
+	AccessList                []string `default:"{''}"`
+	MessageReliability        string   `default:""`
+	exists                    bool     `default:"false"`
+	UserName                  string   `default:""`
+	Password                  string   `default:""`
+	UseTLS                    bool     `default:"false"`
+	Cert                      string   `default:""`
+	Pem                       string   `default:""`
+	HostName                  string   `default:""`
 	//TLSConf                   *tls.Config
 	LoadedKeys i2pkeys.I2PKeys
 }
@@ -141,15 +141,12 @@ func (c *Conf) SignatureType() string {
 func (c *Conf) Get(key string, label ...string) (string, bool) {
 	if len(c.Labels) > 0 {
 		if len(label) > 0 {
-			return c.Config.SectionGet(label[0], key)
+			return c.SectionGet(label[0], key)
 		}
-		return c.Config.SectionGet(c.Labels[0], key)
-	} else {
-		if c.Config != nil {
-			return c.Config.Get(key)
-		} else {
-			return "", false
-		}
+		return c.SectionGet(c.Labels[0], key)
+	}
+	if &c.INI != nil {
+		return c.Get(key)
 	}
 	return "", false
 }
@@ -158,15 +155,12 @@ func (c *Conf) Get(key string, label ...string) (string, bool) {
 func (c *Conf) GetBool(key string, label ...string) (bool, bool) {
 	if len(c.Labels) > 0 {
 		if len(label) > 0 {
-			return c.Config.SectionGetBool(label[0], key)
+			return c.SectionGetBool(label[0], key)
 		}
-		return c.Config.SectionGetBool(c.Labels[0], key)
-	} else {
-		if c.Config != nil {
-			return c.Config.GetBool(key)
-		} else {
-			return false, false
-		}
+		return c.SectionGetBool(c.Labels[0], key)
+	}
+	if &c.INI != nil {
+		return c.GetBool(key)
 	}
 	return false, false
 }
@@ -175,15 +169,12 @@ func (c *Conf) GetBool(key string, label ...string) (bool, bool) {
 func (c *Conf) GetInt(key string, label ...string) (int, bool) {
 	if len(c.Labels) > 0 {
 		if len(label) > 0 {
-			return c.Config.SectionGetInt(label[0], key)
+			return c.SectionGetInt(label[0], key)
 		}
-		return c.Config.SectionGetInt(c.Labels[0], key)
-	} else {
-		if c.Config != nil {
-			return c.Config.GetInt(key)
-		} else {
-			return -1, false
-		}
+		return c.SectionGetInt(c.Labels[0], key)
+	}
+	if &c.INI != nil {
+		return c.GetInt(key)
 	}
 	return -1, false
 }
@@ -194,7 +185,7 @@ func (c *Conf) Write() error {
 		return err
 	} else {
 		defer file.Close()
-		return c.Config.Write(file)
+		return c.INI.Write(file)
 	}
 }
 
@@ -234,10 +225,10 @@ func (c *Conf) Set(label ...string) {
 func (c *Conf) I2PINILoad(iniFile string, label ...string) error {
 	var err error
 	c.exists = true
-	c.Config = goini.New()
+	c.INI = *goini.New()
 	if iniFile != "none" && iniFile != "" {
 		c.FilePath = iniFile
-		err = c.Config.ParseFile(iniFile)
+		err = c.INI.ParseFile(iniFile)
 		if err != nil {
 			return err
 		}
@@ -308,9 +299,9 @@ func NewI2PBlankTunConf() *Conf {
 	c.TargetPort = "0"
 	c.ClientDest = "idk.i2p"
 	c.LeaseSetEncType = "4,0"
-	c.Config = &goini.INI{}
-	c.Config = goini.New()
-	c.Config.Parse([]byte("[client]\nsamhost=\"127.0.0.1\"\nsamport=\"7656\"\n"), "\n", "=")
+	c.INI = goini.INI{}
+	c.INI = *goini.New()
+	c.INI.Parse([]byte("[client]\nsamhost=\"127.0.0.1\"\nsamport=\"7656\"\n"), "\n", "=")
 	return c
 }
 

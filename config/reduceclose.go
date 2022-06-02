@@ -8,9 +8,9 @@ func (c *Conf) GetReduceOnIdle(arg, def bool, label ...string) bool {
 	if arg != def {
 		return arg
 	}
-	if c.Config == nil {
-		return arg
-	}
+	//if c.Config == nil {
+	//	return arg
+	//}
 	if x, o := c.GetBool("i2cp.reduceOnIdle", label...); o {
 		return x
 	}
@@ -25,9 +25,9 @@ func (c *Conf) GetReduceIdleTime(arg, def int, label ...string) int {
 	if arg != def {
 		return arg
 	}
-	if c.Config == nil {
-		return arg
-	}
+	//if c.Config == nil {
+	//	return arg
+	//}
 	if x, o := c.GetInt("i2cp.reduceIdleTime", label...); o {
 		return x
 	}
@@ -42,9 +42,9 @@ func (c *Conf) GetReduceIdleQuantity(arg, def int, label ...string) int {
 	if arg != def {
 		return arg
 	}
-	if c.Config == nil {
-		return arg
-	}
+	//if c.Config == nil {
+	//	return arg
+	//}
 	if x, o := c.GetInt("i2cp.reduceIdleQuantity", label...); o {
 		return x
 	}
@@ -59,9 +59,9 @@ func (c *Conf) GetCloseOnIdle(arg, def bool, label ...string) bool {
 	if arg != def {
 		return arg
 	}
-	if c.Config == nil {
-		return arg
-	}
+	//if c.Config == nil {
+	//	return arg
+	//}
 	if x, o := c.GetBool("i2cp.closeOnIdle", label...); o {
 		return x
 	}
@@ -76,9 +76,9 @@ func (c *Conf) GetCloseIdleTime(arg, def int, label ...string) int {
 	if arg != def {
 		return arg
 	}
-	if c.Config == nil {
-		return arg
-	}
+	//if c.Config == nil {
+	//	return arg
+	//}
 	if x, o := c.GetInt("i2cp.closeIdleTime", label...); o {
 		return x
 	}

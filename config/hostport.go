@@ -8,9 +8,9 @@ func (c *Conf) GetHost(arg, def string, label ...string) string {
 	if arg != def {
 		return arg
 	}
-	if c.Config == nil {
-		return arg
-	}
+	//if c.Config == nil {
+	//	return arg
+	//}
 	if x, o := c.Get("host", label...); o {
 		return x
 	}
@@ -25,9 +25,9 @@ func (c *Conf) GetPort(arg, def string, label ...string) string {
 	if arg != def {
 		return arg
 	}
-	if c.Config == nil {
-		return arg
-	}
+	//if c.Config == nil {
+	//	return arg
+	//}
 	if x, o := c.Get("port", label...); o {
 		return x
 	}

@@ -8,9 +8,9 @@ func (c *Conf) GetUserName(arg, def string, label ...string) string {
 	if arg != def {
 		return arg
 	}
-	if c.Config == nil {
-		return arg
-	}
+	//if c.Config == nil {
+	//	return arg
+	//}
 	if x, o := c.Get("username", label...); o {
 		return x
 	}

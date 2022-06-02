@@ -1,3 +1,4 @@
+//go:build !nostatic
 // +build !nostatic
 
 package gui

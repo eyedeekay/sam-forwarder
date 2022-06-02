@@ -15,9 +15,9 @@ func (c *Conf) GetPort443(arg, def string, label ...string) string {
 	if arg != def {
 		return arg
 	}
-	if c.Config == nil {
-		return arg
-	}
+	//if c.Config == nil {
+	//	return arg
+	//}
 	if x, o := c.Get("targetForPort.443", label...); o {
 		return x
 	}
@@ -38,9 +38,9 @@ func (c *Conf) GetUseTLS(arg, def bool, label ...string) bool {
 	if arg != def {
 		return arg
 	}
-	if c.Config == nil {
-		return arg
-	}
+	//if c.Config == nil {
+	//	return arg
+	//}
 	if x, o := c.GetBool("usetls", label...); o {
 		return x
 	}
@@ -61,9 +61,9 @@ func (c *Conf) GetTLSConfigCertPem(arg, def string, label ...string) string {
 	if arg != def {
 		return arg
 	}
-	if c.Config == nil {
-		return arg
-	}
+	//if c.Config == nil {
+	//	return arg
+	//}
 	if x, o := c.Get("cert.pem", label...); o {
 		return x
 	}
@@ -84,9 +84,9 @@ func (c *Conf) GetTLSConfigKeyPem(arg, def string, label ...string) string {
 	if arg != def {
 		return arg
 	}
-	if c.Config == nil {
-		return arg
-	}
+	//if c.Config == nil {
+	//	return arg
+	//}
 	if x, o := c.Get("key.pem", label...); o {
 		return x
 	}

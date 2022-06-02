@@ -8,9 +8,9 @@ func (c *Conf) GetUseCompression(arg, def bool, label ...string) bool {
 	if arg != def {
 		return arg
 	}
-	if c.Config == nil {
-		return arg
-	}
+	//if c.Config == nil {
+	//	return arg
+	//}
 	if x, o := c.GetBool("gzip", label...); o {
 		return x
 	}

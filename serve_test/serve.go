@@ -7,12 +7,14 @@ import (
 	"net"
 	"net/http"
 	"time"
-)
 
-import (
-	"github.com/eyedeekay/sam-forwarder/interface"
-	"github.com/eyedeekay/sam-forwarder/tcp"
-	"github.com/eyedeekay/sam-forwarder/udp"
+	samtunnel "github.com/eyedeekay/sam-forwarder/interface"
+
+	samoptions "github.com/eyedeekay/sam-forwarder/options"
+
+	samforwarder "github.com/eyedeekay/sam-forwarder/tcp"
+
+	samforwarderudp "github.com/eyedeekay/sam-forwarder/udp"
 )
 
 var (
@@ -37,11 +39,11 @@ func serve() {
 	flag.Parse()
 
 	forwarder, err = samforwarder.NewSAMForwarderFromOptions(
-		samforwarder.SetHost("127.0.0.1"),
-		samforwarder.SetPort(port),
-		samforwarder.SetSAMHost("127.0.0.1"),
-		samforwarder.SetSAMPort("7656"),
-		samforwarder.SetName("testserver"),
+		samoptions.SetHost("127.0.0.1"),
+		samoptions.SetPort(port),
+		samoptions.SetSAMHost("127.0.0.1"),
+		samoptions.SetSAMPort("7656"),
+		samoptions.SetName("testserver"),
 	)
 	if err != nil {
 		log.Fatal(err.Error())
@@ -59,12 +61,12 @@ func client() {
 	flag.Parse()
 
 	forwarderclient, err = samforwarder.NewSAMClientForwarderFromOptions(
-		samforwarder.SetClientHost("127.0.0.1"),
-		samforwarder.SetClientPort(cport),
-		samforwarder.SetClientSAMHost("127.0.0.1"),
-		samforwarder.SetClientSAMPort("7656"),
-		samforwarder.SetClientName("testclient"),
-		samforwarder.SetClientDestination(forwarder.Base32()),
+		samoptions.SetHost("127.0.0.1"),
+		samoptions.SetPort(cport),
+		samoptions.SetSAMHost("127.0.0.1"),
+		samoptions.SetSAMPort("7656"),
+		samoptions.SetName("testclient"),
+		samoptions.SetDestination(forwarder.Base32()),
 	)
 	if err != nil {
 		log.Fatal(err.Error())
@@ -112,11 +114,11 @@ func echoclient() {
 
 func serveudp() {
 	ssuforwarder, err = samforwarderudp.NewSAMDGForwarderFromOptions(
-		samforwarderudp.SetHost("127.0.0.1"),
-		samforwarderudp.SetPort(UDPServerPort),
-		samforwarderudp.SetSAMHost("127.0.0.1"),
-		samforwarderudp.SetSAMPort("7656"),
-		samforwarderudp.SetName("testudpserver"),
+		samoptions.SetHost("127.0.0.1"),
+		samoptions.SetPort(UDPServerPort),
+		samoptions.SetSAMHost("127.0.0.1"),
+		samoptions.SetSAMPort("7656"),
+		samoptions.SetName("testudpserver"),
 	)
 	if err != nil {
 		log.Fatal(err.Error())
@@ -131,12 +133,12 @@ func serveudp() {
 
 func clientudp() {
 	ssuforwarderclient, err = samforwarderudp.NewSAMDGClientForwarderFromOptions(
-		samforwarderudp.SetClientHost("127.0.0.1"),
-		samforwarderudp.SetClientPort(UDPClientPort),
-		samforwarderudp.SetClientSAMHost("127.0.0.1"),
-		samforwarderudp.SetClientSAMPort("7656"),
-		samforwarderudp.SetClientName("testudpclient"),
-		samforwarderudp.SetClientDestination(ssuforwarder.Base32()),
+		samoptions.SetHost("127.0.0.1"),
+		samoptions.SetPort(UDPClientPort),
+		samoptions.SetSAMHost("127.0.0.1"),
+		samoptions.SetSAMPort("7656"),
+		samoptions.SetName("testudpclient"),
+		samoptions.SetDestination(ssuforwarder.Base32()),
 	)
 	if err != nil {
 		log.Fatal(err.Error())

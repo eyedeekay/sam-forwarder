@@ -4,24 +4,26 @@ import (
 	"io"
 	"log"
 	"net"
+
 	//"os"
 	//"path/filepath"
 	"strconv"
 	"strings"
-)
 
-import (
-	"github.com/eyedeekay/sam-forwarder/config"
+	i2ptunconf "github.com/eyedeekay/sam-forwarder/config"
 	"github.com/eyedeekay/sam-forwarder/hashhash"
-	"github.com/eyedeekay/sam-forwarder/i2pkeys"
-	"github.com/eyedeekay/sam-forwarder/interface"
-	"github.com/eyedeekay/sam-forwarder/options"
+	sfi2pkeys "github.com/eyedeekay/sam-forwarder/i2pkeys"
+	samtunnel "github.com/eyedeekay/sam-forwarder/interface"
+
+	samoptions "github.com/eyedeekay/sam-forwarder/options"
 	"github.com/eyedeekay/sam3"
 	"github.com/eyedeekay/sam3/i2pkeys"
 )
 
 // SAMClientForwarder is a tcp proxy that automatically forwards ports to i2p
 type SAMClientForwarder struct {
+	*i2ptunconf.Conf
+
 	samConn           *sam3.SAM
 	SamKeys           i2pkeys.I2PKeys
 	Hasher            *hashhash.Hasher
@@ -35,7 +37,7 @@ type SAMClientForwarder struct {
 	up   bool
 
 	// config
-	Conf *i2ptunconf.Conf
+	//Conf *i2ptunconf.Conf
 }
 
 func (f *SAMClientForwarder) Config() *i2ptunconf.Conf {

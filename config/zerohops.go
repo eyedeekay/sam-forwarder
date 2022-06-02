@@ -8,9 +8,9 @@ func (c *Conf) GetInAllowZeroHop(arg, def bool, label ...string) bool {
 	if arg != def {
 		return arg
 	}
-	if c.Config == nil {
-		return arg
-	}
+	//if c.Config == nil {
+	//	return arg
+	//}
 	if x, o := c.GetBool("inbound.allowZeroHop", label...); o {
 		return x
 	}
@@ -25,9 +25,9 @@ func (c *Conf) GetOutAllowZeroHop(arg, def bool, label ...string) bool {
 	if arg != def {
 		return arg
 	}
-	if c.Config == nil {
-		return arg
-	}
+	//if c.Config == nil {
+	//	return arg
+	//}
 	if x, o := c.GetBool("outbound.allowZeroHop", label...); o {
 		return x
 	}

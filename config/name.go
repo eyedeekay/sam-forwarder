@@ -8,9 +8,9 @@ func (c *Conf) GetSaveFile(arg, def bool, label ...string) bool {
 	if arg != def {
 		return arg
 	}
-	if c.Config == nil {
-		return arg
-	}
+	//if c.Config == nil {
+	//	return arg
+	//}
 	return c.SaveFile
 }
 
@@ -22,9 +22,9 @@ func (c *Conf) GetKeys(arg, def string, label ...string) string {
 	if arg != def {
 		return arg
 	}
-	if c.Config == nil {
-		return arg
-	}
+	//if c.Config == nil {
+	//	return arg
+	//}
 	if x, o := c.Get("keys", label...); o {
 		return x
 	}

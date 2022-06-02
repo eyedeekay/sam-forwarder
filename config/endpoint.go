@@ -8,9 +8,9 @@ func (c *Conf) GetEndpointHost(arg, def string, label ...string) string {
 	if arg != def {
 		return arg
 	}
-	if c.Config == nil {
-		return arg
-	}
+	//if c.Config == nil {
+	//	return arg
+	//}
 	if x, o := c.Get("tunhost", label...); o {
 		return x
 	}

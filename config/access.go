@@ -12,9 +12,9 @@ func (c *Conf) GetAccessListType(arg, def string, label ...string) string {
 	if arg != def {
 		return arg
 	}
-	if c.Config == nil {
-		return arg
-	}
+	//if c.Config == nil {
+	//	return arg
+	//}
 	return c.AccessListType
 }
 

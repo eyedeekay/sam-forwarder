@@ -1,3 +1,4 @@
+//go:build static && (!nostatic || !cli)
 // +build static
 // +build !nostatic !cli
 

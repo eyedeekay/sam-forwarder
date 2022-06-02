@@ -53,9 +53,9 @@ func (c *Conf) GetTypes(argc, argu, argh bool, def string, label ...string) stri
 	if def == "browserclient" {
 		return def
 	}
-	if c.Config == nil {
-		return typ
-	}
+	//if c.Config == nil {
+	//	return typ
+	//}
 	if x, o := c.Get("type", label...); o {
 		return x
 	}
@@ -66,9 +66,9 @@ func (c *Conf) GetOtherType(typ, def string, label ...string) string {
 	if typ != def {
 		return typ
 	}
-	if c.Config == nil {
-		return typ
-	}
+	//if c.Config == nil {
+	//	return typ
+	//}
 	if x, o := c.Get("type", label...); o {
 		return x
 	}
