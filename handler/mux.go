@@ -10,21 +10,33 @@ import (
 
 type TunnelHandlerMux struct {
 	http.Server
-	pagenames       []string
-	tunnels         []*TunnelHandler
-	user            string
-	password        string
-	sessionToken    string
-	cssString       string
-	jsString        string
+	pagenames    []string
+	tunnels      []*TunnelHandler
+	user         string
+	password     string
+	sessionToken string
+	//cssString    string
+	//jsString     string
+
 	templateTop     string
 	templateBot     string
-	templateTopHTML template.Template
-	templateBotHTML template.Template
+	templateTopHTML *template.Template
+	templateBotHTML *template.Template
 }
 
 func (m *TunnelHandlerMux) ListenAndServe() {
 	m.Server.ListenAndServe()
+}
+
+func (m *TunnelHandlerMux) Count() int {
+	return len(m.tunnels)
+}
+
+func (m *TunnelHandlerMux) User() string {
+	if m.user == "" {
+		return "anonymous"
+	}
+	return m.user
 }
 
 func (m *TunnelHandlerMux) CheckCookie(w http.ResponseWriter, r *http.Request) bool {
@@ -56,11 +68,7 @@ func (m *TunnelHandlerMux) HandlerWrapper(h http.Handler) http.Handler {
 		if m.CheckCookie(w, r) == false {
 			return
 		}
-		//if !strings.HasSuffix(r.URL.Path, "color") {
 		h.ServeHTTP(w, r)
-		//} else {
-		//	m.ColorHeader(h, r, w)
-		//}
 	})
 }
 
@@ -103,14 +111,31 @@ func NewTunnelHandlerMux(host, port, user, password, css, javascript string) *Tu
 	m.password = password
 	m.sessionToken = ""
 	m.tunnels = []*TunnelHandler{}
+	m.templateTop = `
+<head>
+<meta charset="utf-8">
+<title>SAMTunnel</title>
+<link rel="stylesheet" href="/styles.css">
+<script src="/scripts.js"></script>
+</head>
+<body>
+<h1>SAMTunnel</h1>
+<a class="samtunnel-home-page" href="/index.html">Welcome {{.User}}! you are serving {{.Count}} tunnels. </a>
+<div id="toggleall" class="global control">
+<a class="samtunnel-global-toggle" href="#" onclick="toggle_visibility_class('prop');">Show/Hide All</a>
+</div>
+`
+	m.templateBot = `</body>
+</html>
+`
 	var err error
-	m.cssString, err = ReadFile(css)
+	m.templateTopHTML = template.Must(template.New("top").Parse(m.templateTop))
 	if err != nil {
-		m.cssString = DefaultCSS()
+		log.Printf("Error parsing templateTop: %s", err)
 	}
-	m.jsString, err = ReadFile(javascript)
+	m.templateBotHTML = template.Must(template.New("bot").Parse(m.templateBot))
 	if err != nil {
-		m.jsString = DefaultJS()
+		log.Printf("Error parsing templateBot: %s", err)
 	}
 	for _, v := range m.pagenames {
 		Handler.HandleFunc(fmt.Sprintf("/%s", v), m.Home)
@@ -122,4 +147,25 @@ func NewTunnelHandlerMux(host, port, user, password, css, javascript string) *Tu
 	}
 	m.Handler = Handler
 	return &m
+}
+
+func (m *TunnelHandlerMux) Home(w http.ResponseWriter, r *http.Request) {
+	if m.CheckCookie(w, r) == false {
+		return
+	}
+	if r.URL.Path == "/" {
+		http.Redirect(w, r, "/index.html", 301)
+		fmt.Fprintf(w, "redirecting to index.html")
+		return
+	}
+	r2, err := http.NewRequest("GET", r.URL.Path+"/color", r.Body)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	m.templateTopHTML.Execute(w, m)
+	for _, tunnel := range m.Tunnels() {
+		tunnel.ServeHTTP(w, r2)
+	}
+	m.templateBotHTML.Execute(w, m)
 }

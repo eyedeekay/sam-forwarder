@@ -112,11 +112,26 @@ span {
 }
 textarea {
     display: inline-block;
-    width: 100%;
+    width: 65%;
     resize: none;
-    height: 1rem;
+    height: 1.5rem;
     float: right;
     display: inline;
+}
+.samtunnel-body-prop {
+    width: 100%;
+    border: 1px solid #ccc;
+    height: 2rem;
+}
+.samtunnel-body-prop-key {
+    max-width: 35%;
+    float: left;
+    height: 1.5rem;
+}
+.samtunnel-body-prop-value {
+    max-width: 65%;
+    float: right;
+    height: 1.5rem;
 }
 .linkstyle {
     align-items: normal;

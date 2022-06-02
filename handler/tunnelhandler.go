@@ -28,6 +28,7 @@ func NewTunnelHandler(ob samtunnel.SAMTunnel, err error) (*TunnelHandler, error)
 <span class="samtunnel-header-title-text-type">{{.Type}}</span>
 </span>
 </div>
+<br>
 <div class="samtunnel-header-controls">
 <form method="post" action="{{.ID}}/control">
 <input type="hidden" name="action" value="start">
@@ -47,8 +48,9 @@ func NewTunnelHandler(ob samtunnel.SAMTunnel, err error) (*TunnelHandler, error)
 {{range $key, $value := .Props }}
 <div class="samtunnel-body-prop">
 <span class="samtunnel-body-prop-key">{{$key}}</span>
-<span class="samtunnel-body-prop-value">{{$value}}</span>
+<textarea class="samtunnel-body-prop-value">{{$value}}</textarea>
 </div>
+<br>
 {{end}}
 </div>
 </div>

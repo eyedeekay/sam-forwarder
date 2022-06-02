@@ -56,51 +56,14 @@ func (m *TunnelHandlerMux) Signin(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-func (m *TunnelHandlerMux) Home(w http.ResponseWriter, r *http.Request) {
-	if m.CheckCookie(w, r) == false {
-		return
-	}
-	if r.URL.Path == "/" {
-		http.Redirect(w, r, "/index.html", 301)
-		fmt.Fprintf(w, "redirecting to index.html")
-		return
-	}
-	r2, err := http.NewRequest("GET", r.URL.Path+"/color", r.Body)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-	fmt.Fprintf(w, "<!DOCTYPE html>\n")
-	fmt.Fprintf(w, "<html>\n")
-	fmt.Fprintf(w, "<head>\n")
-	fmt.Fprintf(w, "  <title>")
-	fmt.Fprintf(w, "samcatd")
-	fmt.Fprintf(w, "  </title>")
-	fmt.Fprintf(w, "  <link rel=\"stylesheet\" href=\"/styles.css\">")
-	fmt.Fprintf(w, "</head>\n")
-	fmt.Fprintf(w, "  <body>\n")
-	fmt.Fprintf(w, "    <h1>\n")
-	w.Write([]byte(fmt.Sprintf("    <a href=\"/index.html\">Welcome %s! you are serving %d tunnels. </a>\n", m.user, len(m.tunnels))))
-	fmt.Fprintf(w, "")
-	fmt.Fprintf(w, "    </h1>\n")
-	fmt.Fprintf(w, "    <div id=\"toggleall\" class=\"global control\">\n")
-	fmt.Fprintf(w, "      <a href=\"#\" onclick=\"toggle_visibility_class('%s');\">Show/Hide %s</a>\n", "prop", "all")
-	fmt.Fprintf(w, "    </div>\n")
-	for _, tunnel := range m.Tunnels() {
-		tunnel.ServeHTTP(w, r2)
-	}
-	fmt.Fprintf(w, "    <script src=\"/scripts.js\"></script>\n")
-	fmt.Fprintf(w, "  </body>\n")
-	fmt.Fprintf(w, "</html>\n")
-}
-
 func (m *TunnelHandlerMux) CSS(w http.ResponseWriter, r *http.Request) {
 	if m.CheckCookie(w, r) == false {
 		return
 	}
 	w.Header().Add("Content-Type", "text/css")
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(fmt.Sprintf("%s\n", m.cssString)))
+	//w.Write([]byte(fmt.Sprintf("%s\n", m.cssString)))
+	w.Write([]byte(fmt.Sprintf("%s\n", DefaultCSS())))
 }
 
 func (m *TunnelHandlerMux) JS(w http.ResponseWriter, r *http.Request) {
@@ -108,5 +71,6 @@ func (m *TunnelHandlerMux) JS(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(fmt.Sprintf("%s\n", m.jsString)))
+	//w.Write([]byte(fmt.Sprintf("%s\n", m.jsString)))
+	w.Write([]byte(fmt.Sprintf("%s\n", DefaultJS())))
 }
