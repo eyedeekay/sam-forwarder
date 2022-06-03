@@ -12,8 +12,8 @@ require (
 	github.com/eyedeekay/portcheck v0.0.0-20190218044454-bb8718669680
 	github.com/eyedeekay/sam3 v0.33.3-0.20220601222524-ee9930813dc1
 	github.com/gtank/cryptopasta v0.0.0-20170601214702-1f550f6f2f69
+	github.com/jchv/go-webview-selector v0.0.0-20220126075917-13df59bce3cf
 	github.com/justinas/nosurf v1.1.1
-	github.com/webview/webview v0.0.0-20220603044542-dc41cdcc2961
 	github.com/zieckey/goini v0.0.0-20180118150432-0da17d361d26
 	github.com/zserge/lorca v0.1.10
 )
