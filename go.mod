@@ -10,7 +10,7 @@ require (
 	github.com/boreq/friendlyhash v0.0.0-20190522010448-1ca64b3ca69e
 	github.com/emirpasic/gods v1.18.1 // indirect
 	github.com/eyedeekay/eephttpd v0.0.9996-0.20210919031443-3b354b7839bd
-	github.com/eyedeekay/httptunnel v0.0.0-20220603041627-a064adf0ae4b
+	github.com/eyedeekay/httptunnel v0.32.1
 	github.com/eyedeekay/i2pkeys v0.0.0-20220310055120-b97558c06ac8
 	github.com/eyedeekay/outproxy v0.0.0-20220603040929-b24e1e503f1f
 	github.com/eyedeekay/portcheck v0.0.0-20190218044454-bb8718669680
