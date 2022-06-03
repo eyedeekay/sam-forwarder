@@ -1,5 +1,6 @@
 crawshaw.io/littleboss v0.0.0-20190317185602-8957d0aedcce h1:4VyRNGOpNgP9ioTYZ7ah3x8C28I7wsMt4Ao9nTXv2ec=
 crawshaw.io/littleboss v0.0.0-20190317185602-8957d0aedcce/go.mod h1:TIbCAHgttUfOKudw59Il7Z0XIlitzo228/mtwMe4vPM=
+fyne.io/systray v1.9.0/go.mod h1:N4ZU0i34X+n8soFRlBNkmJTunw9wD+9jIP19fSZpjSI=
 github.com/9seconds/mtg v0.0.0-20190831103550-c2b8e889619a/go.mod h1:3bVC+6+H54hl2X7vd5Waitx9rcCa6gbb/HSf+o52Q8E=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/toml v1.1.0 h1:ksErzDEI1khOiGPgpwuI7x2ebx/uXQNw7xJpn9Eq1+I=
@@ -68,8 +69,9 @@ github.com/emirpasic/gods v1.12.0/go.mod h1:YfzfFFoVP/catgzJb4IKIqXjX78Ha8FMSDh3
 github.com/emirpasic/gods v1.18.1 h1:FXtiHYKDGKCW2KzwZKx0iC0PQmdlorYgdFG9jPXJ1Bc=
 github.com/emirpasic/gods v1.18.1/go.mod h1:8tpGGwCnJ5H4r6BWwaV6OrWmMoPhUl5jm/FMNAnJvWQ=
 github.com/eyedeekay/eephttpd v0.0.0-20190903000420-52f5a8485a4e/go.mod h1:wFPQsNBnY95LkuujFEZARo7slafRwoF0D97FFHBoZro=
-github.com/eyedeekay/eephttpd v0.0.9996-0.20210919031443-3b354b7839bd h1:GRJQHqxKgVRD4plpxn6qv4kzp2C2BZ9NaAFMsGPSyD8=
 github.com/eyedeekay/eephttpd v0.0.9996-0.20210919031443-3b354b7839bd/go.mod h1:kD3SgBbPKHJ2UuIkp0qgcFhQa9cBkMSnLg2fRt7CFrg=
+github.com/eyedeekay/eephttpd v0.0.9996-0.20220603211709-54e74d470aeb h1:rmFzcIyWgWyb8Nkuir+nbDDcHKuXMlppJxGVrXOCgsw=
+github.com/eyedeekay/eephttpd v0.0.9996-0.20220603211709-54e74d470aeb/go.mod h1:xzls4Ha3X45S7WUPEZG83jR5iOfq301UVDXyF/U7rxU=
 github.com/eyedeekay/goSam v0.1.1-0.20190814204230-d4c9b8c57dd6/go.mod h1:kGTfZrncJ4CwMX3d1qA6bcMJTOcuTbOqgWg7WrFNAQ0=
 github.com/eyedeekay/goSam v0.32.31-0.20210122211817-f97683379f23/go.mod h1:UgJnih/LpotwKriwVPOEa6yPDM2NDdVrKfLtS5DOLPE=
 github.com/eyedeekay/goSam v0.32.54-0.20220603035649-cfdb60d9327b h1:nOF7hsTT0+Ywh3hwDihpVu9xGgobw2ymzT8HmkV0eH8=
@@ -94,6 +96,7 @@ github.com/eyedeekay/sam-forwarder v0.0.0-20190905212604-029317222e15/go.mod h1:
 github.com/eyedeekay/sam-forwarder v0.32.1-0.20191021175341-aa52be69ffe8/go.mod h1:G4w9flJ+VSyuRDfwk8OyPlIayIyGX85km3c993isqgQ=
 github.com/eyedeekay/sam-forwarder v0.32.2-0.20210206025830-529a5f77cbb9/go.mod h1:+94hmW7SUHtwTQcIABwc4f8NTCGPhglYFrZAzKLIwrg=
 github.com/eyedeekay/sam-forwarder v0.32.2-0.20220603033253-9c0b2adb95b5/go.mod h1:WNDqiMmkqf8iqeX4wFKdORRXdV90bOcbRhlVsepTLV0=
+github.com/eyedeekay/sam-forwarder v0.32.2-0.20220603202605-9a46feacc370/go.mod h1:/FX9jyxCKjmnLxcm7mRbI0wvDdjY08YmvRFvrFopZHY=
 github.com/eyedeekay/sam3 v0.0.0-20190613034117-99ad6522ebe3/go.mod h1:Vrxh+71E3HVYqyRlT5Jg+E26sSuu8UNTLB4p8qyT408=
 github.com/eyedeekay/sam3 v0.0.0-20190730185140-f8d54526ea25/go.mod h1:Y3igFVzN4ybqkkpfUWULGhw7WRp8lieq0ORXbLBbcZM=
 github.com/eyedeekay/sam3 v0.32.1/go.mod h1:Y3igFVzN4ybqkkpfUWULGhw7WRp8lieq0ORXbLBbcZM=
@@ -135,6 +138,8 @@ github.com/go-logfmt/logfmt v0.4.0/go.mod h1:3RMwSq7FuexP4Kalkev3ejPJsZTpXXBr9+V
 github.com/go-ole/go-ole v1.2.5/go.mod h1:pprOEPIfldk/42T2oK7lQ4v4JSDwmV0As9GaiUsvbm0=
 github.com/go-stack/stack v1.7.0/go.mod h1:v0f6uXyyMGvRgIKkXu+yp6POWl0qKG85gN/melR3HDY=
 github.com/go-stack/stack v1.8.0/go.mod h1:v0f6uXyyMGvRgIKkXu+yp6POWl0qKG85gN/melR3HDY=
+github.com/godbus/dbus/v5 v5.0.4/go.mod h1:xhWf0FNVPg57R7Z0UbKHbJfkEywrmjJnf7w5xrFpKfA=
+github.com/godbus/dbus/v5 v5.1.0/go.mod h1:xhWf0FNVPg57R7Z0UbKHbJfkEywrmjJnf7w5xrFpKfA=
 github.com/gofrs/uuid v3.2.0+incompatible/go.mod h1:b2aQJv3Z4Fp6yNu3cdSllBxTCLRxnplIgP/c0N/04lM=
 github.com/gofrs/uuid v4.0.0+incompatible/go.mod h1:b2aQJv3Z4Fp6yNu3cdSllBxTCLRxnplIgP/c0N/04lM=
 github.com/gofrs/uuid v4.2.0+incompatible h1:yyYWMnhkhrKwwr8gAOcOCYxOOscHgDS9yZgBrnJfGa0=
