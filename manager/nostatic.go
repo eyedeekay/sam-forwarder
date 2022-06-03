@@ -13,7 +13,7 @@ import (
 
 import (
 	. "github.com/eyedeekay/sam-forwarder/gui"
-	"github.com/zserge/webview"
+	"github.com/webview/webview"
 )
 
 var view webview.WebView
