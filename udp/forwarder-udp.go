@@ -16,7 +16,7 @@ import (
 
 	samtunnel "github.com/eyedeekay/sam-forwarder/interface"
 	"github.com/eyedeekay/sam3"
-	"github.com/eyedeekay/sam3/i2pkeys"
+	"github.com/eyedeekay/i2pkeys"
 )
 
 //SAMDGForwarder is a structure which automatically configured the forwarding of

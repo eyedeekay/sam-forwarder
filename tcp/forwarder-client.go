@@ -17,7 +17,7 @@ import (
 
 	samoptions "github.com/eyedeekay/sam-forwarder/options"
 	"github.com/eyedeekay/sam3"
-	"github.com/eyedeekay/sam3/i2pkeys"
+	"github.com/eyedeekay/i2pkeys"
 )
 
 // SAMClientForwarder is a tcp proxy that automatically forwards ports to i2p

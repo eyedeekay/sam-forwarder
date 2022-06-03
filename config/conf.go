@@ -7,7 +7,7 @@ import (
 
 import (
 	sfi2pkeys "github.com/eyedeekay/sam-forwarder/i2pkeys"
-	"github.com/eyedeekay/sam3/i2pkeys"
+	"github.com/eyedeekay/i2pkeys"
 )
 
 var err error

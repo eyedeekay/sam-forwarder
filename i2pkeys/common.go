@@ -9,7 +9,7 @@ import (
 	"github.com/eyedeekay/sam-forwarder/i2pkeys/keys"
 	//"github.com/eyedeekay/sam-forwarder/i2pkeys/password"
 	"github.com/eyedeekay/sam3"
-	"github.com/eyedeekay/sam3/i2pkeys"
+	"github.com/eyedeekay/i2pkeys"
 )
 
 func Encrypt(i2pkeypath, aeskeypath string) error {

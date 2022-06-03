@@ -19,7 +19,7 @@ import (
 	samoptions "github.com/eyedeekay/sam-forwarder/options"
 	"github.com/eyedeekay/sam3"
 
-	i2pkeys "github.com/eyedeekay/sam3/i2pkeys"
+	i2pkeys "github.com/eyedeekay/i2pkeys"
 )
 
 //SAMDGClientForwarder is a structure which automatically configured the forwarding of
