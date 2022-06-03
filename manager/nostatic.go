@@ -13,7 +13,7 @@ import (
 
 import (
 	. "github.com/eyedeekay/sam-forwarder/gui"
-	"github.com/webview/webview"
+	"github.com/jchv/go-webview-selector"
 )
 
 var view webview.WebView

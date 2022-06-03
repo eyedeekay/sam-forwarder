@@ -5,7 +5,7 @@ package gui
 
 import (
 	"github.com/eyedeekay/sam-forwarder/interface"
-	"github.com/webview/webview"
+	"github.com/jchv/go-webview-selector"
 )
 
 func LaunchUI(s samtunnel.WebUI) (webview.WebView, error) {
