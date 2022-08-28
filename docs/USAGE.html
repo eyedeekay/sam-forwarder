@@ -1,0 +1,310 @@
+<html>
+  <head>
+    <title>
+      sam-forwarder
+    </title>
+    <meta name="author" content="eyedeekay" />
+    <meta name="description" content="sam-forwarder" />
+    <meta name="keywords" content="master" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="showhider.css" />
+  </head>
+  <body>
+    <div id="navbar">
+      <a href="#shownav">
+        Show navigation
+      </a>
+      <div id="shownav">
+        <div id="hidenav">
+          <ul>
+            <li>
+              <a href="index.html">
+                index
+              </a>
+            </li>
+            <li>
+              <a href="EMBEDDING.html">
+                EMBEDDING
+              </a>
+            </li>
+            <li>
+              <a href="PACKAGECONF.html">
+                PACKAGECONF
+              </a>
+            </li>
+            <li>
+              <a href="USAGE.html">
+                USAGE
+              </a>
+            </li>
+          </ul>
+          <br>
+          <a href="#hidenav">
+            Hide Navigation
+          </a>
+        </div>
+      </div>
+    </div>
+    <h1>
+      <a href="#samcatd-router-independent-tunnel-management-for-i2p" rel="nofollow">
+        <span></span>
+      </a>
+      samcatd - Router-independent tunnel management for i2p
+    </h1>
+    <p>
+      samcatd is a daemon which runs a group of forwarding proxies to
+      provide services over i2p independent of the router. It also serves
+      as a generalized i2p networking utility for power-users. It&#39;s
+      intended to be a Swiss-army knife for the SAM API.
+    </p>
+    <h2>
+      <a href="#usage" rel="nofollow">
+        <span></span>
+      </a>
+      usage:
+    </h2>
+    <pre><code>flag needs an argument: -h
+Usage of ./bin/samcatd:
+  -a string
+    	Type of access list to use, can be &#34;allowlist&#34; &#34;blocklist&#34; or &#34;none&#34;. (default &#34;none&#34;)
+  -c	Client proxy mode(true or false)
+  -conv string
+    	Display the base32 and base64 values of a specified .i2pkeys file
+  -cr string
+    	Encrypt/decrypt the key files with a passfile
+  -css string
+    	custom CSS for web interface (default &#34;css/styles.css&#34;)
+  -ct int
+    	Reduce tunnel quantity after X (milliseconds) (default 600000)
+  -d string
+    	Directory to save tunnel configuration file in.
+  -de string
+    	Destination to connect client&#39;s to by default.
+  -f string
+    	Use an ini file for configuration(config file options override passed arguments for now.) (default &#34;none&#34;)
+  -h string
+    	Target host(Host of service to forward to i2p) (default &#34;127.0.0.1&#34;)
+  -i string
+    	Destination for client tunnels. Ignored for service tunnels. (default &#34;none&#34;)
+  -ib int
+    	Set inbound tunnel backup quantity(0 to 5) (default 2)
+  -ih
+    	Inject X-I2P-DEST headers
+  -il int
+    	Set inbound tunnel length(0 to 7) (default 3)
+  -iq int
+    	Set inbound tunnel quantity(0 to 15) (default 6)
+  -iv int
+    	Set inbound tunnel length variance(-7 to 7)
+  -js string
+    	custom JS for web interface (default &#34;js/scripts.js&#34;)
+  -k string
+    	key for encrypted leaseset (default &#34;none&#34;)
+  -l	Use an encrypted leaseset(true or false) (default true)
+  -littleboss string
+    	instruct the littleboss:
+    	
+    	start:		start and manage this process using service name &#34;service-name&#34;
+    	stop:		signal the littleboss to shutdown the process
+    	status:		print statistics about the running littleboss
+    	reload:		restart the managed process using the executed binary
+    	bypass:		disable littleboss, run the program directly (default &#34;bypass&#34;)
+  -n string
+    	Tunnel name, this must be unique but can be anything. (default &#34;forwarder&#34;)
+  -ob int
+    	Set outbound tunnel backup quantity(0 to 5) (default 2)
+  -ol int
+    	Set outbound tunnel length(0 to 7) (default 3)
+  -oq int
+    	Set outbound tunnel quantity(0 to 15) (default 6)
+  -ov int
+    	Set outbound tunnel length variance(-7 to 7)
+  -p string
+    	Target port(Port of service to forward to i2p) (default &#34;8081&#34;)
+  -pk string
+    	private key for encrypted leaseset (default &#34;none&#34;)
+  -psk string
+    	private signing key for encrypted leaseset (default &#34;none&#34;)
+  -r	Reduce tunnel quantity when idle(true or false)
+  -rq int
+    	Reduce idle tunnel quantity to X (0 to 5) (default 3)
+  -rt int
+    	Reduce tunnel quantity after X (milliseconds) (default 600000)
+  -s	Start a tunnel with the passed parameters(Otherwise, they will be treated as default values.)
+  -sh string
+    	SAM host (default &#34;127.0.0.1&#34;)
+  -sp string
+    	SAM port (default &#34;7656&#34;)
+  -st string
+    	Signature type
+  -t	Use saved file and persist tunnel(If false, tunnel will not persist after program is stopped.
+  -tls string
+    	(Currently inoperative. Target TLS port(HTTPS Port of service to forward to i2p)
+  -u	UDP mode(true or false)
+  -w	Start web administration interface
+  -wp string
+    	Web port (default &#34;7957&#34;)
+  -x	Close tunnel idle(true or false)
+  -z	Uze gzip(true or false)
+  -zi
+    	Allow zero-hop, non-anonymous tunnels in(true or false)
+  -zo
+    	Allow zero-hop, non-anonymous tunnels out(true or false)
+</code></pre>
+    <h1>
+      <a href="#managing-samcatd-save-encryption-keys" rel="nofollow">
+        <span></span>
+      </a>
+      managing samcatd save-encryption keys
+    </h1>
+    <p>
+      In order to keep from saving the .i2pkeys files in plaintext format, samcatd
+      can optionally generate a key and encrypt the .i2pkeys files securely. Of
+      course, to fully benefit from this arrangement, you need to move those keys
+      away from the machine where the tunnel keys(the .i2pkeys file) are located,
+      or protect them in some other way(sandboxing, etc). If you want to use
+      encrypted .i2pkeys files, you can specify a key file to use with the -cr
+      option on the terminal or with keyfile option in the .ini file.
+    </p>
+    <h1>
+      <a href="#example-config-valid-for-both-ephsite-and-samcat" rel="nofollow">
+        <span></span>
+      </a>
+      example config - valid for both ephsite and samcat
+    </h1>
+    <p>
+      Options are still being added, pretty much as fast as I can put them
+      in. For up-to-the-minute options, see
+      <a href="config/CHECKLIST.md" rel="nofollow">
+        the checklist
+      </a>
+    </p>
+    <p>
+      (
+      <strong>
+        ephsite
+      </strong>
+      will only use top-level options, but they can be labeled or
+      unlabeled)
+    </p>
+    <p>
+      (
+      <strong>
+        samcatd
+      </strong>
+      treats the first set of options it sees as the default, and
+      does not start tunnels based on unlabeled options unless passed the
+      -s flag.)
+    </p>
+    <div>
+      <pre>
+## Defaults, these are only invoked with the -start option or if labeled tunnels
+## are not present(samcatd instructions). **THESE** are the correct config files
+## to use as defaults, and not the ones in ../sam-forwarder/tunnels.ini, which
+## are used for testing settings availability only.
+
+inbound.length = 3
+outbound.length = 3
+inbound.lengthVariance = 0
+outbound.lengthVariance = 0
+inbound.backupQuantity = 3
+outbound.backupQuantity = 3
+inbound.quantity = 5
+outbound.quantity = 5
+inbound.allowZeroHop = false
+outbound.allowZeroHop = false
+i2cp.encryptLeaseSet = false
+gzip = true
+i2cp.reduceOnIdle = true
+i2cp.reduceIdleTime = 3000000
+i2cp.reduceQuantity = 2
+i2cp.enableWhiteList = false
+i2cp.enableBlackList = false
+keyfile = &#34;/usr/share/samcatd/samcatd&#34;
+
+#[sam-forwarder-tcp-server]
+#type = server
+#host = 127.0.0.1
+#port = 8081
+#inbound.length = 3
+#outbound.length = 3
+#keys = forwarder
+
+[sam-forwarder-tcp-client]
+type = client
+host = 127.0.0.1
+port = 8082
+inbound.length = 3
+outbound.length = 3
+destination = i2p-projekt.i2p
+keys = forwarder-two
+
+#[sam-forwarder-udp-server]
+#type = udpserver
+#host = 127.0.0.1
+#port = 8084
+#inbound.length = 6
+#outbound.length = 3
+#keys = forwarder-four
+
+#[sam-forwarder-udp-client]
+#type = udpclient
+#host = 127.0.0.1
+#port = 8083
+#inbound.length = 3
+#outbound.length = 3
+#destination = i2p-projekt.i2p
+#keys = forwarder-three
+
+#[sam-forwarder-tcp-http-server]
+#type = http
+#host = 127.0.0.1
+#port = 8085
+#inbound.length = 3
+#outbound.length = 3
+#keys = forwarder-five
+
+#[sam-forwarder-vpn-server]
+#type = udpserver
+#host = 127.0.0.1
+#port = 8084
+#inbound.length = 2
+#outbound.length = 2
+#inbound.backupQuantity = 3
+#outbound.backupQuantity = 3
+#inbound.quantity = 5
+#outbound.quantity = 5
+#i2cp.reduceOnIdle = true
+#i2cp.reduceIdleTime = 3000000
+#i2cp.reduceQuantity = 2
+#i2cp.closeOnIdle = false
+#keys = i2pvpnserver
+
+#[sam-forwarder-vpn-client]
+#type = udpclient
+#host = 127.0.0.1
+#port = 8085
+#inbound.length = 2
+#outbound.length = 2
+#inbound.backupQuantity = 3
+#outbound.backupQuantity = 3
+#inbound.quantity = 5
+#outbound.quantity = 5
+#i2cp.reduceOnIdle = true
+#i2cp.reduceIdleTime = 3000000
+#i2cp.reduceQuantity = 2
+#destination = adestinationisrequiredorbespecifiedatruntime.i2p
+#keys = i2pvpnclient
+</pre>
+    </div>
+    <div>
+      <iframe src="https://snowflake.torproject.org/embed.html" width="320" height="240" frameborder="0" scrolling="no"></iframe>
+    </div>
+    <div>
+      <a href="https://geti2p.net/">
+        <img src="i2plogo.png"></img>
+        I2P
+      </a>
+    </div>
+  </body>
+</html>
