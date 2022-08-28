@@ -207,13 +207,8 @@ follow:
 docker: docker-build docker-run
 
 index:
-	pandoc README.md -o docs/index.html
-	pandoc docs/USAGE.md -o example/www/index.html && cp example/www/index.html docs/usage.html
-	pandoc docs/EMBEDDING.md -o docs/embedding.html
-	pandoc docs/PACKAGECONF.md -o docs/packageconf.html
-	pandoc interface/README.md -o docs/interface.html
-	cp config/CHECKLIST.md docs/config
-	pandoc docs/config/CHECKLIST.md -o docs/checklist.html
+	cp README.md docs/README.md
+	cd docs && edgar
 
 visit:
 	http_proxy=http://127.0.0.1:4444 surf http://566niximlxdzpanmn4qouucvua3k7neniwss47li5r6ugoertzuq.b32.i2p
