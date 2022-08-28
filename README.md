@@ -6,9 +6,14 @@ very useful way of configuring applications in an i2ptunnel-like way. TCP and
 UDP are supported, but there may be some lingering bugs in UDP, please report
 them if found.
 
+**STATUS:** This project is maintained. I will respond to issues, pull requests,
+and feature requests within a few days. I am not adding many new features to it
+at this time.
+
 ## getting
 
         go get -u github.com/eyedeekay/sam-forwarder/samcatd
+        # for now
 
 ## building
 
