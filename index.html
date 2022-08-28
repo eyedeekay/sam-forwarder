@@ -1,251 +1,294 @@
 <html>
-  <head>
-    <title>
-      sam-forwarder
-    </title>
-    <meta name="author" content="eyedeekay" />
-    <meta name="description" content="sam-forwarder" />
-    <meta name="keywords" content="master" />
-    <link rel="stylesheet" type="text/css" href="style.css" />
-  </head>
-  <body>
-    <div id="navbar">
-      <a href="#shownav">
-        Show navigation
-      </a>
-      <div id="shownav">
-        <div id="hidenav">
-          <ul>
-            <li>
-              <a href="index.html">
-                index
-              </a>
-            </li>
-            <li>
-              <a href="LICENSE.html">
-                LICENSE
-              </a>
-            </li>
-          </ul>
-          <br>
-          <a href="#hidenav">
-            Hide Navigation
+<head>
+  <title>
+    sam-forwarder
+  </title>
+  <meta name="author" content="eyedeekay" />
+  <meta name="description" content="sam-forwarder" />
+  <meta name="keywords" content="master" />
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <link rel="stylesheet" type="text/css" href="showhider.css" />
+</head>
+<body>
+<div id="navbar">
+  <a href="#shownav">
+    Show navigation
+  </a>
+  <div id="shownav">
+    <div id="hidenav">
+      <ul>
+        <li>
+          <a href="index.html">
+            index
           </a>
-        </div>
-      </div>
+        </li>
+        <li>
+          <a href="LICENSE.html">
+            LICENSE
+          </a>
+        </li>
+      </ul>
+      <br>
+      <a href="#hidenav">
+        Hide Navigation
+      </a>
     </div>
-    <h1>
-      <a href="/">
-        sam-forwarder
-      </a>
-    </h1>
-    <p>
-      Forward a local port to i2p over the SAM API, or proxy a destination to a port
-      on the local host. This is no longer substantially a work-in-progress, it’s a
-      very useful way of configuring applications in an i2ptunnel-like way. TCP and
-      UDP are supported, but there may be some lingering bugs in UDP, please report
-      them if found.
-    </p>
-    <h2>
-      getting
-    </h2>
-    <pre><code>    go get -u github.com/eyedeekay/sam-forwarder/samcatd
+  </div>
+</div>
+<h1>
+<a href="#<a href="/">
+  sam-forwarder
+</a>
+" rel="nofollow">
+<span></span>
+sam-forwarder
+<p>
+  Forward a local port to i2p over the SAM API, or proxy a destination to a port
+  on the local host. This is no longer substantially a work-in-progress, it&#39;s a
+  very useful way of configuring applications in an i2ptunnel-like way. TCP and
+  UDP are supported, but there may be some lingering bugs in UDP, please report
+  them if found.
+</p>
+<h2>
+  <a href="#getting" rel="nofollow">
+    <span></span>
+  </a>
+  getting
+</h2><pre><code>    go get -u github.com/eyedeekay/sam-forwarder/samcatd
 </code></pre>
-    <h2>
-      building
-    </h2>
-    <p>
-      Just:
-    </p>
-    <pre><code>    make deps build
+<h2>
+  <a href="#building" rel="nofollow">
+    <span></span>
+  </a>
+  building
+</h2>
+<p>
+  Just:
+</p><pre><code>    make deps build
 </code></pre>
-    <p>
-      and it will be in the folder ./bin/
-    </p>
-    <p>
-      <a href="https://travis-ci.org/eyedeekay/sam-forwarder" rel="nofollow">
-        <img src="https://travis-ci.org/eyedeekay/sam-forwarder.svg?branch=master" alt="Build Status"/>
-      </a>
-    </p>
-    <h2>
-      Usage:
-    </h2>
-    <p>
-      There are a number of ways to use sam-forwarder:
-    </p>
-    <h3>
-      <a href="docs/USAGE.md" rel="nofollow">
-        usage/configuration
-      </a>
-      as an application(Start here for samcatd)
-    </h3>
-    <h3>
-      <a href="docs/EMBEDDING.md" rel="nofollow">
-        embedding
-      </a>
-      in other applications
-    </h3>
-    <h3>
-      <a href="docs/PACKAGECONF.md" rel="nofollow">
-        encapsulate
-      </a>
-      configuration for i2p-enabled packages
-    </h3>
-    <h3>
-      <a href="interface/README.md" rel="nofollow">
-        implement
-      </a>
-      the interface for fine-grained control over SAM connections
-    </h3>
-    <h2>
-      binaries
-    </h2>
-    <p>
-      The standalone application for configuring tunnels is named samcatd and it’s
-      main package is in the directory
-      <code>
-        ./samcatd
-      </code>
-      . It works as a cli and is
-      capable of running a WebUI, which is currently view-only. In a future time, the
-      WebUI will also be capable of configuring and editing tunnels.
-    </p>
-    <p>
-      The previous application ephsite has been fully retired. If you were using it,
-      it can usually be replaced with
-      <code>
-        samcatd -s
-      </code>
-      and your existing arguments.
-    </p>
-    <h1>
-      Current limitations:
-    </h1>
-    <p>
-      I need samcatd to accept a configuration folder identical to
-      /etc/i2pd/tunnels.conf.d, since part of the point of this is to be compatible
-      with i2pd’s tunnels configuration. Once this is done, I’ll resume turning it
-      into a .deb package.
-    </p>
-    <p>
-      It doesn’t encrypt the .i2pkeys file by default, so if someone can steal them,
-      then they can use them to construct tunnels to impersonate you. Experimental
-      support for encrypted saves has been added. The idea is that only the person
-      with the key will be able to decrypt and start the tunnels. It is up to the user
-      to determine how to go about managing these keys. Right now this system is
-      pretty bad. I’ll be addressing that soon too.
-    </p>
-    <p>
-      Experimental support for KCP-based error correction and streaming-over-datagrams
-      is in the works. Some kind of reverse-proxy or filter is also an obvious choice.
-    </p>
-    <p>
-      I’ve only enabled the use of a subset of the i2cp and tunnel configuration
-      options, the ones I use the most and for no other real reason assume other
-      people use the most. They’re pretty easy to add, it’s just boring.
-      <em>
-        If you
-      </em>
-      <em>
-        want an i2cp or tunnel option that isn’t available, bring it to my attention
-      </em>
-      <em>
-        please.
-      </em>
-      I’m pretty responsive when people actually contact me, it’ll probably
-      be added within 24 hours. I intend to have configuration options for all
-      relevant i2cp and tunnel options, which I’m keeping track of
-      <a href="config/CHECKLIST.md" rel="nofollow">
-        here
-      </a>
-      .
-    </p>
-    <p>
-      I need to just change how the configuration is done entirely. I want it to work
-      with the configuration formats used by each I2P router.
-    </p>
-    <p>
-      TLS configuration is experimental. I have decided to implement optional,
-      automatically-configured self-signed TLS certificates. No CA support is planned
-      as an alternative CA would have to be used and no apparent option exists which
-      would be usable. If you’re working on anything like that, I would like very
-      to know.
-    </p>
-    <h2>
-      Stuff that’s using it:
-    </h2>
-    <p>
-      Mostly mine, but this is all Free-as-in-Freedom for anyone to use:
-    </p>
-    <ul>
-      <li>
-        <a href="https://github.com/eyedeekay/eephttpd" rel="nofollow">
-          eephttpd
-        </a>
-      </li>
-      <li>
-        <a href="https://github.com/eyedeekay/wikigopher" rel="nofollow">
-          my fork of wikigopher
-        </a>
-      </li>
-      <li>
-        <a href="https://github.com/s-gv/orangeforum" rel="nofollow">
-          orangeforum
-        </a>
-      </li>
-    </ul>
-    <h2>
-      Donate
-    </h2>
-    <h3>
-      Monero Wallet Address
-    </h3>
-    <p>
-      XMR:43V6cTZrUfAb9JD6Dmn3vjdT9XxLbiE27D1kaoehb359ACaHs8191mR4RsJH7hGjRTiAoSwFQAVdsCBToXXPAqTMDdP2bZB
-    </p>
-    <h3>
-      Bitcoin Wallet Address
-    </h3>
-    <p>
-      BTC:159M8MEUwhTzE9RXmcZxtigKaEjgfwRbHt
-    </p>
-    <h2>
-      Index
-    </h2>
-    <ul>
-      <li>
-        <a href="index.html" rel="nofollow">
-          readme
-        </a>
-      </li>
-      <li>
-        <a href="usage.html" rel="nofollow">
-          usage
-        </a>
-      </li>
-      <li>
-        <a href="packageconf.html" rel="nofollow">
-          configuration
-        </a>
-      </li>
-      <li>
-        <a href="embedding.html" rel="nofollow">
-          embedding
-        </a>
-      </li>
-      <li>
-        <a href="interface.htnl" rel="nofollow">
-          interface
-        </a>
-      </li>
-    </ul>
-    <div>
-      <a href="#show">
-        Show license
-      </a>
-      <div id="show">
-        <div id="hide">
-          <pre><code>Copyright 2018 eyedeekay <eyedeekay@safe-mail.net>
+<p>
+  and it will be in the folder ./bin/
+</p>
+<p>
+  <a href="https://travis-ci.org/eyedeekay/sam-forwarder" rel="nofollow">
+    <img src="https://travis-ci.org/eyedeekay/sam-forwarder.svg?branch=master" alt="Build Status">
+  </a>
+</p>
+<h2>
+  <a href="#usage" rel="nofollow">
+    <span></span>
+  </a>
+  Usage:
+</h2>
+<p>
+  There are a number of ways to use sam-forwarder:
+</p>
+<h3>
+  <a href="#usage-configuration-as-an-application-start-here-for-samcatd" rel="nofollow">
+    <span></span>
+  </a>
+  <a href="docs/USAGE.md" rel="nofollow">
+    usage/configuration
+  </a>
+  as an application(Start here for samcatd)
+</h3>
+<h3>
+  <a href="#embedding-in-other-applications" rel="nofollow">
+    <span></span>
+  </a>
+  <a href="docs/EMBEDDING.md" rel="nofollow">
+    embedding
+  </a>
+  in other applications
+</h3>
+<h3>
+  <a href="#encapsulate-configuration-for-i2p-enabled-packages" rel="nofollow">
+    <span></span>
+  </a>
+  <a href="docs/PACKAGECONF.md" rel="nofollow">
+    encapsulate
+  </a>
+  configuration for i2p-enabled packages
+</h3>
+<h3>
+  <a href="#implement-the-interface-for-fine-grained-control-over-sam-connections" rel="nofollow">
+    <span></span>
+  </a>
+  <a href="interface/README.md" rel="nofollow">
+    implement
+  </a>
+  the interface for fine-grained control over SAM connections
+</h3>
+<h2>
+  <a href="#binaries" rel="nofollow">
+    <span></span>
+  </a>
+  binaries
+</h2>
+<p>
+  The standalone application for configuring tunnels is named samcatd and it&#39;s
+  main package is in the directory
+  <code>
+    ./samcatd
+  </code>
+  . It works as a cli and is
+  capable of running a WebUI, which is currently view-only. In a future time, the
+  WebUI will also be capable of configuring and editing tunnels.
+</p>
+<p>
+  The previous application ephsite has been fully retired. If you were using it,
+  it can usually be replaced with
+  <code>
+    samcatd -s
+  </code>
+  and your existing arguments.
+</p>
+<h1>
+  <a href="#current-limitations" rel="nofollow">
+    <span></span>
+  </a>
+  Current limitations:
+</h1>
+<p>
+  I need samcatd to accept a configuration folder identical to
+  /etc/i2pd/tunnels.conf.d, since part of the point of this is to be compatible
+  with i2pd&#39;s tunnels configuration. Once this is done, I&#39;ll resume turning it
+  into a .deb package.
+</p>
+<p>
+  It doesn&#39;t encrypt the .i2pkeys file by default, so if someone can steal them,
+  then they can use them to construct tunnels to impersonate you. Experimental
+  support for encrypted saves has been added. The idea is that only the person
+  with the key will be able to decrypt and start the tunnels. It is up to the user
+  to determine how to go about managing these keys. Right now this system is
+  pretty bad. I&#39;ll be addressing that soon too.
+</p>
+<p>
+  Experimental support for KCP-based error correction and streaming-over-datagrams
+  is in the works. Some kind of reverse-proxy or filter is also an obvious choice.
+</p>
+<p>
+  I&#39;ve only enabled the use of a subset of the i2cp and tunnel configuration
+  options, the ones I use the most and for no other real reason assume other
+  people use the most. They&#39;re pretty easy to add, it&#39;s just boring.
+  <em>
+    If you
+  </em>
+  <em>
+    want an i2cp or tunnel option that isn&#39;t available, bring it to my attention
+  </em>
+  <em>
+    please.
+  </em>
+  I&#39;m pretty responsive when people actually contact me, it&#39;ll probably
+  be added within 24 hours. I intend to have configuration options for all
+  relevant i2cp and tunnel options, which I&#39;m keeping track of
+  <a href="config/CHECKLIST.md" rel="nofollow">
+    here
+  </a>
+  .
+</p>
+<p>
+  I need to just change how the configuration is done entirely. I want it to work
+  with the configuration formats used by each I2P router.
+</p>
+<p>
+  TLS configuration is experimental. I have decided to implement optional,
+  automatically-configured self-signed TLS certificates. No CA support is planned
+  as an alternative CA would have to be used and no apparent option exists which
+  would be usable. If you&#39;re working on anything like that, I would like very
+  to know.
+</p>
+<h2>
+  <a href="#stuff-that-s-using-it" rel="nofollow">
+    <span></span>
+  </a>
+  Stuff that&#39;s using it:
+</h2>
+<p>
+  Mostly mine, but this is all Free-as-in-Freedom for anyone to use:
+</p>
+<ul>
+  <li>
+    <a href="https://github.com/eyedeekay/eephttpd" rel="nofollow">
+      eephttpd
+    </a>
+  </li>
+  <li>
+    <a href="https://github.com/eyedeekay/wikigopher" rel="nofollow">
+      my fork of wikigopher
+    </a>
+  </li>
+  <li>
+    <a href="https://github.com/s-gv/orangeforum" rel="nofollow">
+      orangeforum
+    </a>
+  </li>
+</ul>
+<h2>
+  <a href="#donate" rel="nofollow">
+    <span></span>
+  </a>
+  Donate
+</h2>
+<h3>
+  <a href="#monero-wallet-address" rel="nofollow">
+    <span></span>
+  </a>
+  Monero Wallet Address
+</h3>
+<p>
+  XMR:43V6cTZrUfAb9JD6Dmn3vjdT9XxLbiE27D1kaoehb359ACaHs8191mR4RsJH7hGjRTiAoSwFQAVdsCBToXXPAqTMDdP2bZB
+</p>
+<h3>
+  <a href="#bitcoin-wallet-address" rel="nofollow">
+    <span></span>
+  </a>
+  Bitcoin Wallet Address
+</h3>
+<p>
+  BTC:159M8MEUwhTzE9RXmcZxtigKaEjgfwRbHt
+</p>
+<h2>
+  <a href="#index" rel="nofollow">
+    <span></span>
+  </a>
+  Index
+</h2>
+<ul>
+  <li>
+    <a href="index.html" rel="nofollow">
+      readme
+    </a>
+  </li>
+  <li>
+    <a href="usage.html" rel="nofollow">
+      usage
+    </a>
+  </li>
+  <li>
+    <a href="packageconf.html" rel="nofollow">
+      configuration
+    </a>
+  </li>
+  <li>
+    <a href="embedding.html" rel="nofollow">
+      embedding
+    </a>
+  </li>
+  <li>
+    <a href="interface.htnl" rel="nofollow">
+      interface
+    </a>
+  </li>
+</ul>
+<div>
+  <a href="#show">
+    Show license
+  </a>
+  <div id="show">
+    <div id="hide">
+      <pre><code>Copyright 2018 eyedeekay <eyedeekay@safe-mail.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -264,19 +307,18 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 </code></pre>
-          <a href="#hide">
-            Hide license
-          </a>
-        </div>
-      </div>
-    </div>
-    <div>
-      <iframe src="https://snowflake.torproject.org/embed.html" width="320" height="240" frameborder="0" scrolling="no"></iframe>
-    </div>
-    <div>
-      <a href="https://geti2p.net/">
-        I2P
+      <a href="#hide">
+        Hide license
       </a>
     </div>
-  </body>
-</html>
+  </div>
+</div>
+<div>
+  <iframe src="https://snowflake.torproject.org/embed.html" width="320" height="240" frameborder="0" scrolling="no"></iframe>
+</div>
+<div>
+  <a href="https://geti2p.net/">
+    <img src="i2plogo.png"></img>
+    I2P
+  </a>
+</div>
