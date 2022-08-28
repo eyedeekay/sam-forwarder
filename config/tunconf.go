@@ -19,7 +19,7 @@ import (
 // when you use it for in conjunction with command-line flags
 type Conf struct {
 	//Config                    *goini.INI `default:&goini.INI{}`
-	goini.INI
+	*goini.INI
 	FilePath                  string   `default:"./"`
 	KeyFilePath               string   `default:"./"`
 	Labels                    []string `default:"{''}"`
@@ -146,7 +146,7 @@ func (c *Conf) Get(key string, label ...string) (string, bool) {
 		return c.SectionGet(c.Labels[0], key)
 	}
 	if &c.INI != nil {
-		return c.Get(key)
+		return c.INI.Get(key)
 	}
 	return "", false
 }
@@ -160,7 +160,7 @@ func (c *Conf) GetBool(key string, label ...string) (bool, bool) {
 		return c.SectionGetBool(c.Labels[0], key)
 	}
 	if &c.INI != nil {
-		return c.GetBool(key)
+		return c.INI.GetBool(key)
 	}
 	return false, false
 }
@@ -174,7 +174,7 @@ func (c *Conf) GetInt(key string, label ...string) (int, bool) {
 		return c.SectionGetInt(c.Labels[0], key)
 	}
 	if &c.INI != nil {
-		return c.GetInt(key)
+		return c.INI.GetInt(key)
 	}
 	return -1, false
 }
@@ -225,7 +225,7 @@ func (c *Conf) Set(label ...string) {
 func (c *Conf) I2PINILoad(iniFile string, label ...string) error {
 	var err error
 	c.exists = true
-	c.INI = *goini.New()
+	c.INI = goini.New()
 	if iniFile != "none" && iniFile != "" {
 		c.FilePath = iniFile
 		err = c.INI.ParseFile(iniFile)
@@ -299,8 +299,8 @@ func NewI2PBlankTunConf() *Conf {
 	c.TargetPort = "0"
 	c.ClientDest = "idk.i2p"
 	c.LeaseSetEncType = "4,0"
-	c.INI = goini.INI{}
-	c.INI = *goini.New()
+	//c.INI = &goini.INI{}
+	c.INI = goini.New()
 	c.INI.Parse([]byte("[client]\nsamhost=\"127.0.0.1\"\nsamport=\"7656\"\n"), "\n", "=")
 	return c
 }

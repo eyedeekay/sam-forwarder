@@ -66,7 +66,7 @@ test-config:
 		-ldflags '-w -extldflags "-static"' ./config
 
 test-manager:
-	go test -v -tags netgo \
+	go test -v -tags "netgo cli" \
 		-ldflags '-w -extldflags "-static"' ./manager
 
 test-keys:
