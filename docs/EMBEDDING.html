@@ -1,0 +1,163 @@
+<html>
+  <head>
+    <title>
+      sam-forwarder
+    </title>
+    <meta name="author" content="eyedeekay" />
+    <meta name="description" content="sam-forwarder" />
+    <meta name="keywords" content="master" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="showhider.css" />
+  </head>
+  <body>
+    <div id="navbar">
+      <a href="#shownav">
+        Show navigation
+      </a>
+      <div id="shownav">
+        <div id="hidenav">
+          <ul>
+            <li>
+              <a href="index.html">
+                index
+              </a>
+            </li>
+            <li>
+              <a href="EMBEDDING.html">
+                EMBEDDING
+              </a>
+            </li>
+            <li>
+              <a href="PACKAGECONF.html">
+                PACKAGECONF
+              </a>
+            </li>
+            <li>
+              <a href="USAGE.html">
+                USAGE
+              </a>
+            </li>
+          </ul>
+          <br>
+          <a href="#hidenav">
+            Hide Navigation
+          </a>
+        </div>
+      </div>
+    </div>
+    <h1>
+      <a href="#embedding-i2p-support-in-your-go-application-with-samforwarder" rel="nofollow">
+        <span></span>
+      </a>
+      Embedding i2p support in your Go application with samforwarder
+    </h1>
+    <p>
+      One neat thing you can do with samforwarder is make eepWeb(?) services configure
+      themselves automatically by adding it to an existing Go application. To help
+      with this process, the samforwarder/config/ file has a bunch of helper
+      functions and a class for parsing configuration files directly. You can import
+      it, add a few flags(or however you configure your service) and fire off the
+      forwarder as a goroutne, all you have to do is configure it to forward the port
+      used by your service. This makes it extremely easy to do, but it should only be
+      used in this way for applications that would already be safe to host as services
+      in i2p or other overlay networks. In particular, it should only be used for
+      applications that don&#39;t require extensive login information and do not leak
+      information at the application layer.
+    </p>
+    <p>
+      So without further ado, a blatant copy-paste of information that shouldn&#39;t have
+      been in the README.md.
+    </p>
+    <h2>
+      <a href="#static-eepsite-in-like-no-seconds" rel="nofollow">
+        <span></span>
+      </a>
+      Static eepsite in like no seconds
+    </h2>
+    <p>
+      Using this port forwarder, it&#39;s possible to create an instant eepsite from a
+      folder full of html files(and the resources they call upon). Probably obviously
+      to everybody reading this right now, but maybe not obviously to everyone reading
+      this forever. An example of an application that works this way is available
+      <a href="https://github.com/eyedeekay/eephttpd" rel="nofollow">
+        here at my eephttpd repo
+      </a>
+      .
+    </p>
+    <h2>
+      <a href="#quick-and-dirty-i2p-enabled-golang-web-applications" rel="nofollow">
+        <span></span>
+      </a>
+      Quick-And-Dirty i2p-enabled golang web applications
+    </h2>
+    <p>
+      Normal web applications can easily add the ability to serve itself over i2p by
+      importing and configuring this forwarding doodad. Wherever it takes the argument
+      for the web server&#39;s listening host and/or port, pass that same host and/or port
+      to a new instance of the &#34;SAMForwarder&#34; and then run the &#34;Serve&#34; function of the
+      SAMForwarder as a goroutine. This simply forwards the running service to the i2p
+      network, it doesn&#39;t do any filtering, and if your application establishes
+      out-of-band connections, those may escape. Also, if your application is
+      listening on all addresses, it will be visible from the local network.
+    </p>
+    <p>
+      Here&#39;s a simple example with a simple static file server:
+    </p>
+    <div>
+      <pre>package main																		package main
+
+import (																			import (
+	&#34;flag&#34;																				&#34;flag&#34;
+	&#34;log&#34;																				&#34;log&#34;
+	&#34;net/http&#34;																			&#34;net/http&#34;
+)																				    )
+
+																			      &gt;	import &#34;github.com/eyedeekay/sam-forwarder&#34;
+																			      &gt;
+func main() {																			func main() {
+	port := flag.String(&#34;p&#34;, &#34;8100&#34;, &#34;port to serve on&#34;)														port := flag.String(&#34;p&#34;, &#34;8100&#34;, &#34;port to serve on&#34;)
+	directory := flag.String(&#34;d&#34;, &#34;.&#34;, &#34;the directory of static file to host&#34;)											directory := flag.String(&#34;d&#34;, &#34;.&#34;, &#34;the directory of static file to host&#34;)
+	flag.Parse()																			flag.Parse()
+																			      &gt;
+																			      &gt;		forwarder, err := samforwarder.NewSAMForwarderFromOptions(
+																			      &gt;			samforwarder.SetHost(&#34;127.0.0.1&#34;),
+																			      &gt;			samforwarder.SetPort(*port),
+																			      &gt;			samforwarder.SetSAMHost(&#34;127.0.0.1&#34;),
+																			      &gt;			samforwarder.SetSAMPort(&#34;7656&#34;),
+																			      &gt;			samforwarder.SetName(&#34;staticfiles&#34;),
+																			      &gt;		)
+																			      &gt;		if err != nil {
+																			      &gt;			log.Fatal(err.Error())
+																			      &gt;		}
+																			      &gt;		go forwarder.Serve()
+
+	http.Handle(&#34;/&#34;, http.FileServer(http.Dir(*directory)))														http.Handle(&#34;/&#34;, http.FileServer(http.Dir(*directory)))
+
+	log.Printf(&#34;Serving %s on HTTP port: %s\n&#34;, *directory, *port)													log.Printf(&#34;Serving %s on HTTP port: %s\n&#34;, *directory, *port)
+	log.Fatal(http.ListenAndServe(&#34;127.0.0.1:&#34;+*port, nil))														log.Fatal(http.ListenAndServe(&#34;127.0.0.1:&#34;+*port, nil))
+}																				    }
+
+</pre>
+    </div>
+    <p>
+      <a href="https://gist.github.com/paulmach/7271283" rel="nofollow">
+        This tiny file server taken from here and used for this example
+      </a>
+    </p>
+    <h2>
+      <a href="#integrating-your-go-web-application-with-i2p-using-sam-forwarder" rel="nofollow">
+        <span></span>
+      </a>
+      Integrating your Go web application with i2p using sam-forwarder
+    </h2>
+    <div>
+      <iframe src="https://snowflake.torproject.org/embed.html" width="320" height="240" frameborder="0" scrolling="no"></iframe>
+    </div>
+    <div>
+      <a href="https://geti2p.net/">
+        <img src="i2plogo.png"></img>
+        I2P
+      </a>
+    </div>
+  </body>
+</html>
