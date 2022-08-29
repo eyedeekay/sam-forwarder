@@ -1,6 +1,7 @@
 package i2ptunconf
 
 import (
+	"log"
 	"strings"
 )
 
@@ -19,12 +20,15 @@ func (c *Conf) GetTypes(argc, argu, argh bool, def string, label ...string) stri
 		}
 		typ += "client"
 		c.Client = true
+		c.Type = typ
 	} else {
 		if argh == true {
 			typ += "http"
 		} else {
 			typ += "server"
 		}
+		log.Printf("TUNNEL TYPE\n\t%s\n", typ)
+		c.Type = typ
 		if typ != def {
 			return typ
 		}

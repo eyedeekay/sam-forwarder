@@ -241,61 +241,93 @@ func (f *SAMForwarder) forward(conn net.Conn) { //(conn net.Conn) {
 	if !f.Up() {
 		return
 	}
-	var request *http.Request
 	var requestbytes []byte
-	var responsebytes []byte
+	var request *http.Request
+	//var responsebytes []byte
+	log.Println("Proxy type:", f.Conf.Type)
 	go func() {
-		var err error
-		var client net.Conn
-		if client, err = net.Dial("tcp", f.Target()); err != nil {
+		if client, err := net.Dial("tcp", f.Target()); err != nil {
 			log.Fatalf("Dial failed: %v", err)
-		}
-		defer client.Close()
-		if f.Conf.Type == "http" || f.Conf.Type == "https" {
-			if requestbytes, request, err = f.HTTPRequestBytes(conn); err == nil {
-				log.Printf("Forwarding modified request: \n\t %s", string(requestbytes))
-				client.Write(requestbytes)
-			} else {
-				log.Println("Error: ", requestbytes, err)
-			}
 		} else {
-			if f.ByteLimit > 0 {
-				if val, ok := f.Bytes[f.ClientBase64(conn)]; ok == true {
-					if val > f.ByteLimit {
-						return
+			defer client.Close()
+			if f.Conf.Type == "http" || f.Conf.Type == "https" {
+				if requestbytes, request, err = f.HTTPRequestBytes(conn); err == nil {
+					log.Printf("Forwarding modified request: \n\t %s", string(requestbytes))
+					client.Write(requestbytes)
+				} else {
+					log.Println("Error: ", requestbytes, err)
+				}
+				if responsebytes, err := f.HTTPResponseBytes(client, request); err == nil {
+					log.Printf("Forwarding modified response: \n\t%s", string(responsebytes))
+					conn.Write(responsebytes)
+				} else {
+					log.Println("Response Error: ", responsebytes, err)
+				}
+			} else {
+				if f.ByteLimit > 0 {
+					log.Printf("Forwarding unmodified request: \n\t")
+					if val, ok := f.Bytes[f.ClientBase64(conn)]; ok {
+						if val > f.ByteLimit {
+							log.Printf("Transfer limit reached")
+							return
+						}
 					}
 				}
-			}
-			if count, err := io.Copy(client, conn); err == nil {
 				if f.ByteLimit > 0 {
-					f.Bytes[f.ClientBase64(conn)] += count
+					log.Printf("Forwarding unmodified response: \n\t")
+					if val, ok := f.Bytes[f.ClientBase64(conn)]; ok == true {
+						if val > f.ByteLimit {
+							return
+						}
+					}
 				}
+				Proxy(client, conn)
 			}
 		}
 	}()
-	go func() {
-		var err error
-		var client net.Conn
-		if client, err = net.Dial("tcp", f.Target()); err != nil {
-			log.Fatalf("Dial failed: %v", err)
-		}
-		defer client.Close()
-		if f.Conf.Type == "http" || f.Conf.Type == "https" {
-			if responsebytes, err = f.HTTPResponseBytes(client, request); err == nil {
-				log.Printf("Forwarding modified response: \n\t%s", string(responsebytes))
-				conn.Write(responsebytes)
-			} else {
-				log.Println("Response Error: ", responsebytes, err)
-			}
-		} else {
-			if val, ok := f.Bytes[f.ClientBase64(conn)]; ok == true {
+
+	/*} else {
+		log.Printf("Forwarding unmodified request: \n\t")
+		if f.ByteLimit > 0 {
+			if val, ok := f.Bytes[f.ClientBase64(conn)]; ok {
 				if val > f.ByteLimit {
+					log.Printf("Transfer limit reached")
 					return
 				}
 			}
-			io.Copy(conn, client)
 		}
-	}()
+		if count, err := io.Copy(client, conn); err == nil {
+			log.Println("copied", count, "bytes from", client.RemoteAddr().String(), "to", conn.RemoteAddr().String())
+			if f.ByteLimit > 0 {
+				f.Bytes[f.ClientBase64(conn)] += count
+			}
+		} else {
+			log.Println(err)
+		}
+	}*/
+	//}()
+	/*go func() {
+		//var err error
+		//var client net.Conn
+		if client, err := net.Dial("tcp", f.Target()); err != nil {
+			log.Fatalf("Dial failed: %v", err)
+		} else {
+			defer client.Close()
+			//if f.Conf.Type == "http" || f.Conf.Type == "https" {
+			if responsebytes, err := f.HTTPResponseBytes(client, request); err == nil {
+				log.Printf("Forwarding modified response: \n\t%s", string(responsebytes))
+				conn.Write(responsebytes)
+			} else {
+				log.Println("Response Error: ", responsebytes, err)log.Printf("Forwarding unmodified request: \n\t")
+
+			}
+		}
+	}()*/
+	//}
+	/* else {
+
+	}*/
+	//}()
 }
 
 //Base32 returns the base32 address where the local service is being forwarded
@@ -348,7 +380,7 @@ func (f *SAMForwarder) Serve() error {
 			}
 			defer conn.Close()
 			log.Printf("Accepted connection %v\n", conn)
-			go f.forward(conn)
+			f.forward(conn)
 		}
 	}
 	return nil

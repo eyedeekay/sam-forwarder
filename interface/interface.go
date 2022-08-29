@@ -1,8 +1,8 @@
 package samtunnel
 
 import (
-	"github.com/eyedeekay/sam-forwarder/config"
 	"github.com/eyedeekay/i2pkeys"
+	"github.com/eyedeekay/sam-forwarder/config"
 )
 
 // SAMTunnel is an interface comprehensively representing an I2P tunnel over SAM
